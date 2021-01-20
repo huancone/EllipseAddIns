@@ -13,7 +13,17 @@ namespace SharedClassLibrary.Ellipse
 {
     public class Settings : SharedClassLibrary.Configuration.ISettings
     {
-        public static Settings CurrentSettings;
+        public static Settings CurrentSettings
+        {
+            get
+            {
+                if (_currentSettings == null)
+                    throw new ArgumentNullException(nameof(Settings.CurrentSettings), "Error al intentar acceder a la configuración actual. Asegúrese de haber iniciado la clase settings y establecido la configuración actual");
+                return _currentSettings;
+            }
+            set => _currentSettings = value;
+        }
+        private static Settings _currentSettings;
         public Settings()
         {
             Initialize();

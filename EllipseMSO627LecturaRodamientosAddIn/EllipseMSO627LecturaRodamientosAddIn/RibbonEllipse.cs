@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using EllipseIncidentLogSheetClassLibraries;
+using SharedClassLibrary.Ellipse.Connections;
 
 namespace EllipseMSO627LecturaRodamientosAddIn
 {
@@ -21,16 +24,23 @@ namespace EllipseMSO627LecturaRodamientosAddIn
         private const int ResultColumn01 = 7;
         private const string SheetName01 = "Lectura de Rodamientos";
         private const string TableName01 = "LectRodamientosTable";
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         
         private ExcelStyleCells _cells;
         private Application _excelApp;
-        private ListObject _excelSheetItems;
+        
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -40,8 +50,34 @@ namespace EllipseMSO627LecturaRodamientosAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatLectRodamientos();
@@ -174,7 +210,7 @@ namespace EllipseMSO627LecturaRodamientosAddIn
                 var titleRow = TitleRow01;
                 var resultColumn = ResultColumn01;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var opContext = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
@@ -245,7 +281,7 @@ namespace EllipseMSO627LecturaRodamientosAddIn
                 var titleRow = TitleRow01;
                 var resultColumn = ResultColumn01;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var opContext = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
