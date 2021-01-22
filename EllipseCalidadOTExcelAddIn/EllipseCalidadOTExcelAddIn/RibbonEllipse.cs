@@ -177,6 +177,7 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("J4"), statusList, ValidationSheetName, 4);
                 //_cells.SetValidationList(_cells.GetCell("H4"), new List<string> { "'C'", "'O';'A'", "'C';'O';'A'" });
                 _cells.GetCell("J4").NumberFormat = "@";
+                _cells.GetRange("A1","A10000").NumberFormat = "@";
                 _cells.GetRange("J4").Style = _cells.GetStyle(StyleConstants.Select);
 
 
@@ -463,6 +464,7 @@ namespace EllipseCalidadOTExcelAddIn
                     _cells.GetRange(TableName01).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
                     while (odr.Read())
                     {
+                        _cells.GetCell("A" + currentRow).NumberFormat = "@";
                         _cells.GetCell("A" + currentRow).Value = odr["WORK_ORDER"] + "";
                         _cells.GetCell("B" + currentRow).Value = odr["WO_STATUS_M"] + "";
                         _cells.GetCell("C" + currentRow).Value = odr["WO_DESC"] + "";
@@ -985,17 +987,17 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 try
                 {
-                    if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell((ResultColumn01-1), i).Value) != null)
-                    {
+                    //if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell((ResultColumn01-1), i).Value) == null)
+                    //{
                         UpdateReferenceCodes(i, district, _cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2));
                         _cells.GetCell(ResultColumn01, i).Value = "OT CALIFICADA";
                         _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
-                    }
-                    else
+                    //}
+                    /*else
                     {
                         _cells.GetCell(ResultColumn01, i).Value = "OT NO CALIFICADA";
                         _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Warning;
-                    }
+                    }*/
 
                 }
                 catch (Exception ex)
@@ -1081,15 +1083,26 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 calif = "4";
             }
-
-
-            var woRefCodes = new WorkOrderReferenceCodes
+            else
             {
+                calif = "";
+            }
+
+
+            var woRefCodes = new WorkOrderReferenceCodes();
+            /*{
                 CalificacionCalidadOt = calif,
                 CalificacionCalidadPor = _frmAuth.EllipseUser,
-            };
-
-
+            };*/
+            woRefCodes.CalificacionCalidadOt = calif;
+            if (calif != "")
+            {
+                woRefCodes.CalificacionCalidadPor = _frmAuth.EllipseUser;
+            }
+            else
+            {
+                woRefCodes.CalificacionCalidadPor = "";
+            }
 
             var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
 
