@@ -760,7 +760,7 @@ namespace EllipseEquipmentClassLibrary
             return reply;
         }
 
-        public static class Queries
+        internal static class Queries
         {
             public static string GetEquipReferencesQuery(string dbReference, string dbLink, string districtCode,
                 string equipmentRef)

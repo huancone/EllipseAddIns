@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseInstFinalizarInterventoriaExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
         private const string SheetName01 = "FinalizarInterventoria";
@@ -27,12 +27,20 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
         private const string DistrictCode = "INST";
         private const string WorkGroup = "CALLCEN";
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
         private Application _excelApp;
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private FormAuthenticate _frmAuth;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -42,6 +50,33 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
 
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
@@ -177,7 +212,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
                 //Se define el ambiente del Dropdown de Environment
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
 
                 var i = TitleRow01 + 1;
@@ -238,7 +273,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
 
@@ -255,11 +290,10 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 }
 
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var workOrderData =
-                    _eFunctions.GetQueryResult(Queries.GetWorkOrderStatusQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink,
-                        DistrictCode, new List<string>(GetCompleteCodeList().Keys), WorkGroup,
-                        target.Text));
+
+                var codeList = new List<string>(GetCompleteCodeList().Keys);
+                var sqlQuery = Queries.GetWorkOrderStatusQuery(_eFunctions.DbReference, _eFunctions.DbLink, DistrictCode, codeList, WorkGroup, target.Text);
+                var workOrderData = _eFunctions.GetQueryResult(sqlQuery);
                 if (workOrderData == null) return;
                 if (!workOrderData.IsClosed && workOrderData.HasRows)
                 {
@@ -347,7 +381,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
         }
     }
 
-    public static class Queries
+    internal static class Queries
     {
         public static string GetWorkOrderStatusQuery(string dbReference, string dbLink, string districtCode,
             List<string> jobDurCodesList, string workGroup, string workOrder)

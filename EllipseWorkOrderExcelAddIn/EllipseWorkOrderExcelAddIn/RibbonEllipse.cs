@@ -2557,7 +2557,7 @@ namespace EllipseWorkOrderExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
         }
         private void ReviewWoList()
@@ -2895,104 +2895,124 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReReviewQualityList()
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-
-            _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-            var completeCodeList = _eFunctions.GetItemCodesDictionary("SC");
-            var i = TitleRowQ01 + 1;
-
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            try
             {
-                try
-                {
-                    var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-                    var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, "" + _cells.GetCell("B3").Value, woNo);
-                    if (wo == null || wo.GetWorkOrderDto().no == null)
-                        throw new Exception("WORK ORDER NO ENCONTRADA");
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
 
-                    var wc = new WorkOrderQualityStyles(wo);
-                    //GENERAL
-                    //Para resetear el estilo
-                    _cells.GetRange(1, i, ResultColumnQ01, i).Style = StyleConstants.Normal;
-                    _cells.GetCell(1, i).Value = "" + wo.workGroup;
-                    _cells.GetCell(1, i).Style = wc.WorkGroup;
-                    _cells.GetCell(2, i).Value = "'" + wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no;
-                    _cells.GetCell(3, i).Value = "" + WoStatusList.GetStatusName(wo.workOrderStatusM);
-                    _cells.GetCell(3, i).Style = wc.WorkOrderStatusM;
-                    _cells.GetCell(4, i).Value = "" + wo.workOrderDesc;
-                    _cells.GetCell(5, i).Value = "'" + wo.equipmentNo;
-                    _cells.GetCell(5, i).Style = wc.EquipmentNo;
-                    _cells.GetCell(6, i).Value = "" + wo.compCode;
-                    _cells.GetCell(6, i).Style = wc.CompCode;
-                    _cells.GetCell(7, i).Value = "" + wo.compModCode;
-                    _cells.GetCell(8, i).Value = "" + wo.workOrderType;
-                    _cells.GetCell(8, i).Style = wc.WorkOrderType;
-                    _cells.GetCell(9, i).Value = "" + wo.maintenanceType;
-                    _cells.GetCell(9, i).Style = wc.MaintenanceType;
-                    _cells.GetCell(10, i).Value = "" + wo.workOrderStatusU;
-                    _cells.GetCell(10, i).Style = wc.WorkOrderStatusU;
-                    //DETAILS
-                    _cells.GetCell(11, i).Value = "'" + wo.raisedDate;
-                    _cells.GetCell(12, i).Value = "" + wo.originatorId;
-                    _cells.GetCell(13, i).Value = "" + wo.origPriority;
-                    _cells.GetCell(13, i).Style = wc.OriginatorPriority;
-                    _cells.GetCell(14, i).Value = "" + wo.planPriority;
-                    _cells.GetCell(14, i).Style = wc.PlanPriority;
-                    _cells.GetCell(15, i).Value = "" + wo.stdJobNo;
-                    _cells.GetCell(16, i).Value = "" + wo.maintSchTask;
-                    //PLANNING
-                    _cells.GetCell(17, i).Value = "'" + wo.planStrDate;
-                    _cells.GetCell(18, i).Value = "" + wo.unitOfWork;
-                    _cells.GetCell(18, i).Style = wc.UnitOfWork;
-                    _cells.GetCell(19, i).Value = "" + wo.unitsRequired;
-                    _cells.GetCell(19, i).Style = wc.UnitsRequired;
-                    _cells.GetCell(20, i).Value = "" + wo.pcComplete + "%/" + wo.unitsComplete;
-                    _cells.GetCell(20, i).Style = wc.UnitsCompleted;
-                    //ESTIMATES
-                    _cells.GetCell(21, i).Value = "" + wo.estimatedDurationsHrs;
-                    _cells.GetCell(22, i).Value = "" + wo.actualDurationsHrs;
-                    _cells.GetCell(22, i).Style = wc.ActualDurationHrs;
-                    _cells.GetCell(23, i).Value = "" + (wo.calculatedLabFlag.Equals("Y") ? wo.calculatedLabHrs : wo.estimatedLabHrs);
-                    _cells.GetCell(24, i).Value2 = "" + wo.actualLabHrs;
-                    _cells.GetCell(24, i).Style = wc.ActualLabHrs;
-                    _cells.GetCell(25, i).Value2 = "" + (wo.calculatedLabFlag.Equals("Y") ? wo.calculatedLabCost : wo.estimatedLabCost);
-                    _cells.GetCell(26, i).Value2 = "" + wo.actualLabCost;
-                    _cells.GetCell(26, i).Style = wc.ActualLabCost;
-                    _cells.GetCell(27, i).Value2 = "" + (wo.calculatedMatFlag.Equals("Y") ? wo.calculatedMatCost : wo.estimatedMatCost);
-                    _cells.GetCell(28, i).Value2 = "" + wo.actualMatCost;
-                    _cells.GetCell(28, i).Style = wc.ActualMatCost;
-                    _cells.GetCell(29, i).Value = "" + wo.estimatedOtherCost;
-                    _cells.GetCell(30, i).Value = "" + wo.actualOtherCost;
-                    _cells.GetCell(30, i).Style = wc.ActualOtherCost;
-                    //
-                    _cells.GetCell(31, i).Value = "" + wo.jobCodeFlag;
-                    _cells.GetCell(31, i).Style = wc.JobCodesFlag;
-                    _cells.GetCell(32, i).Value = "'" + wo.closeCommitDate;
-                    string outString;
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
+                var completeCodeList = _eFunctions.GetItemCodesDictionary("SC");
+                var i = TitleRowQ01 + 1;
 
-                    _cells.GetCell(33, i).Value = completeCodeList.ContainsKey(wo.completedCode) ? "'" + wo.completedCode + " - " + completeCodeList.TryGetValue(wo.completedCode, out outString) : "";
-                    _cells.GetCell(34, i).Value = "" + wo.completeTextFlag;
-                    _cells.GetCell(34, i).Style = wc.CompleteTextFlag;
-                    _cells.GetCell(35, i).Value = "" + wo.completedBy;
-                }
-                catch (Exception ex)
+                while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
                 {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumnQ01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(2, i).Select();
-                    i++;
-                    _eFunctions.CloseConnection();
+                    try
+                    {
+                        var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                        var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, "" + _cells.GetCell("B3").Value, woNo);
+                        if (wo == null || wo.GetWorkOrderDto().no == null)
+                            throw new Exception("WORK ORDER NO ENCONTRADA");
+
+                        var wc = new WorkOrderQualityStyles(wo);
+                        //GENERAL
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumnQ01, i).Style = StyleConstants.Normal;
+                        _cells.GetCell(1, i).Value = "" + wo.workGroup;
+                        _cells.GetCell(1, i).Style = wc.WorkGroup;
+                        _cells.GetCell(2, i).Value = "'" + wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no;
+                        _cells.GetCell(3, i).Value = "" + WoStatusList.GetStatusName(wo.workOrderStatusM);
+                        _cells.GetCell(3, i).Style = wc.WorkOrderStatusM;
+                        _cells.GetCell(4, i).Value = "" + wo.workOrderDesc;
+                        _cells.GetCell(5, i).Value = "'" + wo.equipmentNo;
+                        _cells.GetCell(5, i).Style = wc.EquipmentNo;
+                        _cells.GetCell(6, i).Value = "" + wo.compCode;
+                        _cells.GetCell(6, i).Style = wc.CompCode;
+                        _cells.GetCell(7, i).Value = "" + wo.compModCode;
+                        _cells.GetCell(8, i).Value = "" + wo.workOrderType;
+                        _cells.GetCell(8, i).Style = wc.WorkOrderType;
+                        _cells.GetCell(9, i).Value = "" + wo.maintenanceType;
+                        _cells.GetCell(9, i).Style = wc.MaintenanceType;
+                        _cells.GetCell(10, i).Value = "" + wo.workOrderStatusU;
+                        _cells.GetCell(10, i).Style = wc.WorkOrderStatusU;
+                        //DETAILS
+                        _cells.GetCell(11, i).Value = "'" + wo.raisedDate;
+                        _cells.GetCell(12, i).Value = "" + wo.originatorId;
+                        _cells.GetCell(13, i).Value = "" + wo.origPriority;
+                        _cells.GetCell(13, i).Style = wc.OriginatorPriority;
+                        _cells.GetCell(14, i).Value = "" + wo.planPriority;
+                        _cells.GetCell(14, i).Style = wc.PlanPriority;
+                        _cells.GetCell(15, i).Value = "" + wo.stdJobNo;
+                        _cells.GetCell(16, i).Value = "" + wo.maintSchTask;
+                        //PLANNING
+                        _cells.GetCell(17, i).Value = "'" + wo.planStrDate;
+                        _cells.GetCell(18, i).Value = "" + wo.unitOfWork;
+                        _cells.GetCell(18, i).Style = wc.UnitOfWork;
+                        _cells.GetCell(19, i).Value = "" + wo.unitsRequired;
+                        _cells.GetCell(19, i).Style = wc.UnitsRequired;
+                        _cells.GetCell(20, i).Value = "" + wo.pcComplete + "%/" + wo.unitsComplete;
+                        _cells.GetCell(20, i).Style = wc.UnitsCompleted;
+                        //ESTIMATES
+                        _cells.GetCell(21, i).Value = "" + wo.estimatedDurationsHrs;
+                        _cells.GetCell(22, i).Value = "" + wo.actualDurationsHrs;
+                        _cells.GetCell(22, i).Style = wc.ActualDurationHrs;
+                        _cells.GetCell(23, i).Value =
+                            "" + (wo.calculatedLabFlag.Equals("Y") ? wo.calculatedLabHrs : wo.estimatedLabHrs);
+                        _cells.GetCell(24, i).Value2 = "" + wo.actualLabHrs;
+                        _cells.GetCell(24, i).Style = wc.ActualLabHrs;
+                        _cells.GetCell(25, i).Value2 = "" + (wo.calculatedLabFlag.Equals("Y")
+                            ? wo.calculatedLabCost
+                            : wo.estimatedLabCost);
+                        _cells.GetCell(26, i).Value2 = "" + wo.actualLabCost;
+                        _cells.GetCell(26, i).Style = wc.ActualLabCost;
+                        _cells.GetCell(27, i).Value2 = "" + (wo.calculatedMatFlag.Equals("Y")
+                            ? wo.calculatedMatCost
+                            : wo.estimatedMatCost);
+                        _cells.GetCell(28, i).Value2 = "" + wo.actualMatCost;
+                        _cells.GetCell(28, i).Style = wc.ActualMatCost;
+                        _cells.GetCell(29, i).Value = "" + wo.estimatedOtherCost;
+                        _cells.GetCell(30, i).Value = "" + wo.actualOtherCost;
+                        _cells.GetCell(30, i).Style = wc.ActualOtherCost;
+                        //
+                        _cells.GetCell(31, i).Value = "" + wo.jobCodeFlag;
+                        _cells.GetCell(31, i).Style = wc.JobCodesFlag;
+                        _cells.GetCell(32, i).Value = "'" + wo.closeCommitDate;
+                        string outString;
+
+                        _cells.GetCell(33, i).Value = completeCodeList.ContainsKey(wo.completedCode)
+                            ? "'" + wo.completedCode + " - " +
+                              completeCodeList.TryGetValue(wo.completedCode, out outString)
+                            : "";
+                        _cells.GetCell(34, i).Value = "" + wo.completeTextFlag;
+                        _cells.GetCell(34, i).Style = wc.CompleteTextFlag;
+                        _cells.GetCell(35, i).Value = "" + wo.completedBy;
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumnQ01, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message);
+                    }
+                    finally
+                    {
+                        _cells.GetCell(2, i).Select();
+                        i++;
+                    }
                 }
             }
-            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReReviewWOList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Error. " + ex.Message);
+            }
+            finally
+            {
+                _eFunctions.CloseConnection();
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+
         }
         private void CreateWoList()
         {
@@ -3358,9 +3378,10 @@ namespace EllipseWorkOrderExcelAddIn
                     i++;
                 }
             }
+            _eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
-            _eFunctions.CloseConnection();
+            
         }
         private void ReOpenWoList()
         {

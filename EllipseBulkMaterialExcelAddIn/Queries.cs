@@ -6,7 +6,7 @@ using SharedClassLibrary.Utilities;
 
 namespace EllipseBulkMaterialExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetBulkAccountCode(string equipNo, string dbReference, string dbLink)
         {

@@ -11,6 +11,7 @@ using System.Threading;
 using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Ellipse.Connections;
 using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Forms;
 using SharedClassLibrary.Utilities;
 using SharedClassLibrary.Vsto.Excel;
 
@@ -18,8 +19,9 @@ namespace EllipseAplsExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
 
         private const string SheetName01 = "AplItems";
@@ -39,6 +41,13 @@ namespace EllipseAplsExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -48,8 +57,34 @@ namespace EllipseAplsExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -63,7 +98,7 @@ namespace EllipseAplsExcelAddIn
             var requiredAttributes = new APLItemService.APLItemServiceRetrieveRequiredAttributesDTO();
             
             var reply = service.retrieve(opContext, request, requiredAttributes, "");
-            var reply2 = service.retrieveAPLItems(opContext, request);
+            var reply2 = service.retrieveAPLItems(opContext, request, requiredAttributes, "");
             
         }
         private void FormatSheet()
@@ -144,7 +179,7 @@ namespace EllipseAplsExcelAddIn
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
     }

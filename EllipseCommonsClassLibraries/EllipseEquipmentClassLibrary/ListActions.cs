@@ -61,7 +61,7 @@ namespace EllipseEquipmentClassLibrary
             proxyEquip.Url = urlService + "/EquipmentList";
             return proxyEquip.delEquipItem(operationContext, request);
         }
-        public static class Queries
+        internal static class Queries
         {
             public static string GetFetchListEquipmentsListQuery(string dbReference, string dbLink, int searchCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2, string searchCriteriaValue2, string eqStatus)
             {

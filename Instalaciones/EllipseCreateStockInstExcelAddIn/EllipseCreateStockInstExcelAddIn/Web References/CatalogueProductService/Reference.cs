@@ -23,50 +23,32 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     
     
     /// <remarks/>
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="CatalogueProductServiceHttpBinding", Namespace="http://catalogueproduct.m3101.service.ellipse.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Base))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class CatalogueProductService : System.Web.Services.Protocols.SoapHttpClientProtocol {
-        
-        private System.Threading.SendOrPostCallback updateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback searchOperationCompleted;
         
+        private System.Threading.SendOrPostCallback readOperationCompleted;
+        
         private System.Threading.SendOrPostCallback multipleUpdateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback createOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback updateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback deleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback readOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback createOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -107,169 +89,38 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         }
         
         /// <remarks/>
-        public event updateCompletedEventHandler updateCompleted;
-        
-        /// <remarks/>
-        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
-        
-        /// <remarks/>
-        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
-        
-        /// <remarks/>
-        public event multipleReadCompletedEventHandler multipleReadCompleted;
-        
-        /// <remarks/>
         public event searchCompletedEventHandler searchCompleted;
-        
-        /// <remarks/>
-        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
-        
-        /// <remarks/>
-        public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
         public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
+        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
+        
+        /// <remarks/>
+        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
+        
+        /// <remarks/>
         public event createCompletedEventHandler createCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CatalogueProductServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
-            var results = this.Invoke("update", new object[] {
-                        context,
-                        serviceDTO});
-            return ((CatalogueProductServiceResult)(results[0]));
-        }
+        public event updateCompletedEventHandler updateCompleted;
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, CatalogueProductDTO serviceDTO) {
-            this.updateAsync(context, serviceDTO, null);
-        }
+        public event multipleReadCompletedEventHandler multipleReadCompleted;
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, CatalogueProductDTO serviceDTO, object userState) {
-            if ((this.updateOperationCompleted == null)) {
-                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
-            }
-            this.InvokeAsync("update", new object[] {
-                        context,
-                        serviceDTO}, this.updateOperationCompleted, userState);
-        }
-        
-        private void OnupdateOperationCompleted(object arg) {
-            if ((this.updateCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
-        public CatalogueProductServiceResult[] multipleDelete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
-            var results = this.Invoke("multipleDelete", new object[] {
-                        context,
-                        inputDtos});
-            return ((CatalogueProductServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleDeleteAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
-            this.multipleDeleteAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleDeleteAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
-            if ((this.multipleDeleteOperationCompleted == null)) {
-                this.multipleDeleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleDeleteOperationCompleted);
-            }
-            this.InvokeAsync("multipleDelete", new object[] {
-                        context,
-                        inputDtos}, this.multipleDeleteOperationCompleted, userState);
-        }
-        
-        private void OnmultipleDeleteOperationCompleted(object arg) {
-            if ((this.multipleDeleteCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleDeleteCompleted(this, new multipleDeleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
-        public CatalogueProductServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
-            var results = this.Invoke("multipleCreate", new object[] {
-                        context,
-                        inputDtos});
-            return ((CatalogueProductServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
-            this.multipleCreateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
-            if ((this.multipleCreateOperationCompleted == null)) {
-                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
-            }
-            this.InvokeAsync("multipleCreate", new object[] {
-                        context,
-                        inputDtos}, this.multipleCreateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleCreateOperationCompleted(object arg) {
-            if ((this.multipleCreateCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
-        public CatalogueProductServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
-            var results = this.Invoke("multipleRead", new object[] {
-                        context,
-                        inputDtos});
-            return ((CatalogueProductServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
-            this.multipleReadAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
-            if ((this.multipleReadOperationCompleted == null)) {
-                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
-            }
-            this.InvokeAsync("multipleRead", new object[] {
-                        context,
-                        inputDtos}, this.multipleReadOperationCompleted, userState);
-        }
-        
-        private void OnmultipleReadOperationCompleted(object arg) {
-            if ((this.multipleReadCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
         public CatalogueProductServiceResult[] search([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductSearchParam searchParams, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO restart) {
-            var results = this.Invoke("search", new object[] {
+            object[] results = this.Invoke("search", new object[] {
                         context,
                         searchParams,
                         restart});
@@ -294,73 +145,8 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         
         private void OnsearchOperationCompleted(object arg) {
             if ((this.searchCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.searchCompleted(this, new searchCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
-        public CatalogueProductServiceResult[] multipleUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
-            var results = this.Invoke("multipleUpdate", new object[] {
-                        context,
-                        inputDtos});
-            return ((CatalogueProductServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleUpdateAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
-            this.multipleUpdateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleUpdateAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
-            if ((this.multipleUpdateOperationCompleted == null)) {
-                this.multipleUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUpdateOperationCompleted);
-            }
-            this.InvokeAsync("multipleUpdate", new object[] {
-                        context,
-                        inputDtos}, this.multipleUpdateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleUpdateOperationCompleted(object arg) {
-            if ((this.multipleUpdateCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleUpdateCompleted(this, new multipleUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CatalogueProductServiceResult delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
-            var results = this.Invoke("delete", new object[] {
-                        context,
-                        serviceDTO});
-            return ((CatalogueProductServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void deleteAsync(OperationContext context, CatalogueProductDTO serviceDTO) {
-            this.deleteAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void deleteAsync(OperationContext context, CatalogueProductDTO serviceDTO, object userState) {
-            if ((this.deleteOperationCompleted == null)) {
-                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
-            }
-            this.InvokeAsync("delete", new object[] {
-                        context,
-                        serviceDTO}, this.deleteOperationCompleted, userState);
-        }
-        
-        private void OndeleteOperationCompleted(object arg) {
-            if ((this.deleteCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -368,7 +154,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
         public CatalogueProductServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
-            var results = this.Invoke("read", new object[] {
+            object[] results = this.Invoke("read", new object[] {
                         context,
                         serviceDTO});
             return ((CatalogueProductServiceResult)(results[0]));
@@ -391,8 +177,74 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         
         private void OnreadOperationCompleted(object arg) {
             if ((this.readCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
+        public CatalogueProductServiceResult[] multipleUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleUpdate", new object[] {
+                        context,
+                        inputDtos});
+            return ((CatalogueProductServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleUpdateAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
+            this.multipleUpdateAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleUpdateAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
+            if ((this.multipleUpdateOperationCompleted == null)) {
+                this.multipleUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUpdateOperationCompleted);
+            }
+            this.InvokeAsync("multipleUpdate", new object[] {
+                        context,
+                        inputDtos}, this.multipleUpdateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleUpdateOperationCompleted(object arg) {
+            if ((this.multipleUpdateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleUpdateCompleted(this, new multipleUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
+        public CatalogueProductServiceResult[] multipleDelete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleDelete", new object[] {
+                        context,
+                        inputDtos});
+            return ((CatalogueProductServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleDeleteAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
+            this.multipleDeleteAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleDeleteAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
+            if ((this.multipleDeleteOperationCompleted == null)) {
+                this.multipleDeleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleDeleteOperationCompleted);
+            }
+            this.InvokeAsync("multipleDelete", new object[] {
+                        context,
+                        inputDtos}, this.multipleDeleteOperationCompleted, userState);
+        }
+        
+        private void OnmultipleDeleteOperationCompleted(object arg) {
+            if ((this.multipleDeleteCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleDeleteCompleted(this, new multipleDeleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -400,7 +252,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
         public CatalogueProductServiceResult create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
-            var results = this.Invoke("create", new object[] {
+            object[] results = this.Invoke("create", new object[] {
                         context,
                         serviceDTO});
             return ((CatalogueProductServiceResult)(results[0]));
@@ -423,8 +275,138 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         
         private void OncreateOperationCompleted(object arg) {
             if ((this.createCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CatalogueProductServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
+            object[] results = this.Invoke("update", new object[] {
+                        context,
+                        serviceDTO});
+            return ((CatalogueProductServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void updateAsync(OperationContext context, CatalogueProductDTO serviceDTO) {
+            this.updateAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void updateAsync(OperationContext context, CatalogueProductDTO serviceDTO, object userState) {
+            if ((this.updateOperationCompleted == null)) {
+                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
+            }
+            this.InvokeAsync("update", new object[] {
+                        context,
+                        serviceDTO}, this.updateOperationCompleted, userState);
+        }
+        
+        private void OnupdateOperationCompleted(object arg) {
+            if ((this.updateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
+        public CatalogueProductServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleRead", new object[] {
+                        context,
+                        inputDtos});
+            return ((CatalogueProductServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
+            this.multipleReadAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
+            if ((this.multipleReadOperationCompleted == null)) {
+                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+            }
+            this.InvokeAsync("multipleRead", new object[] {
+                        context,
+                        inputDtos}, this.multipleReadOperationCompleted, userState);
+        }
+        
+        private void OnmultipleReadOperationCompleted(object arg) {
+            if ((this.multipleReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CatalogueProductServiceResult delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CatalogueProductDTO serviceDTO) {
+            object[] results = this.Invoke("delete", new object[] {
+                        context,
+                        serviceDTO});
+            return ((CatalogueProductServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void deleteAsync(OperationContext context, CatalogueProductDTO serviceDTO) {
+            this.deleteAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void deleteAsync(OperationContext context, CatalogueProductDTO serviceDTO, object userState) {
+            if ((this.deleteOperationCompleted == null)) {
+                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
+            }
+            this.InvokeAsync("delete", new object[] {
+                        context,
+                        serviceDTO}, this.deleteOperationCompleted, userState);
+        }
+        
+        private void OndeleteOperationCompleted(object arg) {
+            if ((this.deleteCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", ResponseNamespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")]
+        public CatalogueProductServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3101.types.ellipse.mincom.com")] CatalogueProductDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleCreate", new object[] {
+                        context,
+                        inputDtos});
+            return ((CatalogueProductServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, CatalogueProductDTO[] inputDtos) {
+            this.multipleCreateAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, CatalogueProductDTO[] inputDtos, object userState) {
+            if ((this.multipleCreateOperationCompleted == null)) {
+                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
+            }
+            this.InvokeAsync("multipleCreate", new object[] {
+                        context,
+                        inputDtos}, this.multipleCreateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleCreateOperationCompleted(object arg) {
+            if ((this.multipleCreateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -438,7 +420,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
                         || (url == string.Empty))) {
                 return false;
             }
-            var wsUri = new System.Uri(url);
+            System.Uri wsUri = new System.Uri(url);
             if (((wsUri.Port >= 1024) 
                         && (string.Compare(wsUri.Host, "localHost", System.StringComparison.OrdinalIgnoreCase) == 0))) {
                 return true;
@@ -448,14 +430,20 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -469,11 +457,23 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -482,6 +482,27 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -548,6 +569,16 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -580,7 +611,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -625,9 +656,77 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public partial class ServiceRequiredAttributes {
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductServiceResult))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public abstract partial class BaseServiceResult {
+        
+        private Error[] errorsField;
+        
+        private Message[] informationalMessagesField;
+        
+        private Warning[] warningsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Error[] errors {
+            get {
+                return this.errorsField;
+            }
+            set {
+                this.errorsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Message[] informationalMessages {
+            get {
+                return this.informationalMessagesField;
+            }
+            set {
+                this.informationalMessagesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Warning[] warnings {
+            get {
+                return this.warningsField;
+            }
+            set {
+                this.warningsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
+    public partial class Error : Message {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -639,6 +738,10 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
         private int fieldIndexField;
         
         private bool fieldIndexFieldSpecified;
+        
+        private bool localisableField;
+        
+        private bool localisableFieldSpecified;
         
         private string messageIdField;
         
@@ -678,6 +781,27 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
             }
             set {
                 this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool localisable {
+            get {
+                return this.localisableField;
+            }
+            set {
+                this.localisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool localisableSpecified {
+            get {
+                return this.localisableFieldSpecified;
+            }
+            set {
+                this.localisableFieldSpecified = value;
             }
         }
         
@@ -733,7 +857,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -742,67 +866,8 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
-    public partial class Error : Message {
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
-    public abstract partial class BaseServiceResult {
-        
-        private Error[] errorsField;
-        
-        private Message[] informationalMessagesField;
-        
-        private Warning[] warningsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Error[] errors {
-            get {
-                return this.errorsField;
-            }
-            set {
-                this.errorsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Message[] informationalMessages {
-            get {
-                return this.informationalMessagesField;
-            }
-            set {
-                this.informationalMessagesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Warning[] warnings {
-            get {
-                return this.warningsField;
-            }
-            set {
-                this.warningsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -811,7 +876,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -832,7 +897,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -988,7 +1053,7 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1010,16 +1075,32 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
         
+        private string dataTypeField;
+        
         private string nameField;
         
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
+        
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -1028,6 +1109,27 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://catalogueproduct.m3101.service.ellipse.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1043,11 +1145,44 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://catalogueproduct.m3101.service.ellipse.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1057,16 +1192,28 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CatalogueProductSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
     public abstract partial class AbstractSearchParam : ServiceDTO {
+        
+        private ServiceRequiredAttributes serviceRequiredAttributesField;
+        
+        /// <remarks/>
+        public ServiceRequiredAttributes serviceRequiredAttributes {
+            get {
+                return this.serviceRequiredAttributesField;
+            }
+            set {
+                this.serviceRequiredAttributesField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1087,115 +1234,11 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1217,63 +1260,11 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CatalogueProductServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CatalogueProductServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1295,11 +1286,63 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1316,6 +1359,110 @@ namespace EllipseCreateStockInstExcelAddIn.CatalogueProductService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((CatalogueProductServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CatalogueProductServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CatalogueProductServiceResult[])(this.results[0]));
             }
         }
     }

@@ -4,14 +4,16 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using System.Threading;
-using Debugger = EllipseCommonsClassLibrary.Debugger;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Vsto.Excel;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 namespace EllipseQueryLoaderExcelAddIn
 {
@@ -19,18 +21,29 @@ namespace EllipseQueryLoaderExcelAddIn
     {
         ExcelStyleCells _cells;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        EllipseFunctions _eFunctions = new EllipseFunctions(); 
-        Excel.Application _excelApp; 
+        private EllipseFunctions _eFunctions;
+        private Excel.Application _excelApp; 
         private const string SheetName01 = "QueryInformation";
         private const string SheetName02 = "QueryResults";
         private const string TableName02 = "QueryResultsTable";
         private const string ValidationSheetName = "ValidationSheet";
-        private const int TitleRow01 = 9;
-        private const int TitleRow02 = 9;
-        private Thread _thread;
 
+        private const string TableParameter = "ParametersTable";
+        private const int TitleRow01 = 8;
+        private const int TitleRow02 = 4;
+        private Thread _thread;
+        private string DefaultCharParameter = ":";
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+            
+            
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -40,13 +53,40 @@ namespace EllipseQueryLoaderExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-            
-            var otherItem = Factory.CreateRibbonDropDownItem();
-            otherItem.Label = @"OTRA BD";
 
-            drpEnvironment.Items.Add(otherItem);
+            var otherDb = Factory.CreateRibbonDropDownItem();
+            otherDb.Label = @"Other DB";
+            drpEnvironment.Items.Add(otherDb);
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+
+
         }
-
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -162,6 +202,16 @@ namespace EllipseQueryLoaderExcelAddIn
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 _cells.GetCell(2, 6).ColumnWidth = 60;
+
+                _cells.GetCell(1, TitleRow01).Value = "Parameter";
+                _cells.GetCell(2, TitleRow01).Value = "Value";
+                _cells.GetCell(3, TitleRow01).Value = "Operator";
+
+                var paramList = Database.ParamType.GetParamList();
+                _cells.SetValidationList(_cells.GetCell(TitleRow01 + 1, 2), paramList, ValidationSheetName, 1);
+
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, 3, TitleRow01 + 1), TableParameter);
+
                 //CONSTRUYO LA HOJA 2 - QUERYRESULT
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
@@ -173,15 +223,14 @@ namespace EllipseQueryLoaderExcelAddIn
 
                 _cells.GetCell("B1").Value = "QUERY LOADER RESULTS";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
-                
-                _cells.SetValidationList(DataBase.ParamType.GetParamList(), ValidationSheetName, 1);
+
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
 
             }
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar formatear la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar formatear la hoja. " + ex.Message);
             }
         }
 
@@ -295,44 +344,39 @@ namespace EllipseQueryLoaderExcelAddIn
         private string DecodeSqlQueryParameters(string sqlQueryEncoded)
         {
             var query = sqlQueryEncoded;
-            var currentRow = TitleRow01;
+            var currentRow = TitleRow01 + 1;
 
             while (!string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2)))
             {
                 
-                // ReSharper disable once SuggestVarOrType_BuiltInTypes
-                string operType = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value2);
+                
+                var paramName = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2);
+                var paramValue = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value2);
+                string operType = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value2);
                 var parameters = "";
-                if (!cbIgnoreOperators.Checked)
-                {
-                    switch (operType)
-                    {
-                        case DataBase.ParamType.InList:
-                            var values = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value2).Split(',');
 
-                            // ReSharper disable once LoopCanBeConvertedToQuery
-                            foreach (var v in values)
-                                parameters = parameters + ",'" + v.Trim() + "'";
-                            parameters = " " + DataBase.ParamType.InList + " (" + parameters + ")";
-                            query = query.Replace(_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2), parameters);
-                            query = query.Replace("(,", "(");
-                            break;
-                        case "": //none
-                            parameters = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value2);
-                            query = query.Replace(_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2), parameters);
-                            break;
-                        default:
-                            parameters = operType + " '" + _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value2 + "'");
-                            query = query.Replace(_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2), parameters);
-                            break;
-                    }
-                }
-                else
+                switch (operType)
                 {
-                    parameters = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value2);
-                    query = query.Replace(_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value2), parameters);
+                    case Database.ParamType.InList:
+                        var values = paramValue.Split(',');
+
+                        // ReSharper disable once LoopCanBeConvertedToQuery
+                        foreach (var v in values)
+                            parameters = parameters + ",'" + v.Trim() + "'";
+                        parameters = " " + Database.ParamType.InList + " (" + parameters + ")";
+                        query = query.Replace(paramName, parameters);
+                        query = query.Replace("(,", "(");
+                        break;
+                    case "": //none
+                        query = query.Replace(paramName, "'" + paramValue + "'");
+                        break;
+                    default:
+                        parameters = operType + " '" + paramValue + "'";
+                        query = query.Replace(paramName, parameters);
+                        break;
                 }
-                currentRow = currentRow + 1;
+
+                currentRow += 1;
             }
             return query;
         }
@@ -343,38 +387,23 @@ namespace EllipseQueryLoaderExcelAddIn
             {
                 var cp = new ExcelStyleCells(_excelApp, SheetName01);
 
-                _cells.SetCursorWait();
+                _cells?.SetCursorWait();
                 var query = cp.GetEmptyIfNull(cp.GetCell(2, 5).Value);
 
-                var currentRow = TitleRow01;
-                while (cp.GetNullIfTrimmedEmpty(cp.GetCell(1, currentRow).Value2) != null)
-                {
-                    cp.GetRange(1, currentRow, 3, currentRow).ClearContents();
-                    cp.GetRange(1, currentRow, 3, currentRow).ClearFormats();
-                    currentRow = currentRow + 1;
-                }
+                cp.ClearTableRange(TableParameter);
 
-                currentRow = TitleRow01;
+                var currentRow = TitleRow01 + 1;
                 var paramList = new List<string>();
-                foreach (Match match in Regex.Matches(query, "(\\&\\w+)"))
+                foreach (Match match in Regex.Matches(query, "(\\" + DefaultCharParameter + "\\w+)"))
                     if (!paramList.Contains(match.Groups[1].Value))
                         paramList.Add(match.Groups[1].Value);
                 
-                var opColumn = cbIgnoreOperators.Checked ? 1 : 2;
-
                 foreach (var param in paramList)
                 {
                     cp.GetCell(1, currentRow).Value2 = param;
-                    cp.GetCell(1, currentRow).Style = StyleConstants.TitleRequired;
-                    if (!cbIgnoreOperators.Checked)
-                    {
-                        cp.SetValidationList(cp.GetCell(opColumn, currentRow), ValidationSheetName, 1);
-                        cp.GetCell(opColumn, currentRow).Value2 = " = ";
-                        cp.GetCell(opColumn, currentRow).Style = StyleConstants.Option;
-                    }
-                    cp.GetCell(opColumn + 1, currentRow).NumberFormat = NumberFormatConstants.Text;
-                    cp.GetCell(opColumn + 1, currentRow).Style = StyleConstants.Select;
-                    currentRow = currentRow + 1;
+                    cp.GetCell(1, currentRow).NumberFormat = NumberFormatConstants.Text;
+
+                    currentRow += 1;
                 }
             }
             catch (Exception ex)
@@ -384,43 +413,11 @@ namespace EllipseQueryLoaderExcelAddIn
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
 
-        public static class DataBase
-        {
-            public static string SqlDatabase = "SQL";
-            public static string OracleDatabase = "ORACLE";
-
-            public static class ParamType
-            {
-                public const string None = "";
-                public const string Equal = "=";
-                public const string InList = "IN";
-                public const string GreatherThan = ">";
-                public const string LessThan = "<";
-                public const string GreatherEqualThan = ">=";
-                public const string LessEqualThan = "<=";
-                public const string DifferentThan = "<>";
-
-                public static List<string> GetParamList()
-                {
-                    var paramList = new List<string>
-                    {
-                        None, 
-                        Equal, 
-                        InList, 
-                        GreatherThan,
-                        LessThan,
-                        GreatherEqualThan,
-                        LessEqualThan,
-                        DifferentThan
-                    };
-                    return paramList;
-                }
-            }
-        }
+        
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {

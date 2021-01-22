@@ -1979,7 +1979,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         }
     }
 
-    public static class Queries
+    internal static class Queries
     {
         public static string GetFetchRequisitionStockCodeQuery(string dbReference, string dbLink, string districtCode,
             string stockCode, string scStatus, string startDate, string finishDate, string reqType, string transType,

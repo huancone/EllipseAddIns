@@ -4,28 +4,27 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
 namespace EllipseInstDemorasEnOTsExcelAddIn
 {
-    [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private Application _excelApp;
 
         private const string SheetName01 = "DEMORAS_CARGUE";
         private const string SheetName02 = "DEMORAS_CONSULTA";
@@ -40,10 +39,19 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
         private string _workGroup;
 
-        List<string> _actionList;
+        //List<string> _actionList;
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -51,10 +59,36 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-            _actionList = new List<string> {"", "Eliminar"};
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+
+            
         }
-
-
 
         private void btnFormatSheetImis_Click(object sender, RibbonControlEventArgs e)
         {
@@ -188,8 +222,8 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.GetRange(5, TitleRow02, 7, TitleRow02).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(12, TitleRow02).Style = StyleConstants.TitleAction;
                 _cells.GetCell(13, TitleRow02).Style = StyleConstants.TitleResult;
-
-                _cells.SetValidationList(_cells.GetCell(12, TitleRow02 + 1), _actionList, ValidationSheetName, 2);
+                var actionList = new List<string> { "", "Eliminar" };
+                _cells.SetValidationList(_cells.GetCell(12, TitleRow02 + 1), actionList, ValidationSheetName, 2);
                 _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
 
@@ -221,12 +255,12 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 if (groupName != null && groupName.Equals(DemorasGroups.ImisName))
                     workGroup = DemorasGroups.ImisCode;
 
-                var sqlQuery = Queries.GetConsultaQuery("INST", workGroup, _eFunctions.dbReference, _eFunctions.dbLink,
+                var sqlQuery = Queries.GetConsultaQuery("INST", workGroup, _eFunctions.DbReference, _eFunctions.DbLink,
                     new List<string>(GetCompleteCodeList().Keys));
 
                 var drDemoras = _eFunctions.GetQueryResult(sqlQuery);
 
-                if (drDemoras != null && !drDemoras.IsClosed && drDemoras.HasRows)
+                if (drDemoras != null && !drDemoras.IsClosed)
                 {
                     var i = TitleRow02 + 1;
                     while (drDemoras.Read())
@@ -294,7 +328,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
                 var i = TitleRow01 + 1;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var today =
                     Convert.ToDouble(string.Format("{0:0000}", DateTime.Now.Year) +
                                      string.Format("{0:00}", DateTime.Now.Month) +
@@ -435,7 +469,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
                 var i = TitleRow02 + 1;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                 while ("" + _cells.GetCell(1, i).Value != "")
                 {
@@ -541,9 +575,9 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetCell(target.Column + 1, target.Row).Value = "Buscando Orden...";
-                OracleDataReader dr = _eFunctions.GetQueryResult(Queries.GetWoDataQuery(DistrictCode, target.Value, _eFunctions.dbReference, _eFunctions.dbLink));
+                var dr = _eFunctions.GetQueryResult(Queries.GetWoDataQuery(DistrictCode, target.Value, _eFunctions.DbReference, _eFunctions.DbLink));
 
-                if (dr != null && !dr.IsClosed && dr.HasRows)
+                if (dr != null && !dr.IsClosed)
                 {
                     while (dr.Read())
                     {
@@ -580,9 +614,9 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 durationCode = durationCode.Substring(0, 3);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-                var dr = _eFunctions.GetQueryResult(Queries.GetWoDurDatesDataQuery(_eFunctions.dbReference, _eFunctions.dbLink, workOrder, durationCode));
+                var dr = _eFunctions.GetQueryResult(Queries.GetWoDurDatesDataQuery(_eFunctions.DbReference, _eFunctions.DbLink, workOrder, durationCode));
 
-                if (dr == null || dr.IsClosed || !dr.HasRows) return;
+                if (dr == null || dr.IsClosed) return;
                 dr.Read();
                 var endDate = dr["FIN"].ToString().Trim();
                 if (endDate.Equals(""))
@@ -644,14 +678,16 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
             foreach (var range in listRange)
             {
-                if (value == 0 || value == 24)
+                switch (value)
                 {
-                    if (range.StartDate == dateToValidate)
-                        return false;
-                }
-                else if (value == 1)
-                {
-                    if (range.EndDate == dateToValidate)
+                    case 0:
+                    case 24:
+                    {
+                        if (range.StartDate == dateToValidate)
+                            return false;
+                        break;
+                    }
+                    case 1 when range.EndDate == dateToValidate:
                         return false;
                 }
             }
@@ -726,7 +762,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
     }
 
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
-    public static class Queries
+    internal static class Queries
     {
         /// <summary>
         /// 

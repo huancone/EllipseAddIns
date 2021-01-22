@@ -198,7 +198,7 @@ namespace VariacionesExcelAddIn
             return list;
         }
 
-        public class Queries
+        internal class Queries
         {
             public static string GetMdcAccountsQuery(string efDbReference, string efDbLink, string superintendencia = "")
             {

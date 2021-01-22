@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EllipseMSO905ExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetEmployeeName(string employeeId, string dbReference, string dbLink)
         {

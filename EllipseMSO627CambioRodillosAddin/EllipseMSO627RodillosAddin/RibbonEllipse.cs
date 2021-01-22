@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using System.Threading;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseMSO627RodillosAddin
 {
@@ -19,8 +21,8 @@ namespace EllipseMSO627RodillosAddin
         private const int ResultColumnPbv = 11;
         private const int ResultColumnPcs = 13;
         private const int MaxRows = 10000;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private const string PbvSheetName01 = "PBV Cambio Rodillos";
         private const string PcsSheetName01 = "PCSERVI Cambio Rodillos";
         private const string ValidationSheetName = "ValidationSheetLabour";
@@ -32,9 +34,15 @@ namespace EllipseMSO627RodillosAddin
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
 
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
@@ -43,6 +51,33 @@ namespace EllipseMSO627RodillosAddin
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
         private void btnFormatPbv_Click(object sender, RibbonControlEventArgs e)
         {
@@ -631,7 +666,7 @@ namespace EllipseMSO627RodillosAddin
         }
         public bool CreateMontaje(Screen.OperationContext opSheet, MontajeRodillo montaje)
         {
-            var proxySheet = new Screen.ScreenService { Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService" };
+            var proxySheet = new Screen.ScreenService { Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService" };
             _eFunctions.RevertOperation(opSheet, proxySheet);
             var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
 
@@ -693,20 +728,5 @@ namespace EllipseMSO627RodillosAddin
         
     }
 
-    public class MontajeRodillo
-    {
-        public string Grupo;
-        public string Tipo;
-        public string Desmontado;
-        public string Cambio;
-        public string Usuario;
-        public string Fecha;
-        public string HoraInicial;
-        public string HoraFinal;
-        public string Equipo;
-        public string Estacion;
-        public string Posicion;
-        public string Razon;
-        public string Montado;
-    }
+
 }

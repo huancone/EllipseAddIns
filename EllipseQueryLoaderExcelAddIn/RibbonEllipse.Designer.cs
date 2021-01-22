@@ -44,12 +44,12 @@
             this.btnExecuteQuery = this.Factory.CreateRibbonButton();
             this.btnReadFromText = this.Factory.CreateRibbonButton();
             this.btnReadFromFile = this.Factory.CreateRibbonButton();
-            this.cbIgnoreOperators = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEllipseQueryLoaderExcelAddIn.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -94,7 +94,6 @@
             this.menuActions.Items.Add(this.btnExecuteQuery);
             this.menuActions.Items.Add(this.btnReadFromText);
             this.menuActions.Items.Add(this.btnReadFromFile);
-            this.menuActions.Items.Add(this.cbIgnoreOperators);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Items.Add(this.btnCleanSheet);
             this.menuActions.Label = "&Acciones";
@@ -120,12 +119,6 @@
             this.btnReadFromFile.Name = "btnReadFromFile";
             this.btnReadFromFile.ShowImage = true;
             this.btnReadFromFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadFromFile_Click);
-            // 
-            // cbIgnoreOperators
-            // 
-            this.cbIgnoreOperators.Checked = true;
-            this.cbIgnoreOperators.Label = "&Ignorar Operadores";
-            this.cbIgnoreOperators.Name = "cbIgnoreOperators";
             // 
             // btnStopThread
             // 
@@ -153,6 +146,7 @@
             this.grpEllipseQueryLoaderExcelAddIn.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -168,7 +162,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCleanSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadFromText;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadFromFile;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreOperators;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }

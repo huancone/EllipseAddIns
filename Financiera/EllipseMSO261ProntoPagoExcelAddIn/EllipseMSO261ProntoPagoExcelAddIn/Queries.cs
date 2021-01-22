@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EllipseMSO261ProntoPagoExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetSupplierInvoiceInfo(string districtCode, string supplierNo, string invoiceNo, string dbReference, string dbLink)
         {

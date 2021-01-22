@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Utilities;
 using EllipseStandardJobsClassLibrary;
 using StandardJobService = EllipseStandardJobsClassLibrary.StandardJobService;
 using StandardJobTaskService = EllipseStandardJobsClassLibrary.StandardJobTaskService;
@@ -23,8 +24,6 @@ using EllipseStdTextClassLibrary;
 
 namespace EllipseStandardJobsExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
-    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
@@ -65,16 +64,8 @@ namespace EllipseStandardJobsExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
-
-            var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnvironment.Items.Add(item);
-            }
         }
-        private void LoadSettings()
+        public void LoadSettings()
         {
             var settings = new Settings();
             _eFunctions = new EllipseFunctions();
@@ -89,24 +80,32 @@ namespace EllipseStandardJobsExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("OptionName1", "OptionValue1");
-            //defaultConfig.SetOption("OptionName2", "OptionValue2");
-            //defaultConfig.SetOption("OptionName3", "OptionValue3");
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
-            var options = settings.GetOptionsSettings(defaultConfig);
+
 
             //Setting of Configuration Options from Config File (or default)
-            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
-            //var optionItem1Value = options.GetOptionValue("OptionName2");
-            //var optionItem1Value = options.GetOptionValue("OptionName3");
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
 
-            //optionItem1.Checked = optionItem1Value;
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
             //optionItem2.Text = optionItem2Value;
             //optionItem3 = optionItem3Value;
 
             //
-            settings.UpdateOptionsSettings(options);
+            settings.SaveCustomSettings();
         }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
@@ -281,7 +280,7 @@ namespace EllipseStandardJobsExcelAddIn
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                _thread = new Thread(ExecuteTaskActionsPost);
+                _thread = new Thread(ExecuteTaskActions);
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -591,7 +590,9 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(5, TitleRow02).Value = "ACTION";
                 _cells.GetCell(5, TitleRow02).Style = StyleConstants.TitleAction;
                 _cells.GetCell(5, TitleRow02).AddComment("C: Crear \nM: Modificar \nD: Eliminar");
-                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), new List<string> { "C", "M", "D" }, ValidationSheetName, 5, true);
+                
+                var actionList = StandardJobTaskActions.GetTaskActionCodes().Select(action => action.Key + " - " + action.Value).ToList();
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), actionList, ValidationSheetName, 5);
                 //GENERAL
                 _cells.GetCell(6, TitleRow02 - 1).Value = "GENERAL";
                 _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Style = StyleConstants.Option;
@@ -692,7 +693,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(6, TitleRow03).Value = "ACTION";
                 _cells.GetCell(6, TitleRow03).Style = StyleConstants.TitleAction;
                 _cells.GetCell(6, TitleRow03).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento");
-                _cells.SetValidationList(_cells.GetCell(6, TitleRow03 + 1), new List<string> { "C", "M", "D" }, ValidationSheetName, 6);
+                //var actionList = GenericActions.GetTaskActionCodes().Select(action => action.Key + " - " + action.Value).ToList();//declarado más arriba
+                _cells.SetValidationList(_cells.GetCell(6, TitleRow03 + 1), actionList, ValidationSheetName, 6);
                 //GENERAL
                 _cells.GetCell(7, TitleRow03 - 1).Value = "GENERAL";
                 _cells.GetRange(7, TitleRow03 - 1, 13, TitleRow03 - 1).Style = StyleConstants.Option;
@@ -1230,7 +1232,7 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(3, i).Value = "'" + task.StandardJob;
                         _cells.GetCell(4, i).Value = "" + task.StandardJobDescription;
                         //ACTION
-                        _cells.GetCell(5, i).Value = "M";
+                        _cells.GetCell(5, i).Value = StandardJobTaskActions.Modify.Key + " - " + StandardJobTaskActions.Modify.Value;
                         //GENERAL
                         _cells.GetCell(6, i).Value = "'" + task.SjTaskNo;
                         _cells.GetCell(7, i).Value = "" + task.SjTaskDesc;
@@ -1689,7 +1691,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        private void ExecuteTaskActionsPost()
+        private void ExecuteTaskActions()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1697,15 +1699,27 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
 
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
-            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            var opContext = new StandardJobTaskService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
                 {
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    string action = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value));
 
                     var stdTask = new StandardJobTask
                     {
@@ -1741,19 +1755,19 @@ namespace EllipseStandardJobsExcelAddIn
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
 
-                    if (action.Equals("M"))
+                    if (action.Equals(StandardJobTaskActions.Modify.Key))
                     {
-                        StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobTaskActions.ModifyStandardJobTask(urlService, opContext, stdTask);
+                        StandardJobTaskActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
-                    else if (action.Equals("C"))
+                    else if (action.Equals(StandardJobTaskActions.Create.Key))
                     {
-                        StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobTaskActions.CreateStandardJobTask(urlService, opContext, stdTask);
+                        StandardJobTaskActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
-                    else if (action.Equals("D"))
+                    else if (action.Equals(StandardJobTaskActions.Delete.Key))
                     {
-                        StandardJobActions.DeleteStandardJobTaskPost(_eFunctions, stdTask);
+                        StandardJobTaskActions.DeleteStandardJobTask(urlService, opContext, stdTask);
                     }
                     else
                         continue;
@@ -1779,105 +1793,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        /// <summary>
-        /// Ejecuta las acciones de tarea mediante el servicio EWS
-        /// </summary>
-        // ReSharper disable once UnusedMember.Local
-        private void ExecuteTaskActions()
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
-            var i = TitleRow02 + 1;
-
-            var opSheet = new StandardJobTaskService.OperationContext
-            {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                maxInstancesSpecified = true,
-                returnWarnings = Debugger.DebugWarnings,
-                returnWarningsSpecified = true
-            };
-
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-
-
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
-            {
-                try
-                {
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    var stdTask = new StandardJobTask
-                    {
-                        DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
-                        WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        StandardJob = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
-                        SjTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        SjTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        JobDescCode = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
-                        SafetyInstr = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
-                        CompleteInstr = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
-                        ComplTextCode = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value),
-                        AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
-                        EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
-                        UnitOfWork = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
-                        UnitsRequired = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
-                        UnitsPerDay = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
-                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
-                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
-                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
-                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
-                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
-                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
-                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value)
-                    };
-
-                    if (string.IsNullOrWhiteSpace(action))
-                        continue;
-
-                    if (action.Equals("M"))
-                    {
-                        StandardJobActions.ModifyStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
-                    }
-                    else if (action.Equals("C"))
-                    {
-                        StandardJobActions.CreateStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
-                    }
-                    else if (action.Equals("D"))
-                    {
-                        StandardJobActions.DeleteStandardJobTask(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdTask);
-                    }
-                    else
-                        continue;
-
-                    _cells.GetCell(ResultColumn02, i).Value = "OK";
-                    _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ExecuteTaskActions()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    i++;
-                }
-            }
-            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
-        }
-
+        
         private void ReviewRequirements()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -1911,7 +1827,7 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(3, i).Value = "" + req.StandardJob;
                         _cells.GetCell(4, i).Value = "" + req.SJTaskNo;
                         _cells.GetCell(5, i).Value = "" + req.SJTaskDesc;
-                        _cells.GetCell(6, i).Value = "M";
+                        _cells.GetCell(6, i).Value = StandardJobTaskActions.Modify.Key + " - " + StandardJobTaskActions.Modify.Value;
                         _cells.GetCell(7, i).Value = "" + req.ReqType;
                         _cells.GetCell(8, i).Value = "" + req.SeqNo;
                         _cells.GetCell(9, i).Value = "" + req.ReqCode;
@@ -1999,7 +1915,7 @@ namespace EllipseStandardJobsExcelAddIn
                     taskReq.SJTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
                     taskReq.SJTaskNo = string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? "001" : taskReq.SJTaskNo;
                     taskReq.SJTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
+                    var action = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value));
                     taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
                     taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
                     taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
@@ -2010,32 +1926,32 @@ namespace EllipseStandardJobsExcelAddIn
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
-                    else if (action.Equals("C"))
+                    else if (action.Equals(StandardJobTaskActions.Create.Key))
                     {
                         if (taskReq.ReqType.Equals("LAB"))
-                            StandardJobActions.CreateTaskResource(urlService, opSheetResource, taskReq);
+                            StandardJobTaskActions.CreateTaskResource(urlService, opSheetResource, taskReq);
                         else if (taskReq.ReqType.Equals("MAT"))
-                            StandardJobActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            StandardJobTaskActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
                         else if (taskReq.ReqType.Equals("EQU"))
-                            StandardJobActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            StandardJobTaskActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
-                    else if (action.Equals("M"))
+                    else if (action.Equals(StandardJobTaskActions.Modify.Key))
                     {
                         if (taskReq.ReqType.Equals("LAB"))
-                            StandardJobActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
+                            StandardJobTaskActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
                         else if (taskReq.ReqType.Equals("MAT"))
-                            StandardJobActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            StandardJobTaskActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
                         else if (taskReq.ReqType.Equals("EQU"))
-                            StandardJobActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            StandardJobTaskActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
-                    else if (action.Equals("D"))
+                    else if (action.Equals(StandardJobTaskActions.Delete.Key))
                     {
                         if (taskReq.ReqType.Equals("LAB"))
-                            StandardJobActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
+                            StandardJobTaskActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
                         else if (taskReq.ReqType.Equals("MAT"))
-                            StandardJobActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            StandardJobTaskActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
                         else if (taskReq.ReqType.Equals("EQU"))
-                            StandardJobActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            StandardJobTaskActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
 
 
@@ -2145,59 +2061,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        public static class Queries
-        {
-            public static string GetAplRequirementsQuery(string dbReference, string dbLink, string aplEgi, string aplType, string aplCompCode, string aplCompModCode, string seqNo)
-            {
-                if (string.IsNullOrWhiteSpace(aplCompCode))
-                    aplCompCode = " IS NULL";
-                else
-                    aplCompCode = " = '" + aplCompCode + "'";
-
-                if (string.IsNullOrWhiteSpace(aplCompModCode))
-                    aplCompModCode = " IS NULL";
-                else
-                    aplCompModCode = " = '" + aplCompModCode + "'";
-
-                var sqlQuery = "" +
-                    " SELECT" +
-                    "   AST.EQUIP_GRP_ID , AST.APL_TYPE, AST.COMP_CODE, AST.COMP_MOD_CODE, AST.APL_SEQ_NO, AST.APL_ITEM_NUM, AST.PART_NO, AST.MNEMONIC, AST.STOCK_CODE, AST.ITEM_DESC, AST.QTY_REQUIRED, AST.QTY_INSTALLED" +
-                    " FROM" +
-                    "   " + dbReference + ".MSF131" + dbLink + "  AST" +
-                    " WHERE" +
-                    "   TRIM(AST.EQUIP_GRP_ID) = '" + aplEgi + "' AND AST.APL_SEQ_NO = '" + seqNo + "' AND AST.APL_TYPE = '" + aplType + "' AND TRIM(AST.COMP_CODE) " + aplCompCode + " AND TRIM(AST.COMP_MOD_CODE) " + aplCompModCode + "";
-
-                return sqlQuery;
-            }
-
-            public static string FetchReferenceCodeItems(string dbReference, string dbLink, string entityType, string entityValue, string refNo, string seqNum = null)
-            {
-                if (!string.IsNullOrWhiteSpace(refNo))
-                    refNo = " AND RC.REF_NO = '" + refNo.PadLeft(3, '0') + "'";
-                if (!string.IsNullOrWhiteSpace(seqNum))
-                    seqNum = " AND RC.SEQ_NUM = '" + seqNum.PadLeft(3, '0') + "'";
-                var query = "" +
-                            " SELECT RC.ENTITY_TYPE, " +
-                            "   RC.ENTITY_VALUE, " +
-                            "   RC.REF_NO, " +
-                            "   RC.SEQ_NUM, " +
-                            "   RC.REF_CODE, " +
-                            "   RCE.FIELD_TYPE, " +
-                            "   RCE.SHORT_NAMES, " +
-                            "   RCE.SCREEN_LITERAL, " +
-                            "   RC.STD_TXT_KEY, " +
-                            "   RCE.STD_TEXT_FLAG " +
-                            " FROM " +
-                            "     " + dbReference + ".MSF071" + dbLink + " RC LEFT JOIN " + dbReference + ".MSF070" + dbLink + " RCE " +
-                            "         ON (RC.ENTITY_TYPE = RCE.ENTITY_TYPE AND RC.REF_NO = RCE.REF_NO) " +
-                            " WHERE RCE.ENTITY_TYPE = '" + entityType + "' " +
-                            " AND RC.ENTITY_VALUE = '" + entityValue + "' " +
-                            " " + refNo +
-                            " " + seqNum;
-                return query;
-            }
-        }
-
+        
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
