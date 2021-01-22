@@ -2164,7 +2164,7 @@ namespace EllipseAddinGanttEQ
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var StrCol = StartColTable + 4;
             var StrRow = StartRowTable + 1;
             var StrRow2 = StartRowTable + 1;

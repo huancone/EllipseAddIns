@@ -3,27 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
-using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
+//using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
+//using EllipseCommonsClassLibrary;
+//using EllipseCommonsClassLibrary.Connections;
+//using EllipseCommonsClassLibrary.Classes;
+//using EllipseCommonsClassLibrary.Constants;
 using EllipseWorkOrdersClassLibrary;
-using Application = Microsoft.Office.Interop.Excel.Application;
-using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
+using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
+using Excel = Microsoft.Office.Interop.Excel;
+//using Application = Microsoft.Office.Interop.Excel.Application;
+//using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
+
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Vsto.Excel;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
+using SharedClassLibrary.Classes;
+using System.Web.Services.Ellipse;
+using System.Web.Services;
+using SharedClassLibrary.Ellipse.Constants;
 
 namespace EllipseCalidadOTExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions;
-        private FormAuthenticate _frmAuth;
-        Application _excelApp;
+
+        ExcelStyleCells _cells;
+        EllipseFunctions _eFunctions;
+        SharedClassLibrary.Ellipse.Forms.FormAuthenticate _frmAuth;
+        //Application _excelApp;
+        private Excel.Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
         private const int TitleRow01 = 7;
@@ -38,53 +53,63 @@ namespace EllipseCalidadOTExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var enviroments = Environments.GetEnvironmentList();
-            foreach (var env in enviroments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnviroment.Items.Add(item);
-            }
         }
-        public void LoadSettings()
-        {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
 
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("OptionName1", "OptionValue1");
-            //defaultConfig.SetOption("OptionName2", "OptionValue2");
-            //defaultConfig.SetOption("OptionName3", "OptionValue3");
-
-            var options = settings.GetOptionsSettings(defaultConfig);
-
-            //Setting of Configuration Options from Config File (or default)
-            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
-            //var optionItem1Value = options.GetOptionValue("OptionName2");
-            //var optionItem1Value = options.GetOptionValue("OptionName3");
-
-            //optionItem1.Checked = optionItem1Value;
-            //optionItem2.Text = optionItem2Value;
-            //optionItem3 = optionItem3Value;
-
-            //
-            settings.UpdateOptionsSettings(options);
-        }
         private void bFormatear_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
 
         }
 
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new SharedClassLibrary.Ellipse.Forms.FormAuthenticate();
+            _excelApp = Globals.ThisAddIn.Application;
+            _excelApp.EnableEvents = true;
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
+
         private void FormatSheet()
         {
             try
             {
-                _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                //_excelApp = Globals.ThisAddIn.Application;
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //region CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -228,220 +253,73 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 
                 var currentRow = TitleRow01 + 1;
-                var sqlQuery = @"SELECT  
-                                        B.WORK_ORDER,  
-                                        B.WO_DESC, 
-                                        B.WO_STATUS_M, 
-                                        B.WO_TYPE,  
-                                        B.MAINT_TYPE,  
-                                        B.CENTRO,  
-                                        B.EQUIP_NO,  
-                                        B.FLOTA_ELLIPSE,  
-                                        B.PROCESO,  
-                                        B.WORK_GROUP,  
-                                        B.REQ_START_DATE,  
-                                        B.PLAN_STR_DATE,  
-                                        B.SEMANA_PLAN,  
-                                        B.ORIG_PRIORITY,  
-                                        B.LABOR,  
-                                        B.LABOR_CAL,  
-                                        B.DURACION,  
-                                        B.ASSIGN_PERSON,  
-                                        B.FALLA_FUNCIONAL,  
-                                        B.PARTE_FALLO,  
-                                        B.MODO_FALLA,  
-                                        B.RELATED_WO,  
-                                        B.COSTOS_MAT,  
-                                        B.HORAS_LAB,  
-                                        B.T_COMENTARIO,  
-                                        B.COMENTARIO_CIERRE,  
-                                        B.CALIDAD
+                var sqlQuery = @"WITH A AS
+                                (
+                                  SELECT
+                                    W.WORK_ORDER,
+                                    W.WO_STATUS_M,
+                                    W.WO_DESC,
+                                    W.WO_TYPE,
+                                    W.MAINT_TYPE,
+                                    SUBSTR(W.DSTRCT_ACCT_CODE, 5, LENGTH(W.DSTRCT_ACCT_CODE)) AS CENTRO,
+                                    W.EQUIP_NO,
+                                    EQ.FLOTA_ELLIPSE,
+                                    EQ.PROCESO,
+                                    W.WORK_GROUP,
+                                    W.REQ_START_DATE,
+                                    W.PLAN_STR_DATE,
+                                    W.WO_JOB_CODEX1,
+                                    W.WO_JOB_CODEX2,
+                                    W.WO_JOB_CODEX3,
+                                     (CASE WHEN W.PLAN_STR_DATE <> ' ' THEN 
+                                      (CASE 
+                                      WHEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'D') <= 3 THEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD') - 6, 'YYYYWW')
+                                      ELSE TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'YYYYWW')
+                                      END)  
+                                    ELSE '' END )SEMANA_PLAN,
+                                    W.ORIG_PRIORITY,  
+                                    E.ACT_DUR_HRS AS DURACION,  
+                                    E.ACT_MAT_COST AS COSTOS_MAT,  
+                                    E.ACT_LAB_HRS AS HORAS_LAB,  
+                                    E.EST_LAB_HRS AS LABOR,  
+                                    E.CALC_LAB_HRS AS LABOR_CAL,  
+                                    W.RELATED_WO,  
+                                    W.ASSIGN_PERSON, 
+                                    (
+                                        SELECT 
+                                            MAX(f.L0)|| ' ' ||MAX(f.L1)|| ' ' ||MAX(f.L2)|| ' ' ||MAX(f.L3)|| ' ' ||MAX(f.L4)|| ' ' ||MAX(f.L5)|| ' ' ||MAX(f.L6)|| ' ' ||MAX(f.L7)|| ' ' ||MAX(f.L8)|| ' ' ||MAX(f.L9) as ComentarioExte
                                         FROM
-                                        (
-                                        SELECT
-                                        A.WORK_ORDER,
-                                        A.WO_DESC,
-                                        A.WO_STATUS_M,
-                                        A.WO_TYPE,
-                                        A.MAINT_TYPE,
-                                        A.CENTRO,
-                                        A.EQUIP_NO,
-                                        A.FLOTA_ELLIPSE,
-                                        A.PROCESO,
-                                        A.WORK_GROUP,
-                                        A.REQ_START_DATE,
-                                        A.PLAN_STR_DATE,
-                                        A.SEMANA_PLAN,
-                                        A.ORIG_PRIORITY,
-                                        A.LABOR,
-                                        A.LABOR_CAL,
-                                        A.COSTOS_MAT,
-                                        A.HORAS_LAB,
-                                        A.DURACION,
-                                        A.RELATED_WO,
-                                        A.ASSIGN_PERSON,
-                                        LENGTH(TRIM(A.COMENTARIO_CIERRE)) AS T_COMENTARIO,
-                                        A.COMENTARIO_CIERRE,
-                                        A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
-                                        A.WO_JOB_CODEX2 AS PARTE_FALLO,
-                                        A.WO_JOB_CODEX3 AS MODO_FALLA,
-                                        (
-                                        SELECT
-                                        CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
-                                             WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
-                                             WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
-                                             WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
-                                             ELSE '' END CALIDAD
-                                        FROM
-                                        ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                        ELLIPSE.MSF070@DBLELLIPSE8 RCE
+                                            (
+                                            SELECT 
+                                                STD_KEY,
+                                                w.WORK_ORDER,
+                                                CASE WHEN std_line_no='0000' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L0,
+                                                CASE WHEN std_line_no='0001' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L1,
+                                                CASE WHEN std_line_no='0002' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L2,
+                                                CASE WHEN std_line_no='0003' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L3,
+                                                CASE WHEN std_line_no='0004' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L4,
+                                                CASE WHEN std_line_no='0005' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L5,
+                                                CASE WHEN std_line_no='0006' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L6,
+                                                CASE WHEN std_line_no='0007' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L7,
+                                                CASE WHEN std_line_no='0008' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L8,
+                                                CASE WHEN std_line_no='0009' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L9
+                                            FROM 
+                                                ELLIPSE.MSF096_STD_VOLAT t
+                                                INNER JOIN ELLIPSE.MSF620 w ON(t.std_key = 'ICOR'||w.work_order)
+                                            where  
+                                                t.std_text_code='WO'
+                                        ) f
                                         WHERE
-                                        RC.ENTITY_TYPE = RCE.ENTITY_TYPE
-                                        AND RC.REF_NO = RCE.REF_NO
-                                        AND RCE.ENTITY_TYPE = 'WKO'
-                                        AND RC.REF_NO = '034'
-                                        AND RC.SEQ_NUM = '001'
-                                        AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                        ) AS CALIDAD
-                                        FROM
-                                        (
-                                        SELECT
-                                        W.WORK_ORDER,
-                                        W.WO_STATUS_M,
-                                        W.WO_DESC,
-                                        W.WO_TYPE,
-                                        W.MAINT_TYPE,
-                                        SUBSTR(W.DSTRCT_ACCT_CODE, 5, LENGTH(W.DSTRCT_ACCT_CODE)) AS CENTRO,
-                                        W.EQUIP_NO,
-                                        EQ.FLOTA_ELLIPSE,
-                                        EQ.PROCESO,
-                                        W.WORK_GROUP,
-                                        W.REQ_START_DATE,
-                                        W.PLAN_STR_DATE,
-                                        W.WO_JOB_CODEX1,
-                                        W.WO_JOB_CODEX2,
-                                        W.WO_JOB_CODEX3,
-                                         (CASE WHEN W.PLAN_STR_DATE <> ' ' THEN 
-                                          (CASE 
-                                          WHEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'D') <= 3 THEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD') - 6, 'YYYYWW')
-                                          ELSE TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'YYYYWW')
-                                          END)  
-                                        ELSE '' END )SEMANA_PLAN,
-                                        W.ORIG_PRIORITY,  
-                                        E.ACT_DUR_HRS AS DURACION,  
-                                        E.ACT_MAT_COST AS COSTOS_MAT,  
-                                        E.ACT_LAB_HRS AS HORAS_LAB,  
-                                        E.EST_LAB_HRS AS LABOR,  
-                                        E.CALC_LAB_HRS AS LABOR_CAL,  
-                                        W.RELATED_WO,  
-                                        W.ASSIGN_PERSON,  
-                                        ((
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN0
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0000'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN1
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0001'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN2
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0002'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN3
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0003'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN4
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0004'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN5
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0005'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN6
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0006'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN7
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0007'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN8
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0008'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN9
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0009'
-                                        )) AS COMENTARIO_CIERRE               
-                                        FROM
-                                        ELLIPSE.MSF620 @DBLELLIPSE8 W  
-                                        LEFT JOIN ELLIPSE.MSF621 @DBLELLIPSE8 E ON(W.WORK_ORDER = E.WORK_ORDER)  
-                                        LEFT JOIN SIGMAN.EQMTLIST EQ ON(W.EQUIP_NO=RPAD(EQ.EQU,12,' '))
-                                        WHERE
-                                        W.DSTRCT_CODE = 'ICOR' 
-                                        AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV'";
+                                        f.work_order= W.WORK_ORDER
+                                        GROUP BY 
+                                        F.STD_KEY
+                                    ) AS COMENTARIO_CIERRE
+                                FROM
+                                    ELLIPSE.MSF620 W 
+                                    INNER JOIN ELLIPSE.MSF621 E ON(W.WORK_ORDER = E.WORK_ORDER)  
+                                    INNER JOIN SIGMAN.EQMTLIST@DBLSIG EQ ON(RPAD(EQ.EQU,12,' ') = W.EQUIP_NO)
+                                WHERE
+                                    W.DSTRCT_CODE = 'ICOR' ";
                 if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("D3").Value)  != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell("D4").Value) != null)
                 {
                     sqlQuery += "AND W.PLAN_STR_DATE BETWEEN '" + _cells.GetEmptyIfNull(_cells.GetCell("D3").Value) + "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("D4").Value) + "' ";
@@ -454,6 +332,9 @@ namespace EllipseCalidadOTExcelAddIn
 
                 }
                 //"AND W.WO_JOB_CODEX10 <> 'IG'" +
+                sqlQuery += "AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV'" +
+                             "AND W.WORK_ORDER = E.WORK_ORDER " +
+                            "AND EQ.EQU = TRIM(W.EQUIP_NO) ";
 
                 if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("H4").Value) != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B4").Value) != null)
                 {
@@ -483,16 +364,100 @@ namespace EllipseCalidadOTExcelAddIn
                         sqlQuery += "AND W.WO_STATUS_M = '" + WoStatusList.GetStatusCode(_cells.GetEmptyIfNull(_cells.GetCell("J4").Value)) + "' ";
                     }
 
-                    sqlQuery += " )A )B WHERE B.CALIDAD IS NULL ";
+                    sqlQuery += @" ),
+                            B AS
+                            (
+                              SELECT
+                                A.WORK_ORDER,
+                                A.WO_DESC,
+                                A.WO_STATUS_M,
+                                A.WO_TYPE,
+                                A.MAINT_TYPE,
+                                A.CENTRO,
+                                A.EQUIP_NO,
+                                A.FLOTA_ELLIPSE,
+                                A.PROCESO,
+                                A.WORK_GROUP,
+                                A.REQ_START_DATE,
+                                A.PLAN_STR_DATE,
+                                A.SEMANA_PLAN,
+                                A.ORIG_PRIORITY,
+                                A.LABOR,
+                                A.LABOR_CAL,
+                                A.COSTOS_MAT,
+                                A.HORAS_LAB,
+                                A.DURACION,
+                                A.RELATED_WO,
+                                A.ASSIGN_PERSON,
+                                LENGTH(TRIM(A.COMENTARIO_CIERRE)) AS T_COMENTARIO,
+                                A.COMENTARIO_CIERRE,
+                                A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
+                                A.WO_JOB_CODEX2 AS PARTE_FALLO,
+                                A.WO_JOB_CODEX3 AS MODO_FALLA,
+                                (
+                                  SELECT
+                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
+                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
+                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
+                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
+                                       ELSE ''
+                                  END CALIDAD
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '034'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIDAD
+                              FROM
+                                A
+                            )
+                            SELECT
+                              B.WORK_ORDER,  
+                              B.WO_DESC, 
+                              B.WO_STATUS_M, 
+                              B.WO_TYPE,  
+                              B.MAINT_TYPE,  
+                              B.CENTRO,  
+                              B.EQUIP_NO,  
+                              B.FLOTA_ELLIPSE,  
+                              B.PROCESO,  
+                              B.WORK_GROUP,  
+                              B.REQ_START_DATE,  
+                              B.PLAN_STR_DATE,  
+                              B.SEMANA_PLAN,  
+                              B.ORIG_PRIORITY,  
+                              B.LABOR,  
+                              B.LABOR_CAL,  
+                              B.DURACION,  
+                              B.ASSIGN_PERSON,  
+                              B.FALLA_FUNCIONAL,  
+                              B.PARTE_FALLO,  
+                              B.MODO_FALLA,  
+                              B.RELATED_WO,  
+                              B.COSTOS_MAT,  
+                              B.HORAS_LAB,  
+                              B.T_COMENTARIO,  
+                              B.COMENTARIO_CIERRE,  
+                              B.CALIDAD
+                            FROM
+                              B WHERE B.CALIDAD IS NULL";
                     if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
                         sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                     }
                     
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
-                    //_eFunctions.SetDBSettings("EL8PROD", "SIGCON", "ventyx", "@DBLSIG");
-                    //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                    _eFunctions.SetDBSettings("SIGCOPRD", "consulbo", "consulbo", "@DBLELLIPSE8");
+
+                    var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
+                    dbi.DbUser = "consulbo";
+                    dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                    _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                    _eFunctions.SetConnectionTimeOut(0);
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
                     _cells.ClearTableRange(TableName01);
                     _cells.GetRange(TableName01).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
@@ -617,223 +582,75 @@ namespace EllipseCalidadOTExcelAddIn
             {
 
                 var currentRow = TitleRow01 + 1;
-                var sqlQuery = @"SELECT  
-                                         B.WORK_ORDER,  
-                                        B.WO_DESC, 
-                                        B.WO_STATUS_M, 
-                                        B.WO_TYPE,  
-                                        B.MAINT_TYPE,  
-                                        B.CENTRO,  
-                                        B.EQUIP_NO,  
-                                        B.FLOTA_ELLIPSE,  
-                                        B.PROCESO,  
-                                        B.WORK_GROUP,  
-                                        B.REQ_START_DATE,  
-                                        B.PLAN_STR_DATE,  
-                                        B.SEMANA_PLAN,  
-                                        B.ORIG_PRIORITY,  
-                                        B.LABOR,  
-                                        B.LABOR_CAL,  
-                                        B.DURACION,  
-                                        B.ASSIGN_PERSON,  
-                                        B.FALLA_FUNCIONAL,  
-                                        B.PARTE_FALLO,  
-                                        B.MODO_FALLA,  
-                                        B.RELATED_WO,  
-                                        B.COSTOS_MAT,  
-                                        B.HORAS_LAB,  
-                                        B.T_COMENTARIO,  
-                                        B.COMENTARIO_CIERRE,  
-                                        B.CALIDAD
+                var sqlQuery = @" WITH A AS
+                                (
+                                  SELECT
+                                    W.WORK_ORDER,
+                                    W.WO_STATUS_M,
+                                    W.WO_DESC,
+                                    W.WO_TYPE,
+                                    W.MAINT_TYPE,
+                                    SUBSTR(W.DSTRCT_ACCT_CODE, 5, LENGTH(W.DSTRCT_ACCT_CODE)) AS CENTRO,
+                                    W.EQUIP_NO,
+                                    EQ.FLOTA_ELLIPSE,
+                                    EQ.PROCESO,
+                                    W.WORK_GROUP,
+                                    W.REQ_START_DATE,
+                                    W.PLAN_STR_DATE,
+                                    W.WO_JOB_CODEX1,
+                                    W.WO_JOB_CODEX2,
+                                    W.WO_JOB_CODEX3,
+                                     (CASE WHEN W.PLAN_STR_DATE <> ' ' THEN 
+                                      (CASE 
+                                      WHEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'D') <= 3 THEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD') - 6, 'YYYYWW')
+                                      ELSE TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'YYYYWW')
+                                      END)  
+                                    ELSE '' END )SEMANA_PLAN,
+                                    W.ORIG_PRIORITY,  
+                                    E.ACT_DUR_HRS AS DURACION,  
+                                    E.ACT_MAT_COST AS COSTOS_MAT,  
+                                    E.ACT_LAB_HRS AS HORAS_LAB,  
+                                    E.EST_LAB_HRS AS LABOR,  
+                                    E.CALC_LAB_HRS AS LABOR_CAL,  
+                                    W.RELATED_WO,  
+                                    W.ASSIGN_PERSON, 
+                                    (
+                                        SELECT 
+                                            MAX(f.L0)|| ' ' ||MAX(f.L1)|| ' ' ||MAX(f.L2)|| ' ' ||MAX(f.L3)|| ' ' ||MAX(f.L4)|| ' ' ||MAX(f.L5)|| ' ' ||MAX(f.L6)|| ' ' ||MAX(f.L7)|| ' ' ||MAX(f.L8)|| ' ' ||MAX(f.L9) as ComentarioExte
                                         FROM
-                                        (
-                                        SELECT
-                                        A.WORK_ORDER,
-                                        A.WO_DESC,
-                                        A.WO_STATUS_M,
-                                        A.WO_TYPE,
-                                        A.MAINT_TYPE,
-                                        A.CENTRO,
-                                        A.EQUIP_NO,
-                                        A.FLOTA_ELLIPSE,
-                                        A.PROCESO,
-                                        A.WORK_GROUP,
-                                        A.REQ_START_DATE,
-                                        A.PLAN_STR_DATE,
-                                        A.SEMANA_PLAN,
-                                        A.ORIG_PRIORITY,
-                                        A.LABOR,
-                                        A.LABOR_CAL,
-                                        A.COSTOS_MAT,
-                                        A.HORAS_LAB,
-                                        A.DURACION,
-                                        A.RELATED_WO,
-                                        A.ASSIGN_PERSON,
-                                        LENGTH(TRIM(A.COMENTARIO_CIERRE)) AS T_COMENTARIO,
-                                        A.COMENTARIO_CIERRE,
-                                        A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
-                                        A.WO_JOB_CODEX2 AS PARTE_FALLO,
-                                        A.WO_JOB_CODEX3 AS MODO_FALLA,
-                                        (
-                                        SELECT
-                                        CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
-                                             WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
-                                             WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
-                                             WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
-                                             ELSE '' END CALIDAD
-                                        FROM
-                                        ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                        ELLIPSE.MSF070@DBLELLIPSE8 RCE
+                                            (
+                                            SELECT 
+                                                STD_KEY,
+                                                w.WORK_ORDER,
+                                                CASE WHEN std_line_no='0000' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L0,
+                                                CASE WHEN std_line_no='0001' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L1,
+                                                CASE WHEN std_line_no='0002' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L2,
+                                                CASE WHEN std_line_no='0003' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L3,
+                                                CASE WHEN std_line_no='0004' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L4,
+                                                CASE WHEN std_line_no='0005' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L5,
+                                                CASE WHEN std_line_no='0006' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L6,
+                                                CASE WHEN std_line_no='0007' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L7,
+                                                CASE WHEN std_line_no='0008' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L8,
+                                                CASE WHEN std_line_no='0009' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L9
+                                            FROM 
+                                                ELLIPSE.MSF096_STD_VOLAT t
+                                                INNER JOIN ELLIPSE.MSF620 w ON(t.std_key = 'ICOR'||w.work_order)
+                                            where  
+                                                t.std_text_code='WO'
+                                        ) f
                                         WHERE
-                                        RC.ENTITY_TYPE = RCE.ENTITY_TYPE
-                                        AND RC.REF_NO = RCE.REF_NO
-                                        AND RCE.ENTITY_TYPE = 'WKO'
-                                        AND RC.REF_NO = '034'
-                                        AND RC.SEQ_NUM = '001'
-                                        AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                        ) AS CALIDAD
-                                        FROM
-                                        (
-                                        SELECT
-                                        W.WORK_ORDER,
-                                        W.WO_STATUS_M,
-                                        W.WO_DESC,
-                                        W.WO_TYPE,
-                                        W.MAINT_TYPE,
-                                        SUBSTR(W.DSTRCT_ACCT_CODE, 5, LENGTH(W.DSTRCT_ACCT_CODE)) AS CENTRO,
-                                        W.EQUIP_NO,
-                                        EQ.FLOTA_ELLIPSE,
-                                        EQ.PROCESO,
-                                        W.WORK_GROUP,
-                                        W.REQ_START_DATE,
-                                        W.PLAN_STR_DATE,
-                                        W.WO_JOB_CODEX1,
-                                        W.WO_JOB_CODEX2,
-                                        W.WO_JOB_CODEX3,
-                                         (CASE WHEN W.PLAN_STR_DATE <> ' ' THEN 
-                                          (CASE 
-                                          WHEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'D') <= 3 THEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD') - 6, 'YYYYWW')
-                                          ELSE TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'YYYYWW')
-                                          END)  
-                                        ELSE '' END )SEMANA_PLAN,
-                                        W.ORIG_PRIORITY,  
-                                        E.ACT_DUR_HRS AS DURACION,  
-                                        E.ACT_MAT_COST AS COSTOS_MAT,  
-                                        E.ACT_LAB_HRS AS HORAS_LAB,  
-                                        E.EST_LAB_HRS AS LABOR,  
-                                        E.CALC_LAB_HRS AS LABOR_CAL,  
-                                        W.RELATED_WO,  
-                                        W.ASSIGN_PERSON,  
-                                        ((
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN0
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0000'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN1
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0001'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN2
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0002'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN3
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0003'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN4
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0004'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN5
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0005'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN6
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0006'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN7
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0007'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN8
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0008'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN9
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0009'
-                                        )) AS COMENTARIO_CIERRE
-                                        FROM
-                                        ELLIPSE.MSF620 @DBLELLIPSE8 W,  
-                                        ELLIPSE.MSF621 @DBLELLIPSE8 E,  
-                                        SIGMAN.EQMTLIST EQ
-                                        WHERE
-                                        W.DSTRCT_CODE = 'ICOR' " +
-                                       // "AND W.WO_STATUS_M = 'C'" +
-                                        "AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV'" +
-                                        "AND W.WORK_ORDER = E.WORK_ORDER " +
-                                        "AND EQ.EQU = TRIM(W.EQUIP_NO) ";
+                                        f.work_order= W.WORK_ORDER
+                                        GROUP BY 
+                                        F.STD_KEY
+                                    ) AS COMENTARIO_CIERRE
+                                FROM
+                                    ELLIPSE.MSF620 W 
+                                    INNER JOIN ELLIPSE.MSF621 E ON(W.WORK_ORDER = E.WORK_ORDER)  
+                                    INNER JOIN SIGMAN.EQMTLIST@DBLSIG EQ ON(RPAD(EQ.EQU,12,' ') = W.EQUIP_NO)
+                                WHERE
+                                    W.DSTRCT_CODE = 'ICOR'
+                                    AND W.WO_JOB_CODEX10 <> 'IG'
+                                    AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV' ";
 
                
                 if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("A8").Value) != null)
@@ -853,16 +670,100 @@ namespace EllipseCalidadOTExcelAddIn
                     sqlQuery += ") ";
                 }
 
-                sqlQuery += " )A )B WHERE B.CALIDAD IS NULL ";
+                sqlQuery += @" ),
+                            B AS
+                            (
+                              SELECT
+                                A.WORK_ORDER,
+                                A.WO_DESC,
+                                A.WO_STATUS_M,
+                                A.WO_TYPE,
+                                A.MAINT_TYPE,
+                                A.CENTRO,
+                                A.EQUIP_NO,
+                                A.FLOTA_ELLIPSE,
+                                A.PROCESO,
+                                A.WORK_GROUP,
+                                A.REQ_START_DATE,
+                                A.PLAN_STR_DATE,
+                                A.SEMANA_PLAN,
+                                A.ORIG_PRIORITY,
+                                A.LABOR,
+                                A.LABOR_CAL,
+                                A.COSTOS_MAT,
+                                A.HORAS_LAB,
+                                A.DURACION,
+                                A.RELATED_WO,
+                                A.ASSIGN_PERSON,
+                                LENGTH(TRIM(A.COMENTARIO_CIERRE)) AS T_COMENTARIO,
+                                A.COMENTARIO_CIERRE,
+                                A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
+                                A.WO_JOB_CODEX2 AS PARTE_FALLO,
+                                A.WO_JOB_CODEX3 AS MODO_FALLA,
+                                (
+                                  SELECT
+                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
+                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
+                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
+                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
+                                       ELSE '' 
+                                  END CALIDAD
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '034'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIDAD
+                              FROM
+                                A
+                            )
+                            SELECT
+                              B.WORK_ORDER,  
+                              B.WO_DESC, 
+                              B.WO_STATUS_M, 
+                              B.WO_TYPE,  
+                              B.MAINT_TYPE,  
+                              B.CENTRO,  
+                              B.EQUIP_NO,  
+                              B.FLOTA_ELLIPSE,  
+                              B.PROCESO,  
+                              B.WORK_GROUP,  
+                              B.REQ_START_DATE,  
+                              B.PLAN_STR_DATE,  
+                              B.SEMANA_PLAN,  
+                              B.ORIG_PRIORITY,  
+                              B.LABOR,  
+                              B.LABOR_CAL,  
+                              B.DURACION,  
+                              B.ASSIGN_PERSON,  
+                              B.FALLA_FUNCIONAL,  
+                              B.PARTE_FALLO,  
+                              B.MODO_FALLA,  
+                              B.RELATED_WO,  
+                              B.COSTOS_MAT,  
+                              B.HORAS_LAB,  
+                              B.T_COMENTARIO,  
+                              B.COMENTARIO_CIERRE,  
+                              B.CALIDAD
+                            FROM
+                              B ";
                 
 
                 _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
-                //_eFunctions.SetDBSettings("EL8PROD", "SIGCON", "ventyx", "@DBLSIG");
-                //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                _eFunctions.SetDBSettings("SIGCOPRD", "consulbo", "consulbo", "@DBLELLIPSE8");
+                var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
+                dbi.DbUser = "consulbo";
+                dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                _eFunctions.SetConnectionTimeOut(0);
                 var odr = _eFunctions.GetQueryResult(sqlQuery);
                 _cells.ClearTableRange(TableName01);
                 _cells.GetRange(TableName01).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+
                 while (odr.Read())
                 {
                     _cells.GetCell("A" + currentRow).Value = odr["WORK_ORDER"] + "";
@@ -1038,7 +939,7 @@ namespace EllipseCalidadOTExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(CalificarOT);
 
@@ -1057,7 +958,7 @@ namespace EllipseCalidadOTExcelAddIn
 
         private void CalificarOT()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1065,7 +966,7 @@ namespace EllipseCalidadOTExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
-            var urlService = Environments.GetServiceUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1118,212 +1019,7 @@ namespace EllipseCalidadOTExcelAddIn
         {
             string sqlQuery;
 
-            return sqlQuery = @"SELECT  
-                                        B.WORK_ORDER,  
-                                        B.WO_DESC,  
-                                        B.WO_TYPE,  
-                                        B.MAINT_TYPE,  
-                                        B.CENTRO,  
-                                        B.EQUIP_NO,  
-                                        B.FLOTA_ELLIPSE,  
-                                        B.PROCESO,  
-                                        B.WORK_GROUP,  
-                                        B.REQ_START_DATE,  
-                                        B.PLAN_STR_DATE,  
-                                        B.SEMANA_PLAN,  
-                                        B.ORIG_PRIORITY,  
-                                        B.LABOR,  
-                                        B.LABOR_CAL,  
-                                        B.DURACION,  
-                                        B.ASSIGN_PERSON,  
-                                        B.FALLA_FUNCIONAL,  
-                                        B.PARTE_FALLO,  
-                                        B.MODO_FALLA,  
-                                        B.RELATED_WO,  
-                                        B.COSTOS_MAT,  
-                                        B.COSTOS_LAB,  
-                                        B.T_COMENTARIO,  
-                                        B.COMENTARIO_CIERRE,  
-                                        B.CALIDAD
-                                        FROM
-                                        (
-                                        SELECT
-                                        A.WORK_ORDER,
-                                        A.WO_DESC,
-                                        A.WO_TYPE,
-                                        A.MAINT_TYPE,
-                                        A.CENTRO,
-                                        A.EQUIP_NO,
-                                        A.FLOTA_ELLIPSE,
-                                        A.PROCESO,
-                                        A.WORK_GROUP,
-                                        A.REQ_START_DATE,
-                                        A.PLAN_STR_DATE,
-                                        A.SEMANA_PLAN,
-                                        A.ORIG_PRIORITY,
-                                        A.LABOR,
-                                        A.LABOR_CAL,
-                                        A.COSTOS_MAT,
-                                        A.COSTOS_LAB,
-                                        A.DURACION,
-                                        A.RELATED_WO,
-                                        A.ASSIGN_PERSON,
-                                        LENGTH(TRIM(A.COMENTARIO_CIERRE)) AS T_COMENTARIO,
-                                        A.COMENTARIO_CIERRE,
-                                        A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
-                                        A.WO_JOB_CODEX2 AS PARTE_FALLO,
-                                        A.WO_JOB_CODEX3 AS MODO_FALLA,
-                                        (
-                                        SELECT
-                                        CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
-                                             WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
-                                             WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
-                                             WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
-                                             ELSE '' END CALIDAD
-                                        FROM
-                                        ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                        ELLIPSE.MSF070@DBLELLIPSE8 RCE
-                                        WHERE
-                                        RC.ENTITY_TYPE = RCE.ENTITY_TYPE
-                                        AND RC.REF_NO = RCE.REF_NO
-                                        AND RCE.ENTITY_TYPE = 'WKO'
-                                        AND RC.REF_NO = '034'
-                                        AND RC.SEQ_NUM = '001'
-                                        AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                        ) AS CALIDAD
-                                        FROM
-                                        (
-                                        SELECT
-                                        W.WORK_ORDER,
-                                        W.WO_DESC,
-                                        W.WO_TYPE,
-                                        W.MAINT_TYPE,
-                                        SUBSTR(W.DSTRCT_ACCT_CODE, 5, LENGTH(W.DSTRCT_ACCT_CODE)) AS CENTRO,
-                                        W.EQUIP_NO,
-                                        EQ.FLOTA_ELLIPSE,
-                                        EQ.PROCESO,
-                                        W.WORK_GROUP,
-                                        W.REQ_START_DATE,
-                                        W.PLAN_STR_DATE,
-                                        W.WO_JOB_CODEX1,
-                                        W.WO_JOB_CODEX2,
-                                        W.WO_JOB_CODEX3,
-                                        (CASE WHEN TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'D') <= 3 THEN TO_NUMBER(TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD') - 6, 'YYYYWW')) ELSE TO_NUMBER(TO_CHAR(TO_DATE(W.PLAN_STR_DATE, 'YYYYMMDD'), 'YYYYWW')) END)SEMANA_PLAN,  
-                                        W.ORIG_PRIORITY,  
-                                        E.EST_DUR_HRS AS DURACION,  
-                                        E.ACT_MAT_COST AS COSTOS_MAT,  
-                                        E.ACT_LAB_COST AS COSTOS_LAB,  
-                                        E.EST_LAB_HRS AS LABOR,  
-                                        E.CALC_LAB_HRS AS LABOR_CAL,  
-                                        W.RELATED_WO,  
-                                        W.ASSIGN_PERSON,  
-                                        ((
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN0
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0000'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN1
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0001'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN2
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0002'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN3
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0003'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN4
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0004'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN5
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0005'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN6
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0006'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN7
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0007'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN8
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0008'
-                                        ) ||
-                                        (
-                                        SELECT
-                                        TRIM(S.STD_VOLAT_1) || ' ' || TRIM(S.STD_VOLAT_2) || ' ' || TRIM(S.STD_VOLAT_3) || ' ' || TRIM(S.STD_VOLAT_4) || ' ' || TRIM(S.STD_VOLAT_5) AS COMEN9
-                                        FROM
-                                        ELLIPSE.MSF096_STD_VOLAT @DBLELLIPSE8 S
-                                         WHERE
-                                        S.STD_KEY = 'ICOR' || W.WORK_ORDER
-                                        AND STD_TEXT_CODE = 'CW'
-                                        AND STD_LINE_NO = '0009'
-                                        )) AS COMENTARIO_CIERRE
-                                        FROM
-                                        ELLIPSE.MSF620 @DBLELLIPSE8 W,  
-                                        ELLIPSE.MSF621 @DBLELLIPSE8 E,  
-                                        SIGMAN.EQMTLIST EQ
-                                        WHERE
-                                        W.DSTRCT_CODE = 'ICOR'
-                                        AND W.PLAN_STR_DATE BETWEEN '" + _cells.GetEmptyIfNull(_cells.GetCell("D3").Value) +  "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("D4").Value) +
+            return sqlQuery = @" '" + _cells.GetEmptyIfNull(_cells.GetCell("D3").Value) +  "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("D4").Value) +
                                         "' AND W.WO_STATUS_M = 'C'"+
                                         "AND W.WO_JOB_CODEX10 <> 'IG'"+
                                         "AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV'"+
@@ -1337,12 +1033,12 @@ namespace EllipseCalidadOTExcelAddIn
         private void UpdateReferenceCodes(int fila, string distrito, string WO)
         {
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = Environments.GetServiceUrl(drpEnviroment.SelectedItem.Label);
-
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
 
             var opSheet = new WorkOrderService.OperationContext
@@ -1373,18 +1069,15 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 calif = "1";
             }
-
-            if (calificacion == "2 - Regular")
+            else if (calificacion == "2 - Regular")
             {
                 calif = "2";
             }
-
-            if (calificacion == "3 - Buena")
+            else if (calificacion == "3 - Buena")
             {
                 calif = "3";
             }
-
-            if (calificacion == "4 - Excelente")
+            else if (calificacion == "4 - Excelente")
             {
                 calif = "4";
             }
@@ -1392,10 +1085,6 @@ namespace EllipseCalidadOTExcelAddIn
 
             var woRefCodes = new WorkOrderReferenceCodes
             {
-               
-                //CalificacionEncuesta = calif,
-                //EmpleadoId = _frmAuth.EllipseUser,
-                
                 CalificacionCalidadOt = calif,
                 CalificacionCalidadPor = _frmAuth.EllipseUser,
             };
@@ -1458,6 +1147,12 @@ namespace EllipseCalidadOTExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
 
+        }
+
+        private void btnAbout_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            AboutBoxExcelAddIn About = new AboutBoxExcelAddIn("Gustavo Vargas", "");
+            About.ShowDialog();
         }
     }
 }
