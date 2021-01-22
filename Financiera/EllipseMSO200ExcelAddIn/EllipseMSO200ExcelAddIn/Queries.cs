@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EllipseMSO200ExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetSupplierInvoiceInfo(string districtCode, string cedula, string dbReference, string dbLink)
         {

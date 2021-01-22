@@ -2,7 +2,7 @@
 
 namespace EllipseMaintSchedTaskClassLibrary
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetFetchMstListQuery(string dbReference, string dbLink, string districtCode, string workGroup, string equipmentNo, string compCode, string compModCode, string taskNo, string schedIndicator = null)
         {

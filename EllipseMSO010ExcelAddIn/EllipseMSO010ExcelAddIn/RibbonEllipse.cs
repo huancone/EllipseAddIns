@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
+using Screen = SharedClassLibrary.Ellipse.ScreenService; //si es screen service
 using System.Web.Services.Ellipse;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseMSO010ExcelAddIn
 {
     public partial class RibbonEllipse
     {
-
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private Application _excelApp;
 
         private const string SheetName01 = "MSO010 Codes";
         private const int TitleRow01 = 9;
@@ -31,6 +34,13 @@ namespace EllipseMSO010ExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -41,8 +51,33 @@ namespace EllipseMSO010ExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-        }
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatCesantias_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -395,7 +430,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void CreateCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO010");
@@ -464,7 +499,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void ModifyCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO010");
@@ -537,7 +572,7 @@ namespace EllipseMSO010ExcelAddIn
             var drItem = ef.GetQueryResult(sqlQuery);
             var list = new List<ItemCode>();
 
-            if (drItem == null || drItem.IsClosed || !drItem.HasRows) return list;
+            if (drItem == null || drItem.IsClosed) return list;
             while (drItem.Read())
             {
                 var order = new ItemCode
@@ -554,133 +589,13 @@ namespace EllipseMSO010ExcelAddIn
 
             return list;
         }
-        public static class Queries
-        {
-            public static string GetItemCodeList(string dbReference, string dbLink, int searchCriteriaKey1, int typeCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2, int typeCriteriaKey2, string searchCriteriaValue2, int statusCriteriaKey)
-            {
-                string typeCriteria1;
-                //establecemos los tipos de búsqueda 1
-                if (typeCriteriaKey1 == SearchTypeCriteriaType.EqualsTo.Key)
-                    typeCriteria1 = "= '" + searchCriteriaValue1 + "'";
-                else if (typeCriteriaKey1 == SearchTypeCriteriaType.StartsWith.Key)
-                    typeCriteria1 = "LIKE '" + searchCriteriaValue1 + "%'";
-                else if (typeCriteriaKey1 == SearchTypeCriteriaType.EndsWith.Key)
-                    typeCriteria1 = "LIKE '%" + searchCriteriaValue1 + "'";
-                else if (typeCriteriaKey1 == SearchTypeCriteriaType.Contains.Key)
-                    typeCriteria1 = "LIKE '%" + searchCriteriaValue1 + "%'";
-                else 
-                    typeCriteria1 = "= '" + searchCriteriaValue1 + "'";
-
-                var queryCriteria1 = "";
-                //establecemos los parámetros del criterio 1
-                if (searchCriteriaKey1 == SearchFieldCriteriaType.Type.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                    queryCriteria1 = " AND CO.TABLE_TYPE " + typeCriteria1 + "";
-                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Code.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                    queryCriteria1 = " AND CO.TABLE_CODE " + typeCriteria1 + "";
-
-                string typeCriteria2;
-                //establecemos los tipos de búsqueda 2
-                if (typeCriteriaKey2 == SearchTypeCriteriaType.EqualsTo.Key)
-                    typeCriteria2 = "= '" + searchCriteriaValue2 + "'";
-                else if (typeCriteriaKey2 == SearchTypeCriteriaType.StartsWith.Key)
-                    typeCriteria2 = "LIKE '" + searchCriteriaValue2 + "%'";
-                else if (typeCriteriaKey2 == SearchTypeCriteriaType.EndsWith.Key)
-                    typeCriteria2 = "LIKE '%" + searchCriteriaValue2 + "'";
-                else if (typeCriteriaKey2 == SearchTypeCriteriaType.Contains.Key)
-                    typeCriteria2 = "LIKE '%" + searchCriteriaValue2 + "%'";
-                else
-                    typeCriteria2 = "= '" + searchCriteriaValue2 + "'";
-
-                var queryCriteria2 = "";
-                //establecemos los parámetros del criterio 2
-                if (searchCriteriaKey2 == SearchFieldCriteriaType.Type.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                    queryCriteria2 = " AND CO.TABLE_TYPE " + typeCriteria2 + "";
-                else if (searchCriteriaKey2 == SearchFieldCriteriaType.Code.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                    queryCriteria2 = " AND CO.TABLE_CODE " + typeCriteria2 + "";
-
-                string statusCriteria;
-                if (statusCriteriaKey == StatusCode.Active.Key)
-                    statusCriteria = " AND CO.ACTIVE_FLAG = 'Y'";
-                else if (statusCriteriaKey == StatusCode.Inactive.Key)
-                    statusCriteria = " AND CO.ACTIVE_FLAG = 'N'";
-                else 
-                    statusCriteria = " AND CO.ACTIVE_FLAG = 'Y'";
+        
 
 
-                var query = " SELECT CO.TABLE_TYPE," +
-                               "   CO.TABLE_CODE," +
-                               "   CO.TABLE_DESC," +
-                               "   CO.ACTIVE_FLAG," +
-                               "   TY.TABLE_DESC TYPE_DESC," +
-                               "   CO.ASSOC_REC" +
-                               " FROM ELLIPSE.MSF010 CO" +
-                               " LEFT JOIN ELLIPSE.MSF010 TY" +
-                               " ON CO.TABLE_TYPE  = TY.TABLE_CODE" +
-                               " AND TY.TABLE_TYPE = 'XX'" +
-                               " WHERE " +
-                               " " + queryCriteria1 +
-                               " " + queryCriteria2 +
-                               " " + statusCriteria + 
-                               " ORDER BY CO.TABLE_CODE ASC";
 
-                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-                
-                return query;
-            }
-        }
-        public static class SearchFieldCriteriaType
-        {
-            public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
-            public static KeyValuePair<int, string> Type = new KeyValuePair<int, string>(1, "Table Type");
-            public static KeyValuePair<int, string> Code = new KeyValuePair<int, string>(2, "Table Code");
 
-            public static List<KeyValuePair<int, string>> GetSearchFieldCriteriaTypes(bool keyOrder = true)
-            {
-                var list = new List<KeyValuePair<int, string>> { None, Type, Code};
 
-                return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
-            }
-        }
 
-        public static class SearchTypeCriteriaType
-        {
-            public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
-            public static KeyValuePair<int, string> EqualsTo = new KeyValuePair<int, string>(1, "Equal");
-            public static KeyValuePair<int, string> StartsWith = new KeyValuePair<int, string>(2, "Starts With");
-            public static KeyValuePair<int, string> EndsWith = new KeyValuePair<int, string>(3, "EndsWith");
-            public static KeyValuePair<int, string> Contains = new KeyValuePair<int, string>(4, "Contains");
-
-            public static List<KeyValuePair<int, string>> GetSearchTypeCriteriaTypes(bool keyOrder = true)
-            {
-                var list = new List<KeyValuePair<int, string>> { None, EqualsTo, StartsWith, EndsWith, Contains };
-
-                return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
-            }            
-        }
-
-        public static class StatusCode
-        {
-            public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
-            public static KeyValuePair<int, string> Active = new KeyValuePair<int, string>(1, "Active");
-            public static KeyValuePair<int, string> Inactive = new KeyValuePair<int, string>(2, "Inactive");
-
-            public static List<KeyValuePair<int, string>> GetStatusList(bool keyOrder = true)
-            {
-                var list = new List<KeyValuePair<int, string>> { None, Active, Inactive};
-
-                return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
-            }            
-        }
-
-        public class ItemCode
-        {
-            public string Type;
-            public string TypeDescription;
-            public string Code;
-            public string ActiveStatus;
-            public string Description;
-            public string AssocRec;
-        }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
@@ -688,7 +603,7 @@ namespace EllipseMSO010ExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {

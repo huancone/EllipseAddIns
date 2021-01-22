@@ -6,7 +6,7 @@ using SharedClassLibrary.Utilities;
 
 namespace EllipseLabourCostingExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetGroupEmployeesQuery(string workGroup, string dbReference, string dbLink)
         {

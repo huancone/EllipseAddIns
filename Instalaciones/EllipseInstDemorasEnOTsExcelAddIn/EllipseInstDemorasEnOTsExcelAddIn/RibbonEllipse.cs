@@ -762,7 +762,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
     }
 
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
-    public static class Queries
+    internal static class Queries
     {
         /// <summary>
         /// 

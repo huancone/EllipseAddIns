@@ -438,7 +438,7 @@ namespace EllipseCreateStockInstExcelAddIn
     /// <summary>
     /// Consultas SQL
     /// </summary>
-    public static class Queries
+    internal static class Queries
     {
         /// <summary>
         /// Trae los items contractuales del contracNo de la tabla msf387 y calcula el parte numero recomendado para la creacion del Stock.

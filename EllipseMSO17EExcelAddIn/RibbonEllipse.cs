@@ -199,7 +199,7 @@ namespace EllipseMSO17EExcelAddIn
 
     
 
-    //public static class Queries
+    //internal static class Queries
     //{
     //    public static string GetStockInfo(string stockCode, string districtCode,  string dbReference, string dbLink)
     //    {

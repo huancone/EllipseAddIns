@@ -381,7 +381,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
         }
     }
 
-    public static class Queries
+    internal static class Queries
     {
         public static string GetWorkOrderStatusQuery(string dbReference, string dbLink, string districtCode,
             List<string> jobDurCodesList, string workGroup, string workOrder)

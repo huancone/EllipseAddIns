@@ -1,6 +1,6 @@
 ﻿namespace EllipseCatalogueStockInstExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetContractData(string contractNo, string dbReference, string dbLink)
         {

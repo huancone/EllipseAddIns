@@ -1005,6 +1005,7 @@
               <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnItemCatalogued" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnItemCostingMethod" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
@@ -1108,6 +1109,7 @@
               <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
               <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
               <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
               <xsd:element minOccurs="0" name="itemCatalogued" type="tns:itemCatalogued" />
               <xsd:element minOccurs="0" name="itemCostingMethod" type="tns:itemCostingMethod" />
               <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
@@ -2189,6 +2191,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -2197,13 +2200,43 @@
       </xsd:complexType>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:simpleType name="APLNumberDTO.aPLType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberDTO.aPLSeqNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberDTO.componentCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberDTO.equipmentGroupId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberDTO.compModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="APLNumberDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" name="equipmentGroupId" type="xsd:string" />
-          <xsd:element minOccurs="0" name="aPLType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="componentCode" type="xsd:string" />
-          <xsd:element minOccurs="0" name="compModCode" type="xsd:string" />
-          <xsd:element minOccurs="0" name="aPLSeqNumber" type="xsd:string" />
+          <xsd:element minOccurs="0" name="equipmentGroupId" type="ns3:APLNumberDTO.equipmentGroupId" />
+          <xsd:element minOccurs="0" name="aPLType" type="ns3:APLNumberDTO.aPLType" />
+          <xsd:element minOccurs="0" name="componentCode" type="ns3:APLNumberDTO.componentCode" />
+          <xsd:element minOccurs="0" name="compModCode" type="ns3:APLNumberDTO.compModCode" />
+          <xsd:element minOccurs="0" name="aPLSeqNumber" type="ns3:APLNumberDTO.aPLSeqNumber" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -2456,7 +2489,7 @@
   </wsdl:binding>
   <wsdl:service name="APLItemService">
     <wsdl:port name="APLItemServiceHttpPort" binding="tns:APLItemServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/APLItemService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/APLItemService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
