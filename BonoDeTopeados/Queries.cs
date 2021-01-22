@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BonoDeTopeados
 {
-    public class Queries
+    internal class Queries
     {
         public static string InsertEmployeeTurnType(EmployeeTurns empTurn)
         {

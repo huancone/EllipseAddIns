@@ -6,7 +6,7 @@ using SharedClassLibrary.Utilities;
 
 namespace EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetEquipmentLastMeterValueQuery(string dbReference, string dbLink, string equipNo, string statType, string statDate)
         {

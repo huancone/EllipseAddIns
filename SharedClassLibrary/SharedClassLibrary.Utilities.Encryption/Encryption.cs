@@ -24,6 +24,8 @@ namespace SharedClassLibrary.Utilities.Encryption
 
         public static string Encrypt(string plainText, string passPhrase = null)
         {
+            if (string.IsNullOrWhiteSpace(plainText))
+                return plainText;
             if (passPhrase == null)
                 passPhrase = _encryptPassPhrase;
             passPhrase += _appendPassPhrase;
@@ -65,6 +67,8 @@ namespace SharedClassLibrary.Utilities.Encryption
 
         public static string Decrypt(string cipherText, string passPhrase = null)
         {
+            if (string.IsNullOrWhiteSpace(cipherText))
+                return cipherText;
             if (passPhrase == null)
                 passPhrase = _encryptPassPhrase;
             passPhrase += _appendPassPhrase;

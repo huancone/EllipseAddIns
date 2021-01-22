@@ -5,7 +5,7 @@ using SharedClassLibrary.Ellipse.Constants;
 
 namespace EllipseJobsClassLibrary
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetEllipseResourcesQuery(string dbReference, string dbLink, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {

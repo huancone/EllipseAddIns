@@ -528,7 +528,7 @@ namespace EllipseWorkRequestClassLibrary
         }
 
 
-        public static class Queries
+        internal static class Queries
         {
             public static string GetFetchWorkRequest(string DbReference, string dbLink, int searchCriteria1Key, string searchCriteria1Value, int searchCriteria2Key, string searchCriteria2Value, int dateCriteriaKey, string startDate, string endDate, string wrStatus)
             {

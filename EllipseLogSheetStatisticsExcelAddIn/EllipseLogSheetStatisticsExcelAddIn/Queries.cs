@@ -2,7 +2,7 @@
 
 namespace EllipseLogSheetStatisticsExcelAddIn
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetQueryDefaultModelData(string modelCode, string dbReference, string dbLink)
         {

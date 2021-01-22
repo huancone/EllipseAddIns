@@ -5,7 +5,7 @@ using SharedClassLibrary.Utilities;
 
 namespace EllipseMSO265ExcelAddIn.Invoice265
 {
-    public static class Queries
+    internal static class Queries
     {
         public static string GetSupplierInvoiceInfoQuery(string districtCode, string supplierNo, string supplierTaxFileNo, string dbReference, string dbLink)
         {

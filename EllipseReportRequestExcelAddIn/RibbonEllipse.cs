@@ -1,30 +1,40 @@
 ﻿using System;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 namespace EllipseReportRequestExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
+        private ExcelStyleCells _cells;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
-
+        private FormAuthenticate _frmAuth;
+        private Application _excelApp;
         private const string SheetName01 = "ReportRequest";
         private const int TitleRow01 = 4;
         private const int ResultColumn01 = 19;
         private const string TableName01 = "ReportRequestTable";
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -34,8 +44,34 @@ namespace EllipseReportRequestExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheetHeaderData();
@@ -144,7 +180,7 @@ namespace EllipseReportRequestExcelAddIn
 
                 var proxySheet = new Screen.ScreenService
                 {
-                    Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"
+                    Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"
                 };
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 var i = TitleRow01 + 1;

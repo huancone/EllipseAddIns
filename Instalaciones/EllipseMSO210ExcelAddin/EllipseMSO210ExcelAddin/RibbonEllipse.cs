@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
 using EllipseMSO210ExcelAddin.Properties;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseMSO210ExcelAddin
 {
@@ -20,27 +22,59 @@ namespace EllipseMSO210ExcelAddin
         private const int TittleRow = 3;
         private const int ResultColumn = 22;
         private const int MaxRows = 10000;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
-        private OracleDataReader _drContractItems;
+        //private OracleDataReader _drContractItems;
         private Application _excelApp;
         ListObject _excelSheetItems;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
+
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
             }
 
-            drpEnvironment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment;
-        }
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -156,36 +190,36 @@ namespace EllipseMSO210ExcelAddin
             var contractNo = _cells.GetNullOrTrimmedValue(_cells.GetCell(tarGet.Column, tarGet.Row).Value);
 
             if (string.IsNullOrEmpty(contractNo)) return;
-            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
+            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.DbReference, _eFunctions.DbLink);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
+            var drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
-            if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
+            var currentRow = TittleRow + 1;
+            if (drContractItems != null && !drContractItems.IsClosed)
             {
-                var currentRow = TittleRow + 1;
-                while (_drContractItems.Read())
+                while (drContractItems.Read())
                 {
-                    _cells.GetCell(1, currentRow).Value = _drContractItems["SUPPLIER_NO"].ToString();
-                    _cells.GetCell(2, currentRow).Value = _drContractItems["CONTRACT_NO"].ToString();
-                    _cells.GetCell(3, currentRow).Value = _drContractItems["PORTION_NO"].ToString();
-                    _cells.GetCell(4, currentRow).Value = _drContractItems["ELEMENT_NO"].ToString();
-                    _cells.GetCell(5, currentRow).Value = _drContractItems["CATEGORY_NO"].ToString();
-                    _cells.GetCell(6, currentRow).Value = _drContractItems["CATEG_DESC"].ToString();
-                    _cells.GetCell(7, currentRow).Value = _drContractItems["STOCK_CODE"].ToString();
-                    _cells.GetCell(8, currentRow).Value = _drContractItems["CATEG_BASE_UN"].ToString();
-                    _cells.GetCell(9, currentRow).Value = _drContractItems["CATEG_BASE_RT"].ToString();
-                    _cells.GetCell(10, currentRow).Value = _drContractItems["CONV_FACTOR"].ToString();
-                    _cells.GetCell(11, currentRow).Value = _drContractItems["STD_PACK"].ToString();
-                    _cells.GetCell(12, currentRow).Value = _drContractItems["SUPP_ACT_IND"].ToString();
-                    _cells.GetCell(13, currentRow).Value = _drContractItems["FREIGHT_CODE"].ToString();
-                    _cells.GetCell(14, currentRow).Value = _drContractItems["DELIV_LOCATION"].ToString();
-                    _cells.GetCell(15, currentRow).Value = _drContractItems["CURRENCY_TYPE"].ToString();
-                    _cells.GetCell(16, currentRow).Value = _drContractItems["PRICE_EFF_DATE"].ToString();
-                    _cells.GetCell(17, currentRow).Value = _drContractItems["GROSS_PRICE_I"].ToString();
-                    _cells.GetCell(18, currentRow).Value = _drContractItems["NUEVO_PRECIO"].ToString();
-                    _cells.GetCell(19, currentRow).Value = _drContractItems["PO_DESC_IND"].ToString();
-                    _cells.GetCell(20, currentRow).Value = _drContractItems["PRICE_CODE"].ToString();
-                    _cells.GetCell(21, currentRow).Value = _drContractItems["ACTION"].ToString();
+                    _cells.GetCell(1, currentRow).Value = drContractItems["SUPPLIER_NO"].ToString();
+                    _cells.GetCell(2, currentRow).Value = drContractItems["CONTRACT_NO"].ToString();
+                    _cells.GetCell(3, currentRow).Value = drContractItems["PORTION_NO"].ToString();
+                    _cells.GetCell(4, currentRow).Value = drContractItems["ELEMENT_NO"].ToString();
+                    _cells.GetCell(5, currentRow).Value = drContractItems["CATEGORY_NO"].ToString();
+                    _cells.GetCell(6, currentRow).Value = drContractItems["CATEG_DESC"].ToString();
+                    _cells.GetCell(7, currentRow).Value = drContractItems["STOCK_CODE"].ToString();
+                    _cells.GetCell(8, currentRow).Value = drContractItems["CATEG_BASE_UN"].ToString();
+                    _cells.GetCell(9, currentRow).Value = drContractItems["CATEG_BASE_RT"].ToString();
+                    _cells.GetCell(10, currentRow).Value = drContractItems["CONV_FACTOR"].ToString();
+                    _cells.GetCell(11, currentRow).Value = drContractItems["STD_PACK"].ToString();
+                    _cells.GetCell(12, currentRow).Value = drContractItems["SUPP_ACT_IND"].ToString();
+                    _cells.GetCell(13, currentRow).Value = drContractItems["FREIGHT_CODE"].ToString();
+                    _cells.GetCell(14, currentRow).Value = drContractItems["DELIV_LOCATION"].ToString();
+                    _cells.GetCell(15, currentRow).Value = drContractItems["CURRENCY_TYPE"].ToString();
+                    _cells.GetCell(16, currentRow).Value = drContractItems["PRICE_EFF_DATE"].ToString();
+                    _cells.GetCell(17, currentRow).Value = drContractItems["GROSS_PRICE_I"].ToString();
+                    _cells.GetCell(18, currentRow).Value = drContractItems["NUEVO_PRECIO"].ToString();
+                    _cells.GetCell(19, currentRow).Value = drContractItems["PO_DESC_IND"].ToString();
+                    _cells.GetCell(20, currentRow).Value = drContractItems["PRICE_CODE"].ToString();
+                    _cells.GetCell(21, currentRow).Value = drContractItems["ACTION"].ToString();
                     currentRow++;
                 }
             }
@@ -232,7 +266,7 @@ namespace EllipseMSO210ExcelAddin
             _cells.SetValidationList(_cells.GetRange(21, TittleRow + 1, 21, MaxRows), optionList);
 
 
-            var opSheet = new screen.OperationContext
+            var opSheet = new Screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
@@ -243,10 +277,10 @@ namespace EllipseMSO210ExcelAddin
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var proxySheet = new screen.ScreenService();
-            var requestSheet = new screen.ScreenSubmitRequestDTO();
+            var proxySheet = new Screen.ScreenService();
+            var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
 
@@ -439,7 +473,7 @@ namespace EllipseMSO210ExcelAddin
             }
         }
 
-        private void Msm210C(string supplierNo, string priceCode, string categBaseUn, string categBaseRt, string convFactor, string stdPack, string suppActInd, string freightCode, string delivLocation, string priceEffDate, string grossPriceI, string nuevoPrecio, string currencyType, string poDescInd, ref ArrayScreenNameValue arrayFields, screen.OperationContext opSheet, screen.ScreenService proxySheet, screen.ScreenSubmitRequestDTO requestSheet, ref screen.ScreenDTO replySheet, int currentRow)
+        private void Msm210C(string supplierNo, string priceCode, string categBaseUn, string categBaseRt, string convFactor, string stdPack, string suppActInd, string freightCode, string delivLocation, string priceEffDate, string grossPriceI, string nuevoPrecio, string currencyType, string poDescInd, ref ArrayScreenNameValue arrayFields, Screen.OperationContext opSheet, Screen.ScreenService proxySheet, Screen.ScreenSubmitRequestDTO requestSheet, ref Screen.ScreenDTO replySheet, int currentRow)
         {
             if (replySheet.mapName != "MSM210C") return;
             try
@@ -476,7 +510,7 @@ namespace EllipseMSO210ExcelAddin
             }
         }
 
-        private void Msm210B(string categBaseUn, string convFactor, string stdPack, string suppActInd, string freightCode, string delivLocation, string priceEffDate, string grossPriceI, string nuevoPrecio, string currencyType, string poDescInd, ref ArrayScreenNameValue arrayFields, screen.OperationContext opSheet, screen.ScreenService proxySheet, screen.ScreenSubmitRequestDTO requestSheet, ref screen.ScreenDTO replySheet, int currentRow)
+        private void Msm210B(string categBaseUn, string convFactor, string stdPack, string suppActInd, string freightCode, string delivLocation, string priceEffDate, string grossPriceI, string nuevoPrecio, string currencyType, string poDescInd, ref ArrayScreenNameValue arrayFields, Screen.OperationContext opSheet, Screen.ScreenService proxySheet, Screen.ScreenSubmitRequestDTO requestSheet, ref Screen.ScreenDTO replySheet, int currentRow)
         {
             if (replySheet.mapName != "MSM210B") return;
             try
@@ -536,7 +570,7 @@ namespace EllipseMSO210ExcelAddin
         }
     }
 
-    public static class Queries
+    internal static class Queries
     {
         public static string GetContractData(string contractNo, string dbReference, string dbLink)
         {

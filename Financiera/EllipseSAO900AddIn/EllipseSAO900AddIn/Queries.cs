@@ -4,7 +4,7 @@ namespace EllipseSAO900AddIn
     /// <summary>
     ///     Consultas SQL a las bases de datos de Ellipse 8
     /// </summary>
-    public static class Queries
+    internal static class Queries
     {
         public static string GetEmployeeName(string employeeId, string dbReference, string dbLink)
         {

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCatalogueStockInstExcelAddIn.Properties;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Connections;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
+using screen = SharedClassLibrary.Ellipse.ScreenService;
 using WorksheetTools = Microsoft.Office.Tools.Excel.Worksheet;
 using WorksheetInterop = Microsoft.Office.Interop.Excel.Worksheet;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 namespace EllipseCatalogueStockInstExcelAddIn
 {
@@ -22,10 +24,9 @@ namespace EllipseCatalogueStockInstExcelAddIn
         private const int TittleRow = 3;
         private const int ResultColumn = 10;
         private const int MaxRows = 10000;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
-        private OracleDataReader _drContractItems;
         private Application _excelApp;
         private WorksheetTools _worksheet;
 
@@ -33,17 +34,50 @@ namespace EllipseCatalogueStockInstExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -155,23 +189,23 @@ namespace EllipseCatalogueStockInstExcelAddIn
 
             if (string.IsNullOrEmpty(contractNo)) return;
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
-            _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
+            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.DbReference, _eFunctions.DbLink);
+            var drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
-            if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
+            if (drContractItems != null && !drContractItems.IsClosed)
             {
                 var currentRow = TittleRow + 1;
-                while (_drContractItems.Read())
+                while (drContractItems.Read())
                 {
                     _cells.GetCell(1, currentRow).Select();
-                    _cells.GetCell(1, currentRow).Value = _drContractItems["CONTRACT_NO"].ToString();
-                    _cells.GetCell(2, currentRow).Value = _drContractItems["PORTION_NO"].ToString();
-                    _cells.GetCell(3, currentRow).Value = _drContractItems["ELEMENT_NO"].ToString();
-                    _cells.GetCell(4, currentRow).Value = _drContractItems["CATEGORY_NO"].ToString();
-                    _cells.GetCell(5, currentRow).Value = _drContractItems["STOCK_CODE"].ToString();
-                    _cells.GetCell(6, currentRow).Value = _drContractItems["CATEG_DESC"].ToString();
-                    _cells.GetCell(7, currentRow).Value = _drContractItems["HOME_WHOUSE"].ToString();
-                    _cells.GetCell(8, currentRow).Value = _drContractItems["WHOUSE_ID"].ToString();
+                    _cells.GetCell(1, currentRow).Value = drContractItems["CONTRACT_NO"].ToString();
+                    _cells.GetCell(2, currentRow).Value = drContractItems["PORTION_NO"].ToString();
+                    _cells.GetCell(3, currentRow).Value = drContractItems["ELEMENT_NO"].ToString();
+                    _cells.GetCell(4, currentRow).Value = drContractItems["CATEGORY_NO"].ToString();
+                    _cells.GetCell(5, currentRow).Value = drContractItems["STOCK_CODE"].ToString();
+                    _cells.GetCell(6, currentRow).Value = drContractItems["CATEG_DESC"].ToString();
+                    _cells.GetCell(7, currentRow).Value = drContractItems["HOME_WHOUSE"].ToString();
+                    _cells.GetCell(8, currentRow).Value = drContractItems["WHOUSE_ID"].ToString();
 
                     currentRow++;
                 }
@@ -211,7 +245,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
 
@@ -672,41 +706,5 @@ namespace EllipseCatalogueStockInstExcelAddIn
         }
     }
 
-    public static class Queries
-    {
-        public static string GetContractData(string contractNo, string dbReference, string dbLink)
-        {
-            var sqlQuery = "" +
-                           "SELECT DISTINCT" +
-                           "  CON.CONTRACT_NO, " +
-                           "  CON.PORTION_NO, " +
-                           "  CON.ELEMENT_NO, " +
-                           "  CON.CATEGORY_NO, " +
-                           "  PN.STOCK_CODE, " +
-                           "  CON.CATEG_DESC, " +
-                           "  CAT.HOME_WHOUSE, " +
-                           "  WH.WHOUSE_ID " +
-                           "FROM " +
-                           "  ELLIPSE.MSF387 CON " +
-                           "INNER JOIN " + dbReference + ".MSF110" + dbLink + " PN " +
-                           "ON " +
-                           "  PN.PART_NO LIKE CON.PORTION_NO || CON.ELEMENT_NO || CON.CATEGORY_NO || '%' || CON.CONTRACT_NO || '%' " +
-                           "LEFT JOIN " + dbReference + ".MSF170" + dbLink + " CAT " +
-                           "ON " +
-                           "  PN.STOCK_CODE = CAT.STOCK_CODE " +
-                           "AND CAT.DSTRCT_CODE = 'INST' " +
-                           "LEFT JOIN " + dbReference + ".MSF180" + dbLink + " WH " +
-                           "ON " +
-                           "    CAT.STOCK_CODE = WH.STOCK_CODE " +
-                           "AND CAT.DSTRCT_CODE = WH.DSTRCT_CODE " +
-                           "WHERE " +
-                           "  CON.CONTRACT_NO = '" + contractNo + "' " +
-                           "ORDER BY " +
-                           "  CON.CONTRACT_NO, " +
-                           "  CON.PORTION_NO, " +
-                           "  CON.ELEMENT_NO, " +
-                           "  CON.CATEGORY_NO ";
-            return sqlQuery;
-        }
-    }
+    
 }

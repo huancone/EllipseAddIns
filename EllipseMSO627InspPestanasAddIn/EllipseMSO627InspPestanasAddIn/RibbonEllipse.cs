@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse.Connections;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseMSO627InspPestanasAddIn
 {
@@ -20,10 +24,10 @@ namespace EllipseMSO627InspPestanasAddIn
         private const int ResultColumn = 8;
         private const int ResultColumnLimpieza = 8;
         private const int MaxRows = 8;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
-        private readonly string _sheetName01 = "Inspeccion Pestañas";
-        private readonly string _sheetName02 = "Limpieza de Carbon";
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private string _sheetName01 = "Inspeccion Pestañas";
+        private string _sheetName02 = "Limpieza de Carbon";
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private ListObject _excelSheetItems;
@@ -31,6 +35,13 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -40,8 +51,34 @@ namespace EllipseMSO627InspPestanasAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             Format();
@@ -277,7 +314,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
@@ -419,7 +456,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
@@ -574,7 +611,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")

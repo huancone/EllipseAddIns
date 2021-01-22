@@ -484,7 +484,7 @@ namespace EllipseMsssEquipmentExcelAddIn
         //        }
     }
 
-    public static class Queries
+    internal static class Queries
     {
         public static string GetMsssInfo(string equipmentGrpId, string dbReference, string dbLink)
         {

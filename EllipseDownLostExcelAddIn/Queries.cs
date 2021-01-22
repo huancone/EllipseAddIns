@@ -3,7 +3,7 @@ using SharedClassLibrary.Utilities;
 
 namespace EllipseDownLostExcelAddIn
 {
-    public class Queries
+    internal class Queries
     {
         /// <summary>
         /// Obtiene el query para el listado de Down de un equipo dado
