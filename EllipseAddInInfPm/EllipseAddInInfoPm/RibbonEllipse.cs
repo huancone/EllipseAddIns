@@ -651,6 +651,13 @@ namespace EllipseAddInInfoPm
                                 DateTime date = DateTime.Now;
                                 date = date.AddDays(Dias);
                                 data[i, 18] = date.ToString(/*"yyyy/mm/dd hh:mm:ss"*/);
+
+                                //Hrs despues del preseis
+                                Dias = ((250 - Convert.ToDouble(data[i, 16].ToString())) / Param3);
+                                DateTime date2 = DateTime.Now;
+                                date = date2.AddDays(Dias);
+                                data[i, 25] = date.ToString(/*"yyyy/mm/dd hh:mm:ss"*/);
+
                             }
                         }
                         table2 = null;
@@ -919,7 +926,10 @@ namespace EllipseAddInInfoPm
                                     TRIM(CTD_ELLIPSE.EQMTTYPE) AS EQMTTYPE,
                                     CTD_ELLIPSE.eqmt EQ_CTD,
                                     PRIMERA.DATE_HRS,
-                                    '' AS F_TOMA_CTD
+                                    '' AS F_TOMA_CTD,
+                                    '' AS PROX_FECHA_PRESEIS,
+                                    '' AS T_PRES,
+                                    '' AS ""FP(YYYYMMDD)"" 
                                 FROM
                                     PRIMERA
                                     INNER JOIN SIGMAN.EQMTLIST CTD_ELLIPSE ON (PRIMERA.EQUIP_NO = CTD_ELLIPSE.EQU AND CTD_ELLIPSE.ACTIVE_FLG = 'Y')
@@ -1158,6 +1168,8 @@ namespace EllipseAddInInfoPm
             //InsertarColumn(fromwrksh, fromwrksh.get_Range("V:V"), fromwrksh.Range[9, 20], "FECHA_PM");
 
             Excel.Worksheet fromwrksh = _excelApp.ActiveWorkbook.Sheets[Nombre_Hoja];
+            //fromwrksh.Columns.AutoFit();
+            //fromwrksh.Rows.AutoFit();
             //Excel.Range last = fromwrksh.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
 
             // Find the last real row
@@ -1166,6 +1178,7 @@ namespace EllipseAddInInfoPm
             var LastRow = fromwrksh.Range[fromwrksh.Cells[10, 2], fromwrksh.Cells[10, 2].End[Excel.XlDirection.xlDown]].Count -1;
 
             string[] DatosFechas = GetStringArray(fromwrksh.Range[fromwrksh.Cells[10, 20], fromwrksh.Cells[10 + LastRow, 21]].Value);
+            string[] DatosFechas2 = GetStringArray(fromwrksh.Range[fromwrksh.Cells[10, 28], fromwrksh.Cells[10 + LastRow, 28]].Value);
             //Excel.Range x = fromwrksh.Range[fromwrksh.Cells[10, 21], fromwrksh.Cells[10 + LastRow, 21]];
             //Excel.Range y = fromwrksh.Range[fromwrksh.Cells[10, 20], fromwrksh.Cells[10, 20].End[Excel.XlDirection.xlDown]];
             DateTime Fecha;
@@ -1192,9 +1205,36 @@ namespace EllipseAddInInfoPm
                     fromwrksh.Cells[i + 10, 19].NumberFormat = "yyyy/mm/dd";
                 }
             }
-                //x.NumberFormat = "yyyy/mm/dd";
-                //var vvv = x.Cells.Value2;
-                //y.Value = x.Cells.Value;
+            //Para fecha del preseis
+            for (int i = 0; i < DatosFechas2.Length; i++)
+            {
+                //fromwrksh.Cells[i + 10, 20].NumberFormat = "yyyy/mm/dd";
+                if (DatosFechas2[i] != null)
+                {
+                    Fecha = Convert.ToDateTime(DatosFechas2[i]);
+                    if (Fecha.Hour >= 06 && Fecha.Hour < 18)
+                    {
+                        fromwrksh.Cells[i + 10, 29] = "A1";
+                    }
+                    else
+                    {
+                        if (Fecha.Hour >= 00 && Fecha.Hour < 6)
+                        {
+                            Fecha = Fecha.AddDays(-1);
+                        }
+                        fromwrksh.Cells[i + 10, 29] = "A2";
+                    }
+                    //fromwrksh.Cells[i + 10, 20].NumberFormat = "@";
+                    fromwrksh.Cells[i + 10, 30] = Fecha.ToShortDateString();
+                    fromwrksh.Cells[i + 10, 30].NumberFormat = "yyyy/mm/dd";
+                }
+            }
+
+            //fromwrksh.Cells[9, 29].Value2 = "T_PRES";
+            //fromwrksh.Cells[9, 30].Value2 = "FP(YYYYMMDD)";
+            //x.NumberFormat = "yyyy/mm/dd";
+            //var vvv = x.Cells.Value2;
+            //y.Value = x.Cells.Value;
             //y.Value = y.Value;
             //_cells.GetRange(fromwrksh.Range[fromwrksh.Cells[10, 21], fromwrksh.Cells[10, 21].End[Excel.XlDirection.xlDown]]).NumberFormat = "mm/dd/yyyy";
             //_cells.GetRange(fromwrksh.Range[fromwrksh.Cells[10, 21], fromwrksh.Cells[10, 21].End[Excel.XlDirection.xlDown]]).Value = DatosFechas;
@@ -1250,14 +1290,19 @@ namespace EllipseAddInInfoPm
                 GroupFieldsTyp = new string[] { "Fila", "Column", "Fila", "Agrupado" };
                 GroupFieldsTypAgrup = new string[] { null, null, null, "Sum" };
                 SliceFilter = new string[] { "LAST_PIT", "FLOTA_ELLIPSE", "WORK_GROUP" };
-                TypeColum(GroupFieldsCol, pivotTable, GroupFieldsTyp, GroupFieldsTypAgrup, SliceFilter, 2, Nombre_Hoja, 3);
+                TypeColum(GroupFieldsCol, pivotTable, GroupFieldsTyp, GroupFieldsTypAgrup, SliceFilter, 2, Nombre_Hoja, 3,"");
             }
             Encabezado = wrksh.Range[pivotDestination, pivotDestination.End[Excel.XlDirection.xlToRight]];
             //GetPropertyValues(Encabezado);
             CentrarRango(Encabezado);
             //Ocultar Equipos en StandBy
-            OcultBlank = pivotTable.PivotFields("F(YYYYMMDD).");
-            OcultBlank.PivotItems("(blank)").Visible = false;
+
+
+            //var casa = OcultBlank.PivotItems("(blank)").Name;
+            
+            //OcultBlank = pivotTable.PivotFields("F(YYYYMMDD).");
+            //OcultBlank.PivotItems("(blank)").Visible = false;
+            
 
             //OcultBlank = null;
             //OcultBlank = pivotTable.PivotFields("TURNO.");
@@ -1267,13 +1312,69 @@ namespace EllipseAddInInfoPm
             //OcultBlank.Subtotals[1] = false;
 
 
+
+
+
+
+            _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+
+            //Segunda Pivot
+            Encabezado = null;
+            //Excel.Range wrksh2 = null;
+            Excel.Worksheet wrksh2 = _excelApp.Worksheets.Add(After: _excelApp.ActiveWorkbook.Sheets[_excelApp.ActiveWorkbook.Sheets.Count]);
+            pivotCaches = _excelApp.ActiveWorkbook.PivotCaches();
+            pivotDestination = wrksh2.Cells[1, 1];
+            wrksh2.Name = Nombre_Hoja + "_Pivot2";
+            //Excel.PivotCache oPivotCache = _excelApp.ActiveWorkbook.PivotCaches().Add(Excel.XlPivotTableSourceType.xlDatabase, pivotData);
+            pivotCache = pivotCaches.Create(Excel.XlPivotTableSourceType.xlDatabase, pivotData);
+            //Excel.PivotTable pivotTable = wrksh2.PivotTables().Add(PivotCache: oPivotCache, TableDestination: pivotDestination, TableName: "Pivot_" + Nombre_Hoja);
+            pivotTable = pivotCache.CreatePivotTable(pivotDestination, "Pivot2_" + Nombre_Hoja, Excel.XlPivotTableVersionList.xlPivotTableVersionCurrent);
+
+            //damos un poco de formato a nuestra tabla dinamica..
+            pivotTable.Format(Excel.XlPivotFormatType.xlTable9);//xlPTClassic, xlReport10
+            pivotTable.InGridDropZones = true;
+            pivotTable.TableStyle2 = "PivotStyleDark6";
+            FormatBordes(pivotTable.TableRange2);
+            pivotTable.ShowTableStyleRowHeaders = true;
+            pivotTable.ShowTableStyleColumnStripes = true;
+            pivotTable.ShowTableStyleRowStripes = true;
+            pivotTable.MergeLabels = true;
+            pivotTable.DisplayNullString = true;
+            pivotTable.NullString = " -- ";
+            pivotTable.CompactLayoutColumnHeader = "Proyecion Preseis";
+            pivotTable.CompactLayoutRowHeader = "EQUIPO";
+            pivotTable.RowGrand = false;
+            pivotTable.ColumnGrand = false;
+
+
+            /*GroupFieldsCol = null;
+            GroupFieldsTyp = null;
+            GroupFieldsTypAgrup = null;
+            SliceFilter = null;*/
+            //Encabezado = null;
+
+
+            GroupFieldsCol = new string[] { "EQUIP_NO", "FP(YYYYMMDD)", "T_PRES", "HRS_DESP_PM" };
+            GroupFieldsTyp = new string[] { "Fila", "Column", "Fila", "Agrupado" };
+            GroupFieldsTypAgrup = new string[] { null, null, null, "Sum" };
+            SliceFilter = new string[] { "LAST_PIT", "FLOTA_ELLIPSE", "WORK_GROUP" };
+            TypeColum(GroupFieldsCol, pivotTable, GroupFieldsTyp, GroupFieldsTypAgrup, SliceFilter, 2, Nombre_Hoja, 3, "2");
+            Encabezado = wrksh2.Range[pivotDestination, pivotDestination.End[Excel.XlDirection.xlToRight]];
+            CentrarRango(Encabezado);
+
+            OcultSubt = pivotTable.PivotFields("EQUIP_NO.");
+            OcultSubt.Subtotals[1] = false;
+
+
+            _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+
             _excelApp.ActiveWindow.DisplayGridlines = false;
             _excelApp.ActiveWorkbook.ShowPivotTableFieldList = false;
             _excelApp.DisplayAlerts = true;
             _excelApp.ScreenUpdating = true;
 
         }
-        private void TypeColum(string[] GroupFieldsCol, Excel.PivotTable pivotTable, string[] GroupFieldsTyp, string[] GroupFieldsTypAgrup, string[] SliceFilter, Int32 N, String Nombre_Hoja, Int32 CambiFila = 3)
+        private void TypeColum(string[] GroupFieldsCol, Excel.PivotTable pivotTable, string[] GroupFieldsTyp, string[] GroupFieldsTypAgrup, string[] SliceFilter, Int32 N, String Nombre_Hoja, Int32 CambiFila = 3, String Valor = "")
         {
             Excel.PivotField Campo = null;
             string NameCampo = "";
@@ -1357,7 +1458,7 @@ namespace EllipseAddInInfoPm
                 //+"."
                 Left = Left + (Width * x);
                 Campo = pivotTable.PivotFields(SliceFilter[i]);
-                _excelApp.ActiveWorkbook.SlicerCaches.Add2(Source: pivotTable, SourceField: Campo, Name: Campo.Caption + Campo.SourceName, SlicerCacheType: Excel.XlSlicerCacheType.xlSlicer).Slicers.Add(SlicerDestination: Nombre_Hoja + "_Pivot", Name: Campo.SourceName, Caption: Campo.SourceName, Top: Top, Left: Left, Width: Width, Height: Height);
+                _excelApp.ActiveWorkbook.SlicerCaches.Add2(Source: pivotTable, SourceField: Campo, Name: Campo.Caption + Campo.SourceName + Valor, SlicerCacheType: Excel.XlSlicerCacheType.xlSlicer).Slicers.Add(SlicerDestination: Nombre_Hoja + "_Pivot" + Valor, Name: Campo.SourceName + Valor, Caption: Campo.SourceName, Top: Top, Left: Left, Width: Width, Height: Height);
                 x++;
             }
 
@@ -1379,6 +1480,7 @@ namespace EllipseAddInInfoPm
             fromwrksh.get_Range(Ubic).NumberFormat = Format;
             fromwrksh.get_Range(Ubic).Value = fromwrksh.get_Range(Ubic).Value;
         }
+
         private void btnProy_Click(object sender, RibbonControlEventArgs e)
         {
             _excelApp.Visible = true;
@@ -1391,11 +1493,12 @@ namespace EllipseAddInInfoPm
                 {
                     string Nombre_Hoja = _excelApp.ActiveWorkbook.ActiveSheet.Name;
                     //Nombre_Hoja = Nombre_Hoja + "_Pivot";
-                    if (ComprobarHoja(Nombre_Hoja + "_Pivot"))
+                    if (ComprobarHoja(Nombre_Hoja + "_Pivot") /*|| ComprobarHoja(Nombre_Hoja + "_Pivot2")*/)
                     {
                         if (Confir.ShowDialog() == DialogResult.OK)
                         {
                             BorrarSheets(Nombre_Hoja + "_Pivot");
+                            BorrarSheets(Nombre_Hoja + "_Pivot2");
                         }
                         else //if(Confir.ShowDialog() == DialogResult.Cancel)
                         {
@@ -1413,7 +1516,7 @@ namespace EllipseAddInInfoPm
                 finally
                 {
                     if (_cells != null)
-                    _cells.SetCursorDefault();
+                        _cells.SetCursorDefault();
                     //_excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
                     //_cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
                     _excelApp.ScreenUpdating = true;
@@ -1425,6 +1528,8 @@ namespace EllipseAddInInfoPm
                 MessageBox.Show(@"debe formatear o cambiar a la Hoja " + SheetName01 + " e intente nuevamente.");
             }
         }
+
+
         private void Prueba()
         {
             String Nombre_Hoja = _excelApp.ActiveWorkbook.ActiveSheet.Name;
