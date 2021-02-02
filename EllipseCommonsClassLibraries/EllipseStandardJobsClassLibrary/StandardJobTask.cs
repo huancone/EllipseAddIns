@@ -45,7 +45,6 @@
         public string NoEquipment;
         public string ExtTaskText { get; set; }
 
-
     }
 
 }

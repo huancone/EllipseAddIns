@@ -2738,6 +2738,113 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsMWPDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsMWPDTO" nillable="true" type="ns2:JobsMWPDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsJobLinkDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsJobLinkDTO" nillable="true" type="ns2:JobsJobLinkDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="linkParentEntityId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999999" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkParentEntityType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsJobLinkDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="linkDistrictCode" type="ns2:linkDistrictCode" />
+              <xsd:element minOccurs="0" name="linkEntityId" type="ns2:linkEntityId" />
+              <xsd:element minOccurs="0" name="linkEntityType" type="ns2:linkEntityType" />
+              <xsd:element minOccurs="0" name="linkErpRef" type="ns2:linkErpRef" />
+              <xsd:element minOccurs="0" name="linkErpTaskRef" type="ns2:linkErpTaskRef" />
+              <xsd:element minOccurs="0" name="linkJobLinkListId" type="ns2:linkJobLinkListId" />
+              <xsd:element minOccurs="0" name="linkLagOrLead" type="ns2:linkLagOrLead" />
+              <xsd:element minOccurs="0" name="linkOffset" type="ns2:linkOffset" />
+              <xsd:element minOccurs="0" name="linkParentEntityId" type="ns2:linkParentEntityId" />
+              <xsd:element minOccurs="0" name="linkParentEntityType" type="ns2:linkParentEntityType" />
+              <xsd:element minOccurs="0" name="linkScale" type="ns2:linkScale" />
+              <xsd:element minOccurs="0" name="linkScaledOffset" type="ns2:linkScaledOffset" />
+              <xsd:element minOccurs="0" name="linkSequenceNum" type="ns2:linkSequenceNum" />
+              <xsd:element minOccurs="0" name="linkStatType" type="ns2:linkStatType" />
+              <xsd:element minOccurs="0" name="linkStatValue" type="ns2:linkStatValue" />
+              <xsd:element minOccurs="0" name="linkType" type="ns2:linkType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsResourceDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsResourceDTO" nillable="true" type="ns2:JobsResourceDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="resourceBacklogDate">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceAllocated">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="99999.99" />
+          <xsd:minInclusive value="-99999.99" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsResourceDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="resourceAllocated" type="ns2:resourceAllocated" />
+              <xsd:element minOccurs="0" name="resourceBacklogDate" type="ns2:resourceBacklogDate" />
+              <xsd:element minOccurs="0" name="resourceCategoryObject" type="ns2:JobsResourceCategoryDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="dataType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="requirementType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="14" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsResourceCategoryDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="crew" type="ns2:crew" />
+              <xsd:element minOccurs="0" name="dataType" type="ns2:dataType" />
+              <xsd:element minOccurs="0" name="requirementType" type="ns2:requirementType" />
+              <xsd:element minOccurs="0" name="resourceCategory" type="ns2:resourceCategory" />
+              <xsd:element minOccurs="0" name="workGroup" type="ns2:workGroup" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfTaskKeyDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="TaskKeyDTO" nillable="true" type="ns2:TaskKeyDTO" />
@@ -2806,113 +2913,6 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfJobsResourceDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsResourceDTO" nillable="true" type="ns2:JobsResourceDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="resourceBacklogDate">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="40" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="resourceAllocated">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:maxInclusive value="99999.99" />
-          <xsd:minInclusive value="-99999.99" />
-          <xsd:fractionDigits value="2" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="JobsResourceDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="resourceAllocated" type="ns2:resourceAllocated" />
-              <xsd:element minOccurs="0" name="resourceBacklogDate" type="ns2:resourceBacklogDate" />
-              <xsd:element minOccurs="0" name="resourceCategoryObject" type="ns2:JobsResourceCategoryDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:simpleType name="dataType">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="1" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requirementType">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="1" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="resourceCategory">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="14" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="JobsResourceCategoryDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="crew" type="ns2:crew" />
-              <xsd:element minOccurs="0" name="dataType" type="ns2:dataType" />
-              <xsd:element minOccurs="0" name="requirementType" type="ns2:requirementType" />
-              <xsd:element minOccurs="0" name="resourceCategory" type="ns2:resourceCategory" />
-              <xsd:element minOccurs="0" name="workGroup" type="ns2:workGroup" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfJobsJobLinkDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsJobLinkDTO" nillable="true" type="ns2:JobsJobLinkDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="linkParentEntityId">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:maxInclusive value="999999999999" />
-          <xsd:minInclusive value="-999999999999" />
-          <xsd:fractionDigits value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="linkParentEntityType">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="1" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="JobsJobLinkDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="linkDistrictCode" type="ns2:linkDistrictCode" />
-              <xsd:element minOccurs="0" name="linkEntityId" type="ns2:linkEntityId" />
-              <xsd:element minOccurs="0" name="linkEntityType" type="ns2:linkEntityType" />
-              <xsd:element minOccurs="0" name="linkErpRef" type="ns2:linkErpRef" />
-              <xsd:element minOccurs="0" name="linkErpTaskRef" type="ns2:linkErpTaskRef" />
-              <xsd:element minOccurs="0" name="linkJobLinkListId" type="ns2:linkJobLinkListId" />
-              <xsd:element minOccurs="0" name="linkLagOrLead" type="ns2:linkLagOrLead" />
-              <xsd:element minOccurs="0" name="linkOffset" type="ns2:linkOffset" />
-              <xsd:element minOccurs="0" name="linkParentEntityId" type="ns2:linkParentEntityId" />
-              <xsd:element minOccurs="0" name="linkParentEntityType" type="ns2:linkParentEntityType" />
-              <xsd:element minOccurs="0" name="linkScale" type="ns2:linkScale" />
-              <xsd:element minOccurs="0" name="linkScaledOffset" type="ns2:linkScaledOffset" />
-              <xsd:element minOccurs="0" name="linkSequenceNum" type="ns2:linkSequenceNum" />
-              <xsd:element minOccurs="0" name="linkStatType" type="ns2:linkStatType" />
-              <xsd:element minOccurs="0" name="linkStatValue" type="ns2:linkStatValue" />
-              <xsd:element minOccurs="0" name="linkType" type="ns2:linkType" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfJobsMWPDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsMWPDTO" nillable="true" type="ns2:JobsMWPDTO" />
-        </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="TasksMWPServiceResult">
         <xsd:complexContent mixed="false">
@@ -3643,26 +3643,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfProjectRefDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ProjectRefDTO" nillable="true" type="ns2:ProjectRefDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ProjectRefDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="dstrctCode" type="ns2:dstrctCode" />
-              <xsd:element minOccurs="0" name="projectNo" type="ns2:projectNo" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfWorkOrderKeyDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkOrderKeyDTO" nillable="true" type="ns2:WorkOrderKeyDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="ArrayOfEquipListRefDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipListRefDTO" nillable="true" type="ns2:EquipListRefDTO" />
@@ -3686,6 +3666,26 @@
             <xsd:sequence>
               <xsd:element minOccurs="0" name="equipListId" type="ns2:equipListId" />
               <xsd:element minOccurs="0" name="equipListType" type="ns2:equipListType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWorkOrderKeyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkOrderKeyDTO" nillable="true" type="ns2:WorkOrderKeyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProjectRefDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ProjectRefDTO" nillable="true" type="ns2:ProjectRefDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProjectRefDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="dstrctCode" type="ns2:dstrctCode" />
+              <xsd:element minOccurs="0" name="projectNo" type="ns2:projectNo" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -4881,6 +4881,11 @@
           <xsd:element minOccurs="0" name="user" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfError">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
@@ -4890,11 +4895,6 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMessage">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
-        </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
@@ -5513,7 +5513,7 @@
   </wsdl:binding>
   <wsdl:service name="WorkOrderTaskMWPService">
     <wsdl:port name="WorkOrderTaskMWPServiceHttpPort" binding="tns:WorkOrderTaskMWPServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

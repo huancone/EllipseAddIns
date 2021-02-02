@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseMsssEquipmentExcelAddIn_MSSSService_MSSSService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MSSSService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MSSSService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

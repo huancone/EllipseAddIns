@@ -33,7 +33,7 @@
     <PublishUrl>D:\Projects\Release\EllipseBulkMaterialExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.3.0.2</ApplicationVersion>
+    <ApplicationVersion>2.3.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -205,6 +205,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RibbonEllipse.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonEllipse.Designer.cs">
+      <DependentUpon>RibbonEllipse.cs</DependentUpon>
+    </Compile>
     <Compile Include="Web References\BulkMaterialUsageSheetItemService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -224,7 +230,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="RibbonEllipse.resx" />
+    <EmbeddedResource Include="RibbonEllipse.resx">
+      <DependentUpon>RibbonEllipse.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Certificate-cerrejon-hhernand.pfx" />
     <None Include="certificate-CerrejonCoalIssuingCA1_exp20200524.pfx" />
@@ -239,10 +247,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Queries.cs" />
-    <Compile Include="RibbonEllipse.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RibbonEllipse.Designer.cs" />
     <Compile Include="Stats.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -272,6 +276,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\UpdateLog.txt" />
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +315,7 @@
       <Name>EllipseEquipmentClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

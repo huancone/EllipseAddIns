@@ -58,6 +58,7 @@
             this.cbAccountElementOverrideMntto = this.Factory.CreateRibbonCheckBox();
             this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
+            this.cbAllowBackgroundWork = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
@@ -148,7 +149,7 @@
             this.menuListActions.Items.Add(this.btnReviewFromBulkSheet);
             this.menuListActions.Items.Add(this.btnAddToList);
             this.menuListActions.Items.Add(this.btnRemoveFromList);
-            this.menuListActions.Label = "Lista";
+            this.menuListActions.Label = "Lista de Equipos";
             this.menuListActions.Name = "menuListActions";
             this.menuListActions.ShowImage = true;
             // 
@@ -185,6 +186,7 @@
             this.menuOptions.Items.Add(this.menuAutoasignAccountCode);
             this.menuOptions.Items.Add(this.cbAutoSortItems);
             this.menuOptions.Items.Add(this.cbIgnoreItemError);
+            this.menuOptions.Items.Add(this.cbAllowBackgroundWork);
             this.menuOptions.Label = "Opciones";
             this.menuOptions.Name = "menuOptions";
             this.menuOptions.ShowImage = true;
@@ -242,6 +244,12 @@
             this.cbIgnoreItemError.Name = "cbIgnoreItemError";
             this.cbIgnoreItemError.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIgnoreItemError_Click);
             // 
+            // cbAllowBackgroundWork
+            // 
+            this.cbAllowBackgroundWork.Label = "Trabajo en Segundo Plano";
+            this.cbAllowBackgroundWork.Name = "cbAllowBackgroundWork";
+            this.cbAllowBackgroundWork.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAllowBackgroundWork_Click);
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
@@ -292,6 +300,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideDefault;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideAlways;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAllowBackgroundWork;
     }
 
     partial class ThisRibbonCollection

@@ -820,10 +820,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             _cells.SetCursorWait();
 
             var scCells = new ExcelStyleCells(_excelApp, SheetName0101);
-            scCells.SetAlwaysActiveSheet(false);
+            scCells.SetAlwasActiveAsWorkingSheet(false);
 
             var resultCells = new ExcelStyleCells(_excelApp, SheetName0102);
-            resultCells.SetAlwaysActiveSheet(false);
+            resultCells.SetAlwasActiveAsWorkingSheet(false);
             resultCells.ClearTableRange(TableName0102);
 
             var districtCode = _cells.GetEmptyIfNull(scCells.GetCell(2, 3).Value2);
@@ -910,10 +910,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             _cells.SetCursorWait();
 
             var poCells = new ExcelStyleCells(_excelApp, SheetName0201);
-            poCells.SetAlwaysActiveSheet(false);
+            poCells.SetAlwasActiveAsWorkingSheet(false);
 
             var resultCells = new ExcelStyleCells(_excelApp, SheetName0202);
-            resultCells.SetAlwaysActiveSheet(false);
+            resultCells.SetAlwasActiveAsWorkingSheet(false);
             resultCells.ClearTableRange(TableName0202);
 
             var fullSearch = false; //para realizar búsquedas completas que no dependan de un PO dado
@@ -1020,10 +1020,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
 
             var poCells = new ExcelStyleCells(_excelApp, SheetName0301);
-            poCells.SetAlwaysActiveSheet(false);
+            poCells.SetAlwasActiveAsWorkingSheet(false);
 
             var resultCells = new ExcelStyleCells(_excelApp, SheetName0302);
-            resultCells.SetAlwaysActiveSheet(false);
+            resultCells.SetAlwasActiveAsWorkingSheet(false);
             resultCells.ClearTableRange(TableName0302);
 
             var fullSearch = false; //para realizar búsquedas completas que no dependan de un PO dado

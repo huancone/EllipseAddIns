@@ -65,6 +65,7 @@ namespace EllipseBulkMaterialExcelAddIn
             settings.SetDefaultCustomSettingValue("AutoSort", "Y");
             settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
             settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+            settings.SetDefaultCustomSettingValue("AllowBackgroundWork", "N");
 
             //Setting of Configuration Options from Config File (or default)
             try
@@ -90,6 +91,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 cbAccountElementOverrideDefault.Checked = true;
             cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
             cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+            cbAllowBackgroundWork.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AllowBackgroundWork"));
 
             //
             settings.SaveCustomSettings();
@@ -252,7 +254,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.SetValidationList(_cells.GetCell(12, TitleRow01 + 1), _optionList, ValidationSheetName, 1);
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).NumberFormat = "@";
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
-                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                _cells.ActiveSheet.Cells.Columns.AutoFit();
 
                 OrderAndSort(_excelApp.ActiveWorkbook.ActiveSheet, TableName01);
 
@@ -328,10 +330,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetCell(20, TitleRow02).Style = StyleConstants.TitleResult;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
 
-                ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+                _cells.ActiveSheet.Cells.Columns.AutoFit();
 
                 #endregion
-                ((Worksheet)_excelApp.ActiveWorkbook.Sheets[1]).Select(Type.Missing);
+                _cells.GetWorksheet(1).Select(Type.Missing);
             }
             catch (Exception error)
             {
@@ -345,8 +347,6 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void OrderAndSort(Worksheet excelSheet, string tableName)
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
@@ -365,71 +365,92 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void ImportFile()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            #region AlertaDecimal
-            if (!_cells.IsDecimalDotSeparator())
+            try
             {
-                const string message = @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse";
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
 
-                var dialogResult = MessageBox.Show(message + "\n\n¿Está seguro que desea continuar?", "ADVERTENCIA - Separador Decimal", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-                if (dialogResult == DialogResult.No)
-                    return;
-            }
-            #endregion
+                _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+                _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
 
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
+                #region AlertaDecimal
 
-            if (excelSheet.Name != SheetName01) return;
-
-            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
-            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
-            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearContents();
-            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).NumberFormat = "@";
-
-            var openFileDialog1 = new OpenFileDialog
-            {
-                Filter = @"Archivos CSV|*.csv",
-                FileName = @"Seleccione un archivo de Texto",
-                Title = @"Programa de Lectura",
-                InitialDirectory = @"C:\\"
-            };
-
-            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
-
-            var filePath = openFileDialog1.FileName;
-
-            var inputFileDescription = new CsvFileDescription
-            {
-                SeparatorChar = ',',
-                FirstLineHasColumnNames = false,
-                EnforceCsvColumnAttribute = true
-            };
-
-            var cc = new CsvContext();
-
-            var bulkMaterials = cc.Read<BulkMaterialItem>(filePath, inputFileDescription);
-
-            var currentRow = TitleRow01 + 1;
-            foreach (var bulkMaterial in bulkMaterials)
-            {
-                try
+                if (!_cells.IsDecimalDotSeparator())
                 {
-                    _cells.GetCell(3, currentRow).Value = "'" + bulkMaterial.WarehouseId;
-                    _cells.GetCell(4, currentRow).Value = DateTime.ParseExact(bulkMaterial.DefaultUsageDate, @"MM/dd/yy", CultureInfo.CurrentCulture).ToString("yyyyMMdd");
-                    _cells.GetCell(8, currentRow).Value = "'" + bulkMaterial.EquipmentReference;
-                    _cells.GetCell(11, currentRow).Value = bulkMaterial.BulkMaterialTypeId;
-                    _cells.GetCell(13, currentRow).Value = bulkMaterial.Quantity;
-                }
-                catch (Exception error)
-                {
-                    _cells.GetCell(ResultColumn01, currentRow).Value = "Error: " + error.Message;
-                }
-                finally { currentRow++; }
-            }
+                    const string message =
+                        @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse";
 
-            OrderAndSort(excelSheet, TableName01);
+                    var dialogResult = MessageBox.Show(message + "\n\n¿Está seguro que desea continuar?",
+                        "ADVERTENCIA - Separador Decimal", MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button2);
+                    if (dialogResult == DialogResult.No)
+                        return;
+                }
+
+                #endregion
+
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearContents();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).NumberFormat = "@";
+
+                var openFileDialog1 = new OpenFileDialog
+                {
+                    Filter = @"Archivos CSV|*.csv",
+                    FileName = @"Seleccione un archivo de Texto",
+                    Title = @"Programa de Lectura",
+                    InitialDirectory = @"C:\\"
+                };
+
+                if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+                var filePath = openFileDialog1.FileName;
+
+                var inputFileDescription = new CsvFileDescription
+                {
+                    SeparatorChar = ',',
+                    FirstLineHasColumnNames = false,
+                    EnforceCsvColumnAttribute = true
+                };
+
+                var cc = new CsvContext();
+
+                var bulkMaterials = cc.Read<BulkMaterialItem>(filePath, inputFileDescription);
+
+                var currentRow = TitleRow01 + 1;
+                foreach (var bulkMaterial in bulkMaterials)
+                {
+                    try
+                    {
+                        _cells.GetCell(3, currentRow).Value = "'" + bulkMaterial.WarehouseId;
+                        _cells.GetCell(4, currentRow).Value = DateTime
+                            .ParseExact(bulkMaterial.DefaultUsageDate, @"MM/dd/yy", CultureInfo.CurrentCulture)
+                            .ToString("yyyyMMdd");
+                        _cells.GetCell(8, currentRow).Value = "'" + bulkMaterial.EquipmentReference;
+                        _cells.GetCell(11, currentRow).Value = bulkMaterial.BulkMaterialTypeId;
+                        _cells.GetCell(13, currentRow).Value = bulkMaterial.Quantity;
+                    }
+                    catch (Exception error)
+                    {
+                        _cells.GetCell(ResultColumn01, currentRow).Value = "Error: " + error.Message;
+                    }
+                    finally
+                    {
+                        currentRow++;
+                    }
+                }
+
+                OrderAndSort(_cells.GetWorkingWorksheet(), TableName01);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ImportFile()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+            }
         }
 
         /// <summary>
@@ -442,6 +463,9 @@ namespace EllipseBulkMaterialExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
 
+                _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+                _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
+
                 #region AlertaDecimal
                 if (!_cells.IsDecimalDotSeparator())
                 {
@@ -452,8 +476,7 @@ namespace EllipseBulkMaterialExcelAddIn
                         return;
                 }
                 #endregion 
-                var excelBook = _excelApp.ActiveWorkbook;
-                Worksheet excelSheet = excelBook.ActiveSheet;
+
                 _cells.SetCursorWait();
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -488,7 +511,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 var currentRow = TitleRow01 + 1;
                 var currentHeaderRow = currentRow;
-
+                
                 if (cbAutoSortItems.Checked)
                 {
                     var tableSheetItems = _cells.GetRange(TableName01).ListObject;
@@ -512,7 +535,8 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     try
                     {
-                        _cells.GetCell(1, currentRow).Select();
+                        if(_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(1, currentRow).Select();
 
                         //llenado de variables del encabezado de la hoja
                         var newSheetHeader = new BulkMaterialUsageSheet
@@ -621,14 +645,14 @@ namespace EllipseBulkMaterialExcelAddIn
                     }
                 }
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                MessageBox.Show(error.Message);
+                Debugger.LogError("RibbonEllipse:BulkMaterialExecute()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
             }
             finally
             {
-                if (_cells != null)
-                    _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
                 _eFunctions.CloseConnection();
             }
 
@@ -637,34 +661,16 @@ namespace EllipseBulkMaterialExcelAddIn
         private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterialUsageSheet sheetHeader, List<BulkMaterialUsageSheetItem> itemList, int headerRow, int currentRow)
         {
             DateTime usageDate;
+
             if (!DateTime.TryParseExact(sheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
                 throw new Exception("Se ha ingresado una fecha inválida");
 
             if (itemList.Count <= 0)
                 throw new Exception("No hay items para agregar en esta hoja");
 
-            string newSheetId = "";
+            var newSheetId = "";
             if(!string.IsNullOrWhiteSpace(sheetHeader.BulkMaterialUsageSheetId) && sheetHeader.BulkMaterialUsageSheetId.Length > 32)
                 throw new Exception("El Id de la hoja no puede tener más de 32 caracteres");
-
-            /*
-            if (serviceType == "POST")
-            {
-                var replySheet = BulkMaterialActions.CreateHeaderPost(_eFunctions, sheetHeader.ToDto());
-
-                //valido que no haya errores en la creación del encabezado
-                if (replySheet.Errors != null && replySheet.Errors.Length > 0)
-                {
-                    var errorMessage = "";
-                    foreach (var t in replySheet.Errors)
-                        errorMessage += " - " + t;
-
-                    throw new Exception(errorMessage);
-                }
-
-                newSheetId = replySheet.Message;
-            }
-            */
 
             var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, sheetHeader.ToDto());
 
@@ -681,11 +687,11 @@ namespace EllipseBulkMaterialExcelAddIn
             newSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
             
             sheetHeader.BulkMaterialUsageSheetId = newSheetId;
-
+            
             _cells.GetRange(1, headerRow, 1, currentRow).Value = sheetHeader.BulkMaterialUsageSheetId;
             _cells.GetRange(1, headerRow, 6, currentRow).Style = StyleConstants.Success;
 
-            bool existItemError = false;
+            var existItemError = false;
 
             foreach (var item in itemList)
             {
@@ -694,22 +700,6 @@ namespace EllipseBulkMaterialExcelAddIn
                     if (string.IsNullOrWhiteSpace(item.BulkMaterialUsageSheetId))
                         item.BulkMaterialUsageSheetId = sheetHeader.BulkMaterialUsageSheetId;
 
-                    /*
-                    if (serviceType == "POST")
-                    {
-                        var replyItem = BulkMaterialActions.AddItemToHeaderPost(_eFunctions, item.ToDto(), itemList.IndexOf(item));
-                        //valido que no haya errores en la creación del encabezado
-                        if (replyItem.Errors != null && replyItem.Errors.Length > 0)
-                        {
-                            var errorMessage = "";
-                            foreach (var t in replyItem.Errors)
-                                errorMessage += " - " + t;
-
-                            throw new Exception(errorMessage);
-                        }
-                    }
-                    */
-                    
                     var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
 
                     //valido que no haya errores en la creación del ítem
@@ -724,14 +714,16 @@ namespace EllipseBulkMaterialExcelAddIn
                     
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Value = "OK";
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
+                    if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                        _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
                 }
                 catch (Exception ex)
                 {
                     existItemError = true;
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Value = ex.Message;
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
+                    if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                        _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
                 }
                 finally
                 {
@@ -741,14 +733,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
             }
 
-            /*if (serviceType == "POST")
-                BulkMaterialActions.ApplyHeaderPost(_eFunctions, sheetHeader.ToDto());
-            else*/
             BulkMaterialActions.ApplyHeader(sheetService, opContext, sheetHeader.ToDto());
             _cells.GetRange(1, headerRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
-            _cells.GetRange(1, headerRow, 6, currentRow).Select();
+            if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                _cells.GetRange(1, headerRow, 6, currentRow).Select();
 
-            sheetHeader = null;
             itemList.Clear();
         }
 
@@ -784,11 +773,11 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                _cells.SetCursorWait();
-                var excelBook = _excelApp.ActiveWorkbook;
-                Worksheet excelSheet = excelBook.ActiveSheet;
+                _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+                _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
 
-                if (excelSheet.Name != SheetName01) return;
+
+                _cells.SetCursorWait();
                 var service = new BMUService.BulkMaterialUsageSheetService();
                 var opContext = new BMUService.OperationContext()
                 {
@@ -809,11 +798,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
                 _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-
+                
                 while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value)) != null)
                 {
                     var requestSheet = new BMUService.BulkMaterialUsageSheetDTO();
-                    _cells.GetCell(1, currentRow).Select();
 
                     try
                     {
@@ -824,26 +812,30 @@ namespace EllipseBulkMaterialExcelAddIn
                         BulkMaterialActions.DeleteHeader(service, opContext, requestSheet);
                         _cells.GetRange(1, currentRow, ResultColumn01, currentRow).Style = StyleConstants.Success;
                         _cells.GetCell(ResultColumn01, currentRow).Value2 = "HOJA ELIMINADA";
-                        _cells.GetCell(ResultColumn01, currentRow).Select();
                     }
                     catch (Exception error)
                     {
                         _cells.GetRange(1, currentRow, ResultColumn01, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
-                        _cells.GetCell(ResultColumn01, currentRow).Select();
                     }
-                    finally { currentRow++; }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn01, currentRow).Select();
+                        currentRow++;
+                    }
                 }
             }
-            catch(Exception)
+            catch (Exception ex)
             {
-                throw;
+                Debugger.LogError("RibbonEllipse:Unapply()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
             }
             finally
             {
-                if (_cells != null)
-                    _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
+
         }
 
         private void btnValidateStats_Click(object sender, RibbonControlEventArgs e)
@@ -870,59 +862,87 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private Stats GetLastStatistic(string equipNo, string statType, string statDate)
         {
-            try
+
+            var stats = new Stats();
+            if (string.IsNullOrEmpty(equipNo) || string.IsNullOrEmpty(statType)) stats.Error = "Error";
+
+            var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.DbReference,
+                _eFunctions.DbLink);
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            var drLastStat = _eFunctions.GetQueryResult(sqlQuery);
+
+            if (drLastStat != null && !drLastStat.IsClosed && drLastStat.Read())
             {
-
-                var stats = new Stats();
-                if (string.IsNullOrEmpty(equipNo) || string.IsNullOrEmpty(statType)) stats.Error = "Error";
-
-                var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.DbReference, _eFunctions.DbLink);
-
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-                var drLastStat = _eFunctions.GetQueryResult(sqlQuery);
-
-                if (drLastStat != null && !drLastStat.IsClosed && drLastStat.Read())
-                {
-                    stats.MeterValue = Convert.ToDecimal(drLastStat["METER_VALUE"].ToString());
-                    stats.EquipNo = drLastStat["EQUIP_NO"].ToString();
-                    stats.StatType = drLastStat["STAT_TYPE"].ToString();
-                    stats.StatDate = drLastStat["STAT_DATE"].ToString();
-                }
-                else
-                    stats.Error = "Error";
-
-                return stats;
+                stats.MeterValue = Convert.ToDecimal(drLastStat["METER_VALUE"].ToString());
+                stats.EquipNo = drLastStat["EQUIP_NO"].ToString();
+                stats.StatType = drLastStat["STAT_TYPE"].ToString();
+                stats.StatDate = drLastStat["STAT_DATE"].ToString();
             }
-            finally { _eFunctions.CloseConnection(); }
+            else
+                stats.Error = "Error";
+
+            return stats;
         }
 
         private void ValidateStats()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
-
-            if (excelSheet.Name != SheetName01) return;
-
-            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
-
-            var currentRow = TitleRow01 + 1;
-            while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
+            try
             {
-                var statType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
-                var equipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
-                var stat = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value);
-                var statDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+                _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                const int resultColumn = ResultColumn01;
 
-                if (equipNo != null & statType != null & stat != null)
+                _cells?.SetCursorDefault();
+                var currentRow = TitleRow01 + 1;
+                while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
                 {
-                    var lastStat = GetLastStatistic(equipNo, statType, statDate);
-                    _cells.GetCell(17, currentRow).AddComment(Convert.ToString(lastStat.StatDate + " - " + lastStat.MeterValue, CultureInfo.InvariantCulture));
-                    _cells.GetCell(17, currentRow).Style = _cells.GetStyle(Convert.ToDecimal(stat) < lastStat.MeterValue ? StyleConstants.Error : StyleConstants.Success);
+                    try
+                    {
+                        var statType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
+                        var equipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
+                        var stat = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value);
+                        var statDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
+
+                        if (equipNo != null & statType != null & stat != null)
+                        {
+                            var lastStat = GetLastStatistic(equipNo, statType, statDate);
+                            _cells.GetCell(17, currentRow)
+                                .AddComment(Convert.ToString(lastStat.StatDate + " - " + lastStat.MeterValue,
+                                    CultureInfo.InvariantCulture));
+                            _cells.GetCell(17, currentRow).Style = _cells.GetStyle(
+                                Convert.ToDecimal(stat) < lastStat.MeterValue
+                                    ? StyleConstants.Error
+                                    : StyleConstants.Success);
+                        }
+                        _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Success;
+                        _cells.GetCell(resultColumn, currentRow).Value = "VALIDADO";
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, currentRow).Value = ex.Message;
+                    }
+                    finally
+                    {
+                        currentRow++;
+                    }
                 }
-                currentRow++;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ValidateStats()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
             }
         }
 
@@ -976,69 +996,87 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-
-            _cells.ClearTableRange(TableName02);
+            _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+            _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-            //Obtengo los valores de las opciones de búsqueda
-            var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
-            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
-            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
-            var previousEquipment = new Equipment { EquipmentNo = "" };
-
-            var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, null);
-            var i = TitleRow02 + 1;
-            foreach (var eql in listeq)
+            try
             {
-                try
-                {
-                    //Para resetear el estilo
-                    _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
-                    _cells.GetCell(1, i).Value = "'" + eql.EquipNo;
-                    _cells.GetCell(5, i).Value = "'" + eql.ListType;
-                    _cells.GetCell(6, i).Value = "'" + eql.ListId;
+                _cells.SetCursorWait();
+                _cells.ClearTableRange(TableName02);
 
-                    var eq = eql.EquipNo.Trim().Equals(previousEquipment.EquipmentNo.Trim()) ? previousEquipment : EquipmentActions.FetchEquipmentData(_eFunctions, eql.EquipNo);
 
-                    _cells.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
-                    _cells.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
-                    _cells.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
-                    _cells.GetCell(7, i).Value = "'" + eq.EquipmentClass;
-                    _cells.GetCell(8, i).Value = "'" + eq.EquipmentType;
-                    _cells.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
-                    _cells.GetCell(10, i).Value = "'" + eq.SerialNumber;
-                    _cells.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
-                    _cells.GetCell(12, i).Value = "'" + eq.InputBy;
-                    _cells.GetCell(13, i).Value = "'" + eq.AccountCode;
-                    _cells.GetCell(14, i).Value = "'" + eq.CompCode;
-                    _cells.GetCell(15, i).Value = "'" + eq.Mnemonic;
-                    _cells.GetCell(16, i).Value = "'" + eq.StockCode;
-                    _cells.GetCell(17, i).Value = "'" + eq.PartNo;
-                    _cells.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
-                    _cells.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                //Obtengo los valores de las opciones de búsqueda
+                var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
+                var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+                var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
+                var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+                var previousEquipment = new Equipment {EquipmentNo = ""};
 
-                    previousEquipment = eq;
-                }
-                catch (Exception ex)
+                var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1,
+                    searchCriteriaKey2, searchCriteriaValue2, null);
+                var i = TitleRow02 + 1;
+                foreach (var eql in listeq)
                 {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewListEquipmentsList()", ex.Message);
+                    try
+                    {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
+                        _cells.GetCell(1, i).Value = "'" + eql.EquipNo;
+                        _cells.GetCell(5, i).Value = "'" + eql.ListType;
+                        _cells.GetCell(6, i).Value = "'" + eql.ListId;
+
+                        var eq = eql.EquipNo.Trim().Equals(previousEquipment.EquipmentNo.Trim())
+                            ? previousEquipment
+                            : EquipmentActions.FetchEquipmentData(_eFunctions, eql.EquipNo);
+
+                        _cells.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
+                        _cells.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
+                        _cells.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
+                        _cells.GetCell(7, i).Value = "'" + eq.EquipmentClass;
+                        _cells.GetCell(8, i).Value = "'" + eq.EquipmentType;
+                        _cells.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
+                        _cells.GetCell(10, i).Value = "'" + eq.SerialNumber;
+                        _cells.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
+                        _cells.GetCell(12, i).Value = "'" + eq.InputBy;
+                        _cells.GetCell(13, i).Value = "'" + eq.AccountCode;
+                        _cells.GetCell(14, i).Value = "'" + eq.CompCode;
+                        _cells.GetCell(15, i).Value = "'" + eq.Mnemonic;
+                        _cells.GetCell(16, i).Value = "'" + eq.StockCode;
+                        _cells.GetCell(17, i).Value = "'" + eq.PartNo;
+                        _cells.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                        _cells.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+
+                        previousEquipment = eq;
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewListEquipmentsList()", ex.Message);
+                    }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(2, i).Select();
+                        i++;
+                    }
                 }
-                finally
-                {
-                    _cells.GetCell(2, i).Select();
-                    i++;
-                }
+
+                _cells.WorkingWorksheet.Cells.Columns.AutoFit();
             }
-
-            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _eFunctions.CloseConnection();
-            if (_cells != null) _cells.SetCursorDefault();
-
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewEquipmentList()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
@@ -1047,7 +1085,7 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -1076,95 +1114,115 @@ namespace EllipseBulkMaterialExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void ReviewEquipmentListFromBulkList()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
             var celleq = new ExcelStyleCells(_excelApp, SheetName01);
             var cellli = new ExcelStyleCells(_excelApp, SheetName02);
             celleq.SetCursorWait();
             cellli.ClearTableRange(TableName02);
-            var resultColumn = ResultColumn02;
+            const int resultColumn = ResultColumn02;
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-
-            var k = TitleRow01 + 1;
-            var i = TitleRow02 + 1;
-            var previousEquipment = new Equipment { EquipmentNo = "" };
-            while (!string.IsNullOrEmpty("" + celleq.GetCell(8, k).Value))
+            try
             {
-                var equipmentNo = celleq.GetEmptyIfNull(celleq.GetCell(8, k).Value);
-
-                try
+                var k = TitleRow01 + 1;
+                var i = TitleRow02 + 1;
+                var previousEquipment = new Equipment {EquipmentNo = ""};
+                while (!string.IsNullOrEmpty("" + celleq.GetCell(8, k).Value))
                 {
-                    var eqlists = ListActions.FetchListEquipmentsList(_eFunctions, EquipListSearchFieldCriteria.EquipmentNo.Key, equipmentNo, EquipListSearchFieldCriteria.None.Key, null, null);
+                    var equipmentNo = celleq.GetEmptyIfNull(celleq.GetCell(8, k).Value);
 
-                    foreach (var list in eqlists)
+                    try
                     {
-                        var listedEq = ListActions.FetchListEquipmentsList(_eFunctions, EquipListSearchFieldCriteria.ListType.Key, list.ListType, EquipListSearchFieldCriteria.ListId.Key, list.ListId, null);
-                        foreach (EquipListItem eql in listedEq)
+                        var eqlists = ListActions.FetchListEquipmentsList(_eFunctions,
+                            EquipListSearchFieldCriteria.EquipmentNo.Key, equipmentNo,
+                            EquipListSearchFieldCriteria.None.Key, null, null);
+
+                        foreach (var list in eqlists)
                         {
-                            try
+                            var listedEq = ListActions.FetchListEquipmentsList(_eFunctions,
+                                EquipListSearchFieldCriteria.ListType.Key, list.ListType,
+                                EquipListSearchFieldCriteria.ListId.Key, list.ListId, null);
+                            foreach (EquipListItem eql in listedEq)
                             {
-                                //Para resetear el estilo
-                                cellli.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
-                                cellli.GetCell(1, i).Value = "'" + eql.EquipNo;
-                                cellli.GetCell(5, i).Value = "'" + eql.ListType;
-                                cellli.GetCell(6, i).Value = "'" + eql.ListId;
+                                try
+                                {
+                                    //Para resetear el estilo
+                                    cellli.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+                                    cellli.GetCell(1, i).Value = "'" + eql.EquipNo;
+                                    cellli.GetCell(5, i).Value = "'" + eql.ListType;
+                                    cellli.GetCell(6, i).Value = "'" + eql.ListId;
 
-                                var eq = eql.EquipNo.Trim().Equals(previousEquipment.EquipmentNo.Trim()) ? previousEquipment : EquipmentActions.FetchEquipmentData(_eFunctions, eql.EquipNo);
+                                    var eq = eql.EquipNo.Trim().Equals(previousEquipment.EquipmentNo.Trim())
+                                        ? previousEquipment
+                                        : EquipmentActions.FetchEquipmentData(_eFunctions, eql.EquipNo);
 
-                                cellli.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
-                                cellli.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
-                                cellli.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
-                                cellli.GetCell(7, i).Value = "'" + eq.EquipmentClass;
-                                cellli.GetCell(8, i).Value = "'" + eq.EquipmentType;
-                                cellli.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
-                                cellli.GetCell(10, i).Value = "'" + eq.SerialNumber;
-                                cellli.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
-                                cellli.GetCell(12, i).Value = "'" + eq.InputBy;
-                                cellli.GetCell(13, i).Value = "'" + eq.AccountCode;
-                                cellli.GetCell(14, i).Value = "'" + eq.CompCode;
-                                cellli.GetCell(15, i).Value = "'" + eq.Mnemonic;
-                                cellli.GetCell(16, i).Value = "'" + eq.StockCode;
-                                cellli.GetCell(17, i).Value = "'" + eq.PartNo;
-                                cellli.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
-                                cellli.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                                    cellli.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
+                                    cellli.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
+                                    cellli.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
+                                    cellli.GetCell(7, i).Value = "'" + eq.EquipmentClass;
+                                    cellli.GetCell(8, i).Value = "'" + eq.EquipmentType;
+                                    cellli.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
+                                    cellli.GetCell(10, i).Value = "'" + eq.SerialNumber;
+                                    cellli.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
+                                    cellli.GetCell(12, i).Value = "'" + eq.InputBy;
+                                    cellli.GetCell(13, i).Value = "'" + eq.AccountCode;
+                                    cellli.GetCell(14, i).Value = "'" + eq.CompCode;
+                                    cellli.GetCell(15, i).Value = "'" + eq.Mnemonic;
+                                    cellli.GetCell(16, i).Value = "'" + eq.StockCode;
+                                    cellli.GetCell(17, i).Value = "'" + eq.PartNo;
+                                    cellli.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                                    cellli.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
 
-                                previousEquipment = eq;
-                            }
-                            catch (Exception ex)
-                            {
-                                cellli.GetCell(1, i).Style = StyleConstants.Error;
-                                cellli.GetCell(resultColumn, i).Value = "ERRORLIST: " + ex.Message;
-                                Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
-                            }
-                            finally
-                            {
-                                if (((Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
-                                    cellli.GetCell(2, i).Select();
-                                i++;
+                                    previousEquipment = eq;
+                                }
+                                catch (Exception ex)
+                                {
+                                    cellli.GetCell(1, i).Style = StyleConstants.Error;
+                                    cellli.GetCell(resultColumn, i).Value = "ERRORLIST: " + ex.Message;
+                                    Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                                }
+                                finally
+                                {
+                                    if (_cells.ActiveSheet.Name == SheetName02)
+                                        cellli.GetCell(2, i).Select();
+                                    i++;
+                                }
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        celleq.GetCell(1, k).Style = StyleConstants.Error;
+                        celleq.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                    }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Name == SheetName01)
+                            celleq.GetCell(1, k).Select();
+                        else if (_cells.ActiveSheet.Name == SheetName02)
+                            cellli.GetCell(1, i).Select();
+                        k++;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    celleq.GetCell(1, k).Style = StyleConstants.Error;
-                    celleq.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
-                }
-                finally
-                {
-                    if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
-                        celleq.GetCell(1, k).Select();
-                    else if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
-                        cellli.GetCell(1, i).Select();
-                    k++;
-                }
+
+                cellli.WorkingWorksheet.Cells.Columns.AutoFit();
             }
-
-            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (celleq != null) celleq.SetCursorDefault();
-
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewEquipmentListFromBulkList()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
 
         private void btnAddToList_Click(object sender, RibbonControlEventArgs e)
@@ -1196,53 +1254,72 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+            _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
+
             _cells.SetCursorWait();
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-            var i = TitleRow02 + 1;
-
-            var opSheet = new ListService.OperationContext
+            try
             {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                returnWarnings = Debugger.DebugWarnings
-            };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                var i = TitleRow02 + 1;
 
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
-            {
-                try
+                var opSheet = new ListService.OperationContext
                 {
-                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-                    var equiplist = new EquipListItem()
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    returnWarnings = Debugger.DebugWarnings
+                };
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+                {
+                    try
                     {
-                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
-                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
-                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
-                    };
+                        var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                        var equiplist = new EquipListItem()
+                        {
+                            EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                            ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                            ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
+                        };
 
-                    ListActions.AddEquipmentToList(opSheet, urlService, equiplist);
+                        ListActions.AddEquipmentToList(opSheet, urlService, equiplist);
 
-                    _cells.GetCell(ResultColumn02, i).Value = "AGREGADO A LA LISTA";
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn02, i).Select();
+                        _cells.GetCell(ResultColumn02, i).Value = "AGREGADO A LA LISTA";
+                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                        Debugger.LogError("RibbonEllipse.cs:AddListEquipmentsList()", ex.Message);
+                    }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                        i++;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:AddListEquipmentsList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    i++;
-                }
+
+                _cells.WorkingWorksheet.Cells.Columns.AutoFit();
             }
-            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:AddEquipmentsToList()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
 
         private void btnRemoveFromList_Click(object sender, RibbonControlEventArgs e)
@@ -1270,57 +1347,78 @@ namespace EllipseBulkMaterialExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void RemoveEquipmentsFromList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _cells.SetWorkingWorksheet(_cells.ActiveSheet);
+            _cells.SetFixedWorkingWorkSheet(cbAllowBackgroundWork.Checked);
 
-            var i = TitleRow02 + 1;
-
-            var opSheet = new ListService.OperationContext
+            try
             {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                returnWarnings = Debugger.DebugWarnings
-            };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                _cells.SetCursorWait();
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                
+                var i = TitleRow02 + 1;
 
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
-            {
-                try
+                var opSheet = new ListService.OperationContext
                 {
-                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-                    var equiplist = new EquipListItem()
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    returnWarnings = Debugger.DebugWarnings
+                };
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+                {
+                    try
                     {
-                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
-                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
-                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
-                    };
+                        var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                        var equiplist = new EquipListItem()
+                        {
+                            EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                            ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                            ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
+                        };
 
-                    ListActions.DeleteEquipmentFromList(opSheet, urlService, equiplist);
+                        ListActions.DeleteEquipmentFromList(opSheet, urlService, equiplist);
 
-                    _cells.GetCell(ResultColumn02, i).Value = "ELIMINADO DE LISTA";
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn02, i).Select();
+                        _cells.GetCell(ResultColumn02, i).Value = "ELIMINADO DE LISTA";
+                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                        Debugger.LogError("RibbonEllipse.cs:RemoveEquipmentsFromList()", ex.Message);
+                    }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Equals(_cells.WorkingWorksheet))
+                            _cells.GetCell(ResultColumn02, i).Select();
+                        i++;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:DeleteListEquipmentsList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    i++;
-                }
+
+                _cells.WorkingWorksheet.Cells.Columns.AutoFit();
             }
-            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:RemoveEquipmentsFromList()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
 
         private string GetItemAccountCode(EllipseFunctions ef, string defaultAccountCode, string equipNo, string materialTypeId)
@@ -1404,6 +1502,12 @@ namespace EllipseBulkMaterialExcelAddIn
         private void cbIgnoreItemError_Click(object sender, RibbonControlEventArgs e)
         {
             Settings.CurrentSettings.SetCustomSettingValue("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
+        }
+
+        private void cbAllowBackgroundWork_Click(object sender, RibbonControlEventArgs e)
+        {
+            Settings.CurrentSettings.SetCustomSettingValue("AllowBackgroundWork", MyUtilities.ToString(cbAllowBackgroundWork.Checked));
             Settings.CurrentSettings.SaveCustomSettings();
         }
     }

@@ -1510,7 +1510,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReviewWorkRequestPfc()
@@ -1583,7 +1584,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReviewWorkRequestMnttoList()
@@ -1717,7 +1719,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReReviewWorkRequestList()
@@ -1798,7 +1801,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReReviewWorkRequestPfc()
@@ -1856,7 +1860,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReReviewWorkRequestMnttoList()
@@ -1977,7 +1982,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReviewReferenceCodesList()
@@ -2076,7 +2082,8 @@ namespace EllipseWorkRequestExcelAddIn
             //porque son columnas extensas
             _cells.GetCell(04, 01).ColumnWidth = 30;
             _cells.GetCell(05, 01).ColumnWidth = 30;
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReReviewReferenceCodesList()
@@ -2158,7 +2165,8 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
             //porque son columnas extensas
             _cells.GetCell(04, 01).ColumnWidth = 30;
             _cells.GetCell(05, 01).ColumnWidth = 30;

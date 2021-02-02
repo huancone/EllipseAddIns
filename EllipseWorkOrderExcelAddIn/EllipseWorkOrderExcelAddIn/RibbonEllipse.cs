@@ -4415,7 +4415,7 @@ namespace EllipseWorkOrderExcelAddIn
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
             _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
-            woCells.SetAlwaysActiveSheet(false);
+            woCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow02 + 1;//itera la celda para cada tarea
@@ -4711,8 +4711,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
             var tdCells = new ExcelStyleCells(_excelApp, SheetName08);
-            woCells.SetAlwaysActiveSheet(false);
-            tdCells.SetAlwaysActiveSheet(false);
+            woCells.SetAlwasActiveAsWorkingSheet(false);
+            tdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada orden
             var i = titleRow + 1;//itera la celda para to do
@@ -4795,8 +4795,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             var tkCells = new ExcelStyleCells(_excelApp, SheetName02);
             var tdCells = new ExcelStyleCells(_excelApp, SheetName08);
-            tkCells.SetAlwaysActiveSheet(false);
-            tdCells.SetAlwaysActiveSheet(false);
+            tkCells.SetAlwasActiveAsWorkingSheet(false);
+            tdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow02 + 1;//itera según cada orden
             var i = titleRow + 1;//itera la celda para to do
@@ -4961,7 +4961,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
-            woCells.SetAlwaysActiveSheet(false);
+            woCells.SetAlwasActiveAsWorkingSheet(false);
 
             var resultColumn = ResultColumn03;
             var j = TitleRow01 + 1;//itera según cada orden
@@ -5043,7 +5043,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwaysActiveSheet(false);
+            taskCells.SetAlwasActiveAsWorkingSheet(false);
 
             var resultColumn = ResultColumn03;
             var j = TitleRow02 + 1;//itera según cada tarea
@@ -5304,7 +5304,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
             var i = TitleRow03 + 1;
 
-            var opSheetResource = new ResourceReqmntsService.OperationContext
+            var opContextResource = new ResourceReqmntsService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
@@ -5313,7 +5313,7 @@ namespace EllipseWorkOrderExcelAddIn
                 returnWarningsSpecified = true,
                 maxInstancesSpecified = true
             };
-            var opSheetMaterial = new MaterialReqmntsService.OperationContext
+            var opContextMaterial = new MaterialReqmntsService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
@@ -5322,7 +5322,7 @@ namespace EllipseWorkOrderExcelAddIn
                 returnWarningsSpecified = true,
                 maxInstancesSpecified = true
             };
-            var opSheetEquipment = new EquipmentReqmntsService.OperationContext()
+            var opContextEquipment = new EquipmentReqmntsService.OperationContext()
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
@@ -5364,29 +5364,29 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals("C"))
                     {
                         if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
-                            WorkOrderTaskActions.CreateTaskResource(urlService, opSheetResource, taskReq);
+                            WorkOrderTaskActions.CreateTaskResource(urlService, opContextResource, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
-                            WorkOrderTaskActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            WorkOrderTaskActions.CreateTaskMaterial(urlService, opContextMaterial, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
-                            WorkOrderTaskActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            WorkOrderTaskActions.CreateTaskEquipment(urlService, opContextEquipment, taskReq);
                     }
                     else if (action.Equals("M"))
                     {
                         if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
-                            WorkOrderTaskActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
+                            WorkOrderTaskActions.ModifyTaskResource(urlService, opContextResource, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
-                            WorkOrderTaskActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            WorkOrderTaskActions.ModifyTaskMaterial(urlService, opContextMaterial, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
-                            WorkOrderTaskActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            WorkOrderTaskActions.ModifyTaskEquipment(urlService, opContextEquipment, taskReq);
                     }
                     else if (action.Equals("D"))
                     {
                         if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
-                            WorkOrderTaskActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
+                            WorkOrderTaskActions.DeleteTaskResource(urlService, opContextResource, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
-                            WorkOrderTaskActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
+                            WorkOrderTaskActions.DeleteTaskMaterial(urlService, opContextMaterial, taskReq);
                         else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
-                            WorkOrderTaskActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
+                            WorkOrderTaskActions.DeleteTaskEquipment(urlService, opContextEquipment, taskReq);
                     }
                     _cells.GetCell(ResultColumn03, i).Value = "OK";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;

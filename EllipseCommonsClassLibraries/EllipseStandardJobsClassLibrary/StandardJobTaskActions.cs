@@ -25,16 +25,18 @@ namespace EllipseStandardJobsClassLibrary
         /// Actualiza un standardJob con la información de la clase StandardJob
         /// </summary>
         /// <param name="urlService">string: URL del servicio</param>
-        /// <param name="opContext">StandardJobService.OperationContext: Contexto de operación de Ellipse</param>
+        /// <param name="opContext">StandardJobTasksService.OperationContext: Contexto de operación de Ellipse</param>
         /// <param name="stdTask">StandardJobTask: Objeto clase de StandardJobTask</param>
         /// <param name="overrideActive">bool: (Opcional) Indica si se actualiza sin importar si el Standard está activo/inactivo</param>
         public static void ModifyStandardJobTask(string urlService, StandardJobTaskService.OperationContext opContext, StandardJobTask stdTask, bool overrideActive = false)
         {
-            var proxyStdTask = new StandardJobTaskService.StandardJobTaskService();//ejecuta las acciones del servicio
+            var service = new StandardJobTaskService.StandardJobTaskService();//ejecuta las acciones del servicio
             var requestStdTask = new StandardJobTaskServiceModifyRequestDTO();
+            
+            
 
             //se cargan los parámetros de la orden
-            proxyStdTask.Url = urlService + "/StandardJobServiceTask";
+            service.Url = urlService + "/StandardJobTaskService";
 
             //se cargan los parámetros de la orden
             requestStdTask.districtCode = stdTask.DistrictCode ?? requestStdTask.districtCode;
@@ -48,22 +50,23 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.completeInstr = stdTask.CompleteInstr ?? requestStdTask.completeInstr;
             requestStdTask.complTextCode = stdTask.ComplTextCode ?? requestStdTask.complTextCode;
             requestStdTask.assignPerson = stdTask.AssignPerson ?? requestStdTask.assignPerson;
-            requestStdTask.estimatedMachHrs = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs) ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default(decimal);
+            requestStdTask.estimatedMachHrs = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs) ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default;
             requestStdTask.estimatedMachHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs);
-            requestStdTask.unitOfWork = stdTask.UnitOfWork ?? requestStdTask.unitOfWork;
-            requestStdTask.unitsRequired = !string.IsNullOrEmpty(stdTask.UnitsRequired) ? Convert.ToDecimal(stdTask.UnitsRequired) : default(decimal);
+            requestStdTask.unitOfWork = string.IsNullOrEmpty(stdTask.UnitOfWork) ? null : stdTask.UnitOfWork;
+            requestStdTask.unitsRequired = !string.IsNullOrEmpty(stdTask.UnitsRequired) ? Convert.ToDecimal(stdTask.UnitsRequired) : default;
             requestStdTask.unitsRequiredSpecified = !string.IsNullOrEmpty(stdTask.UnitsRequired);
-            requestStdTask.unitsPerDay = !string.IsNullOrEmpty(stdTask.UnitsPerDay) ? Convert.ToDecimal(stdTask.UnitsPerDay) : default(decimal);
+            requestStdTask.unitsPerDay = !string.IsNullOrEmpty(stdTask.UnitsPerDay) ? Convert.ToDecimal(stdTask.UnitsPerDay) : default;
             requestStdTask.unitsPerDaySpecified = !string.IsNullOrEmpty(stdTask.UnitsPerDay);
-            requestStdTask.estimatedDurationsHrs = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
+            requestStdTask.estimatedDurationsHrs = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default;
             requestStdTask.estimatedDurationsHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs);
             requestStdTask.APLEquipmentGrpId = stdTask.AplEquipmentGrpId ?? requestStdTask.APLEquipmentGrpId;
             requestStdTask.APLType = stdTask.AplType ?? requestStdTask.APLType;
             requestStdTask.APLCompCode = stdTask.AplCompCode ?? requestStdTask.APLCompCode;
             requestStdTask.APLCompModCode = stdTask.AplCompModCode ?? requestStdTask.APLCompModCode;
             requestStdTask.APLSeqNo = stdTask.AplSeqNo ?? requestStdTask.APLSeqNo;
+            requestStdTask.APLEGIRef = stdTask.AplEgiRef ?? requestStdTask.APLEGIRef;
 
-            proxyStdTask.modify(opContext, requestStdTask);
+            service.modify(opContext, requestStdTask);
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace EllipseStandardJobsClassLibrary
             var requestStdTask = new StandardJobTaskServiceCreateRequestDTO();
 
             //se cargan los parámetros de la orden
-            proxyStdTask.Url = urlService + "/StandardJobServiceTask";
+            proxyStdTask.Url = urlService + "/StandardJobTaskService";
 
             //se cargan los parámetros de la orden
             requestStdTask.districtCode = stdTask.DistrictCode ?? requestStdTask.districtCode;
@@ -93,21 +96,21 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.completeInstr = stdTask.CompleteInstr ?? requestStdTask.completeInstr;
             requestStdTask.complTextCode = stdTask.ComplTextCode ?? requestStdTask.complTextCode;
             requestStdTask.assignPerson = stdTask.AssignPerson ?? requestStdTask.assignPerson;
-            requestStdTask.estimatedMachHrs = stdTask.EstimatedMachHrs != null ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default(decimal);
-            requestStdTask.estimatedMachHrsSpecified = stdTask.EstimatedMachHrs != null;
-            requestStdTask.unitOfWork = stdTask.UnitOfWork ?? requestStdTask.unitOfWork;
-            requestStdTask.unitsRequired = stdTask.UnitsRequired != null ? Convert.ToDecimal(stdTask.UnitsRequired) : default(decimal);
-            requestStdTask.unitsRequiredSpecified = stdTask.UnitsRequired != null;
-            requestStdTask.unitsPerDay = stdTask.UnitsPerDay != null ? Convert.ToDecimal(stdTask.UnitsPerDay) : default(decimal);
-            requestStdTask.unitsPerDaySpecified = stdTask.UnitsPerDay != null;
-            requestStdTask.estimatedDurationsHrs = stdTask.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
-            requestStdTask.estimatedDurationsHrsSpecified = stdTask.EstimatedDurationsHrs != null;
+            requestStdTask.estimatedMachHrs = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs) ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default;
+            requestStdTask.estimatedMachHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs);
+            requestStdTask.unitOfWork = string.IsNullOrEmpty(stdTask.UnitOfWork) ? null : stdTask.UnitOfWork;
+            requestStdTask.unitsRequired = !string.IsNullOrEmpty(stdTask.UnitsRequired) ? Convert.ToDecimal(stdTask.UnitsRequired) : default;
+            requestStdTask.unitsRequiredSpecified = !string.IsNullOrEmpty(stdTask.UnitsRequired);
+            requestStdTask.unitsPerDay = !string.IsNullOrEmpty(stdTask.UnitsPerDay) ? Convert.ToDecimal(stdTask.UnitsPerDay) : default;
+            requestStdTask.unitsPerDaySpecified = !string.IsNullOrEmpty(stdTask.UnitsPerDay);
+            requestStdTask.estimatedDurationsHrs = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default;
+            requestStdTask.estimatedDurationsHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs);
             requestStdTask.APLEquipmentGrpId = stdTask.AplEquipmentGrpId ?? requestStdTask.APLEquipmentGrpId;
-            requestStdTask.APLEGIRef = stdTask.AplEgiRef ?? requestStdTask.APLEGIRef;
             requestStdTask.APLType = stdTask.AplType ?? requestStdTask.APLType;
             requestStdTask.APLCompCode = stdTask.AplCompCode ?? requestStdTask.APLCompCode;
             requestStdTask.APLCompModCode = stdTask.AplCompModCode ?? requestStdTask.APLCompModCode;
             requestStdTask.APLSeqNo = stdTask.AplSeqNo ?? requestStdTask.APLSeqNo;
+            requestStdTask.APLEGIRef = stdTask.AplEgiRef ?? requestStdTask.APLEGIRef;
 
             proxyStdTask.create(opContext, requestStdTask);
         }
@@ -117,7 +120,7 @@ namespace EllipseStandardJobsClassLibrary
             var proxyStdTask = new StandardJobTaskService.StandardJobTaskService();//ejecuta las acciones del servicio
             var requestStdTask = new StandardJobTaskServiceDeleteRequestDTO();
 
-            proxyStdTask.Url = urlService + "/StandardJobServiceTask";
+            proxyStdTask.Url = urlService + "/StandardJobTaskService";
             requestStdTask.districtCode = stdTask.DistrictCode ?? requestStdTask.districtCode;
             requestStdTask.standardJob = stdTask.StandardJob ?? requestStdTask.standardJob;
             requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo.PadLeft(3, '0');
@@ -154,9 +157,9 @@ namespace EllipseStandardJobsClassLibrary
 
             requestTaskReq.resourceClass = taskReq.ReqCode.Substring(0, 1);
             requestTaskReq.resourceCode = taskReq.ReqCode.Substring(1);
-            requestTaskReq.quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
+            requestTaskReq.quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default;
             requestTaskReq.quantityRequiredSpecified = true;
-            requestTaskReq.hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal);
+            requestTaskReq.hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default;
             requestTaskReq.hrsReqdSpecified = true;
             requestTaskReq.classType = "ST";
             requestTaskReq.enteredInd = "S";
@@ -182,7 +185,7 @@ namespace EllipseStandardJobsClassLibrary
 
             requestTaskReq.seqNo = taskReq.SeqNo ?? requestTaskReq.seqNo;
             requestTaskReq.stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0');
-            requestTaskReq.unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
+            requestTaskReq.unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default;
             requestTaskReq.unitQuantityReqdSpecified = true;
             requestTaskReq.catalogueFlag = true;
             requestTaskReq.catalogueFlagSpecified = true;
@@ -219,9 +222,9 @@ namespace EllipseStandardJobsClassLibrary
                 SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
-                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default,
                 quantityRequiredSpecified = true,
-                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
+                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default,
                 hrsReqdSpecified = true,
                 classType = "ST",
                 enteredInd = "S"
@@ -248,7 +251,7 @@ namespace EllipseStandardJobsClassLibrary
                 SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0'),
-                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default,
                 unitQuantityReqdSpecified = true,
                 catalogueFlag = true,
                 catalogueFlagSpecified = true,
@@ -335,7 +338,7 @@ namespace EllipseStandardJobsClassLibrary
                 SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
-                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default,
                 unitQuantityReqdSpecified = true,
                 UOM = taskReq.UoM,
                 contestibleFlg = false,
@@ -370,7 +373,7 @@ namespace EllipseStandardJobsClassLibrary
                 SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
-                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default,
                 unitQuantityReqdSpecified = true,
                 UOM = taskReq.UoM,
                 contestibleFlg = false,

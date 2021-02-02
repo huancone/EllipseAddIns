@@ -1,41 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using Microsoft.Office.Interop.Excel;
-using Application = Microsoft.Office.Interop.Excel.Application;
-using SharedClassLibrary.Utilities;
-//Shared Class Library - ExcelStyleCells
+﻿//Shared Class Library - ExcelStyleCells
 //Desarrollado por:
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
+using Microsoft.Office.Interop.Excel;
+using Application = Microsoft.Office.Interop.Excel.Application;
+using SharedClassLibrary.Utilities;
 
-// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace SharedClassLibrary.Vsto.Excel
 {
     public class ExcelStyleCells
     {
         private readonly Application _excelApp;
-        private Worksheet _excelSheet;
-
-        private bool _alwaysActiveSheet;
+        private Worksheet _workingWorksheet;
+        //private bool _alwasActiveAsWorkingSheet;
+        private bool _fixedWorkingWorksheet;
         private CultureInfo _oldCultureInfo;
+        public Worksheet WorkingWorksheet => _workingWorksheet ?? ActiveSheet;
+        public Worksheet ActiveSheet => _excelApp.ActiveWorkbook.ActiveSheet;
+
+
         /// <summary>
-        /// Constructor de la clase. Si alwaysActiveSheet es true La clase estará sujeta a la hoja activa con la que se esté trabajando, si es false, estará sujeta exclusivamente a la hoja activa desde la que se invoca este constructor
+        /// Constructor de la clase. Si fixedWorkingsheet es true La clase estará sujeta exclusivamente a la hoja desde la que se invoca este constructor. Si es false estará sujeta a la hoja activa con la que se esté trabajando
         /// </summary>
         /// <param name="excelApp">Microsoft.Office.Interop.Excel.Application Aplicación Excel en ejecución</param>
-        /// <param name="alwaysActiveSheet">bool: Determina si se ejecutará según la hoja activa de excel</param>
-        public ExcelStyleCells(Application excelApp, bool alwaysActiveSheet = true)
+        /// <param name="fixedWorkingsheet">bool: Determina si se ejecutará según la hoja establecida o la hoja activa de excel</param>
+        public ExcelStyleCells(Application excelApp, bool fixedWorkingsheet = false)
         {
             _excelApp = excelApp;
-            _alwaysActiveSheet = alwaysActiveSheet;
+            _fixedWorkingWorksheet = fixedWorkingsheet;
             try
             {
                 //Si hay un libro activo (Ej. Office 2013+ inicia sin libro activo)
                 if (_excelApp.ActiveWorkbook == null) return;
-                _excelSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
+                _workingWorksheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
                 CreateStyles();
             }
             catch(Exception ex)
@@ -52,16 +54,16 @@ namespace SharedClassLibrary.Vsto.Excel
         public ExcelStyleCells(Application excelApp, string sheetName)
         {
             _excelApp = excelApp;
-            _alwaysActiveSheet = false;
+            _fixedWorkingWorksheet = true;
             try
             {
                 //Si hay un libro activo (Ej. Office 2013+ inicia sin libro activo)
                 if (_excelApp.ActiveWorkbook == null) return;
-                _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+                _workingWorksheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
                 foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
                 {
                     if (sheet.Name != sheetName) continue;
-                    _excelSheet = sheet;
+                    _workingWorksheet = sheet;
                     break;
                 }
                 CreateStyles();
@@ -76,32 +78,48 @@ namespace SharedClassLibrary.Vsto.Excel
         /// Establece como hoja de trabajo a la hoja activa
         /// </summary>
         /// <returns>bool: true si hay una hoja activa disponible</returns>
-        public bool SetActiveSheet()
+        public bool SetWorkingWorksheet()
         {
             try
             {
-                _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+                _workingWorksheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
                 return true;
             }
             catch(Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:SetWorkingWorksheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
-
+        /// <summary>
+        /// Establece como hoja de trabajo a la hoja activa
+        /// </summary>
+        /// <returns>bool: true si hay una hoja activa disponible</returns>
+        public bool SetWorkingWorksheet(Worksheet worksheet)
+        {
+            try
+            {
+                _workingWorksheet = worksheet;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("ExcelStyleCells:SetWorkingWorksheet(worksheet)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                return false;
+            }
+        }
         /// <summary>
         /// Establece como hoja de trabajo a la hoja ingresada en sheetName. Si no existe no hace cambios
         /// </summary>
         /// <returns>bool: true si hay una hoja que coincida con sheetName</returns>
-        public bool SetActiveSheet(string sheetName)
+        public bool SetWorkingWorksheet(string sheetName)
         {
             try
             {
                 foreach (Worksheet ws in _excelApp.ActiveWorkbook.Sheets)
                 {
                     if (ws.Name != sheetName) continue;
-                    _excelSheet = ws;
+                    _workingWorksheet = ws;
                     return true;
                 }
                 return false;
@@ -109,27 +127,27 @@ namespace SharedClassLibrary.Vsto.Excel
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:SetWorkingWorksheet(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
         /// <summary>
-        /// Establece el valor de alwaysActiveSheet (siempre la hoja activa) como True o False. Si es true, ejecutará siempre las acciones en la hoja activa. Si es false, ejecutará las acciones en la hoja que se haya especificado en el momento de su creación o la hoja establecida en la clase
+        /// Establece el valor de fixedWorkingsheet (hoja establecida) como True o False. Si es true, ejecutará siempre las acciones en la hoja que se haya especificado en el momento de su creación o la hoja establecida en la clase. Si es false, ejecutará las acciones en la hoja actva
         /// </summary>
-        /// <param name="value">bool: valor booleano a asignar a alwaysActiveSheet</param>
-        public void SetAlwaysActiveSheet(bool value)
+        /// <param name="value">bool: valor booleano a asignar a fixedWorkingWorksheet</param>
+        public void SetFixedWorkingWorkSheet(bool value)
         {
-            _alwaysActiveSheet = value;
+            _fixedWorkingWorksheet = value;
         }
 
         /// <summary>
         /// Cambia el valor de alwaysActiveSheet. Si está en true, lo cambia a false y viceversa
         /// </summary>
         /// <returns>bool: Estado final del valor de alwaysActiveSheet</returns>
-        public bool ToggleAlwaysActiveSheet()
+        public bool ToggleFixedWorkingWorksheet()
         {
-            _alwaysActiveSheet = !_alwaysActiveSheet;
-            return _alwaysActiveSheet;
+            _fixedWorkingWorksheet = !_fixedWorkingWorksheet;
+            return _fixedWorkingWorksheet;
         }
 
         //CELLS
@@ -142,7 +160,7 @@ namespace SharedClassLibrary.Vsto.Excel
         /// <returns>Excel.Range Celda solicitada</returns>
         public Range GetCell(long column, long row)
         {
-            var excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+            var excelSheet = _fixedWorkingWorksheet ? WorkingWorksheet : ActiveSheet;
             return excelSheet != null ? (Range)excelSheet.Cells[row, column] : null;
         }
 
@@ -153,8 +171,8 @@ namespace SharedClassLibrary.Vsto.Excel
         /// <returns>Microsoft.Office.Interop.Excel.Range Celda solicitada</returns>
         public Range GetCell(string cell)
         {
-            var excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
-            return excelSheet != null ? excelSheet.Range[cell] : null;
+            var excelSheet = _fixedWorkingWorksheet ? WorkingWorksheet : ActiveSheet;
+            return excelSheet?.Range[cell];
         }
 
         /// <summary>
@@ -167,8 +185,7 @@ namespace SharedClassLibrary.Vsto.Excel
             try
             {
                 var cellsRange = GetCell(cell);
-                if(cellsRange != null)
-                    cellsRange.Clear();
+                cellsRange?.Clear();
                 return true;
             }
             catch (Exception ex)
@@ -211,8 +228,8 @@ namespace SharedClassLibrary.Vsto.Excel
         /// <returns>Microsoft.Office.Interop.Excel.Range Rango solicitado</returns>
         public Range GetRange(string startRange, string endRange)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
-            return excelSheet != null ? excelSheet.Range[startRange + ":" + endRange] : null;
+            var excelSheet = _fixedWorkingWorksheet ? WorkingWorksheet : ActiveSheet;
+            return excelSheet?.Range[startRange + ":" + endRange];
         }
 
         /// <summary>
@@ -225,9 +242,9 @@ namespace SharedClassLibrary.Vsto.Excel
         /// <returns>Microsoft.Office.Interop.Excel.Range Rango solicitado</returns>
         public Range GetRange(long startColumn, long startRow, long endColumn, long endRow)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+            var excelSheet = _fixedWorkingWorksheet ? WorkingWorksheet : ActiveSheet;
 
-            return excelSheet != null ? excelSheet.Range[GetCell(startColumn, startRow), GetCell(endColumn, endRow)] : null;
+            return excelSheet?.Range[GetCell(startColumn, startRow), GetCell(endColumn, endRow)];
         }
 
         /// <summary>
@@ -237,8 +254,8 @@ namespace SharedClassLibrary.Vsto.Excel
         /// <returns></returns>
         public Range GetRange(string rangeName)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
-            return excelSheet != null ? excelSheet.Range[rangeName] : null;
+            var excelSheet = _fixedWorkingWorksheet ? WorkingWorksheet : ActiveSheet;
+            return excelSheet?.Range[rangeName];
         }
 
         /// <summary>
@@ -251,7 +268,7 @@ namespace SharedClassLibrary.Vsto.Excel
         {
             try
             {
-                Range cellsRange = GetRange(startRange, endRange);
+                var cellsRange = GetRange(startRange, endRange);
                 cellsRange.Clear();
                 return true;
             }
@@ -271,7 +288,7 @@ namespace SharedClassLibrary.Vsto.Excel
         {
             try
             {
-                Range cellsRange = GetRange(range);
+                var cellsRange = GetRange(range);
                 cellsRange.Clear();
                 return true;
             }
@@ -389,23 +406,43 @@ namespace SharedClassLibrary.Vsto.Excel
             return null;
         }
         /// <summary>
+        /// Obtiene la hoja de trabajo establecida como hoja de trabajo
+        /// </summary>
+        /// <returns></returns>
+        public Worksheet GetWorkingWorksheet()
+        { 
+            try
+            {
+                return _workingWorksheet ?? ActiveSheet;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("ExcelStyleCells::GetWorkingWorksheet()", ex.Message);
+                return null;
+            }
+        }
+
+        public Worksheet GetWorksheet(object index)
+        {
+            return _excelApp.ActiveWorkbook.Sheets.get_Item(index);
+        }
+        /// <summary>
         /// Obtiene la hoja del libro según el nombre indicado. Si la hoja no existe retorna null
         /// </summary>
         /// <param name="index">int: índice de la hoja de trabajo (índice inicial 1)</param>
         /// <returns></returns>
         public Worksheet GetWorksheet(int index)
-        { 
+        {
             try
             {
                 return (Worksheet)_excelApp.ActiveWorkbook.Sheets[index];
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message);
+                Debugger.LogError("ExcelStyleCells::GetWorksheet(int)", ex.Message);
                 return null;
             }
         }
-
         /// <summary>
         /// Establece la visibilidad de la hoja.
         /// </summary>
@@ -917,7 +954,7 @@ namespace SharedClassLibrary.Vsto.Excel
             var i = 1;
 
             var validCells = new ExcelStyleCells(_excelApp, validationSheetName);
-            validCells.SetAlwaysActiveSheet(false);
+            validCells.SetFixedWorkingWorkSheet(true);
             var rangeColumn = validCells.GetCell(validationColumnIndex, 1);
             rangeColumn = rangeColumn.EntireColumn;
             rangeColumn.Clear();
@@ -956,7 +993,7 @@ namespace SharedClassLibrary.Vsto.Excel
                 throw new Exception(@"La hoja de validación ingresada no existe");
 
             var validCells = new ExcelStyleCells(_excelApp, validationSheetName);
-            validCells.SetAlwaysActiveSheet(false);
+            validCells.SetFixedWorkingWorkSheet(true);
 
             var columnName = GetExcelColumnName(validationColumnIndex);
             var formula = "='" + validationSheetName + "'!$" + columnName + ":$" + columnName;
@@ -986,7 +1023,7 @@ namespace SharedClassLibrary.Vsto.Excel
             var i = 1;
 
             var validCells = new ExcelStyleCells(_excelApp, validationSheetName);
-            validCells.SetAlwaysActiveSheet(false);
+            validCells.SetFixedWorkingWorkSheet(true);
             var rangeColumn = validCells.GetCell(validationColumnIndex, 1);
             rangeColumn = rangeColumn.EntireColumn;
             rangeColumn.Clear();
@@ -1251,10 +1288,15 @@ namespace SharedClassLibrary.Vsto.Excel
             excelApp.Cursor = XlMousePointer.xlDefault;
         }
 
-        public void SetEllipseDefaultCulture()
+        public void SetCulture(CultureInfo cultureInfo)
         {
             _oldCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
+        }
+        public void SetCulture(string cultureName)
+        {
+            var cultureInfo = new CultureInfo(cultureName);
+            SetCulture(cultureInfo);
         }
 
         public void ResetCurrentCulture()

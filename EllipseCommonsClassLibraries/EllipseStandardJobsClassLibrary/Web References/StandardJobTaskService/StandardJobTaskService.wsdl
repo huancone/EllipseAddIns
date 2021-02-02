@@ -42,6 +42,18 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="StandardJobTaskServiceCopyTasksRequiredAttributesDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
@@ -131,18 +143,6 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="anyType2anyTypeMap">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
-                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:sequence>
       </xsd:complexType>
       <xsd:element name="copyTasks">
         <xsd:complexType>
@@ -1886,12 +1886,12 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
-      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
