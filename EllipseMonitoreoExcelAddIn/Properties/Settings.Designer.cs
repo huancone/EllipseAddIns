@@ -32,5 +32,15 @@ namespace EllipseMonitoreoExcelAddIn.Properties {
                 return ((string)(this["EllipseMonitoreoExcelAddIn_CondMeasurementService_CondMeasurementService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CondMeasurementService")]
+        public string EllipseMonitoreoExcelAddIn_CondMeasurementService9_CondMeasurementService {
+            get {
+                return ((string)(this["EllipseMonitoreoExcelAddIn_CondMeasurementService9_CondMeasurementService"]));
+            }
+        }
     }
 }

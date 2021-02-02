@@ -26,16 +26,6 @@ namespace EllipseAddinGanttEQ.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService")]
-        public string EllipseAddinGanttEQ_AuthenticatorService_AuthenticatorService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_AuthenticatorService_AuthenticatorService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RefCodesService")]
         public string EllipseAddinGanttEQ_RefCodesService_RefCodesService {
             get {
@@ -46,10 +36,20 @@ namespace EllipseAddinGanttEQ.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService")]
-        public string EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService")]
+        public string EllipseAddinGanttEQ_WorkOrderService_WorkOrderService {
             get {
-                return ((string)(this["EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService"]));
+                return ((string)(this["EllipseAddinGanttEQ_WorkOrderService_WorkOrderService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/RefCodesService")]
+        public string EllipseAddinGanttEQ_RefCodes_RefCodesService {
+            get {
+                return ((string)(this["EllipseAddinGanttEQ_RefCodes_RefCodesService"]));
             }
         }
     }

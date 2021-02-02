@@ -37,13 +37,14 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpCalidadOt = this.Factory.CreateRibbonGroup();
             this.bFormatear = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.bConsultar = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.bCalificar = this.Factory.CreateRibbonButton();
             this.bLimpiar = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCalidadOt.SuspendLayout();
             this.SuspendLayout();
@@ -58,8 +59,9 @@
             // grpCalidadOt
             // 
             this.grpCalidadOt.Items.Add(this.bFormatear);
-            this.grpCalidadOt.Items.Add(this.drpEnviroment);
+            this.grpCalidadOt.Items.Add(this.drpEnvironment);
             this.grpCalidadOt.Items.Add(this.menuActions);
+            this.grpCalidadOt.Items.Add(this.btnAbout);
             this.grpCalidadOt.Label = "Calidad OT";
             this.grpCalidadOt.Name = "grpCalidadOt";
             // 
@@ -69,11 +71,11 @@
             this.bFormatear.Name = "bFormatear";
             this.bFormatear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.bFormatear_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
-            this.drpEnviroment.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.drpEnviroment_SelectionChanged);
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
+            this.drpEnvironment.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.drpEnviroment_SelectionChanged);
             // 
             // menuActions
             // 
@@ -120,6 +122,12 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click_1);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -139,13 +147,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpCalidadOt;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bFormatear;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bConsultar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bCalificar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bLimpiar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

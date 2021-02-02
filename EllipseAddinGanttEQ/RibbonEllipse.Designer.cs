@@ -39,7 +39,7 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.grpProyecto = this.Factory.CreateRibbonGroup();
             this.btnFormatear = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAcciones = this.Factory.CreateRibbonMenu();
             this.btnConsultar = this.Factory.CreateRibbonButton();
             this.btnConsultarLab = this.Factory.CreateRibbonButton();
@@ -74,7 +74,7 @@
             // 
             this.grpProyecto.DialogLauncher = ribbonDialogLauncherImpl1;
             this.grpProyecto.Items.Add(this.btnFormatear);
-            this.grpProyecto.Items.Add(this.drpEnviroment);
+            this.grpProyecto.Items.Add(this.drpEnvironment);
             this.grpProyecto.Items.Add(this.menuAcciones);
             this.grpProyecto.Items.Add(this.btnAbout);
             this.grpProyecto.Label = "Gantt de Parada";
@@ -87,10 +87,10 @@
             this.btnFormatear.ShowImage = true;
             this.btnFormatear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuAcciones
             // 
@@ -201,7 +201,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpProyecto;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAcciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatear;

@@ -6,9 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
+using Authenticator = SharedClassLibrary.Ellipse.AuthenticatorService;
 using System.Web.Services.Ellipse;
-using EllipseCommonsClassLibrary;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 using Oracle.ManagedDataAccess.Client;
 //using Excel = Microsoft.Office.Interop.Excel;
 
@@ -28,7 +31,7 @@ namespace EllipseAddinGanttEQ
         private bool _poolingDataBase = true;//default ODP true
         private OracleCommand _sqlOracleComm;
 
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        EllipseFunctions _eFunctions;
         public string SelectedEnvironment = null;
         //private Excel.Application _excelApp;
 
@@ -64,7 +67,7 @@ namespace EllipseAddinGanttEQ
                 EllipsePswd = txtPassword.Text;
                 EllipseUser = txtUsername.Text.ToUpper();
 
-                authSer.Url = _eFunctions.GetServicesUrl("Productivo") + "/AuthenticatorService";
+                authSer.Url = Environments.GetServiceUrl("Productivo") + "/AuthenticatorService";
                 ClientConversation.authenticate(EllipseUser, EllipsePswd);
                 Authenticator.NameValuePair[] districts = authSer.getDistricts(opAuth);
                 //Authenticator.NameValuePair[] positionsx = authSer.getPositions(opAuth);
@@ -86,7 +89,8 @@ namespace EllipseAddinGanttEQ
 
 
 
-
+                if (_eFunctions == null)
+                    _eFunctions = new EllipseFunctions();
                 _eFunctions.SetDBSettings("sigcoprd", "sigman", "sig0679", "");
 
                     //var dataReader = _eFunctions.GetQueryResult(sqlQuery);
