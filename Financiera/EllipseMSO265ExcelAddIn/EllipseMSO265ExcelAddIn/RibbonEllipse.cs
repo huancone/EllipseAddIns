@@ -16,14 +16,6 @@ using SharedClassLibrary.Utilities;
 using SharedClassLibrary.Vsto.Excel;
 using Invoice = EllipseMSO265ExcelAddIn.Invoice265.Invoice;
 using InvoiceItem = EllipseMSO265ExcelAddIn.Invoice265.InvoiceItem;
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable LocalizableElement
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UseNullPropagation
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable SuggestVarOrType_BuiltInTypes
 
 namespace EllipseMSO265ExcelAddIn
 {
@@ -889,9 +881,9 @@ namespace EllipseMSO265ExcelAddIn
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
-                        _thread = new Thread(LoadCesantiasPost);
+                        _thread = new Thread(LoadCesantias);
                     else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
-                        _thread = new Thread(LoadNominaPost);
+                        _thread = new Thread(LoadNomina);
                     else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01X)
                         _thread = new Thread(LoadNonInvoiceOrder);
                     else
@@ -1135,7 +1127,7 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorDefault();
         }
         
-        private void LoadNominaPost()
+        private void LoadNomina()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -1258,7 +1250,7 @@ namespace EllipseMSO265ExcelAddIn
                 }
                 catch (Exception ex)
                 {
-                    Debugger.LogError("RibbonEllipse.cs:LoadNominaPost()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    Debugger.LogError("RibbonEllipse.cs:LoadNomina()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01N, i).Select();
@@ -1277,7 +1269,7 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorDefault();
         }
 
-        private void LoadCesantiasPost()
+        private void LoadCesantias()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -1387,7 +1379,7 @@ namespace EllipseMSO265ExcelAddIn
                 }
                 catch (Exception ex)
                 {
-                    Debugger.LogError("RibbonEllipse.cs:LoadCesantiasPost()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    Debugger.LogError("RibbonEllipse.cs:LoadCesantias()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01C, i).Select();

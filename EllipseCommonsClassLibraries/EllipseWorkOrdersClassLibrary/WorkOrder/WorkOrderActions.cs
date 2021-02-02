@@ -10,14 +10,12 @@ using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 
-using ErrorMessageDTO = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService.ErrorMessageDTO;
 using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
 using WorkOrderDTO = EllipseWorkOrdersClassLibrary.WorkOrderService.WorkOrderDTO;
-// ReSharper disable UseStringInterpolation
 
 namespace EllipseWorkOrdersClassLibrary
 {
-    [SuppressMessage("ReSharper", "ForCanBeConvertedToForeach")]
+    
     public static class WorkOrderActions
     {
         /// <summary>

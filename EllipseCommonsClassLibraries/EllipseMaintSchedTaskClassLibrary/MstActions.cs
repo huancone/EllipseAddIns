@@ -182,7 +182,26 @@ namespace EllipseMaintSchedTaskClassLibrary
             };
             return opContext;
         }
+        
 
+        public static List<Mst> ForecastMaintenanceScheduleTask(string urlService, OperationContext opContext, MstForecast mstForecast)
+        {
+            var list = new List<Mst>();
+            var service = new MSTService() { Url = urlService + "/MSTService" };
+
+            
+            var mstMwRestart = new MstService.MSTiMWPDTO();
+
+            var result = service.forecast(opContext, mstForecast.ToDto(), mstMwRestart);
+
+            foreach (var item in result)
+            {
+                var mstItem = new Mst(item.MSTiMWPDTO);
+                list.Add(mstItem);
+            }
+
+            return list;
+        }
         /*
         public static List<Mst> ForecastMaintenanceScheduleTaskPost(EllipseFunctions ef, MstForecast mstForecast)
         {
@@ -284,30 +303,9 @@ namespace EllipseMaintSchedTaskClassLibrary
             return mstList;
         }
         */
-        /*
-
-        public static List<Mst> ForecastMaintenanceScheduleTask(string urlService, MstService.OperationContext opContext, MstForecast mstForecast)
-        {
-            var list = new List<Mst>();
-            var service = new MstService.MSTService() { Url = urlService + "/MSTService" };
 
 
-            var searchParams = mstForecast.ToDto();
 
-            var mstMwRestart = new MstService.MSTiMWPDTO();
-
-            var result = service.forecast(opContext, searchParams, null);
-
-            foreach (var item in result)
-            {
-                var mstItem = new Mst(item.MSTiMWPDTO);
-                list.Add(mstItem);
-            }
-
-            return list;
-        }*/
-
-        
     }
 
 

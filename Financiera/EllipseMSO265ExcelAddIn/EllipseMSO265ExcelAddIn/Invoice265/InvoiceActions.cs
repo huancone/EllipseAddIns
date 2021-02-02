@@ -85,7 +85,7 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                 var screenService = new Screen.ScreenService();
                 var opContext = new Screen.OperationContext();
 
-                screenService.Url = Environments.GetServiceUrl(urlService) + "/ScreenService";
+                screenService.Url = urlService + "/ScreenService";
 
 
                 //Default Values

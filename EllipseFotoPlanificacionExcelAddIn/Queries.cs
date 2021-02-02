@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Constants;
-using System.Threading;
-using System.Windows.Forms.VisualStyles;
+﻿using SharedClassLibrary.Utilities;
 using EllipseJobsClassLibrary;
 
 namespace EllipseFotoPlanificacionExcelAddIn

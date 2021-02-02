@@ -2866,7 +2866,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 cr.ClearTableRange(TableName03);
                 cr.DeleteTableRange(TableName03);
 
-                cp.SetAlwaysActiveSheet(false);
+                cp.SetAlwasActiveAsWorkingSheet(false);
 
                 var currentParam = TitleRow02 + 1; //itera según cada estándar
                 var currentRow = TitleRow03 + 1; //itera la celda para cada tarea

@@ -839,6 +839,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -1095,7 +1096,7 @@
   </wsdl:binding>
   <wsdl:service name="MSSSService">
     <wsdl:port name="MSSSServiceHttpPort" binding="tns:MSSSServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MSSSService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MSSSService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

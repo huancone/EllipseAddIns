@@ -6,7 +6,7 @@
       <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/JobsMWPService</Value>
     </Setting>
     <Setting Name="EllipseJobsClassLibrary_WorkOrderTaskMWPService_WorkOrderTaskMWPService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

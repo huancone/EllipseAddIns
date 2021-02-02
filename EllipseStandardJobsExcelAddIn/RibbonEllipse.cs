@@ -20,7 +20,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EquipmentReqmntsService = EllipseStandardJobsClassLibrary.EquipmentReqmntsService;
 using EllipseStdTextClassLibrary;
-// ReSharper disable UseNullPropagation
 
 namespace EllipseStandardJobsExcelAddIn
 {
@@ -1014,7 +1013,7 @@ namespace EllipseStandardJobsExcelAddIn
                     //GENERAL
                     _cells.GetCell(1, i).Value = "" + stdJob.DistrictCode;
                     _cells.GetCell(2, i).Value = "" + stdJob.WorkGroup;
-                    _cells.GetCell(3, i).Value = "" + stdJob.StandardJobNo;
+                    _cells.GetCell(3, i).Value = "'" + stdJob.StandardJobNo;
                     _cells.GetCell(4, i).Value = "" + stdJob.Status;
                     _cells.GetCell(5, i).Value = "" + stdJob.StandardJobDescription;
                     //CONSULTA                   
@@ -1032,8 +1031,8 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(14, i).Value = "" + stdJob.MaintenanceType;
                     _cells.GetRange(13, i, 14, i).Style = !WoTypeMtType.ValidateWoMtTypeCode(stdJob.WorkOrderType, stdJob.MaintenanceType)
                         ? StyleConstants.Error : StyleConstants.Normal;
-                    _cells.GetCell(15, i).Value = "" + stdJob.CompCode;
-                    _cells.GetCell(16, i).Value = "" + stdJob.CompModCode;
+                    _cells.GetCell(15, i).Value = "'" + stdJob.CompCode;
+                    _cells.GetCell(16, i).Value = "'" + stdJob.CompModCode;
                     _cells.GetCell(17, i).Value = "" + stdJob.UnitOfWork;
                     _cells.GetCell(18, i).Value = "" + stdJob.UnitsRequired;
                     if (!string.IsNullOrWhiteSpace(stdJob.UnitOfWork))
@@ -1055,16 +1054,16 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(27, i).Value = "" + stdJob.CalculatedMatCost;
                     _cells.GetCell(28, i).Value = "" + stdJob.CalculatedEquipmentCost;
                     //JOB CODES
-                    _cells.GetCell(29, i).Value = "" + stdJob.JobCode1;
-                    _cells.GetCell(30, i).Value = "" + stdJob.JobCode2;
-                    _cells.GetCell(31, i).Value = "" + stdJob.JobCode3;
-                    _cells.GetCell(32, i).Value = "" + stdJob.JobCode4;
-                    _cells.GetCell(33, i).Value = "" + stdJob.JobCode5;
-                    _cells.GetCell(34, i).Value = "" + stdJob.JobCode6;
-                    _cells.GetCell(35, i).Value = "" + stdJob.JobCode7;
-                    _cells.GetCell(36, i).Value = "" + stdJob.JobCode8;
-                    _cells.GetCell(37, i).Value = "" + stdJob.JobCode9;
-                    _cells.GetCell(38, i).Value = "" + stdJob.JobCode10;
+                    _cells.GetCell(29, i).Value = "'" + stdJob.JobCode1;
+                    _cells.GetCell(30, i).Value = "'" + stdJob.JobCode2;
+                    _cells.GetCell(31, i).Value = "'" + stdJob.JobCode3;
+                    _cells.GetCell(32, i).Value = "'" + stdJob.JobCode4;
+                    _cells.GetCell(33, i).Value = "'" + stdJob.JobCode5;
+                    _cells.GetCell(34, i).Value = "'" + stdJob.JobCode6;
+                    _cells.GetCell(35, i).Value = "'" + stdJob.JobCode7;
+                    _cells.GetCell(36, i).Value = "'" + stdJob.JobCode8;
+                    _cells.GetCell(37, i).Value = "'" + stdJob.JobCode9;
+                    _cells.GetCell(38, i).Value = "'" + stdJob.JobCode10;
 
                     var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                     var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
@@ -1085,7 +1084,7 @@ namespace EllipseStandardJobsExcelAddIn
             }
 
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
 
@@ -1116,7 +1115,7 @@ namespace EllipseStandardJobsExcelAddIn
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + stdJob.DistrictCode;
                         _cells.GetCell(2, i).Value = "" + stdJob.WorkGroup;
-                        _cells.GetCell(3, i).Value = "" + stdJob.StandardJobNo;
+                        _cells.GetCell(3, i).Value = "'" + stdJob.StandardJobNo;
                         _cells.GetCell(4, i).Value = "" + stdJob.Status;
                         _cells.GetCell(5, i).Value = "" + stdJob.StandardJobDescription;
                         //CONSULTA                   
@@ -1134,8 +1133,8 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(14, i).Value = "" + stdJob.MaintenanceType;
                         _cells.GetRange(13, i, 14, i).Style = !WoTypeMtType.ValidateWoMtTypeCode(stdJob.WorkOrderType, stdJob.MaintenanceType)
                             ? StyleConstants.Error : StyleConstants.Normal;
-                        _cells.GetCell(15, i).Value = "" + stdJob.CompCode;
-                        _cells.GetCell(16, i).Value = "" + stdJob.CompModCode;
+                        _cells.GetCell(15, i).Value = "'" + stdJob.CompCode;
+                        _cells.GetCell(16, i).Value = "'" + stdJob.CompModCode;
                         _cells.GetCell(17, i).Value = "" + stdJob.UnitOfWork;
                         _cells.GetCell(18, i).Value = "" + stdJob.UnitsRequired;
                         if (!string.IsNullOrWhiteSpace(stdJob.UnitOfWork))
@@ -1148,7 +1147,7 @@ namespace EllipseStandardJobsExcelAddIn
                         //COSTS
                         _cells.GetCell(21, i).Value = "" + stdJob.AccountCode;
                         _cells.GetCell(22, i).Value = "" + stdJob.ReallocAccCode;
-                        _cells.GetCell(23, i).Value = "" + stdJob.ProjectNo;
+                        _cells.GetCell(23, i).Value = "'" + stdJob.ProjectNo;
 
                         _cells.GetCell(24, i).Value = "" + stdJob.EstimatedOtherCost;
                         _cells.GetCell(25, i).Value = "" + stdJob.CalculatedLabHrs;
@@ -1156,16 +1155,16 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(27, i).Value = "" + stdJob.CalculatedMatCost;
                         _cells.GetCell(28, i).Value = "" + stdJob.CalculatedEquipmentCost;
                         //JOB CODES
-                        _cells.GetCell(29, i).Value = "" + stdJob.JobCode1;
-                        _cells.GetCell(30, i).Value = "" + stdJob.JobCode2;
-                        _cells.GetCell(31, i).Value = "" + stdJob.JobCode3;
-                        _cells.GetCell(32, i).Value = "" + stdJob.JobCode4;
-                        _cells.GetCell(33, i).Value = "" + stdJob.JobCode5;
-                        _cells.GetCell(34, i).Value = "" + stdJob.JobCode6;
-                        _cells.GetCell(35, i).Value = "" + stdJob.JobCode7;
-                        _cells.GetCell(36, i).Value = "" + stdJob.JobCode8;
-                        _cells.GetCell(37, i).Value = "" + stdJob.JobCode9;
-                        _cells.GetCell(38, i).Value = "" + stdJob.JobCode10;
+                        _cells.GetCell(29, i).Value = "'" + stdJob.JobCode1;
+                        _cells.GetCell(30, i).Value = "'" + stdJob.JobCode2;
+                        _cells.GetCell(31, i).Value = "'" + stdJob.JobCode3;
+                        _cells.GetCell(32, i).Value = "'" + stdJob.JobCode4;
+                        _cells.GetCell(33, i).Value = "'" + stdJob.JobCode5;
+                        _cells.GetCell(34, i).Value = "'" + stdJob.JobCode6;
+                        _cells.GetCell(35, i).Value = "'" + stdJob.JobCode7;
+                        _cells.GetCell(36, i).Value = "'" + stdJob.JobCode8;
+                        _cells.GetCell(37, i).Value = "'" + stdJob.JobCode9;
+                        _cells.GetCell(38, i).Value = "'" + stdJob.JobCode10;
                         var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                         var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
                         _cells.GetCell(39, i).Value = extendedDescription;
@@ -1188,11 +1187,12 @@ namespace EllipseStandardJobsExcelAddIn
                 {
                     _cells.GetCell(3, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
+
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void ReviewStandardJobTasks()
@@ -1206,7 +1206,7 @@ namespace EllipseStandardJobsExcelAddIn
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
-            stdCells.SetAlwaysActiveSheet(false);
+            stdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow02 + 1;//itera la celda para cada tarea
@@ -1283,11 +1283,11 @@ namespace EllipseStandardJobsExcelAddIn
                 finally
                 {
                     j++;//aumenta std
-                    _eFunctions.CloseConnection();
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void QualityReviewStandardJobs()
@@ -1362,7 +1362,7 @@ namespace EllipseStandardJobsExcelAddIn
             }
 
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void CreateStandardJobList()
@@ -1455,7 +1455,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
         private void UpdateStandardJobList()
         {
@@ -1557,7 +1557,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
         private void UpdateQualityStandardList()
         {
@@ -1634,7 +1634,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void UpdateStandardJobStatus()
@@ -1688,7 +1688,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void ExecuteTaskActions()
@@ -1790,7 +1790,8 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         
@@ -1803,7 +1804,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRange(TableName03);
 
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwaysActiveSheet(false);
+            taskCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
@@ -1856,7 +1857,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void ExecuteRequirementActions()
@@ -1973,7 +1974,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         public void GetAplTaskRequirements()
@@ -1984,7 +1985,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
 
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwaysActiveSheet(false);
+            taskCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
@@ -2053,12 +2054,12 @@ namespace EllipseStandardJobsExcelAddIn
                 }
                 finally
                 {
-                    _eFunctions.CloseConnection();
                     j++;//aumenta task
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         
@@ -2068,7 +2069,7 @@ namespace EllipseStandardJobsExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -2190,11 +2191,11 @@ namespace EllipseStandardJobsExcelAddIn
                 {
                     _cells.GetCell(2, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         private void btnUpdateStandardReferenceCodes_Click(object sender, RibbonControlEventArgs e)
@@ -2341,7 +2342,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
@@ -2387,7 +2388,7 @@ namespace EllipseStandardJobsExcelAddIn
             };
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
-            stdCells.SetAlwaysActiveSheet(false);
+            stdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow06 + 1;//itera la celda para cada tarea
@@ -2528,7 +2529,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
 
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
     }
 }

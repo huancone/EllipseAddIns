@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms.VisualStyles;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary;
 using EllipseJobsClassLibrary;
 using EllipseMaintSchedTaskClassLibrary;
+using EllipseMaintSchedTaskClassLibrary.MstService;
 using JobsMWPService = EllipseJobsClassLibrary.JobsMWPService;
 
 namespace EllipseFotoPlanificacionExcelAddIn
@@ -51,7 +52,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             var drItems = ef.GetQueryResult(sqlQuery);
             var list = new List<PlannerItem>();
 
-            if (drItems == null || drItems.IsClosed || !drItems.HasRows)
+            if (drItems == null || drItems.IsClosed)
                 return list;
             while (drItems.Read())
             {
@@ -98,7 +99,15 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 returnWarningsSpecified = true
             };
 
-
+            var mstOpContext = new OperationContext()
+            {
+                district = district,
+                position = position,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
 
 
             var jobList = JobActions.FetchJobs(urlService, opContext, searchParam);
@@ -134,7 +143,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 {
                     try
                     {
-                        var fcList = MstActions.ForecastMaintenanceScheduleTaskPost(ef, forecastSearch);
+                        
+                        var fcList = MstActions.ForecastMaintenanceScheduleTask(urlService, mstOpContext, forecastSearch);
                         foreach (var mst in fcList)
                         {
                             if (MyUtilities.ToInteger(mst.PlanStrDate) > MyUtilities.ToInteger(item.PlanDate))

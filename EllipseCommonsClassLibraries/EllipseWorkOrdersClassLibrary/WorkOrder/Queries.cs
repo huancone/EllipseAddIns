@@ -297,7 +297,7 @@ namespace EllipseWorkOrdersClassLibrary
                 "   TRR.ACT_RESRCE_HRS REAL_QTY, " +
                 "   COALESCE(WOR.RES_DESC, TRR.RES_DESC) RES_DESC, " +
                 "   'HR' UNITS, " +
-                "   WOR.SHARED_TASKS " +
+                "   COALESCE(WOR.SHARED_TASKS, 0) SHARED_TASKS " +
                 " FROM( " +
                 "   SELECT WO.DSTRCT_CODE, " +
                 "     WO.WORK_GROUP, " +
@@ -387,7 +387,7 @@ namespace EllipseWorkOrdersClassLibrary
                 "     TRR.QTY_ISS REAL_QTY, " +
                 "     COALESCE(WOR.RES_DESC, TRR.RES_DESC) RES_DESC, " +
                 "     COALESCE(WOR.UNITS, TRR.UNITS) UNITS, " +
-                "     WOR.SHARED_TASKS " +
+                "     COALESCE(WOR.SHARED_TASKS, 0) SHARED_TASKS " +
                 " FROM( " +
                 "     SELECT " +
                 "     TSK.DSTRCT_CODE, " +
@@ -486,7 +486,7 @@ namespace EllipseWorkOrdersClassLibrary
                 "   TRR.QTY_ISS REAL_QTY, " +
                 "   COALESCE(WOR.RES_DESC, TRR.RES_DESC) RES_DESC, " +
                 "   COALESCE(TRIM(WOR.UNITS), TRIM(TRR.UNITS)) UNITS, " +
-                "   WOR.SHARED_TASKS " +
+                "   COALESCE(WOR.SHARED_TASKS, 0) SHARED_TASKS " +
                 "   FROM( " +
                 "     SELECT " +
                 "       WO.DSTRCT_CODE, " +

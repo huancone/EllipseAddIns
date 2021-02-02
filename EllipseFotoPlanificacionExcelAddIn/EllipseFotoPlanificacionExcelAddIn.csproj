@@ -33,7 +33,7 @@
     <PublishUrl>D:\Projects\Release\EllipseFotoPlanificacionExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.3</ApplicationVersion>
+    <ApplicationVersion>1.1.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -121,11 +121,26 @@
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Vsto.Excel">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.Services.Ellipse">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -193,7 +208,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="EllipseFotoPlanificacionExcelAddIn_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -231,10 +245,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseEquipmentClassLibrary\EllipseEquipmentClassLibrary.csproj">
       <Project>{864f90d8-5073-4f1c-83f6-e1b8b28b0a33}</Project>
       <Name>EllipseEquipmentClassLibrary</Name>
@@ -246,10 +256,6 @@
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseMaintSchedTaskClassLibrary\EllipseMaintSchedTaskClassLibrary.csproj">
       <Project>{250f108b-496b-4c5a-a9ae-56bad5716b60}</Project>
       <Name>EllipseMaintSchedTaskClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -269,10 +275,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseFotoPlanificacionExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3341D344812B4BDA526FA3ACB32E55B923CEF2B6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9C7943B62AB2418AFDB97217A007CA01B53E2BDB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>

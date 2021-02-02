@@ -99,7 +99,7 @@ namespace EllipseDownLostExcelAddIn
         {
             FormatSheet();
             if (!_cells.IsDecimalDotSeparator())
-                MessageBox.Show(Resources.Warning_DecimalSeparatorWarning, Resources.Warning_WarningUppercase);
+                MessageBox.Show(SharedResources.Warning_DecimalSeparatorWarning, SharedResources.Warning_WarningUppercase);
         }
 
         private void btnReview_Click(object sender, RibbonControlEventArgs e)
@@ -115,12 +115,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
 
         }
@@ -137,12 +137,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnCreateDL_Click(object sender, RibbonControlEventArgs e)
@@ -163,12 +163,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnCreatIgnoreDuplicate_Click(object sender, RibbonControlEventArgs e)
@@ -188,12 +188,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnDeleteDL_Click(object sender, RibbonControlEventArgs e)
@@ -217,12 +217,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -250,12 +250,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:GenerateCollectionList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:GenerateCollectionList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -523,8 +523,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_SheetHeaderError} . {ex.Message}");
             }
         }
         private void FormatSheetPbv()
@@ -801,8 +801,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_SheetHeaderError} . {ex.Message}");
             }
         }
 
@@ -812,7 +812,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                var cells = new ExcelStyleCells(_excelApp, false);
+                var cells = new ExcelStyleCells(_excelApp, true);
                 _cells.SetCursorWait();
                 cells.ClearTableRange(TableName01);
 
@@ -861,8 +861,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound}. {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound}. {ex.Message}");
             }
             finally
             {
@@ -880,7 +880,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                var cells = new ExcelStyleCells(_excelApp, false);
+                var cells = new ExcelStyleCells(_excelApp, true);
                 _cells.SetCursorWait();
                 cells.ClearTableRange(TableName01);
 
@@ -978,8 +978,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound}. {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound}. {ex.Message}");
             }
             finally
             {
@@ -1001,7 +1001,7 @@ namespace EllipseDownLostExcelAddIn
 
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                var cells = new ExcelStyleCells(_excelApp, false);
+                var cells = new ExcelStyleCells(_excelApp, true);
 
                 var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
 
@@ -1141,7 +1141,7 @@ namespace EllipseDownLostExcelAddIn
                         cells.GetCell(resultColumn01, i).Value = "ERROR: " + ex.Message;
                         cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
                         cells.GetCell(resultColumn01, i).Select();
-                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
                     }
                     finally
                     {
@@ -1152,7 +1152,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
@@ -1168,7 +1168,7 @@ namespace EllipseDownLostExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                var cells = new ExcelStyleCells(_excelApp, false);
+                var cells = new ExcelStyleCells(_excelApp, true);
                 var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
                 var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01) ? ResultColumnP01 : ResultColumn01;
                 var i = TitleRow01 + 1;
@@ -1262,10 +1262,10 @@ namespace EllipseDownLostExcelAddIn
                     }
                     catch (Exception ex)
                     {
-                        cells.GetCell(resultColumn01, i).Value = Resources.Error_ErrorUppercase + ":" + ex.Message;
+                        cells.GetCell(resultColumn01, i).Value = SharedResources.Error_ErrorUppercase + ":" + ex.Message;
                         cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
                         cells.GetCell(resultColumn01, i).Select();
-                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
                     }
                     finally
                     {
@@ -1276,7 +1276,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
@@ -1597,7 +1597,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetCursorWait();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                var cells = new ExcelStyleCells(_excelApp, false);
+                var cells = new ExcelStyleCells(_excelApp, true);
 
                 var i = TitleRow01 + 1;
                 
@@ -1658,7 +1658,7 @@ namespace EllipseDownLostExcelAddIn
 
                         if (resultado)
                         {
-                            cells.GetCell(resultColumn01, i).Value = Resources.Results_Deleted;
+                            cells.GetCell(resultColumn01, i).Value = SharedResources.Results_Deleted;
                             cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
                             cells.GetCell(resultColumn01, i).Select();
                         }
@@ -1671,9 +1671,9 @@ namespace EllipseDownLostExcelAddIn
                     }
                     catch (Exception ex)
                     {
-                        cells.GetCell(resultColumn01, i).Value = Resources.Error_ErrorUppercase + ": " + ex.Message;
+                        cells.GetCell(resultColumn01, i).Value = SharedResources.Error_ErrorUppercase + ": " + ex.Message;
                         cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
-                        Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                        Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
                     }
                     finally
                     {
@@ -1684,7 +1684,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
@@ -1739,7 +1739,7 @@ namespace EllipseDownLostExcelAddIn
             }
 
             if (reply.mapName != "MSM420A")
-                throw new ArgumentException(Resources.Error_ItemNotFound);
+                throw new ArgumentException(SharedResources.Error_ItemNotFound);
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("ACTION1I" + k, "D");
@@ -1807,7 +1807,7 @@ namespace EllipseDownLostExcelAddIn
             }
 
             if (reply.mapName != "MSM470A")
-                throw new ArgumentException(Resources.Error_ItemNotFound);
+                throw new ArgumentException(SharedResources.Error_ItemNotFound);
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("ACTION1I" + k, "D");
@@ -1860,7 +1860,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (ThreadAbortException ex)
             {
-                MessageBox.Show($@"{Resources.Error_ThreadStopped} . {ex.Message}");
+                MessageBox.Show($@"{SharedResources.Error_ThreadStopped} . {ex.Message}");
             }
         }
 
