@@ -64,7 +64,7 @@ namespace EllipseAddinGanttEQ
         private bool _progressUpdate = true;
         public String Sql = "";
         static object useDefault = Type.Missing;
-        private const Int32 StartColHrs = 19;
+        private const Int32 StartColHrs = 20;
         private const Int32 DatosAgregados = 3;
 
         //-------------------------------------------------------------------------------------------PARAMETROS DE MOVIMIENTO DE OBJECTOS EN LA HOJA DE CALCULO---------------------------
@@ -688,6 +688,7 @@ namespace EllipseAddinGanttEQ
             string CritColor="";
             var COL_COD = "COD";
             var COL_STUS = "STUS";
+            var COL_NO_TCOS = "NO_TCOS";
             Int32 UBIC_COL_DUR = FindColumna("DUR_EST");
             var INDICADOR_HR = 0;
             //Filas
@@ -739,6 +740,11 @@ namespace EllipseAddinGanttEQ
 
                         }
                         */
+                    }
+                    //CONDICION PARA COLOR DE LA COLUMAN NO_TCOS
+                    if (data.Columns[j].ColumnName == COL_NO_TCOS)
+                    {
+                        _cells.GetCell(StartColTable + j, (StartRowTable + 1) + i).Interior.Color = System.Drawing.ColorTranslator.ToOle((Color.FromArgb(82, 255, 1)));
                     }
                     //CONDICION PARA COLOR DE LAS COLUMANS DE HORAS
                     if (j >= StartColHrs - 1 && j < data.Columns.Count )
@@ -857,8 +863,10 @@ namespace EllipseAddinGanttEQ
                 //Excel.Name Nombre = _excelApp.ActiveWorkbook.ActiveSheet.Names(tableName01);
                 if(_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
+                    _cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
                     _excelApp.Application.Goto(tableName01);
                     _excelApp.Application.Selection.EntireRow.Delete();
+
                 }
 
                 _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Select();
@@ -1786,7 +1794,7 @@ namespace EllipseAddinGanttEQ
         {
             _excelApp.Visible = true;
             _cells.SetCursorWait();
-            _excelApp.ScreenUpdating = true;
+            _excelApp.ScreenUpdating = false;
             //var taskCells = new ExcelStyleCells(_excelApp, SheetName01);
             Excel.Worksheet SheetGantt = _excelApp.ActiveWorkbook.Sheets[SheetName01];
             Excel.Worksheet SheetLabor = _excelApp.ActiveWorkbook.Sheets[SheetName02];
@@ -2832,6 +2840,7 @@ namespace EllipseAddinGanttEQ
                                         PRIMERA.WO_STATUS_M AS STUS,
                                         PRIMERA.WO_DESC DESCRIPCION,
                                         PRIMERA.EST_DUR_HRS AS DUR_EST, --OK
+                                        SIGMAN.FNU_LAB_OT@DBLSIG(PRIMERA.WORK_ORDER) AS NO_TCOS,
 
                                         PRIMERA.DUR_REAL, --OK
 
@@ -3401,7 +3410,7 @@ namespace EllipseAddinGanttEQ
                                     ) DATOS
                                     ORDER BY
 
-                                        TRIM(DATOS.COD),WORK_ORDER,TASK,DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, TRIM(DATOS.SEC) ASC";
+                                        TRIM(DATOS.COD),WORK_ORDER,TASK,DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, CASE WHEN LENGTH(TRIM(TRANSLATE(DATOS.SEC, ' +-.0123456789', ' '))) IS NULL THEN TO_NUMBER(DATOS.SEC) ELSE 22 END";
                 }
                 else if (Tipe == 2)
                 {
@@ -3548,6 +3557,7 @@ namespace EllipseAddinGanttEQ
 										PRIMERA.WO_STATUS_M AS STUS,
 										PRIMERA.WO_DESC AS DESCRIPCION,
 										PRIMERA.EST_DUR_HRS AS DUR_EST,--OK
+                                        SIGMAN.FNU_LAB_OT@DBLSIG(PRIMERA.WORK_ORDER) AS NO_TCOS,
 										PRIMERA.DUR_REAL,--OK
 										PRIMERA.LABOR_EST AS LAB_EST,--X
 										PRIMERA.LAB_REAL,--X
@@ -4089,7 +4099,7 @@ namespace EllipseAddinGanttEQ
 										  PRIMERA
 									) DATOS
 									ORDER BY
-										TRIM(DATOS.COD),DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, TRIM(DATOS.SEC) ASC ";
+										TRIM(DATOS.COD),DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, CASE WHEN LENGTH(TRIM(TRANSLATE(DATOS.SEC, ' +-.0123456789', ' '))) IS NULL THEN TO_NUMBER(DATOS.SEC) ELSE 22 END ";
                 }
                 else if (Tipe == 3)
                 {
@@ -4446,6 +4456,47 @@ namespace EllipseAddinGanttEQ
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
+        private void BtnTecnicos_Click(object sender, RibbonControlEventArgs e)
+        {
+            _excelApp.Visible = true;
+            _excelApp.ScreenUpdating = false;
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            {
+                GenerarTecnicosHrs();
+                _cells.SetCursorDefault();
+                _excelApp.Columns.AutoFit();
+                _excelApp.ScreenUpdating = true;
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+
+        private void GenerarTecnicosHrs()
+        {
+            _cells.SetCursorWait();
+            Int32 UBIC_COL_NO_TCOS = FindColumna("NO_TCOS");
+            var resultado = 0;
+            var x = 0;
+            _cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
+            for (var i = StartColHrs; i < (FinColTablaOneSheet) ; i++)
+            {
+                //Columnas de la consulta
+                for (var j = StartRowTable + 1; j <= (StartRowTable + FinRowTablaOneSheet + 1); j++)
+                {
+                    if(_cells.GetCell(i, j).Value == "1" )
+                    {
+                        resultado = resultado + Convert.ToInt32(_cells.GetCell(UBIC_COL_NO_TCOS, j).Value);
+                    }
+                    
+                    x = j;
+                }
+                if (resultado == 0) { _cells.GetCell(i, x).Value = ""; } else { _cells.GetCell(i, x).Value = resultado.ToString(); }
+               resultado = 0;
+            }
+            _cells.GetCell(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1)).Value = "Tot tcos/ hrs dur";
+            _cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).Interior.Color = System.Drawing.ColorTranslator.ToOle((Color.FromArgb(244, 232, 188)));
+        }
         /*
             public event Microsoft.Office.Interop.Excel.WorkbookEvents_SheetChangeEventHandler SheetChange;
             private void WorkbookSheetChange()

@@ -49,6 +49,7 @@
             this.btnActualizaDatos = this.Factory.CreateRibbonButton();
             this.btnActualizarDurLab = this.Factory.CreateRibbonButton();
             this.IdCumplimiento = this.Factory.CreateRibbonButton();
+            this.BtnTecnicos = this.Factory.CreateRibbonButton();
             this.btnLimpiar = this.Factory.CreateRibbonButton();
             this.Stop = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -102,6 +103,7 @@
             this.menuAcciones.Items.Add(this.btnActualizaDatos);
             this.menuAcciones.Items.Add(this.btnActualizarDurLab);
             this.menuAcciones.Items.Add(this.IdCumplimiento);
+            this.menuAcciones.Items.Add(this.BtnTecnicos);
             this.menuAcciones.Items.Add(this.btnLimpiar);
             this.menuAcciones.Items.Add(this.Stop);
             this.menuAcciones.Label = "Acciones";
@@ -163,6 +165,13 @@
             this.IdCumplimiento.ShowImage = true;
             this.IdCumplimiento.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.IdCumplimiento_Click);
             // 
+            // BtnTecnicos
+            // 
+            this.BtnTecnicos.Label = "Gen Tecnicos";
+            this.BtnTecnicos.Name = "BtnTecnicos";
+            this.BtnTecnicos.ShowImage = true;
+            this.BtnTecnicos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTecnicos_Click);
+            // 
             // btnLimpiar
             // 
             this.btnLimpiar.Label = "Limpiar";
@@ -216,6 +225,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Stop;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Pruebas;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultVale;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnTecnicos;
     }
 
     partial class ThisRibbonCollection
