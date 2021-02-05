@@ -533,10 +533,24 @@ private void FormatSheet()
                 var startDate = _cells.GetEmptyIfNull(_cells.GetCell("D4").Value);
                 var endDate = _cells.GetEmptyIfNull(_cells.GetCell("D5").Value);
                 var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+                var groupList = new List<string>();
+
+                if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    groupList.Add(searchCriteriaValue1);
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    groupList = Groups.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue1).Select(g => g.Name).ToList();
+                else
+                    groupList = Groups.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue1).Select(g => g.Name).ToList();
+
 
                 taskSearchParam.AdditionalInformation = cbDeviationStats.Checked;
                 taskSearchParam.IncludeMst = cbIncludeMsts.Checked;
                 taskSearchParam.OverlappingDates = cbOverlappingDateSearch.Checked;
+                taskSearchParam.StartDate = startDate;
+                taskSearchParam.FinishDate = endDate;
+                taskSearchParam.DateInclude = dateInclude;
+                taskSearchParam.District = district;
+                taskSearchParam.WorkGroups = groupList;
 
 
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
@@ -552,7 +566,7 @@ private void FormatSheet()
                 };
 
                 //consumo de servicio de msewts
-                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate, taskSearchParam);
+                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, taskSearchParam);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);

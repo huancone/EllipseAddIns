@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseMsssEquipmentExcelAddIn.Properties;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
+using Settings = SharedClassLibrary.Ellipse.Settings;
 
 namespace EllipseMsssEquipmentExcelAddIn
 {
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        private static readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Application _excelApp;
 
         private const int TittleRow = 6;
@@ -28,6 +30,13 @@ namespace EllipseMsssEquipmentExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -37,8 +46,34 @@ namespace EllipseMsssEquipmentExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("FlagEstDuration", "Y");
+            //settings.SetDefaultCustomSettingValue("ValidateTaskPlanDates", "Y");
+            //settings.SetDefaultCustomSettingValue("IgnoreClosedStatus", "N");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //var flagEstDur = MyUtilities.IsTrue(settings.GetCustomSettingValue("FlagEstDuration"));
+            //var valdTaskPlanDates = MyUtilities.IsTrue(settings.GetCustomSettingValue("ValidateTaskPlanDates"));
+            //var ignoreCldStat = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreClosedStatus"));
+            //
+            //cbFlagEstDuration.Checked = flagEstDur;
+            //cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
+            //cbIgnoreClosedStatus.Checked = ignoreCldStat;
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -160,10 +195,10 @@ namespace EllipseMsssEquipmentExcelAddIn
             _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Clear();
 
             if (string.IsNullOrEmpty(equipmentGrpId)) return;
-            var sqlQuery = Queries.GetMsssInfo(equipmentGrpId, _eFunctions.dbReference, _eFunctions.dbLink);
+            var sqlQuery = Queries.GetMsssInfo(equipmentGrpId, _eFunctions.DbReference, _eFunctions.DbLink);
             var drMsss = _eFunctions.GetQueryResult(sqlQuery);
 
-            if (drMsss == null || drMsss.IsClosed || !drMsss.HasRows) return;
+            if (drMsss == null || drMsss.IsClosed) return;
 
             var currentRow = TittleRow + 1;
             while (drMsss.Read())
@@ -209,14 +244,15 @@ namespace EllipseMsssEquipmentExcelAddIn
 
         private void LoadSheet()
         {
-            var msssProxy = new MSSSService.MSSSService();
-            var msssOp = new MSSSService.OperationContext();
+            var msssService = new MSSSService.MSSSService();
+            var msssOpContext = new MSSSService.OperationContext();
 
-            msssProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/MSSSService";
-            msssOp.district = _frmAuth.EllipseDsct;
-            msssOp.position = _frmAuth.EllipsePost;
-            msssOp.maxInstances = 100;
-            msssOp.returnWarnings = Debugger.DebugWarnings;
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            msssService.Url = urlService + "/MSSSService";
+            msssOpContext.district = _frmAuth.EllipseDsct;
+            msssOpContext.position = _frmAuth.EllipsePost;
+            msssOpContext.maxInstances = 100;
+            msssOpContext.returnWarnings = Debugger.DebugWarnings;
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -224,146 +260,68 @@ namespace EllipseMsssEquipmentExcelAddIn
 
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
-                string action = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                switch (action)
+                try
                 {
-                    case "Create":
-                        try
-                        {
-                            var msssItem = new MSSSService.MSSSServiceCreateRequestDTO
-                                            {
-                                                equipmentGrpId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value),
-                                                compCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value),
-                                                compModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value),
-                                                failureMode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value),
-                                                failureCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value),
-                                                functionCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value),
-                                                consequence = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value),
-                                                effect = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value),
-                                                strategy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value),
-                                                agreedAction = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value),
-                                                failureClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value),
-                                                functionClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, currentRow).Value)
-                                            };
-                            msssProxy.create(msssOp, msssItem);
+                    string action = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                    var msssItem = new MssItemDto
+                    {
+                        EquipmentGrpId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value),
+                        CompCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value),
+                        CompCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value),
+                        CompModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value),
+                        FailureMode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value),
+                        FailureModeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value),
+                        FailureCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value),
+                        FailureCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value),
+                        FunctionCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value),
+                        FunctionCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value),
+                        Consequence = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value),
+                        ConsequenceDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value),
+                        Effect = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value),
+                        Strategy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value),
+                        StrategyDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value),
+                        AgreedAction = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value),
+                        FailureClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value),
+                        FailureClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value),
+                        FunctionClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, currentRow).Value),
+                        FunctionClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, currentRow).Value)
+                    };
+
+
+                    switch (action)
+                    {
+                        case "Create":
+                            msssService.create(msssOpContext, msssItem.ToCreateRequestDto());
                             _cells.GetCell(ResultColumn, currentRow).Select();
                             _cells.GetCell(ResultColumn, currentRow).Value = "Creado";
-                            _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
-                        }
-                        catch (Exception error)
-                        {
-                            _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
-                            _cells.GetCell(ResultColumn, currentRow).Select();
-                            _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                        }
-                        break;
-
-                    case "Delete":
-                        try
-                        {
-                            var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-                            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-                            var responseDto = _eFunctions.InitiatePostConnection();
-
-                            if (responseDto.GotErrorMessages()) return;
-                            var equipmentGrpId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
-                            var compCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
-                            var compcodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
-                            var compModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
-                            var failureMode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
-                            var failureModeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
-                            var failureCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value);
-                            var failureCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value);
-                            var functionCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value);
-                            var functionCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value);
-                            var consequence = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value);
-                            var consequenceDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
-                            var effect = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
-                            var strategy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
-                            var strategyDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value);
-                            var agreedAction = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value);
-                            var failureClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value);
-                            var failureClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value);
-                            var functionClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, currentRow).Value);
-                            var functionClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, currentRow).Value);
-
-
-                            var requestXml = "";
-                            requestXml = requestXml + "<interaction>";
-                            requestXml = requestXml + "	<actions>";
-                            requestXml = requestXml + "		<action>";
-                            requestXml = requestXml + "			<name>service</name>";
-                            requestXml = requestXml + "			<data>";
-                            requestXml = requestXml + "				<name>com.mincom.enterpriseservice.ellipse.msss.MSSSService</name>";
-                            requestXml = requestXml + "				<operation>delete</operation>";
-                            requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
-                            requestXml = requestXml + "				<dto uuid=\"" + System.Web.Services.Ellipse.Post.Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-                            requestXml = requestXml + "					<consequenceDescription>" + consequenceDescription + "</consequenceDescription>";
-                            requestXml = requestXml + "					<functionClass>" + functionClass + "</functionClass>";
-                            requestXml = requestXml + "					<compcodeDescription>" + compcodeDescription + "</compcodeDescription>";
-                            requestXml = requestXml + "					<strategy>" + strategy + "</strategy>";
-                            requestXml = requestXml + "					<equipmentGrpId>" + equipmentGrpId + "</equipmentGrpId>";
-                            requestXml = requestXml + "					<failureClass>" + failureClass + "</failureClass>";
-                            requestXml = requestXml + "					<failureCodeDescription>" + failureCodeDescription + "</failureCodeDescription>";
-                            requestXml = requestXml + "					<strategyDescription>" + strategyDescription + "</strategyDescription>";
-                            requestXml = requestXml + "					<effect>" + effect + "</effect>";
-                            requestXml = requestXml + "					<functionCodeDescription>" + functionCodeDescription + "</functionCodeDescription>";
-                            requestXml = requestXml + "					<functionCode>" + functionCode + "</functionCode>";
-                            requestXml = requestXml + "					<equipmentGrpIdDescription>BANDA TRANSPORTADORA BC402</equipmentGrpIdDescription>";
-                            requestXml = requestXml + "					<failureCode>" + failureCode + "</failureCode>";
-                            requestXml = requestXml + "					<failureMode>" + failureMode + "</failureMode>";
-                            requestXml = requestXml + "					<consequence>" + consequence + "</consequence>";
-                            requestXml = requestXml + "					<failureClassDescription>" + failureClassDescription + "</failureClassDescription>";
-                            requestXml = requestXml + "					<failureModeDescription>" + failureModeDescription + "</failureModeDescription>";
-                            requestXml = requestXml + "					<functionClassDescription>" + functionClassDescription + "</functionClassDescription>";
-                            requestXml = requestXml + "					<agreedAction>" + agreedAction + "</agreedAction>";
-                            requestXml = requestXml + "					<compCode>" + compCode + "</compCode>";
-                            requestXml = requestXml + "					<compModCode>" + compModCode + "</compModCode>";
-                            requestXml = requestXml + "				</dto>";
-                            requestXml = requestXml + "			</data>";
-                            requestXml = requestXml + "			<id>" + System.Web.Services.Ellipse.Post.Util.GetNewOperationId() + "</id>";
-                            requestXml = requestXml + "		</action>";
-                            requestXml = requestXml + "	</actions>";
-                            requestXml = requestXml + "	<chains/>";
-                            requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                            requestXml = requestXml + "	<application>mse6a1</application>";
-                            requestXml = requestXml + "	<applicationPage>read</applicationPage>";
-                            requestXml = requestXml + "	<transaction>true</transaction>";
-                            requestXml = requestXml + "</interaction>";
-
-                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
-
-                            var errorMessage = responseDto.Errors.Aggregate("",
-                                (current, msg) => current + (msg.Field + " " + msg.Text));
-                            if (errorMessage.Equals(""))
-                            {
-                                _cells.GetCell(ResultColumn, currentRow).Select();
-                                _cells.GetCell(ResultColumn, currentRow).Value = "Borrado";
-                                _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style =
-                                    _cells.GetStyle(StyleConstants.Success);
-                            }
-                            else
-                            {
-                                _cells.GetCell(ResultColumn, currentRow).Select();
-                                _cells.GetCell(ResultColumn, currentRow).Value = errorMessage;
-                                _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style =
-                                    _cells.GetStyle(StyleConstants.Error);
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            _cells.GetCell(ResultColumn, currentRow).Select();
-                            _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
                             _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style =
-                                _cells.GetStyle(StyleConstants.Error);
-                        }
-                        finally
-                        {
+                                _cells.GetStyle(StyleConstants.Success);
+
+                            break;
+
+                        case "Delete":
+                            msssService.delete(msssOpContext, msssItem.ToDeleteRequestDto());
+
                             _cells.GetCell(ResultColumn, currentRow).Select();
-                        }
-                        break;
+                            _cells.GetCell(ResultColumn, currentRow).Value = "Borrado";
+                            _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style =
+                                _cells.GetStyle(StyleConstants.Success);
+
+                            break;
+                    }
                 }
-                currentRow++;
+                catch (Exception error)
+                {
+                    _cells.GetCell(ResultColumn, currentRow).Select();
+                    _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
+                    _cells.GetRange(1, currentRow, ResultColumn, currentRow).Style =
+                        _cells.GetStyle(StyleConstants.Error);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn, currentRow).Select();
+                    currentRow++;
+                }
             }
         }
 
@@ -371,117 +329,6 @@ namespace EllipseMsssEquipmentExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
-        //        private void LoadSheet()
-        //        {
-        //            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-        //            {
-        //                var urlEnvironment = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-        //                EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-        //                var responseDto = EFunctions.InitiatePostConnection();
-        //
-        //                if (responseDto.GotErrorMessages()) return;
-        //
-        //                var currentRow = TittleRow + 1;
-        //
-        //                while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
-        //                {
-        //                    try
-        //                    {
-        //
-        //                        var equipmentGrpId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
-        //                        var compCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
-        //                        var compcodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
-        //                        var compModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
-        //                        var failureMode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
-        //                        var failureModeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
-        //                        var failureCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value);
-        //                        var failureCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value);
-        //                        var functionCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value);
-        //                        var functionCodeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value);
-        //                        var consequence = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value);
-        //                        var consequenceDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
-        //                        var effect = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
-        //                        var strategy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
-        //                        var strategyDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value);
-        //                        var agreedAction = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value);
-        //                        var failureClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value);
-        //                        var failureClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value);
-        //                        var functionClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, currentRow).Value);
-        //                        var functionClassDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, currentRow).Value);
-        //
-        //
-        //                        var requestXml = "";
-        //                        requestXml = requestXml + "<interaction>";
-        //                        requestXml = requestXml + "	<actions>";
-        //                        requestXml = requestXml + "		<action>";
-        //                        requestXml = requestXml + "			<name>service</name>";
-        //                        requestXml = requestXml + "			<data>";
-        //                        requestXml = requestXml + "				<name>com.mincom.enterpriseservice.ellipse.msss.MSSSService</name>";
-        //                        requestXml = requestXml + "				<operation>delete</operation>";
-        //                        requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
-        //                        requestXml = requestXml + "				<dto uuid=\"" + System.Web.Services.Ellipse.Post.Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-        //                        requestXml = requestXml + "					<consequenceDescription>" + consequenceDescription + "</consequenceDescription>";
-        //                        requestXml = requestXml + "					<functionClass>" + functionClass + "</functionClass>";
-        //                        requestXml = requestXml + "					<compcodeDescription>" + compcodeDescription + "</compcodeDescription>";
-        //                        requestXml = requestXml + "					<strategy>" + strategy + "</strategy>";
-        //                        requestXml = requestXml + "					<equipmentGrpId>" + equipmentGrpId + "</equipmentGrpId>";
-        //                        requestXml = requestXml + "					<failureClass>" + failureClass + "</failureClass>";
-        //                        requestXml = requestXml + "					<failureCodeDescription>" + failureCodeDescription + "</failureCodeDescription>";
-        //                        requestXml = requestXml + "					<strategyDescription>" + strategyDescription + "</strategyDescription>";
-        //                        requestXml = requestXml + "					<effect>" + effect + "</effect>";
-        //                        requestXml = requestXml + "					<functionCodeDescription>" + functionCodeDescription + "</functionCodeDescription>";
-        //                        requestXml = requestXml + "					<functionCode>" + functionCode + "</functionCode>";
-        //                        requestXml = requestXml + "					<equipmentGrpIdDescription>BANDA TRANSPORTADORA BC402</equipmentGrpIdDescription>";
-        //                        requestXml = requestXml + "					<failureCode>" + failureCode + "</failureCode>";
-        //                        requestXml = requestXml + "					<failureMode>" + failureMode + "</failureMode>";
-        //                        requestXml = requestXml + "					<consequence>" + consequence + "</consequence>";
-        //                        requestXml = requestXml + "					<failureClassDescription>" + failureClassDescription + "</failureClassDescription>";
-        //                        requestXml = requestXml + "					<failureModeDescription>" + failureModeDescription + "</failureModeDescription>";
-        //                        requestXml = requestXml + "					<functionClassDescription>" + functionClassDescription + "</functionClassDescription>";
-        //                        requestXml = requestXml + "					<agreedAction>" + agreedAction + "</agreedAction>";
-        //                        requestXml = requestXml + "					<compCode>" + compCode + "</compCode>";
-        //                        requestXml = requestXml + "					<compModCode>" + compModCode + "</compModCode>";
-        //                        requestXml = requestXml + "				</dto>";
-        //                        requestXml = requestXml + "			</data>";
-        //                        requestXml = requestXml + "			<id>" + System.Web.Services.Ellipse.Post.Util.GetNewOperationId() + "</id>";
-        //                        requestXml = requestXml + "		</action>";
-        //                        requestXml = requestXml + "	</actions>";
-        //                        requestXml = requestXml + "	<chains/>";
-        //                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-        //                        requestXml = requestXml + "	<application>mse6a1</application>";
-        //                        requestXml = requestXml + "	<applicationPage>read</applicationPage>";
-        //                        requestXml = requestXml + "	<transaction>true</transaction>";
-        //                        requestXml = requestXml + "</interaction>";
-        //                        responseDto = EFunctions.ExecutePostRequest(requestXml);
-        //
-        //                        var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
-        //                        if (errorMessage.Equals(""))
-        //                        {
-        //                            _cells.GetCell(ResultColumn, currentRow).Value = errorMessage;
-        //                            _cells.GetCell(ResultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
-        //                        }
-        //                        else
-        //                        {
-        //                            _cells.GetCell(ResultColumn, currentRow).Value = errorMessage;
-        //                            _cells.GetCell(ResultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-        //                        }
-        //                    }
-        //                    catch (Exception error)
-        //                    {
-        //                        _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
-        //                        _cells.GetCell(ResultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-        //                    }
-        //                    finally
-        //                    {
-        //                        currentRow++;
-        //                    }
-        //                }
-        //
-        //
-        //            }
-        //            else
-        //                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-        //        }
     }
 
     internal static class Queries

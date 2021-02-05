@@ -204,11 +204,11 @@ namespace EllipseJobsClassLibrary
             searchParam.overlappingDateSearch = MyUtilities.IsTrue(OverlappingDateSearch);
             searchParam.overlappingDateSearchSpecified = OverlappingDateSearch != null;
             searchParam.parentWo = ParentWo;
-            searchParam.planFinDate = MyUtilities.ToDateTime(PlanFinDate);
+            searchParam.planFinDate = MyUtilities.ToDate(PlanFinDate);
             searchParam.planFinDateSpecified = PlanFinDate != null;
             searchParam.planFinTime = PlanFinTime;
             searchParam.planPriority = PlanPriority;
-            searchParam.planStrDate = MyUtilities.ToDateTime(PlanStrDate);
+            searchParam.planStrDate = MyUtilities.ToDate(PlanStrDate);
             searchParam.planStrDateSpecified = PlanStrDate != null;
             searchParam.planStrTime = PlanStrTime;
             searchParam.preferedEGI = PreferedEgi;

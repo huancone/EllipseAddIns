@@ -36,7 +36,7 @@ namespace EllipseJobsClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService")]
         public string EllipseJobsClassLibrary_WorkOrderTaskMWPService_WorkOrderTaskMWPService {
             get {
                 return ((string)(this["EllipseJobsClassLibrary_WorkOrderTaskMWPService_WorkOrderTaskMWPService"]));

@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using System.Threading;
-using Microsoft.Office.Interop.Excel;
 using EllipseJobsClassLibrary;
-using System.Xml;
-using System.Xml.Serialization;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Settings;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseFotoPlanificacionExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
 
         private const string SheetName01 = "FotoPlanificación";
@@ -33,11 +30,19 @@ namespace EllipseFotoPlanificacionExcelAddIn
         private const string TableName01 = "FotoPlannerTable";
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
-        private CommonSettings _settings;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -46,24 +51,27 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-            LoadSettings();
-        }
+            settings.SetDefaultCustomSettingValue("IgnoreNextTask", "N");
+            settings.SetDefaultCustomSettingValue("IgnoreUpdateSigmanTaskError", "N");
+            settings.SetDefaultCustomSettingValue("UpdateExistingAction", "Disable");
 
-        private void LoadSettings()
-        {
-            var defaultConfig = new CommonSettings.Options();
-            defaultConfig.SetOption("IgnoreNextTask", "N");
-            defaultConfig.SetOption("IgnoreUpdateSigmanTaskError", "N");
-            defaultConfig.SetOption("UpdateExistingAction", "Disable");
-            
-            _settings = new CommonSettings(defaultConfig);
-            var config = _settings.Configuration;
-            config.SetDefaultOptions(defaultConfig);
+
+
             //Setting of Configuration Options from Config File (or default)
-            cbIgnoreNextTask.Checked = MyUtilities.IsTrue(config.GetOptionValue("IgnoreNextTask"));
-            cbIgnoreUpdateError.Checked = MyUtilities.IsTrue(config.GetOptionValue("IgnoreUpdateSigmanTaskError"));
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
 
-            var existingAction = config.GetOptionValue("UpdateExistingAction");
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            cbIgnoreNextTask.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreNextTask"));
+            cbIgnoreUpdateError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreUpdateSigmanTaskError"));
+
+            var existingAction = settings.GetCustomSettingValue("UpdateExistingAction");
             if (existingAction.Equals("Delete"))
                 cbDeleteExisting.Checked = true;
             else if (existingAction.Equals("Disable"))
@@ -72,9 +80,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 cbIgnoreExisting.Checked = true;
             else
                 cbDeactivateExisting.Checked = true;
-
-            _settings.UpdateSettings();
             //
+            settings.SaveCustomSettings();
         }
 
         #region Buttons
@@ -175,7 +182,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
-                _cells = new ExcelStyleCells(_excelApp, false);
+                _cells = new ExcelStyleCells(_excelApp, true);
 
                 #region CONSTRUYO LA HOJA 1
 
@@ -298,7 +305,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void ReviewEllipse()
         {
-            _cells = new ExcelStyleCells(_excelApp, false);
+            _cells = new ExcelStyleCells(_excelApp, true);
             _cells.SetCursorWait();
 
             var titleRow = TitleRow01;
@@ -310,8 +317,6 @@ namespace EllipseFotoPlanificacionExcelAddIn
             var selectedEnvironment = drpEnvironment.SelectedItem.Label;
 
             var urlService = Environments.GetServiceUrl(selectedEnvironment);
-            var urlServicePost = Environments.GetServiceUrl(selectedEnvironment, ServiceType.PostService);
-            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
             //_eFunctions.SetDBSettings(selectedEnvironment);
 
 
@@ -370,7 +375,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             try
             {
                 //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
-                List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
+                var ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
                 var i = titleRow + 1;
                 foreach (var item in ellipseJobs)
                 {
@@ -426,7 +431,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void ReviewSigman()
         {
-            _cells = new ExcelStyleCells(_excelApp, false);
+            _cells = new ExcelStyleCells(_excelApp, true);
             _cells.SetCursorWait();
             
             var titleRow = TitleRow01;
@@ -437,13 +442,16 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             var selectedEnvironment = drpEnvironment.SelectedItem.Label;
 
+            /*
+            //No hay opciones de selección establecidas. Siempre será el SigamnProductivo
             if (selectedEnvironment.Equals(Environments.EllipseProductivo) || selectedEnvironment.Equals(Environments.EllipseContingencia))
                 _eFunctions.SetDBSettings(Environments.SigmanProductivo);
             else if (selectedEnvironment.Equals(Environments.EllipseTest) || selectedEnvironment.Equals(Environments.EllipseDesarrollo))
                 _eFunctions.SetDBSettings(Environments.SigmanProductivo);
             else
                 _eFunctions.SetDBSettings(selectedEnvironment);
-
+            */
+            _eFunctions.SetDBSettings(Environments.SigmanProductivo);
             #region searchParams
 
             var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
@@ -554,7 +562,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void UpdateSigman()
         {
-            _cells = new ExcelStyleCells(_excelApp, false);
+            _cells = new ExcelStyleCells(_excelApp, true);
             _cells.SetCursorWait();
 
             var titleRow = TitleRow01;
@@ -753,8 +761,9 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void cbIgnoreNextTask_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("IgnoreNextTask", MyUtilities.ToString(cbIgnoreNextTask.Checked));
-            _settings.UpdateSettings();
+
+            Settings.CurrentSettings.SetCustomSettingValue("IgnoreNextTask", MyUtilities.ToString(cbIgnoreNextTask.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
 
         private bool CheckExistingActionCheckBoxes()
@@ -766,8 +775,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
         }
         private void cbDeactivateExisting_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("UpdateExistingAction", "Disable");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("UpdateExistingAction", "Disable");
+            Settings.CurrentSettings.SaveCustomSettings();
 
             cbDeleteExisting.Checked = false;
             cbIgnoreExisting.Checked = false;
@@ -778,8 +787,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void cbDeleteExisting_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("UpdateExistingAction", "Delete");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("UpdateExistingAction", "Delete");
+            Settings.CurrentSettings.SaveCustomSettings();
 
             cbDeactivateExisting.Checked = false;
             cbIgnoreExisting.Checked = false;
@@ -789,8 +798,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void cbIgnoreExisting_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("UpdateExistingAction", "Ignore");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("UpdateExistingAction", "Ignore");
+            Settings.CurrentSettings.SaveCustomSettings();
 
             cbDeactivateExisting.Checked = false;
             cbDeleteExisting.Checked = false;
@@ -801,8 +810,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void cbIgnoreUpdateError_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("IgnoreUpdateSigmanTaskError", MyUtilities.ToString(cbIgnoreNextTask.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("IgnoreUpdateSigmanTaskError", MyUtilities.ToString(cbIgnoreNextTask.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
     }
 }
