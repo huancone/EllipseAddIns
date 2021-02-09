@@ -2745,6 +2745,9 @@ namespace EllipseAddinGanttEQ
                                           AND RC.REF_NO = '031'
 
                                           AND RC.SEQ_NUM = '001'
+                                          
+                                          --AND RC.REF_CODE <> 'CA                                      '
+                                        
                                         )LOCATION_TO ON OT.WORK_ORDER = LOCATION_TO.NO_OT
 
                                         LEFT JOIN
@@ -2814,14 +2817,15 @@ namespace EllipseAddinGanttEQ
 
                                         --AND TRIM(OT.EQUIP_NO) = '0060134'
 										
-                                        /*AND
+                                        AND
                                         (
                                             LOCATION_TO.REF_CODE IS NULL
 
                                           OR
 
                                             LOCATION_TO.REF_CODE = 'TL                                      '
-                                        )*/
+                                        )
+                                        --AND LOCATION_TO.REF_CODE NOT IN 'CA                                      '
                                           --AND EQ.EQUIP_GRP_ID = 'EH5000'
                                         --ORDER BY
                                           --OT.EQUIP_NO,
@@ -3495,6 +3499,7 @@ namespace EllipseAddinGanttEQ
 												AND RCE.ENTITY_TYPE = 'WKO'  
 												AND RC.REF_NO = '031'  
 												AND RC.SEQ_NUM = '001' 
+                                                --AND RC.REF_CODE <> 'CA                                      '
 										  )LOCATION_TO ON OT.WORK_ORDER=LOCATION_TO.NO_OT
 										  LEFT JOIN
 										  (
@@ -3534,13 +3539,14 @@ namespace EllipseAddinGanttEQ
 										  AND OT.WO_STATUS_M IN  ('" + ESTADO + @"') --AND --OT.PLAN_STR_DATE > TO_CHAR(SYSDATE-15,'YYYYMMDD')--ADD_MONTHS(TO_CHAR(SYSDATE,'DD/MM/YYYY'),-1)
 										  AND OT.PLAN_STR_DATE BETWEEN '" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + "' AND TO_CHAR(TO_DATE('" + FechaFinal + @"','YYYYMMDD')+" + HR_ADD + @",'YYYYMMDD')
 										  AND TRIM(OT.EQUIP_NO) = '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"'
-										  /*AND 
+										  AND 
 										  (
 											  LOCATION_TO.REF_CODE IS NULL
 											OR
 											  LOCATION_TO.REF_CODE = 'TL                                      '
-										  )*/
+										  )
 										  --AND EQ.EQUIP_GRP_ID = 'EH5000'	  
+                                          --AND LOCATION_TO.REF_CODE NOT IN 'CA                                      '
 										--ORDER BY
 										  --OT.EQUIP_NO,
 										  --TO_NUMBER(TRIM(COLOR.REF_CODE_C)),
