@@ -59,6 +59,7 @@ namespace EllipseAddinGanttEQ
         private const string tableName02 = "_01Labor_OT";
         private const string TableName03 = "_01DurationWorkOrders";
         private const string TableName04 = "_01Vales_OT";
+        private const string TableName05 = "_01Gantt_Parada_EquipoCOMENT_EXT";
         private const int titleRow = 8;
         private Thread _thread;
         private bool _progressUpdate = true;
@@ -863,7 +864,11 @@ namespace EllipseAddinGanttEQ
                 //Excel.Name Nombre = _excelApp.ActiveWorkbook.ActiveSheet.Names(tableName01);
                 if(_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
-                    _cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
+                    _cells.DeleteTableRange(TableName05);
+                    _excelApp.Application.Goto("ComentExt");
+                    _excelApp.Application.Selection.EntireRow.Delete();
+                    //_cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
+                    _cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 10000)).Clear();
                     _excelApp.Application.Goto(tableName01);
                     _excelApp.Application.Selection.EntireRow.Delete();
 
@@ -1001,7 +1006,7 @@ namespace EllipseAddinGanttEQ
             //_excelApp.ActiveWorkbook.ActiveSheet.Select();
             //Rango.Select();
             String NameTable = "01";
-            NameTable = NameTable + Convert.ToString(_excelApp.ActiveWorkbook.ActiveSheet.Name);
+            NameTable = NameTable + Convert.ToString(HojaName);
             //Rango.Select();
             if (StyleText == 1)
             {
@@ -1095,8 +1100,13 @@ namespace EllipseAddinGanttEQ
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
                     _excelApp.Application.Goto(tableName01);
+                    _cells.DeleteTableRange(TableName05);
+                    _cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 10000)).Clear();
                     _excelApp.Application.Selection.EntireRow.Delete();
+
+                    
                 }
+                
                 _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Select();
 
             }
@@ -4172,6 +4182,47 @@ namespace EllipseAddinGanttEQ
                                 FROM
                                     SEGUND");
                 }
+                else if(Tipe == 4)
+                {
+                    sqlQuery = (@"SELECT
+                                      '" + HR_ADD + @"' AS Item,
+                                      OT.WORK_ORDER,
+                                      OT.WO_DESC AS DESCRIPCION_OT,
+                                      (
+                                          SELECT 
+                                              MAX(f.L0)|| ' ' ||MAX(f.L1)|| ' ' ||MAX(f.L2)|| ' ' ||MAX(f.L3)|| ' ' ||MAX(f.L4)|| ' ' ||MAX(f.L5)|| ' ' ||MAX(f.L6)|| ' ' ||MAX(f.L7)|| ' ' ||MAX(f.L8)|| ' ' ||MAX(f.L9) as ComentarioExte
+                                          FROM
+                                              (
+                                              SELECT 
+                                                  STD_KEY,
+                                                  w.WORK_ORDER,
+                                                  CASE WHEN std_line_no='0000' THEN SUBSTR(trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5),10,LENGTH(trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)))  END L0,
+                                                  CASE WHEN std_line_no='0001' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L1,
+                                                  CASE WHEN std_line_no='0002' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L2,
+                                                  CASE WHEN std_line_no='0003' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L3,
+                                                  CASE WHEN std_line_no='0004' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L4,
+                                                  CASE WHEN std_line_no='0005' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L5,
+                                                  CASE WHEN std_line_no='0006' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L6,
+                                                  CASE WHEN std_line_no='0007' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L7,
+                                                  CASE WHEN std_line_no='0008' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L8,
+                                                  CASE WHEN std_line_no='0009' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L9
+                                              FROM 
+                                                  ELLIPSE.MSF096_STD_VOLAT t
+                                                  INNER JOIN ELLIPSE.MSF620 w ON(t.std_key = 'ICOR'||w.work_order)
+                                              where  
+                                                  t.std_text_code='WO'
+                                          ) f
+                                          WHERE
+                                          f.work_order= OT.WORK_ORDER
+                                          GROUP BY 
+                                          F.STD_KEY
+                                      ) AS COMENTARIO_EXTENDIDO
+                                    FROM
+                                      ELLIPSE.MSF620 OT
+                                    WHERE
+                                      OT.DSTRCT_CODE = 'ICOR' 
+                                      AND OT.WORK_ORDER = '" + FechaFinal + @"' ");
+                }
 
             }
             else if (Hoja == 2)
@@ -4422,6 +4473,7 @@ namespace EllipseAddinGanttEQ
 
         private void Pruebas_Click(object sender, RibbonControlEventArgs e)
         {
+
         }
 
         private void btnConsultVale_Click(object sender, RibbonControlEventArgs e)
@@ -4502,29 +4554,418 @@ namespace EllipseAddinGanttEQ
             }
             _cells.GetCell(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1)).Value = "Tot tcos/ hrs dur";
             _cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).Interior.Color = System.Drawing.ColorTranslator.ToOle((Color.FromArgb(244, 232, 188)));
+
         }
-        /*
-            public event Microsoft.Office.Interop.Excel.WorkbookEvents_SheetChangeEventHandler SheetChange;
-            private void WorkbookSheetChange()
+
+        private void BtnExtendido_Click(object sender, RibbonControlEventArgs e)
+        {
+            _excelApp.Visible = true;
+            //var taskCells = new ExcelStyleCells(_excelApp, SheetName01);
+            Excel.Worksheet SheetGantt = _excelApp.ActiveWorkbook.Sheets[SheetName01];
+            var WoCol = FindColumna("WORK_ORDER");
+            if (SheetGantt.Cells[StartRowTable + 1, WoCol].Value == null)
             {
-                this.SheetChange += new
-                    Excel.WorkbookEvents_SheetChangeEventHandler(
-                    ThisWorkbook_SheetChange);
+                MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder consultar esta informacion.");
+                return;
+            }
+            if (SheetGantt.Cells[StartRowTable + 3 + FinRowTablaOneSheet, StartColTable].Value != null)
+            {
+                MessageBox.Show(@"No es necesario, Ya la tabla existe.");
+                return;
+            }
+            _cells.SetCursorWait();
+            _excelApp.ScreenUpdating = false;
+
+            //Object DatosOts = new Object[0];
+            Object DatosOts = SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet + 1, WoCol]].Cells.Value2;
+
+            string[] DatosWoG = GetStringArray(DatosOts);
+            string[] DatosWo = DatosWoG.Distinct().ToArray();
+
+            //IList<string> Encabezados = new List<string>();
+
+
+
+            var StrCol = StartColTable;
+            var StrRow = StartRowTable + FinRowTablaOneSheet + 3;
+            var FinRow = FinRowTablaOneSheet + 3;
+            //string[,] data = null;
+
+            for (Int32 w = 0; w < DatosWo.Length; w++)
+            {
+                string sqlQuery = Consulta(4, 1, DatosWo[w], w + 1);
+                data.DataTable table = getdata(sqlQuery);
+                //_cells.GetRange(StrCol + 2, (StrRow - 1) + w, StrCol + 4, (StrRow - 1) + w).Merge();
+                if (w == 0)
+                {
+                    _cells.GetRange("C" + (StrRow - 1), "E" + (StrRow - 1)).Merge();
+                    _cells.GetRange("F" + (StrRow - 1), "M" + (StrRow - 1)).Merge();
+                    var AA = StartColTable;
+                    var RW = StartRowTable + FinRowTablaOneSheet + 2;
+                    foreach (data.DataColumn Col in table.Columns)
+                    {
+                        if (Col.ColumnName.ToString() == "COMENTARIO_EXTENDIDO")
+                        {
+                            _cells.GetCell("F" + (StrRow - 1)).Value = Col.ColumnName.ToString();
+                        }
+                        else
+                        {
+                            _cells.GetCell(AA, RW).Value = Col.ColumnName.ToString();
+                            //Encabezados.Add(Col.ColumnName.ToString());
+                        }
+                        AA++;
+                    }
+                }
+                //_cells.GetRange(StrCol + 2, StrRow + w, 5, StrRow + w).Merge();
+
+                //data = null;
+                //data = new string[table.Rows.Count, table.Columns.Count];
+                for (int Row = 0; Row < table.Rows.Count; Row++)
+                {
+                    for (int Col = 0; Col < table.Columns.Count; Col++)
+                    {
+                        //_cells.GetRange("C" + StrRow + w, "E" + StrRow + w).Merge();
+                        
+                        //data[Row, Col] = table.Rows[Row][Col].ToString();
+                        if (table.Columns[Col].ColumnName == "COMENTARIO_EXTENDIDO")
+                        {
+                            _cells.GetRange("C" + (StrRow + w), "E" + (StrRow + w)).Merge();
+                            _cells.GetRange("F" + (StrRow + w), "M" + (StrRow + w)).Merge();
+                            _cells.GetCell(StrCol + Col + 2, StrRow + w).Value = table.Rows[Row][Col].ToString();                        }
+                        else
+                        {
+                            _cells.GetCell(StrCol + Col, StrRow + w).Value = table.Rows[Row][Col].ToString();
+                        }
+                    }
+                    
+                }
+                if (w % 2 == 0)
+                {
+                    _cells.GetRange(StartColTable, (StrRow + w), 13, (StrRow + w)).Interior.Color = System.Drawing.ColorTranslator.ToOle((Color.FromArgb(221, 235, 247)));
+                }
+ 
+                //_cells.GetRange(StrCol, StrRow + w, data.GetLength(1), StrRow + w).NumberFormat = "@";
+                //_cells.GetRange(StrCol, StrRow + w, data.GetLength(1), StrRow + w).Value = data;
+                //_cells.GetRange(StrCol, StrRow + w, data.GetLength(1), StrRow + w).Value = _cells.GetRange(StrCol, StrRow + w, data.GetLength(1), StrRow + w).Value;
+            }
+            _excelApp.ActiveWorkbook.Names.Add("ComentExt", _cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 2), 13, (StartRowTable + FinRowTablaOneSheet + 2 + DatosWo.Length)));
+            FormatBordes(_cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 2), 13, (StartRowTable + FinRowTablaOneSheet + 2 + DatosWo.Length)));
+            //_cells.GetRange(StrCol + 2, StartRowTable + FinRowTablaOneSheet + 2, StrCol + 4, StartRowTable + FinRowTablaOneSheet + 2).Merge();
+            //_cells.GetRange(StrCol + 5, StartRowTable + FinRowTablaOneSheet + 2, StrCol + 9, StartRowTable + FinRowTablaOneSheet + 2).Merge();
+
+
+
+
+
+
+            var ColumName = StartColTable;
+            var RowName = StartRowTable + FinRowTablaOneSheet + 2;
+            /*
+            foreach (var ColName in Encabezados)
+            {
+                _cells.GetCell(ColumName, RowName).Value = ColName;
+                ColumName++;
+            }*/
+
+
+            //FormatTable(_cells.GetRange(StrCol, StartRowTable + FinRowTablaOneSheet + 2, 13, StartRowTable + FinRowTablaOneSheet + 2 + DatosWo.Length), _excelApp.ActiveWorkbook.ActiveSheet.Name + "COMENT_EXT", 1, 1);
+            //Centrar titulo del encabezado de la tabla
+            CentrarRango(_cells.GetRange(StrCol, StartRowTable + FinRowTablaOneSheet + 2, 13, StartRowTable + FinRowTablaOneSheet + 2 + DatosWo.Length));
+
+
+            
+            
+
+            //FORMATEANDO TABLAS
+
+            //TITULO DE MATRIZ DE SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 2), Col: true, Texto: "MATRIZ DE SIMULTANEIDAD", Comentario: "MATRIZ", Rf: 91, Gf: 155, Bf: 213, Rl: 0, Gl: 0, Bl: 0);
+            _cells.GetRange(StrCol, RowName + DatosWo.Length + 2, StrCol + 4, RowName + DatosWo.Length + 2).Merge();
+            for (int i = 0; i < 31; i++)
+            {
+                _cells.GetRange(StrCol + 1, RowName + DatosWo.Length + 3 + i, StrCol + 4, RowName + DatosWo.Length + 3 + i).Merge();
+            }
+            
+
+            //FormatBordes(_cells.GetRange(StrCol, RowName + DatosWo.Length + 2, StrCol + 4, RowName + DatosWo.Length + 2));
+
+            //PRIMERA COLUMNA TABLA SIMULTANEIDAD
+
+            //PRIMERA CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 3), Col: true, Texto: "N/A", Comentario: "", Rf: 255, Gf: 240, Bf: 51, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 4), Col: true, Texto: "1", Comentario: "", Rf: 0, Gf: 0, Bf: 0, Rl: 255, Gl: 255, Bl: 255);
+            //TERCERA CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 5), Col: true, Texto: "2", Comentario: "", Rf: 38, Gf: 203, Bf: 23, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 6), Col: true, Texto: "3", Comentario: "", Rf: 61, Gf: 148, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 7), Col: true, Texto: "4", Comentario: "", Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+
+
+
+            //SEGUNDA COLUMNA TABLA SIMULTANEIDAD
+
+            //PRIMERA CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 3), Col: true, Texto: "No aplica", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 4), Col: true, Texto: "No pued trabajar simultaneo por interferencia de area o recurso", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 5), Col: true, Texto: "Se puede trabajar de forma simultanea", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 6), Col: true, Texto: "Se puede trabajar en forma simultanea pero con controles", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 7), Col: true, Texto: "No se deben trabajar de forma simultanea", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+
+            //CENTRAR, PONER BORDES Y CREAR TABLA
+            FormatTable(_cells.GetRange(StrCol, RowName + DatosWo.Length + 2, StrCol + 4, RowName + DatosWo.Length + 7), _excelApp.ActiveWorkbook.ActiveSheet.Name + "_MTRIZ_SIMULTANEA");
+            //Centrar titulo del encabezado de la tabla
+            CentrarRango(_cells.GetRange(StrCol, RowName + DatosWo.Length + 2, StrCol + 4, RowName + DatosWo.Length + 7));
+
+
+
+            //SEGUNDA TABLA REFERENCE CODES PARA DEFINIR TIPO REPARACION
+
+
+
+            //TITULO DE MATRIZ DE SIMULTANEIDAD
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 9), Col: true, Texto: "COD USADOS EN REFERENT COD PARA DEFINIR TIPO DE REPARACION", Comentario: "EXPLICACION DE CADA CODIGO DE UBICACION", Rf: 91, Gf: 155, Bf: 213, Rl: 0, Gl: 0, Bl: 0);
+            _cells.GetRange(StrCol, RowName + DatosWo.Length + 9, StrCol + 4, RowName + DatosWo.Length + 9).Merge();
+            FormatBordes(_cells.GetRange(StrCol, RowName + DatosWo.Length + 9, StrCol + 4, RowName + DatosWo.Length + 9));
+
+
+
+
+            //PRIMERA COLUMNA TABLA REFERENCE
+
+            //PRIMERA CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 10), Col: true, Texto: "COD UBIC", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 11), Col: true, Texto: "TL", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 12), Col: true, Texto: "CA", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 13), Col: true, Texto: "CO", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 14), Col: true, Texto: "ER", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+
+
+
+            //SEGUNDA COLUMNA TABLA REFERENCE
+
+            //PRIMERA CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 10), Col: true, Texto: "TIPOS DE PARADAS", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 11), Col: true, Texto: "Aplica para SEIS ", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 12), Col: true, Texto: "Inspc o repar ligeras (SEIS cortos, Inspec programadas, P1..etc)", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 13), Col: true, Texto: "Componentes", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA REFERENCE
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 14), Col: true, Texto: "Reparaciones estructurales", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+
+
+            //CENTRAR, PONER BORDES Y CREAR TABLA
+            FormatTable(_cells.GetRange(StrCol, RowName + DatosWo.Length + 9, StrCol + 4, RowName + DatosWo.Length + 14), _excelApp.ActiveWorkbook.ActiveSheet.Name + "_REFERENCE_CODES");
+            //Centrar titulo del encabezado de la tabla
+            CentrarRango(_cells.GetRange(StrCol, RowName + DatosWo.Length + 9, StrCol + 4, RowName + DatosWo.Length + 14));
+
+
+
+
+
+
+
+
+
+            //TABLA CODIGO GANTT
+
+
+
+            //TITULO DE CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 16), Col: true, Texto: "COD USADOS EN REFERENT COD PARA EL GANTT DE PARADA EN PALAS HCAS", Comentario: "EXPLICACION DE CADA CODIGO DE GANTT", Rf: 91, Gf: 155, Bf: 213, Rl: 0, Gl: 0, Bl: 0);
+            _cells.GetRange(StrCol, RowName + DatosWo.Length + 16, StrCol + 4, RowName + DatosWo.Length + 16).Merge();
+            FormatBordes(_cells.GetRange(StrCol, RowName + DatosWo.Length + 16, StrCol + 4, RowName + DatosWo.Length + 16));
+
+
+
+
+            //PRIMERA COLUMNA TABLA CODIGO GANTT
+
+            //PRIMERA CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 17), Col: true, Texto: "COD GANTT", Comentario: "", Rf: 197, Gf: 217, Bf: 241, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 18), Col: true, Texto: "1", Comentario: "", Rf: 0, Gf: 204, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 19), Col: true, Texto: "2", Comentario: "", Rf: 112, Gf: 48, Bf: 160, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 20), Col: true, Texto: "3", Comentario: "", Rf: 255, Gf: 255, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            //QUINTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 21), Col: true, Texto: "4", Comentario: "", Rf: 51, Gf: 153, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
+            //SEXTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 22), Col: true, Texto: "5", Comentario: "", Rf: 0, Gf: 255, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            //SEPTIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 23), Col: true, Texto: "6", Comentario: "", Rf: 192, Gf: 192, Bf: 192, Rl: 0, Gl: 0, Bl: 0);
+            //OCTAVO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 24), Col: true, Texto: "7", Comentario: "", Rf: 255, Gf: 102, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            //NOVENO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 25), Col: true, Texto: "8", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DECIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 26), Col: true, Texto: "9", Comentario: "", Rf: 255, Gf: 128, Bf: 128, Rl: 0, Gl: 0, Bl: 0);
+            //UNDECIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 27), Col: true, Texto: "10", Comentario: "", Rf: 204, Gf: 153, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DOCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 28), Col: true, Texto: "11", Comentario: "", Rf: 0, Gf: 128, Bf: 128, Rl: 0, Gl: 0, Bl: 0);
+            //TRECE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 29), Col: true, Texto: "12", Comentario: "", Rf: 0, Gf: 0, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CATORCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 30), Col: true, Texto: "13", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CATORCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol, RowName + DatosWo.Length + 31), Col: true, Texto: "14", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+
+
+            //SEGUNDA COLUMNA TABLA CODIGO GANTT
+
+            //PRIMERA CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 17), Col: true, Texto: "TAREAS", Comentario: "", Rf: 219, Gf: 227, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 18), Col: true, Texto: "Tareas del PM", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 19), Col: true, Texto: "Trabajos en Motor Diésel", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 20), Col: true, Texto: "Trabajos eléctricos ", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //QUINTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 21), Col: true, Texto: "Cambio de Componentes", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEXTO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 22), Col: true, Texto: "Ruta 1 Mecánico (Mec 1 y 2)", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEPTIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 23), Col: true, Texto: "Ruta 2 Mecánico (Mec 3 y 4)", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //OCTAVO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 24), Col: true, Texto: "Ruta 3 Mecánico (Mec 5 y 6) Paquetes  Mangueras", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //NOVENO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 25), Col: true, Texto: "Ruta 4 Mecánico (Mec 7 y 8)", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DECIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 26), Col: true, Texto: "Soldadura Reparaciones Estructurales", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //UNDECIMO CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 27), Col: true, Texto: "Soporte Soldadura", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DOCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 28), Col: true, Texto: "MASA Aire", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //TRECE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 29), Col: true, Texto: "MASA Cabina", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CATORCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 30), Col: true, Texto: "Comunicaciones", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CATORCE CAMPO TABLA CODIGO GANTT
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 1, RowName + DatosWo.Length + 31), Col: true, Texto: "Otros", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+
+
+            //CENTRAR, PONER BORDES Y CREAR TABLA
+            FormatTable(_cells.GetRange(StrCol, RowName + DatosWo.Length + 16, StrCol + 4, RowName + DatosWo.Length + 31), _excelApp.ActiveWorkbook.ActiveSheet.Name + "_COD_GANTT");
+            //Centrar titulo del encabezado de la tabla
+            CentrarRango(_cells.GetRange(StrCol, RowName + DatosWo.Length + 16, StrCol + 4, RowName + DatosWo.Length + 31));
+
+
+
+            //TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 16), Col: true, Texto: "COD USADOS EN REFERENT COD PARA EL GANTT DE PARADA EN EQUIPOS TALLER", Comentario: "GANTT DE PARADA EN EQUIPOS TALLER", Rf: 91, Gf: 155, Bf: 213, Rl: 0, Gl: 0, Bl: 0);
+            _cells.GetRange(StrCol + 6, RowName + DatosWo.Length + 16, StrCol + 9, RowName + DatosWo.Length + 16).Merge();
+            FormatBordes(_cells.GetRange(StrCol + 6, RowName + DatosWo.Length + 16, StrCol + 9, RowName + DatosWo.Length + 16));
+
+
+            for (int i = 0; i < 11; i++)
+            {
+                _cells.GetRange(StrCol + 8, RowName + DatosWo.Length + 16 + i, StrCol + 9, RowName + DatosWo.Length + 16 + i).Merge();
             }
 
-            void ThisWorkbook_SheetChange(object Sh, Excel.Range Target)
-            {
-                Excel.Worksheet sheet = (Excel.Worksheet)Sh;
+            //PRIMERA COLUMNA TABLA CODIGO GANTT EQUIPOS TALLER
 
-                string changedRange = Target.get_Address(
-                    Excel.XlReferenceStyle.xlA1);
+            //PRIMERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 17), Col: true, Texto: "COD GANTT", Comentario: "", Rf: 197, Gf: 217, Bf: 241, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 18), Col: true, Texto: "1", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 19), Col: true, Texto: "2", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 20), Col: true, Texto: "3", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //QUINTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 21), Col: true, Texto: "4", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEXTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 22), Col: true, Texto: "5", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //SEPTIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 23), Col: true, Texto: "6", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //OCTAVO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 24), Col: true, Texto: "7", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //NOVENO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 25), Col: true, Texto: "8", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DECIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 6, RowName + DatosWo.Length + 26), Col: true, Texto: "9", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
 
-                MessageBox.Show("The value of " + sheet.Name + ":" +
-                    changedRange + " was changed.");
-            }
-        */
+
+            //SEGUNDA COLUMNA TABLA CODIGO GANTT EQUIPOS TALLER
+
+            //PRIMERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 17), Col: true, Texto: "COLOR", Comentario: "", Rf: 197, Gf: 217, Bf: 241, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 18), Col: true, Texto: "Azul Claro", Comentario: "", Rf: 146, Gf: 205, Bf: 220, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 19), Col: true, Texto: "Verde claro", Comentario: "", Rf: 146, Gf: 208, Bf: 80, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 20), Col: true, Texto: "Amarillo", Comentario: "", Rf: 255, Gf: 255, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            //QUINTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 21), Col: true, Texto: "Azul oscuro", Comentario: "", Rf: 54, Gf: 96, Bf: 146, Rl: 0, Gl: 0, Bl: 0);
+            //SEXTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 22), Col: true, Texto: "Salmon", Comentario: "", Rf: 226, Gf: 107, Bf: 10, Rl: 0, Gl: 0, Bl: 0);
+            //SEPTIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 23), Col: true, Texto: "Gris", Comentario: "", Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
+            //OCTAVO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 24), Col: true, Texto: "Morado", Comentario: "", Rf: 177, Gf: 160, Bf: 199, Rl: 0, Gl: 0, Bl: 0);
+            //NOVENO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 25), Col: true, Texto: "Rosado", Comentario: "", Rf: 218, Gf: 150, Bf: 148, Rl: 0, Gl: 0, Bl: 0);
+            //DECIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 7, RowName + DatosWo.Length + 26), Col: true, Texto: "Rojo", Comentario: "", Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+
+
+            //TERCERA COLUMNA TABLA CODIGO GANTT EQUIPOS TALLER
+
+            //PRIMERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 17), Col: true, Texto: "TAREAS SEGUN RUTA", Comentario: "", Rf: 197, Gf: 217, Bf: 241, Rl: 0, Gl: 0, Bl: 0);
+            //SEGUNDO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 18), Col: true, Texto: "PM + Tareas realizada durante el SEIS", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //TERCERA CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 19), Col: true, Texto: "Tareas de motor después del SEIS", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //CUARTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 20), Col: true, Texto: "Backlog Eléctrico", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //QUINTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 21), Col: true, Texto: "Backlog Mecánicos", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //SEXTO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 22), Col: true, Texto: "Componentes", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //SEPTIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 23), Col: true, Texto: "Otros Talleres", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //OCTAVO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 24), Col: true, Texto: "Reparaciones estructurales", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+            //NOVENO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 25), Col: true, Texto: "Reparaciones menores de soldadura", Comentario: "", Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+            //DECIMO CAMPO TABLA CODIGO GANTT EQUIPOS TALLER
+            FormatCamposMenu(Celda: _cells.GetCell(StrCol + 8, RowName + DatosWo.Length + 26), Col: true, Texto: "Aire Acondicionado y reparacón cabina", Comentario: "", Rf: 235, Gf: 241, Bf: 222, Rl: 0, Gl: 0, Bl: 0);
+
+
+            //CENTRAR, PONER BORDES Y CREAR TABLA
+            FormatTable(_cells.GetRange(StrCol + 6, RowName + DatosWo.Length + 16, StrCol + 9, RowName + DatosWo.Length + 26), _excelApp.ActiveWorkbook.ActiveSheet.Name + "_COD_GANTT_EQ");
+            //Centrar titulo del encabezado de la tabla
+            CentrarRango(_cells.GetRange(StrCol + 6, RowName + DatosWo.Length + 16, StrCol + 9, RowName + DatosWo.Length + 26));
 
 
 
+            _cells.SetCursorDefault();
+            _excelApp.Columns.AutoFit();
+            _excelApp.Rows.AutoFit();
+            _excelApp.ScreenUpdating = true;
+
+
+        }
+
+        private void BtnExtendido_Click_1(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }

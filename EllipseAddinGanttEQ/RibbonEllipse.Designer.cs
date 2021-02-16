@@ -50,6 +50,7 @@
             this.btnActualizarDurLab = this.Factory.CreateRibbonButton();
             this.IdCumplimiento = this.Factory.CreateRibbonButton();
             this.BtnTecnicos = this.Factory.CreateRibbonButton();
+            this.BtnExtendido = this.Factory.CreateRibbonButton();
             this.btnLimpiar = this.Factory.CreateRibbonButton();
             this.Stop = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -104,6 +105,7 @@
             this.menuAcciones.Items.Add(this.btnActualizarDurLab);
             this.menuAcciones.Items.Add(this.IdCumplimiento);
             this.menuAcciones.Items.Add(this.BtnTecnicos);
+            this.menuAcciones.Items.Add(this.BtnExtendido);
             this.menuAcciones.Items.Add(this.btnLimpiar);
             this.menuAcciones.Items.Add(this.Stop);
             this.menuAcciones.Label = "Acciones";
@@ -172,6 +174,13 @@
             this.BtnTecnicos.ShowImage = true;
             this.BtnTecnicos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTecnicos_Click);
             // 
+            // BtnExtendido
+            // 
+            this.BtnExtendido.Label = "Coment Ext";
+            this.BtnExtendido.Name = "BtnExtendido";
+            this.BtnExtendido.ShowImage = true;
+            this.BtnExtendido.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExtendido_Click);
+            // 
             // btnLimpiar
             // 
             this.btnLimpiar.Label = "Limpiar";
@@ -226,6 +235,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Pruebas;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultVale;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnTecnicos;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnExtendido;
     }
 
     partial class ThisRibbonCollection
