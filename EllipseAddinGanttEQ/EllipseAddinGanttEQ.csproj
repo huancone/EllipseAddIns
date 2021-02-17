@@ -40,7 +40,7 @@
     <PublishUrl>C:\Users\gvargas4\Desktop\Ejecutable AddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.5</ApplicationVersion>
+    <ApplicationVersion>0.0.0.6</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
