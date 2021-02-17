@@ -4962,10 +4962,5 @@ namespace EllipseAddinGanttEQ
 
 
         }
-
-        private void BtnExtendido_Click_1(object sender, RibbonControlEventArgs e)
-        {
-
-        }
     }
 }
