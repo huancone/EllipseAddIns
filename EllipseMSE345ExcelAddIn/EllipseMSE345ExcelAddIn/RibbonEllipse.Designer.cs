@@ -43,6 +43,8 @@
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnCreate = this.Factory.CreateRibbonButton();
+            this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnStopProcess = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
             this.box1.SuspendLayout();
@@ -59,7 +61,7 @@
             // 
             this.grpCondMonit.Items.Add(this.box1);
             this.grpCondMonit.Items.Add(this.drpEnvironment);
-            this.grpCondMonit.Items.Add(this.btnCreate);
+            this.grpCondMonit.Items.Add(this.menuActions);
             this.grpCondMonit.Label = "MSE345";
             this.grpCondMonit.Name = "grpCondMonit";
             // 
@@ -105,7 +107,22 @@
             // 
             this.btnCreate.Label = "Cargar Info";
             this.btnCreate.Name = "btnCreate";
+            this.btnCreate.ShowImage = true;
             this.btnCreate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreate_Click);
+            // 
+            // menuActions
+            // 
+            this.menuActions.Items.Add(this.btnCreate);
+            this.menuActions.Items.Add(this.btnStopProcess);
+            this.menuActions.Label = "Acciones";
+            this.menuActions.Name = "menuActions";
+            // 
+            // btnStopProcess
+            // 
+            this.btnStopProcess.Label = "Detener Procesos";
+            this.btnStopProcess.Name = "btnStopProcess";
+            this.btnStopProcess.ShowImage = true;
+            this.btnStopProcess.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopProcess_Click);
             // 
             // RibbonEllipse
             // 
@@ -134,6 +151,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMntto;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopProcess;
     }
 
     partial class ThisRibbonCollection

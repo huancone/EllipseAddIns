@@ -907,18 +907,26 @@ namespace EllipseBulkMaterialExcelAddIn
                         var equipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
                         var stat = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value);
                         var statDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
+                        if(string.IsNullOrWhiteSpace(statDate))
+                            statDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
 
-                        if (equipNo != null & statType != null & stat != null)
-                        {
-                            var lastStat = GetLastStatistic(equipNo, statType, statDate);
-                            _cells.GetCell(17, currentRow)
-                                .AddComment(Convert.ToString(lastStat.StatDate + " - " + lastStat.MeterValue,
-                                    CultureInfo.InvariantCulture));
-                            _cells.GetCell(17, currentRow).Style = _cells.GetStyle(
-                                Convert.ToDecimal(stat) < lastStat.MeterValue
-                                    ? StyleConstants.Error
-                                    : StyleConstants.Success);
-                        }
+                        if (string.IsNullOrWhiteSpace(equipNo))
+                            throw new ArgumentNullException(nameof(equipNo), "Se necesita un número de equipo para poder validar la estadística");
+                        if (string.IsNullOrWhiteSpace(stat))
+                            stat = "0";
+                        if (string.IsNullOrWhiteSpace(statType))
+                            throw new ArgumentNullException(nameof(statType), "Se necesita el tipo de estadística para poder validar la estadística");
+                        
+                        
+                        var lastStat = GetLastStatistic(equipNo, statType, statDate);
+                        _cells.GetCell(17, currentRow)
+                            .AddComment(Convert.ToString(lastStat.StatDate + " - " + lastStat.MeterValue,
+                                CultureInfo.InvariantCulture));
+                        _cells.GetCell(17, currentRow).Style = _cells.GetStyle(
+                            Convert.ToDecimal(stat) < lastStat.MeterValue
+                                ? StyleConstants.Error
+                                : StyleConstants.Success);
+                        
                         _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Success;
                         _cells.GetCell(resultColumn, currentRow).Value = "VALIDADO";
                     }

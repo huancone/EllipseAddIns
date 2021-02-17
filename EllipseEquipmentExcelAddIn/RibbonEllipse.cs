@@ -634,7 +634,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn03, TitleRow03).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName02);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName03);
 
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
 
@@ -799,7 +799,8 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
 
         }
         public void ReReviewEquipmentList()
@@ -831,7 +832,8 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     var equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var eq = EquipmentActions.FetchEquipmentData(_eFunctions, equipmentNo);
-                    if (eq == null) continue;
+                    if (eq == null)
+                        throw new Exception("Equipment not found");
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
@@ -943,7 +945,8 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
         public void CreateEquipment()
         {
@@ -1050,30 +1053,8 @@ namespace EllipseEquipmentExcelAddIn
                         }
                     };
 
-                    var referenceCodes = new Equipment.EquipmentReferenceCodes
-                    {
-                        EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                        RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                        FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                        ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                        XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
-                    };
 
-                    //RefCode Validation
-                    if (referenceCodes.EquipmentCapacity != null)
-                    {
-                        decimal value;
-                        if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
-                        {
-                            var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
-                            if (numericEquipmentCapacity > 999)
-                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
-                        }
-                        else
-                            throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
-                    }
 
-                    //
                     var createReply = EquipmentActions.CreateEquipment(opSheet, urlService, equipment);
 
                     if (string.IsNullOrWhiteSpace(createReply.equipmentNo))
@@ -1083,6 +1064,31 @@ namespace EllipseEquipmentExcelAddIn
                     var errorList = "";
                     if (!cbIgnoreRefCodes.Checked)
                     {
+                        var referenceCodes = new Equipment.EquipmentReferenceCodes
+                        {
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                        };
+
+                        //RefCode Validation
+                        if (!string.IsNullOrWhiteSpace(referenceCodes.EquipmentCapacity))
+                        {
+                            decimal value;
+                            if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                            {
+                                var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                                if (numericEquipmentCapacity > 999)
+                                    throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                            }
+                            else
+                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                        }
+
+                        //
+
                         var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
 
                         if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
@@ -1115,11 +1121,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         public void UpdateEquipment()
@@ -1232,29 +1238,7 @@ namespace EllipseEquipmentExcelAddIn
                         }
                     };
 
-                    var referenceCodes = new Equipment.EquipmentReferenceCodes
-                    {
-                        EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                        RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                        FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                        ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                        XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
-                    };
-
-                    //RefCode Validation
-                    if (referenceCodes.EquipmentCapacity != null)
-                    {
-                        decimal value;
-                        if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
-                        {
-                            var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
-                            if (numericEquipmentCapacity > 999)
-                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
-                        }
-                        else
-                            throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
-                    }
-                    //
+                    
 
                     EquipmentActions.UpdateEquipmentData(opSheet, urlService, equipment);
 
@@ -1262,6 +1246,30 @@ namespace EllipseEquipmentExcelAddIn
                     var errorList = "";
                     if (!cbIgnoreRefCodes.Checked)
                     {
+                        var referenceCodes = new Equipment.EquipmentReferenceCodes
+                        {
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                        };
+
+                        //RefCode Validation
+                        if (referenceCodes.EquipmentCapacity != null)
+                        {
+                            decimal value;
+                            if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                            {
+                                var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                                if (numericEquipmentCapacity > 999)
+                                    throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                            }
+                            else
+                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                        }
+                        //
+
                         var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
 
                         if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
@@ -1295,11 +1303,12 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
+                   
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         public void UpdateEquipmentStatus()
@@ -1355,11 +1364,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
 
@@ -1408,11 +1417,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         public void DeleteEquipment()
@@ -1468,12 +1477,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
-
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         public void ExecuteTraceAction()
@@ -1537,7 +1545,7 @@ namespace EllipseEquipmentExcelAddIn
                             throw new Exception("No se ha seleccionado una acción a realizar");
                     }
 
-                    if (result != null)
+                    if (result == null)
                         throw new Exception("No se recibió respuesta de la acción");
                     _cells.GetCell(ResultColumn02, i).Value = "SE HA REALIZADO LA ACCION";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1556,11 +1564,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn02, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
 
         public void DeleteTraceAction()
@@ -1626,11 +1634,11 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(ResultColumn02, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1817,17 +1825,7 @@ namespace EllipseEquipmentExcelAddIn
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             
-            var searchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes();
-
-            //Obtengo los valores de las opciones de búsqueda
-            var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
-            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
-            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
-            var statusValue = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value);
-            //Convierto los nombres de las opciones a llaves
-            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
-            var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
+            
 
             var k = TitleRow01 + 1;
             var i = TitleRow03 + 1;
@@ -1835,8 +1833,13 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(1, k).Value);
-
+                    //Obtengo los valores de las opciones de búsqueda
+                    var searchCriteriaKey1 = EquipListSearchFieldCriteria.EquipmentNo.Key;
+                    var searchCriteriaValue1 = celleq.GetEmptyIfNull(celleq.GetCell(1, k).Value);
+                    var searchCriteriaKey2 = EquipListSearchFieldCriteria.None.Key;
+                    string searchCriteriaValue2 = null;
+                    string statusValue = null;
+                    var equipmentNo = searchCriteriaValue1;
                     var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, statusValue);
 
                     if (listeq != null && listeq.Count > 0)
@@ -1867,8 +1870,8 @@ namespace EllipseEquipmentExcelAddIn
                             }
                             finally
                             {
-                                if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
-                                    cellli.GetCell(2, i).Select();
+                                if (_cells.ActiveSheet.Name == SheetName03)
+                                    _cells.GetCell(1, i).Select();
                                 i++;
                             }
                         }
@@ -1882,8 +1885,8 @@ namespace EllipseEquipmentExcelAddIn
                         cellli.GetCell(1, i).Style = StyleConstants.Warning;
                         cellli.GetCell(ResultColumn03, i).Value = "Equipo no existe en ninguna lista ";
 
-                        if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
-                            cellli.GetCell(2, i).Select();
+                        if (_cells.ActiveSheet.Name == SheetName03)
+                            _cells.GetCell(2, i).Select();
                         i++;
                     }
                 }
@@ -1895,14 +1898,14 @@ namespace EllipseEquipmentExcelAddIn
                 }
                 finally
                 {
-                    if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                    if (_cells.ActiveSheet.Name == SheetName01)
                         celleq.GetCell(1, k).Select();
                     k++;
                 }
             }
 
-            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
 
         }
 

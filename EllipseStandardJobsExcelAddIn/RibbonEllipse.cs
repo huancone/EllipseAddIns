@@ -1206,7 +1206,6 @@ namespace EllipseStandardJobsExcelAddIn
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
-            stdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow02 + 1;//itera la celda para cada tarea
@@ -1804,7 +1803,6 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRange(TableName03);
 
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
@@ -1985,7 +1983,6 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
 
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
@@ -2388,7 +2385,6 @@ namespace EllipseStandardJobsExcelAddIn
             };
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
-            stdCells.SetAlwasActiveAsWorkingSheet(false);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow06 + 1;//itera la celda para cada tarea

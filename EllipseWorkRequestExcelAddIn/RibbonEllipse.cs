@@ -655,7 +655,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
-
+                
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var opContext = new OperationContext
                 {

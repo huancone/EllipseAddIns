@@ -1179,8 +1179,17 @@ namespace EllipseWorkOrdersClassLibrary
             no = no.Trim();
             if (no.Length < 3)
                 throw new Exception(@"El número de orden no corresponde a una orden válida");
-            workOrderDto.prefix = no.Substring(0, 2);
-            workOrderDto.no = no.Substring(2, no.Length - 2);
+            if (no.Length >= 8)
+            {
+                workOrderDto.prefix = no.Substring(0, 2);
+                workOrderDto.no = no.Substring(2, no.Length - 2);
+            }
+            else
+            {
+                workOrderDto.prefix = "00";
+                workOrderDto.no = no;
+            }
+
             return workOrderDto;
         }
 

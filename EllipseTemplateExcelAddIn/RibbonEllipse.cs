@@ -74,7 +74,7 @@ namespace EllipseTemplateExcelAddIn
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
@@ -138,8 +138,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnQuery_Click(object sender, RibbonControlEventArgs e)
@@ -160,8 +160,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void FormatMethod()
@@ -315,8 +315,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatMehod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:FormatMehod()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_SheetHeaderError} . {ex.Message}");
             }
             finally
             {

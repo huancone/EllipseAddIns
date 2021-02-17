@@ -16,7 +16,7 @@ using SharedClassLibrary.Utilities;
 using SharedClassLibrary.Vsto.Excel;
 using Invoice = EllipseMSO265ExcelAddIn.Invoice265.Invoice;
 using InvoiceItem = EllipseMSO265ExcelAddIn.Invoice265.InvoiceItem;
-
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 namespace EllipseMSO265ExcelAddIn
 {
     public partial class RibbonEllipse
@@ -1002,6 +1002,16 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorWait();
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1050,6 +1060,8 @@ namespace EllipseMSO265ExcelAddIn
                             WorkOrderProjectIndicator = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value))
                         };
 
+
+
                         var groupTaxCode = "" + MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(groupTaxIndexValue, currentRow).Value));
                         var additionalTaxCodeList = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(additionalTaxIndexValue, currentRow).Value);
 
@@ -1092,12 +1104,12 @@ namespace EllipseMSO265ExcelAddIn
                     } while (invoice.Equals(nextInvoice));
 
                     
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
+                    var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
-                    for (int i = startRow; i <= currentRow; i++)
+                    for (var i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01X, i).Select();
-                        _cells.GetCell(ResultColumn01X, i).Value = "Creado";
+                        _cells.GetCell(ResultColumn01X, i).Value = "Creado " + reply.message;
                         _cells.GetRange(1, i, ResultColumn01X, i).Style = _cells.GetStyle(StyleConstants.Success);
 
                         //Escribe el branch code y bank account si está en blanco
@@ -1109,7 +1121,7 @@ namespace EllipseMSO265ExcelAddIn
                 catch (Exception ex)
                 {
                     Debugger.LogError("RibbonEllipse.cs:LoadNonInvoiceOrder()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                    for (int i = startRow; i <= currentRow; i++)
+                    for (var i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01X, i).Select();
                         _cells.GetCell(ResultColumn01X, i).Value = ex.Message;
@@ -1137,6 +1149,16 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorWait();
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1234,12 +1256,12 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
+                    var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01N, i).Select();
-                        _cells.GetCell(ResultColumn01N, i).Value = "Creado";
+                        _cells.GetCell(ResultColumn01N, i).Value = "Creado " + reply.message; ;
                         _cells.GetRange(1, i, ResultColumn01N, i).Style = _cells.GetStyle(StyleConstants.Success);
 
                         //Escribe el branch code y bank account si está en blanco
@@ -1271,7 +1293,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void LoadCesantias()
         {
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
@@ -1279,6 +1301,16 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorWait();
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1363,12 +1395,12 @@ namespace EllipseMSO265ExcelAddIn
                     } while (invoice.Equals(nextInvoice));
 
                     
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
+                    var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01C, i).Select();
-                        _cells.GetCell(ResultColumn01C, i).Value = "Creado";
+                        _cells.GetCell(ResultColumn01C, i).Value = "Creado " + reply.message; ;
                         _cells.GetRange(1, i, ResultColumn01C, i).Style = _cells.GetStyle(StyleConstants.Success);
 
                         //Escribe el branch code y bank account si está en blanco

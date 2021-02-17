@@ -15,6 +15,8 @@ namespace EllipseJobsClassLibrary
         public bool OverlappingDates;
         public string DateInclude;
         public string District;
+        public string SearchEntity;
+
         public List<string> WorkGroups;
 
         public TaskSearchParam()

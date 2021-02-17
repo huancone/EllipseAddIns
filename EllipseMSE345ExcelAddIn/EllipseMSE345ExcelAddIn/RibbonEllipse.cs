@@ -402,101 +402,125 @@ namespace EllipseMSE345ExcelAddIn
 
         private void LoadInfo()
         {
-            var inspector1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B9").Value);
-            var inspector2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B10").Value);
-            var inspector3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B11").Value);
-            inspector1 = MyUtilities.GetCodeKey(inspector1);
-            inspector2 = MyUtilities.GetCodeKey(inspector2);
-            inspector3 = MyUtilities.GetCodeKey(inspector3);
-
-
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
-                _frmAuth.EllipsePost);
-            var proxySheet =
-                new CondMeasurementService.CondMeasurementService {Url = urlService + "/CondMeasurementService"};
-            var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false);
-            var opSheet = new OperationContext
+            try
             {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                returnWarnings = Debugger.DebugWarnings
-            };
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                
+                var sheetName = SheetName01;
+                var resultColumn = ResultColumn01;
+                var titleRow = TitleRow01;
+                _cells.SetWorkingWorksheet(_cells.GetWorksheet(sheetName));
+                _cells.SetFixedWorkingWorkSheet(true);
 
-            var i = TitleRow01 + 1;
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
-                try
+                var inspector1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B9").Value);
+                var inspector2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B10").Value);
+                var inspector3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B11").Value);
+                inspector1 = MyUtilities.GetCodeKey(inspector1);
+                inspector2 = MyUtilities.GetCodeKey(inspector2);
+                inspector3 = MyUtilities.GetCodeKey(inspector3);
+
+
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
+                    _frmAuth.EllipsePost);
+                var proxySheet =
+                    new CondMeasurementService.CondMeasurementService {Url = urlService + "/CondMeasurementService"};
+                var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false);
+                var opSheet = new OperationContext
                 {
-                    var monitorType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
-                    var monitorEquipment = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
-                    var monitorDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    returnWarnings = Debugger.DebugWarnings
+                };
 
-                    if (string.IsNullOrWhiteSpace(monitorType) || string.IsNullOrWhiteSpace(monitorDate) ||
-                        string.IsNullOrWhiteSpace(monitorEquipment))
+                var i = titleRow + 1;
+                while (!string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
+                    try
                     {
-                        _cells.GetCell(ResultColumn01, i).Value =
-                            "Hay algunos Campos Obligatorios Vacios. Revíselos e Intente Nuevamente";
-                        return;
-                    }
+                        var monitorType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                        var monitorEquipment = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                        var monitorDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
 
-                    var componentCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
-                    var modifierCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
-                    var modifierPosition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
-                    componentCode = MyUtilities.GetCodeKey(componentCode);
-                    modifierCode = MyUtilities.GetCodeKey(modifierCode);
-                    modifierPosition = MyUtilities.GetCodeKey(modifierPosition);
-
-                    var measurementCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(7, i).Value);
-                    var value = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value);
-                    var comment = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value);
-
-
-                    var requestParamsSheet =
-                        new CondMeasurementServiceCreateRequestDTO
+                        if (string.IsNullOrWhiteSpace(monitorType) || string.IsNullOrWhiteSpace(monitorDate) ||
+                            string.IsNullOrWhiteSpace(monitorEquipment))
                         {
-                            equipmentRef = monitorEquipment,
-                            condMonType = monitorType,
-                            measureDate = monitorDate,
-                            visInsCode1 = inspector1,
-                            visInsCode2 = inspector2,
-                            visInsCode3 = inspector3,
-                            condMonMeas = measurementCode,
-                            compCode = componentCode,
-                            compModCode = modifierCode,
-                            condMonPos = modifierPosition,
-                            measureValue = Convert.ToDecimal(value),
-                            measureValueSpecified = true
-                        };
+                            _cells.GetCell(resultColumn, i).Value =
+                                "Hay algunos Campos Obligatorios Vacios. Revíselos e Intente Nuevamente";
+                            return;
+                        }
 
-                    var reply = proxySheet.create(opSheet, requestParamsSheet);
+                        var componentCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
+                        var modifierCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                        var modifierPosition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
+                        componentCode = MyUtilities.GetCodeKey(componentCode);
+                        modifierCode = MyUtilities.GetCodeKey(modifierCode);
+                        modifierPosition = MyUtilities.GetCodeKey(modifierPosition);
 
-                    if (!string.IsNullOrEmpty(comment))
-                    {
-                        var narrativeNoStdText = reply.stdTxtKey; //Prefix: ME
-                        if (string.IsNullOrWhiteSpace(narrativeNoStdText))
-                            throw new Exception("No se ha podido ingresar el comentario");
+                        var measurementCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(7, i).Value);
+                        var value = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value);
+                        var comment = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value);
 
-                        StdText.SetText(urlService, stdTextOpContext, narrativeNoStdText, comment);
+
+                        var requestParamsSheet =
+                            new CondMeasurementServiceCreateRequestDTO
+                            {
+                                equipmentRef = monitorEquipment,
+                                condMonType = monitorType,
+                                measureDate = monitorDate,
+                                visInsCode1 = inspector1,
+                                visInsCode2 = inspector2,
+                                visInsCode3 = inspector3,
+                                condMonMeas = measurementCode,
+                                compCode = componentCode,
+                                compModCode = modifierCode,
+                                condMonPos = modifierPosition,
+                                measureValue = Convert.ToDecimal(value),
+                                measureValueSpecified = true
+                            };
+
+                        var reply = proxySheet.create(opSheet, requestParamsSheet);
+
+                        if (!string.IsNullOrEmpty(comment))
+                        {
+                            var narrativeNoStdText = reply.stdTxtKey; //Prefix: ME
+                            if (string.IsNullOrWhiteSpace(narrativeNoStdText))
+                                throw new Exception("No se ha podido ingresar el comentario");
+
+                            StdText.SetText(urlService, stdTextOpContext, narrativeNoStdText, comment);
+                        }
+
+                        _cells.GetCell(resultColumn, i).Value = "OK";
+                        _cells.GetCell(resultColumn, i).Style = _cells.GetStyle(StyleConstants.Success);
+
                     }
 
-                    _cells.GetCell(ResultColumn01, i).Value = "OK";
-                    _cells.GetCell(ResultColumn01, i).Style = _cells.GetStyle(StyleConstants.Success);
-                    _cells.GetCell(ResultColumn01, i).Select();
-                }
-
-                catch (Exception ex)
-                {
-                    _cells.GetCell(ResultColumn01, i).Value = ex.Message;
-                    _cells.GetCell(ResultColumn01, i).Style = _cells.GetStyle(StyleConstants.Error);
-                    _cells.GetCell(ResultColumn01, i).Select();
-                    Debugger.LogError("RibbonEllipse:LoadInfo()",
-                        "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                }
-                finally
-                {
-                    i++;
-                }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(resultColumn, i).Value = ex.Message;
+                        _cells.GetCell(resultColumn, i).Style = _cells.GetStyle(StyleConstants.Error);
+                        Debugger.LogError("RibbonEllipse:LoadInfo()",
+                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                    }
+                    finally
+                    {
+                        if (_cells.ActiveSheet.Name == sheetName)
+                            _cells.GetCell(resultColumn, i).Select();
+                        i++;
+                    }
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:LoadInfo()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(ex.Message, "Cargue de Información", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if(_cells != null)
+                    _cells.SetFixedWorkingWorkSheet(false);
+            }
         }
 
         private void LoadInfoMntto()
@@ -813,6 +837,18 @@ namespace EllipseMSE345ExcelAddIn
             return monitoringList;
         }
 
-        
+        private void btnStopProcess_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+            }
+        }
     }
 }

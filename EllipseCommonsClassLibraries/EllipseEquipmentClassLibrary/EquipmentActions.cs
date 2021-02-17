@@ -188,9 +188,11 @@ namespace EllipseEquipmentClassLibrary
                     PurchasePrice = drEquipments["PURCHASE_PRICE"].ToString().Trim(),
                     RcmAnalysisSw = drEquipments["RCM_ANALYSIS_SW"].ToString().Trim(),
                     ReplaceValue = drEquipments["REPLACE_VALUE"].ToString().Trim(),
+                    StockCode = drEquipments["STOCK_CODE"].ToString().Trim(),
                     ValuationDate = drEquipments["VALUATION_DATE"].ToString().Trim(),
                     WarrStatType = drEquipments["WARR_STAT_TYPE"].ToString().Trim(),
                     WarrStatVal = drEquipments["WARR_STAT_VAL"].ToString().Trim(),
+                    
                     ClassCodes = new Equipment.ClassificationCodes
                     {
                         EquipmentClassif = drEquipments["EQUIP_CLASS"].ToString().Trim(),
@@ -231,7 +233,9 @@ namespace EllipseEquipmentClassLibrary
             if (drEquipments == null || drEquipments.IsClosed) 
                 return null;
 
-            drEquipments.Read();
+            
+            if (!drEquipments.Read())
+                return null;
             var equipment = new Equipment
             {
                 EquipmentNo = drEquipments["EQUIP_NO"].ToString().Trim(),
@@ -285,6 +289,7 @@ namespace EllipseEquipmentClassLibrary
                 RcmAnalysisSw = drEquipments["RCM_ANALYSIS_SW"].ToString().Trim(),
                 ReplaceValue = drEquipments["REPLACE_VALUE"].ToString().Trim(),
                 SerialNumber = drEquipments["SERIAL_NUMBER"].ToString().Trim(),
+                StockCode = drEquipments["STOCK_CODE"].ToString().Trim(),
                 ValuationDate = drEquipments["VALUATION_DATE"].ToString().Trim(),
                 WarrStatType = drEquipments["WARR_STAT_TYPE"].ToString().Trim(),
                 WarrStatVal = drEquipments["WARR_STAT_VAL"].ToString().Trim(),

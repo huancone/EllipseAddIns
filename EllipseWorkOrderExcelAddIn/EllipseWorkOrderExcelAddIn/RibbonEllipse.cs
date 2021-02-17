@@ -3348,7 +3348,7 @@ namespace EllipseWorkOrderExcelAddIn
                             throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " ya está cerrada como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()) + " con código " + woData.completedCode);
                     }
                     var reply = WorkOrderActions.CompleteWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-                    if (reply.completedCode.Trim() == wo.completedCode.Trim() && reply.closedDate == wo.closedDate)
+                    if (reply.completedCode.Trim().Equals(wo.completedCode.Trim(), StringComparison.InvariantCultureIgnoreCase) && reply.closedDate == wo.closedDate)
                     {
                         _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA";
                         _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3469,7 +3469,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(2, i).Value = closeText;
                     _cells.GetCell(3, i).Value = workOrder.closeCommitDate; 
                     _cells.GetCell(4, i).Value = workOrder.completedBy;
-                    _cells.GetCell(ResultColumn05, i).Value = "Ok";
+                    _cells.GetCell(ResultColumn05, i).Value = "OK - " + workOrder.completedCode;
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
                 }
@@ -4415,7 +4415,7 @@ namespace EllipseWorkOrderExcelAddIn
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
             _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
-            woCells.SetAlwasActiveAsWorkingSheet(false);
+            woCells.SetFixedWorkingWorkSheet(true);
 
             var j = TitleRow01 + 1;//itera según cada estándar
             var i = TitleRow02 + 1;//itera la celda para cada tarea
@@ -4711,8 +4711,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
             var tdCells = new ExcelStyleCells(_excelApp, SheetName08);
-            woCells.SetAlwasActiveAsWorkingSheet(false);
-            tdCells.SetAlwasActiveAsWorkingSheet(false);
+            woCells.SetFixedWorkingWorkSheet(true);
+            tdCells.SetFixedWorkingWorkSheet(true);
 
             var j = TitleRow01 + 1;//itera según cada orden
             var i = titleRow + 1;//itera la celda para to do
@@ -4795,8 +4795,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             var tkCells = new ExcelStyleCells(_excelApp, SheetName02);
             var tdCells = new ExcelStyleCells(_excelApp, SheetName08);
-            tkCells.SetAlwasActiveAsWorkingSheet(false);
-            tdCells.SetAlwasActiveAsWorkingSheet(false);
+            tkCells.SetFixedWorkingWorkSheet(true);
+            tdCells.SetFixedWorkingWorkSheet(true);
 
             var j = TitleRow02 + 1;//itera según cada orden
             var i = titleRow + 1;//itera la celda para to do
@@ -4961,7 +4961,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
-            woCells.SetAlwasActiveAsWorkingSheet(false);
+            woCells.SetFixedWorkingWorkSheet(true);
 
             var resultColumn = ResultColumn03;
             var j = TitleRow01 + 1;//itera según cada orden
@@ -5043,7 +5043,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwasActiveAsWorkingSheet(false);
+            taskCells.SetFixedWorkingWorkSheet(true);
 
             var resultColumn = ResultColumn03;
             var j = TitleRow02 + 1;//itera según cada tarea

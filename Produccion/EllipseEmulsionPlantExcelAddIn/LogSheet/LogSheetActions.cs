@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EllipseCommonsClassLibrary;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary.Classes;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using SharedClassLibrary.Ellipse;
 
 namespace EllipseEmulsionPlantExcelAddIn.LogSheet
 {
@@ -22,7 +19,7 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
 
             //Proceso del screen
             var screenService = new Screen.ScreenService();
-            screenService.Url = urlService;
+            screenService.Url = urlService + "/ScreenService";
             //Aseguro que no esté en alguna pantalla antigua
             eFunctions.RevertOperation(opContext, screenService);
             //ejecutamos el programa
@@ -81,19 +78,19 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
 
                 //eS(screenIndex) = fv
                 arrayFields.Add("ACTION2I" + screenIndex, item.Action);
-                arrayFields.Add(item.Operator.Id + screenIndex, item.Operator.Value);
-                arrayFields.Add(item.PlantNo.Id + screenIndex, item.PlantNo.Value);
-                arrayFields.Add(item.AccountCode.Id + screenIndex, item.AccountCode.Value);
-                arrayFields.Add(item.WorkOrder.Id + screenIndex, item.WorkOrder.Value);
-                arrayFields.Add(item.Input1.Id + screenIndex, item.Input1.Value);
-                arrayFields.Add(item.Input2.Id + screenIndex, item.Input2.Value);
-                arrayFields.Add(item.Input3.Id + screenIndex, item.Input3.Value);
-                arrayFields.Add(item.Input4.Id + screenIndex, item.Input4.Value);
-                arrayFields.Add(item.Input5.Id + screenIndex, item.Input5.Value);
-                arrayFields.Add(item.Input6.Id + screenIndex, item.Input6.Value);
-                arrayFields.Add(item.Input7.Id + screenIndex, item.Input7.Value);
-                arrayFields.Add(item.Input8.Id + screenIndex, item.Input8.Value);
-                arrayFields.Add(item.Input9.Id + screenIndex, item.Input9.Value);
+                arrayFields.Add("" + item.Operator.Id + screenIndex, item.Operator.Value);
+                arrayFields.Add("" + item.PlantNo.Id + screenIndex, item.PlantNo.Value);
+                arrayFields.Add("" + item.AccountCode.Id + screenIndex, item.AccountCode.Value);
+                arrayFields.Add("" + item.WorkOrder.Id + screenIndex, item.WorkOrder.Value);
+                arrayFields.Add("" + item.Input1.Id + screenIndex, item.Input1.Value);
+                arrayFields.Add("" + item.Input2.Id + screenIndex, item.Input2.Value);
+                arrayFields.Add("" + item.Input3.Id + screenIndex, item.Input3.Value);
+                arrayFields.Add("" + item.Input4.Id + screenIndex, item.Input4.Value);
+                arrayFields.Add("" + item.Input5.Id + screenIndex, item.Input5.Value);
+                arrayFields.Add("" + item.Input6.Id + screenIndex, item.Input6.Value);
+                arrayFields.Add("" + item.Input7.Id + screenIndex, item.Input7.Value);
+                arrayFields.Add("" + item.Input8.Id + screenIndex, item.Input8.Value);
+                arrayFields.Add("" + item.Input9.Id + screenIndex, item.Input9.Value);
                 //arrayFields.Add(item.Input10.Id + screenIndex, item.Input10.Value);
 
                 if (item.Action == "I")
@@ -132,7 +129,7 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
             if (eFunctions.CheckReplyError(replySheet) || replySheet.message.StartsWith("X2"))
                 throw new Exception("Se ha producido un error. " + replySheet.message);
 
-            if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
+            if (!eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
                 return "SUCCESS:" + "Se han cargado exitosamente los datos";
 
             return "WARNING: No se ha recibido una respuesta del servicio. Por favor valide que los datos fueron cargados";
@@ -145,7 +142,7 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
 
             //Proceso del screen
             var screenService = new Screen.ScreenService();
-            screenService.Url = urlService;
+            screenService.Url = urlService + "/ScreenService";
             //Aseguro que no esté en alguna pantalla antigua
             eFunctions.RevertOperation(opContext, screenService);
             //ejecutamos el programa
@@ -178,11 +175,9 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
             if (replySheet.mapName != "MSM435B")
                 throw new Exception("No se ha podido acceder al programa MSM435B");
 
-            //Creamos la nueva pantalla de envío reutilizando las declaraciones anteriores
-            requestSheet = new Screen.ScreenSubmitRequestDTO();
-            arrayFields = new ArrayScreenNameValue();
-
             //ingresamos los elementos (name, value) para los campos a enviar   
+            //Creamos la nueva pantalla de envío reutilizando las declaraciones anteriores
+            arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("STAT_DATE2I", logSheet.Date);
             arrayFields.Add("SHIFT2I", logSheet.ShiftCode);
             arrayFields.Add("DELETE2I", "Y");
@@ -198,15 +193,15 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
             eFunctions.CheckReplyWarning(replySheet);
 
             if (replySheet == null || replySheet.mapName != "MSM435A")
-                throw new Exception("Se ha producido un error al enviar la solicitud de eliminación");
-
-            if(replySheet != null && replySheet.message.Contains("LOGSHEET HAS BEEN FLAGGED FOR DELETION"))
-                return "SUCCESS:" + replySheet.message;
-
+                throw new Exception("Se ha producido un error al enviar la solicitud de eliminación"); 
+            
             if (eFunctions.CheckReplyError(replySheet) || replySheet.message.StartsWith("X2"))
                 throw new Exception(replySheet.message);
-            
-            if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
+
+            if (replySheet.message.Contains("LOGSHEET HAS BEEN FLAGGED FOR DELETION"))
+                return "SUCCESS:" + replySheet.message;
+
+            if (!eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
                 return "SUCCESS:" + "Se han cargado exitosamente los datos";
 
             return "WARNING: No se ha recibido una respuesta del servicio. Por favor valide que los datos fueron cargados";
