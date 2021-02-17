@@ -655,7 +655,15 @@ namespace EllipseAddInInfoPm
                                 //Hrs despues del preseis
                                 Dias = ((250 - Convert.ToDouble(data[i, 16].ToString())) / Param3);
                                 DateTime date2 = DateTime.Now;
-                                date = date2.AddDays(Dias);
+                                //Dias = -12.12;
+                                if (Dias < 0)
+                                {
+                                    date = date2;
+                                }
+                                else
+                                {
+                                    date = date2.AddDays(Dias);
+                                }
                                 data[i, 25] = date.ToString(/*"yyyy/mm/dd hh:mm:ss"*/);
 
                             }
