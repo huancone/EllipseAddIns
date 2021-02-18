@@ -480,7 +480,7 @@ namespace EllipseAddinGanttEQ
             _excelApp.DisplayAlerts = true;
             //búsquedas especiales de tabla
             //_cells.SetCursorWait();
-            /*_AuthG.StartPosition = FormStartPosition.CenterScreen;
+            _AuthG.StartPosition = FormStartPosition.CenterScreen;
              if (_AuthG.ShowDialog() == DialogResult.OK)
              {
                  if (_AuthG.Permiso == "2")
@@ -488,7 +488,7 @@ namespace EllipseAddinGanttEQ
                      menuAcciones.Items[3].Visible = false;
                      menuAcciones.Items[4].Visible = false;
                      menuAcciones.Items[5].Visible = false;
-                 }*/
+                 }
                 try
                 {
                     _excelApp.Cursor = Excel.XlMousePointer.xlWait;
@@ -512,12 +512,12 @@ namespace EllipseAddinGanttEQ
                     _excelApp.ScreenUpdating = true;
                     _excelApp.DisplayAlerts = true;
                 }
-            /*}
+            }
             else
             {
                 MessageBox.Show(@"Regrese cuando tenga autorizacion del administrador del sistema.");
                 _excelApp.Application.Quit();
-            }*/
+            }
         }
         private void SobreEncabezado(Int32 FinCol)
         {
