@@ -37,7 +37,7 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.btnFormatear = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAcciones = this.Factory.CreateRibbonMenu();
             this.btnConsultar = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
@@ -57,7 +57,7 @@
             // group1
             // 
             this.group1.Items.Add(this.btnFormatear);
-            this.group1.Items.Add(this.drpEnviroment);
+            this.group1.Items.Add(this.drpEnvironment);
             this.group1.Items.Add(this.menuAcciones);
             this.group1.Items.Add(this.btnAbout);
             this.group1.Label = "Menu";
@@ -70,10 +70,10 @@
             this.btnFormatear.ShowImage = true;
             this.btnFormatear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatear_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuAcciones
             // 
@@ -85,9 +85,10 @@
             // 
             // btnConsultar
             // 
-            this.btnConsultar.Label = "Consultar Eq OP";
+            this.btnConsultar.Label = "Consultar Personal";
             this.btnConsultar.Name = "btnConsultar";
             this.btnConsultar.ShowImage = true;
+            this.btnConsultar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsultar_Click);
             // 
             // btnStopThread
             // 
@@ -126,7 +127,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatear;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAcciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
