@@ -22,6 +22,7 @@ using EllipseWorkOrdersClassLibrary;
 using Debugger = SharedClassLibrary.Utilities.Debugger;
 using SharedClassLibrary.Classes;
 using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data.OracleClient;
@@ -83,15 +84,30 @@ namespace EllipseAddinManejoInfoMCL
         //private const string ValidationSheetName02 = "ValidationSheetCargas";
         private const string SheetName01 = "PLAN COMBUSTIBLE";
         private const string SheetName02 = "PERSONAL";
-        private const string SheetName03 = "Eventos_Pivot";
+        private const string SheetName03 = "RUTAS";
+        private const string SheetName04 = "CUMPLI";
 
-        private const string tableName01 = "_01Eventos";
-        private const string tableName02 = "_01Cargas";
-        private const string tableName03 = "Pivot_Eventos";
+
+        private const string tableName01 = "xA";
+        private const string tableName02 = "_01PERSONAL";
+        private const string tableName03 = "_01RUTAS";
+        private const string tableName04 = "_01CUMPLI";
+
+        private const string RangeOne = "Select1";
+        public Int32 Tam = 0;
+        //public event EventHandler SelectionChangeCommitted;
+        //public event Microsoft.Office.Interop.Excel.DocEvents_ChangeEventHandler Change;
+        //public event Microsoft.Office.Interop.Excel.WorkbookEvents_SheetChangeEventHandler SheetChange;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange;
+
+
         //private const int titleRow = 8;
 
 
-        //OracleConnection Conexion;
+        OracleConnection Conexion;
+
+        public object Controls { get; private set; }
+
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
@@ -218,6 +234,22 @@ namespace EllipseAddinManejoInfoMCL
             }
             return true;
         }
+        
+        public bool EjecutarSql(string sqlQuery)
+        {
+            //int ConnectionTimeOut = 15;
+            //bool PoolingDataBase = true;
+            Conexion = new OracleConnection();
+            var connectionString = "Data Source=" + DataBase + ";User ID=" + User + ";Password=" + Pw;
+            Conexion.ConnectionString = connectionString;
+            Conexion.Open();
+            //OracleConnection Cmd = Conexion.CreateCommand();
+            OracleCommand Cmd = Conexion.CreateCommand();
+            Cmd.CommandText = sqlQuery;
+            OracleDataReader Datos = Cmd.ExecuteReader();
+            Conexion.Close();
+            return true;
+        }
 
         private void btnFormatear_Click(object sender, RibbonControlEventArgs e)
         {
@@ -229,6 +261,8 @@ namespace EllipseAddinManejoInfoMCL
                 _excelApp.Cursor = Excel.XlMousePointer.xlWait;
                 Formatear("PLAN DE TANQUEO DE COMBUSTIBLE", SheetName01, false);
                 Formatear("PERSONAL", SheetName02, false);
+                Formatear("RUTAS", SheetName03, false);
+                Formatear("COMENTARIOS CUMPLIMIENTO", SheetName04, false);
             }
             catch (Exception ex)
             {
@@ -240,7 +274,7 @@ namespace EllipseAddinManejoInfoMCL
                 if (_cells != null)
                     _cells.SetCursorDefault();
                 BorrarSheets();
-                _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+                _excelApp.ActiveSheet.Select();
                 _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
                 _excelApp.ScreenUpdating = true;
                 _excelApp.DisplayAlerts = true;
@@ -280,12 +314,13 @@ namespace EllipseAddinManejoInfoMCL
         public void ExecuteQuery(string sqlQuery, string NameHoja, Int32 T = 0)
         {
             _excelApp.Visible = true;
-            _excelApp.ScreenUpdating = false;
+            _excelApp.ScreenUpdating = true;
             try
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _excelApp.Cursor = Excel.XlMousePointer.xlWait;
+                borrarTabla();
                 data.DataTable table;
                 table = getdata(sqlQuery, T);
                 if (table.Rows.Count == 0)
@@ -320,19 +355,31 @@ namespace EllipseAddinManejoInfoMCL
 
                 Encabezado(table, _excelApp.ActiveWorkbook.ActiveSheet.Name);
                 FormatTable(_cells.GetRange(StartColTable, StartRowTable, (table.Columns.Count + StartColTable) - 1, table.Rows.Count + StartRowTable), NameHoja, 1, 1);
-                if(_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
-                {
+                //if(_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                //{
                     List<string> lista = new List<string>();
+                    //lista.Add("M");
                     lista.Add("C");
-                    lista.Add("M");
+                    lista.Add("U");
                     lista.Add("D");
-                    //for (int F = 0; F < table.Rows.Count; F++)
-                    //{
-                        _cells.GetRange("D" + 6, "D1000").Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), lista), Type.Missing);
+                //for (int F = 0; F < table.Rows.Count; F++)
+                //{
+                    _cells.GetRange((table.Columns.Count), StartRowTable + 1, (table.Columns.Count), (StartRowTable + 1000)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), lista), Type.Missing);
                     //}
-                }
-                table = null;
 
+                    /*Excel.Range D = _cells.ActiveSheet.Cells;
+                    D.Select();
+                    D.Locked = false;
+                    D.FormulaHidden = false;
+                    _cells.GetRange("A6","A9").Select();
+                    _cells.GetRange("A6", "A9").Locked = true;
+                    _cells.GetRange("A6", "A9").FormulaHidden = true;
+                    _excelApp.ActiveSheet.Protect(DrawingObjects: true, Contents: true, Scenarios: true);
+                    //_cells.GetRange("A:A").FormulaHidden = false;
+                    _cells.GetRange("G5").Select();
+                    */
+                //}
+                table = null;
                 _excelApp.ActiveWindow.Zoom = 80;
                 _excelApp.Columns.AutoFit();
                 _excelApp.Rows.AutoFit();
@@ -403,39 +450,48 @@ namespace EllipseAddinManejoInfoMCL
             else if (Tipo == 4)
             {
                 Sql = (@"SELECT
-                          PRS.NAME
+                          TRIM(PRS.NAME)
                         FROM
                           SIGMAN.APP_PTC_PERSONAL PRS
                         WHERE
-                          PRS.TYPE = '" + Param1 + "' " + ORDEN);
+                          PRS.TYPE = '" + Param1 + "' ORDER BY ID " + ORDEN);
                 table = getdata(Sql,1);
             }
             else if(Tipo == 5)
             {
                 Sql = (@"SELECT
                             hist_statusevents.eqmt--,
-					        --Count(hist_statusevents.category) EV_DISPONIBLES
-				        FROM
-					        PowerView.dbo.hist_statusevents hist_statusevents
-                            INNER JOIN PowerView.dbo.hist_eqmtlist hist_eqmtlist on(hist_statusevents.shiftindex=hist_eqmtlist.shiftindex AND hist_statusevents.eqmt=hist_eqmtlist.eqmtid)
+                            --DescEv.categoria,
+                            --DescEv.[Status],
+                            --DescEv.Descripcion
+                        FROM
+                          PowerView.dbo.hist_statusevents hist_statusevents
+                          INNER JOIN PowerView.dbo.hist_eqmtlist hist_eqmtlist on(hist_statusevents.shiftindex=hist_eqmtlist.shiftindex AND hist_statusevents.eqmt=hist_eqmtlist.eqmtid)
+                          --LEFT OUTER JOIN  PowerView.dbo.icr_codigoscategoria_200502 DescEv ON hist_statusevents.reason = DescEv.codigo AND hist_statusevents.status = DescEv.statusnum
                         WHERE
-					        hist_statusevents.shiftindex = '" + Param2 + @"'
-                            AND hist_statusevents.category = 2
-                            AND hist_eqmtlist.unit = '" + Param1 + @"'
-                        GROUP BY
-                            hist_statusevents.eqmt 
-                        HAVING Count(hist_statusevents.category) > 0 ORDER BY 1 " + ORDEN);
+                          hist_statusevents.shiftindex = " + Param2 + @" 
+                          AND hist_statusevents.starttime = (SELECT MAX(st.starttime) FROM PowerView.dbo.hist_statusevents st WHERE st.shiftindex = " + Param2 + @" AND st.eqmt = hist_statusevents.eqmt)
+                          AND hist_statusevents.category Not In(7)
+                          --AND hist_statusevents.category = 2
+                          AND hist_eqmtlist.unit = '" + Param1 + @"' 
+                        ORDER BY 1 " + ORDEN);
                 table = getdataSql(Sql);
             }
             else if (Tipo == 6)
             {
                 Sql = (@"SELECT
-                          icr_tajos.Inicial + '-' + LTRIM(Tajo)
+                          TRIM(APP_PTC_RUTA.RUTA)
                         FROM
-                          PowerView.dbo.icr_tajos
-                        WHERE
-                          icr_tajos.Inicial <> 'REM' ORDER BY icr_tajos.Inicial " + ORDEN);
-                table = getdataSql(Sql);
+                          SIGMAN.APP_PTC_RUTA " + ORDEN);
+                table = getdata(Sql,1);
+            }
+            else if (Tipo == 7)
+            {
+                Sql = (@"SELECT
+                          TRIM(APP_PTC_CUMPLI.ESTADO)
+                        FROM
+                          SIGMAN.APP_PTC_CUMPLI " + ORDEN);
+                table = getdata(Sql,1);
             }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
@@ -464,14 +520,10 @@ namespace EllipseAddinManejoInfoMCL
            
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-
+            _excelApp.ActiveWorkbook.Worksheets.Add(After: _excelApp.Windows.Application.Sheets[_excelApp.Windows.Application.Sheets.Count]);
+            _excelApp.ActiveWorkbook.ActiveSheet.Name = NombreHoja;
             if (CntIndicador == 1)
             {
-                _excelApp.ActiveWorkbook.Worksheets.Add(After: _excelApp.Windows.Application.Sheets[_excelApp.Windows.Application.Sheets.Count]);
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = NombreHoja;
-
-
-
                 FormatCamposMenu(_cells.GetRange("A1", "S2"), true, true, true, Titulo, "", 22, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
                 FormatBordes(_cells.GetRange("A1", "S2"));
                 FormatCamposMenu(_cells.GetRange("T1", "V4"), true, true, true, "CUMPLIMIENTO PLANES", "", 11, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
@@ -479,7 +531,7 @@ namespace EllipseAddinManejoInfoMCL
 
                 //_cells.SetValidationList(_cells.GetRange(ColResCode, StartRowTable + 1, ColResCode, FinRowForFormat), ListaDatos(3, "ASC"));
 
-
+                
                 //3 Y 4 FILA DESDE A HASTA S
                 FormatCamposMenu(_cells.GetRange("A3", "A4"), true, true, true, "FECHA", "", 14, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatBordes(_cells.GetRange("A3", "A4"));
@@ -590,7 +642,10 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("F5"), true, false, true, "HORA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
                 var Datos1 = ListaDatos(5, "Perforadora          ", _cells.GetCell("D4").Value, "ASC");
-                var Tam = Datos1.Count;
+                var Datos2 = ListaDatos(4, "OP");
+                var Datos3 = ListaDatos(6);
+                var Datos4 = ListaDatos(7);
+                Tam = Datos1.Count;
                 Int32 F = 0;
                 foreach (var Result in Datos1)
                 {
@@ -600,12 +655,14 @@ namespace EllipseAddinManejoInfoMCL
                 //var Tam = F;
                 FormatBordes(_cells.GetRange("A5", "F" + (F + 5)));
 
-                var Datos2 = ListaDatos(6, null, null, "ASC");
                 for (int i = 0; i < Tam; i++)
                 {
-                    _cells.GetCell("C" + (6 + i)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
+                    _cells.GetCell("B" + (6 + i)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
+                    _cells.GetCell("C" + (6 + i)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
+                    _cells.GetCell("D" + (6 + i)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                 }
 
+                /*
                 List<string> lista = new List<string>();
                 lista.Add("OK");
                 lista.Add("Sin Combustible");
@@ -615,14 +672,32 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("D" + (6 + i)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), lista), Type.Missing);
                 }
 
+                */
+                //búsquedas especiales de tabla
+                //var table = _excelApp.ActiveWorkbook.Sheets[SheetName01];
+                //Excel.ListObject table = _excelApp.ActiveSheet.ListObjects.Add(Excel.XlListObjectSourceType.xlSrcRange, , Type.Missing, Excel.XlYesNoGuess.xlYes, Type.Missing);
+                //table.Name = RangeOne;
+                //Excel.Worksheet wkSheet = (Excel.Worksheet)_excelApp.ActiveWorkbook.Worksheets[SheetName01];
+                //var tableObject = Globals.Factory.GetVstoObject(table);
+                //tableObject.Change += GetTableChangedValue;
+
+            //Para detectar el evento de cambio en un rango especifico
+            NotifyChanges();
             }
             if(CntIndicador == 2)
             {
-                _excelApp.ActiveWorkbook.Worksheets.Add(After: _excelApp.Windows.Application.Sheets[_excelApp.Windows.Application.Sheets.Count]);
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = NombreHoja;
-
-                FormatCamposMenu(_cells.GetRange("A1", "S2"), true, true, true, Titulo, "", 22, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
-                FormatBordes(_cells.GetRange("A1", "S2"));
+                FormatCamposMenu(_cells.GetRange("B1", "S2"), true, true, true, Titulo, "", 22, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
+                FormatBordes(_cells.GetRange("B1", "S2"));
+            }
+            if(CntIndicador == 3)
+            {
+                FormatCamposMenu(_cells.GetRange("B1", "S2"), true, true, true, Titulo, "", 22, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
+                FormatBordes(_cells.GetRange("B1", "S2"));
+            }
+            if (CntIndicador == 4)
+            {
+                FormatCamposMenu(_cells.GetRange("B1", "S2"), true, true, true, Titulo, "", 22, Rf: 255, Gf: 217, Bf: 102, Rl: 0, Gl: 0, Bl: 0);
+                FormatBordes(_cells.GetRange("B1", "S2"));
             }
 
 
@@ -869,11 +944,33 @@ namespace EllipseAddinManejoInfoMCL
 
         private void btnConsultar_Click(object sender, RibbonControlEventArgs e)
         {
+            _excelApp.Visible = true;
+            _excelApp.ScreenUpdating = false;
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
                 try
                 {
-                    ExecuteQuery(Consulta(1, 1), _excelApp.ActiveWorkbook.ActiveSheet.Name, T: 1);
+                    ExecuteQuery(Consulta(1, 2), _excelApp.ActiveWorkbook.ActiveSheet.Name, T: 1);
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteQuery()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                }
+                finally
+                {
+                    if (_cells != null)
+                    _cells.SetCursorDefault();
+                    //_cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
+                    _excelApp.ScreenUpdating = true;
+                    //_excelApp.DisplayAlerts = true;
+                }
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                try
+                {
+                    ExecuteQuery(Consulta(1, 3), _excelApp.ActiveWorkbook.ActiveSheet.Name, T: 1);
                 }
                 catch (Exception ex)
                 {
@@ -884,9 +981,40 @@ namespace EllipseAddinManejoInfoMCL
                 {
                     if (_cells != null)
                         //_eFunctions.CloseConnection();
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.Select();
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.Lockeed = false;
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.FormulaHidden = false;
+                        //Excel.Range D = _cells.WorkingWorksheet.Cells;
+                        //_cells.GetRange("E" + 6, "E1000").Locked = true;
                         _cells.SetCursorDefault();
                     //_cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
-                    //_excelApp.ScreenUpdating = true;
+                    _excelApp.ScreenUpdating = true;
+                    //_excelApp.DisplayAlerts = true;
+                }
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+            {
+                try
+                {
+                    ExecuteQuery(Consulta(1, 4), _excelApp.ActiveWorkbook.ActiveSheet.Name, T: 1);
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteQuery()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                }
+                finally
+                {
+                    if (_cells != null)
+                        //_eFunctions.CloseConnection();
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.Select();
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.Lockeed = false;
+                        //_excelApp.Worksheets[SheetName02].Application.Cells.FormulaHidden = false;
+                        //Excel.Range D = _cells.WorkingWorksheet.Cells;
+                        //_cells.GetRange("E" + 6, "E1000").Locked = true;
+                        _cells.SetCursorDefault();
+                    //_cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
+                    _excelApp.ScreenUpdating = true;
                     //_excelApp.DisplayAlerts = true;
                 }
             }
@@ -899,33 +1027,442 @@ namespace EllipseAddinManejoInfoMCL
         public string Consulta(Int32 Tipe, Int32 Hoja, string P1 = "", string P2 = "", string P3 = "")
         {
             string sqlQuery = "";
-            if (Hoja == 1)
+            if(Hoja == 1)
             {
                 if (Tipe == 1)
                 {
-                    sqlQuery = @"SELECT
-                                  --PRS.ID, 
-                                  PRS.NAME, 
-                                  PRS.TYPE, 
-                                  PRS.CEDULA,
-                                  'M' AS ACCION
-                                FROM
-                                  SIGMAN.APP_PTC_PERSONAL PRS";
+                    sqlQuery = @"";
                 }
             }
             else if (Hoja == 2)
             {
                 if (Tipe == 1)
                 {
+                    sqlQuery = @"SELECT
+                                  PRS.ID, 
+                                  TRIM(PRS.NAME), 
+                                  PRS.TYPE, 
+                                  PRS.CEDULA,
+                                  'M' AS ACCION
+                                FROM
+                                  SIGMAN.APP_PTC_PERSONAL PRS ORDER BY 1";
+                }
+            }
+            else if (Hoja == 3)
+            {
+                if (Tipe == 1)
+                {
+                    sqlQuery = @"SELECT
+                                  RUTA.ID,
+                                  TRIM(RUTA.RUTA),
+                                  'M' AS ACCION
+                                FROM
+                                  SIGMAN.APP_PTC_RUTA RUTA ORDER BY 1 ";
+                }
+
+            }
+            else if (Hoja == 4)
+            {
+                if (Tipe == 1)
+                {
+                    sqlQuery = @"SELECT
+                                  CUMPLI.ID,
+                                  TRIM(CUMPLI.ESTADO),
+                                  'M' AS ACCION
+                                FROM
+                                  SIGMAN.APP_PTC_CUMPLI CUMPLI ORDER BY 1";
                 }
 
             }
             return sqlQuery;
         }
 
+        private void BtnAcciones_Click(object sender, RibbonControlEventArgs e)
+        {
+            _excelApp.Visible = true;
+            _excelApp.ScreenUpdating = false;
+            //_excelApp.DisplayAlerts = true;
+            //if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            //{
+                try
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(AccionesPers);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("RibbonEllipse.cs:AccionesPers()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                }
+                finally
+                {
+                    if (_cells != null)
+                        _cells.SetCursorDefault();
+                    _eFunctions.CloseConnection();
+                    _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
+                    _excelApp.ScreenUpdating = true;
+                    _excelApp.DisplayAlerts = true;
+                }
+            //}
+            //else
+                //MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void AccionesPers()
+        {
+            _excelApp.ScreenUpdating = false;
+            _cells.GetCell("A3").Select();
+            //if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            //{
+            data.DataTable Table;
+            if(_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            {
+                Table = getdata(Consulta(1, 2), 1);
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                Table = getdata(Consulta(1, 3), 1);
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+            {
+                Table = getdata(Consulta(1, 4), 1);
+            }
+            else
+            {
+                MessageBox.Show(@"Hoja No Definida");
+                return;
+            }
+            ConexionDataBase("SIGMAN");
+            /*string[] Nombre = new string[Table.Columns.Count];
+            for (Int32 H = 0; H < Table.Columns.Count; H++)
+            {
+                Nombre[H] = "Var" + H;
+            }*/
+            _cells.GetRange(Table.Columns.Count + 1, StartRowTable, Table.Columns.Count + 1, StartRowTable).Value = "Resultado";
+            _cells.GetRange(Table.Columns.Count + 1, StartRowTable, Table.Columns.Count + 1, StartRowTable).Style = StyleConstants.TitleResult;
+            string Var1 = "";
+            string Var2 = "";
+            string Var3 = "";
+            string Var4 = "";
+            Int32 i = 1;
+            while (!string.IsNullOrEmpty("" + _cells.GetRange(Table.Columns.Count, StartRowTable + i, Table.Columns.Count, StartRowTable + i).Value))
+            {
+                string action2 = _cells.GetEmptyIfNull(_cells.GetRange(Table.Columns.Count, StartRowTable + i, Table.Columns.Count, StartRowTable + i).Value);
+                try
+                {
+                    if (_cells.GetRange(Table.Columns.Count, StartRowTable + i, Table.Columns.Count, StartRowTable + i).Value != "M")
+                    {
+                        string action = _cells.GetEmptyIfNull(_cells.GetRange(Table.Columns.Count, StartRowTable + i, Table.Columns.Count, StartRowTable + i).Value);
+
+
+                        Var1 = _cells.GetEmptyIfNull(_cells.GetCell("A" + (StartRowTable + i)).Value);
+                        Var2 = _cells.GetEmptyIfNull(_cells.GetCell("B" + (StartRowTable + i)).Value);
+                        Var3 = _cells.GetEmptyIfNull(_cells.GetCell("C" + (StartRowTable + i)).Value);
+                        Var4 = _cells.GetEmptyIfNull(_cells.GetCell("D" + (StartRowTable + i)).Value);
+                        if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                        {
+                            if (string.IsNullOrWhiteSpace(action))
+                                continue;
+                            else if (action.Equals("C"))
+                            {
+                                EjecutarSql("INSERT INTO SIGMAN.APP_PTC_PERSONAL (NAME, TYPE, CEDULA) VALUES ('" + Var2.Trim().ToUpper() + "', '" + Var3.Trim().ToUpper() + "', '" + Var4.Trim() + "')");
+                            }
+                            else if (action.Equals("U"))
+                            {
+                                EjecutarSql("UPDATE SIGMAN.APP_PTC_PERSONAL SET NAME = '" + Var2.Trim().ToUpper() + "', TYPE = '" + Var3.Trim().ToUpper() + "', CEDULA = '" + Var4.Trim() + "' WHERE ID = '" + Var1 + "'");
+                            }
+                            else if (action.Equals("D"))
+                            {
+                                EjecutarSql("DELETE FROM SIGMAN.APP_PTC_PERSONAL WHERE ID = '" + Var1 + "' ");
+                            }
+                        }
+                        else if(_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+                        {
+                            if (string.IsNullOrWhiteSpace(action))
+                                continue;
+                            else if (action.Equals("C"))
+                            {
+                                EjecutarSql("INSERT INTO SIGMAN.APP_PTC_RUTA (RUTA) VALUES ('" + Var2.Trim().ToUpper()+ "')");
+                            }
+                            else if (action.Equals("U"))
+                            {
+                                EjecutarSql("UPDATE SIGMAN.APP_PTC_RUTA SET RUTA = '" + Var2.Trim().ToUpper() + "' WHERE ID = '" + Var1 + "'");
+                            }
+                            else if (action.Equals("D"))
+                            {
+                                EjecutarSql("DELETE FROM SIGMAN.APP_PTC_RUTA WHERE ID = '" + Var1 + "' ");
+                            }
+                        }
+                        else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+                        {
+                            if (string.IsNullOrWhiteSpace(action))
+                                continue;
+                            else if (action.Equals("C"))
+                            {
+                                EjecutarSql("INSERT INTO SIGMAN.APP_PTC_CUMPLI (ESTADO) VALUES ('" + Var2.Trim().ToUpper() + "')");
+                            }
+                            else if (action.Equals("U"))
+                            {
+                                EjecutarSql("UPDATE SIGMAN.APP_PTC_CUMPLI SET ESTADO = '" + Var2.Trim().ToUpper() + "' WHERE ID = '" + Var1 + "'");
+                            }
+                            else if (action.Equals("D"))
+                            {
+                                EjecutarSql("DELETE FROM SIGMAN.APP_PTC_CUMPLI WHERE ID = '" + Var1 + "' ");
+                            }
+                        }
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Value = "OK";
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Success;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Success;
+                    }
+                    else
+                    {
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Value = "NO";
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.TitleInformation;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.TitleInformation;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (_cells.GetCell(StartColTable + 3, i).Value == "   ")
+                    {
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Error;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Error;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Value = "Error Save";
+                    }
+                    else
+                    {
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Error;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Style = StyleConstants.Error;
+                        _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:AccionesPers()", ex.Message);
+                    }
+                }
+                finally
+                {
+                    _cells.GetRange(Table.Columns.Count + 1, StartRowTable + i, Table.Columns.Count + 1, StartRowTable + i).Select();
+                    i++;
+                }
+            }
+            //}
+            if (_cells != null) _cells.SetCursorDefault();
+            if(_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            {
+                _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+                Reload_Info_Select(_cells.GetRange("O3", "S3"), ListaDatos(4, "DP"));
+                Reload_Info_Select(_cells.GetRange("O4", "S4"), ListaDatos(4, "SP"));
+                var Operadores = ListaDatos(4, "OP");
+                for (int x = 0; x < Tam; x++)
+                {
+                    Reload_Info_Select(_cells.GetCell("B" + (6 + x)), Operadores);
+                }
+                _excelApp.ActiveWorkbook.Sheets[SheetName02].Select();
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+                var Operadores = ListaDatos(6);
+                for (int x = 0; x < Tam; x++)
+                {
+                    Reload_Info_Select(_cells.GetCell("C" + (6 + x)), Operadores, TamLetr: 8, Rf: 255,  Gf: 255, Bf: 255,Rl: 0, Gl: 0, Bl: 0);
+                }
+                _excelApp.ActiveWorkbook.Sheets[SheetName03].Select();
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+            {
+                _excelApp.ActiveWorkbook.Sheets[SheetName01].Select();
+                var Operadores = ListaDatos(7);
+                for (int x = 0; x < Tam; x++)
+                {
+                    Reload_Info_Select(_cells.GetCell("D" + (6 + x)), Operadores, TamLetr: 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+                }
+                _excelApp.ActiveWorkbook.Sheets[SheetName04].Select();
+            }
+            //Nombre = null;
+            _excelApp.ScreenUpdating = true;
+        }
+
+        private void bLimpiar_Click(object sender, RibbonControlEventArgs e)
+        {
+            Limpieza();
+        }
+
+
+        private void Limpieza()
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            {
+                _cells.DeleteTableRange(tableName02);
+            }
+        }
+
+
+        public void borrarTabla()
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            {
+                //Excel._Worksheet _cells2 = _excelApp.ActiveWorkbook.ActiveSheet;
+                //Excel._Worksheet Hoja = _excelApp.ActiveWorkbook.Sheets[Name_Hoja];
+                //Hoja.ListObjects(tableName01);
+                //_cells.DeleteTableRange(_excelApp.ActiveWorkbook.Sheets[Name_Hoja].Table.Name);
+                _cells.DeleteTableRange(tableName01);
+                return;
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            {
+                _cells.GetRange("E" + 6, "E1005").Clear();
+                _cells.DeleteTableRange(tableName02);
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                _cells.GetRange("C" + 6, "C1005").Clear();
+                _cells.DeleteTableRange(tableName03);
+            }
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+            {
+                _cells.GetRange("C" + 6, "C1005").Clear();
+                _cells.DeleteTableRange(tableName04);
+            }
+
+        }
 
 
 
 
-   }
+        /// <summary>
+        /// Establece el resultado de búsqueda de la descripción de un equipo después de que este es escrita
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="changedRanges"></param>
+        void GetTableChangedValue(Excel.Range target, ListRanges changedRanges)//Excel.Range target)
+        {
+            //_eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            switch (target.Column)
+            {
+                case 3://Equipo
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace("" + target.Value))
+                        {
+                            _cells.GetCell(target.Column + 1, target.Row).Value = "";
+                            break;
+                        }
+
+                        _cells.GetCell(target.Column + 1, target.Row).Value = "Buscando Equipo...";
+                        string description = "Culo";
+
+                        _cells.GetCell(target.Column + 1, target.Row).Value = !string.IsNullOrWhiteSpace(description) ? description.Trim() : "Equipo no encontrado";
+                        _cells.GetCell(target.Column + 1, target.Row).Columns.AutoFit();
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(target.Column + 1, target.Row).Value = "No fue Posible Obtener Informacion!";
+                    }
+                    catch (Exception ex)
+                    {
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(target.Column + 1, target.Row).Value = "No fue Posible Obtener Informacion!";
+                    }
+                    break;
+                case 5://Estadística
+                    try
+                    {
+                        var equipNo = "" + _cells.GetCell(3, target.Row).Value;
+                        var statType = "" + "Chucha";
+
+                        var statDate = "" + _cells.GetCell(1, target.Row).Value;
+
+                        if (string.IsNullOrWhiteSpace(equipNo) || string.IsNullOrWhiteSpace(statType) || string.IsNullOrWhiteSpace(statDate))
+                        {
+                            _cells.GetCell(7, target.Row).Value = "No fue Posible Obtener Información";
+                            _cells.GetCell(8, target.Row).Value = "No fue Posible Obtener Información";
+                        }
+                        else
+                        {
+                            var lastStatReg = "PERRA";
+
+                            _cells.GetCell(7, target.Row).Value = !string.IsNullOrWhiteSpace(lastStatReg) ? lastStatReg.Trim() : "";
+                            _cells.GetCell(8, target.Row).Value = !string.IsNullOrWhiteSpace(lastStatReg) ? lastStatReg.Trim() : "";
+
+                        }
+                        _cells.GetCell(7, target.Row).Columns.AutoFit();
+                        _cells.GetCell(8, target.Row).Columns.AutoFit();
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(7, target.Row).Value = "";
+                    }
+                    catch (Exception ex)
+                    {
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(7, target.Row).Value = "Se ha producido un error";
+                    }
+                    break;
+            }
+        }
+
+
+        private void btnRestoreEvents_Click(object sender, RibbonControlEventArgs e)
+        {
+            RestoreEvents();
+        }
+
+        public void RestoreEvents()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            var table = _cells.GetRange(RangeOne).Worksheet.ListObjects[RangeOne];
+            var tableObject = Globals.Factory.GetVstoObject(table);
+            try
+            {
+                tableObject.Change -= GetTableChangedValue;
+            }
+            catch
+            {
+                //ignored
+            }
+            tableObject.Change += GetTableChangedValue;
+
+        }
+
+
+
+        private void NotifyChanges()
+        {
+            _excelApp.Visible = true;
+            _excelApp.ScreenUpdating = false;
+            _excelApp.DisplayAlerts = false;
+            //_excelApp.ActiveSheet.Names.Add(Name: "compositeRange", RefersToR1C1: _cells.GetRange("O3", "S3"));
+            Worksheet worksheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[SheetName01]);
+            changesRange = worksheet.Controls.AddNamedRange(_cells.GetRange(StartColTable + 1, StartRowTable + 1, StartColTable + 5, (StartRowTable + Tam)), "RangoTaladros");
+            changesRange.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change);
+            _excelApp.ScreenUpdating = true;
+        }
+
+        void changesRange_Change(Excel.Range Target)
+        {
+            //string cellAddress = Target.get_Address(Excel.XlReferenceStyle.xlA1);
+            //MessageBox.Show("Cell " + cellAddress + " changed.");
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
+        }
+
+
+        private void Reload_Info_Select(Excel.Range Rango, List<string> Lista, Int32 TamLetr = 8, Int32 Rf = 166, Int32 Gf = 166, Int32 Bf = 166, Int32 Rl = 0, Int32 Gl = 0, Int32 Bl = 0)
+        {
+            Rango.Clear();
+            FormatCamposMenu(Rango, true, true, true, "", "", TamLetr, Rf: Rf, Gf: Gf, Bf: Bf, Rl: Rl, Gl: Gl, Bl: Bl, Aline: "L");
+            Rango.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Lista), Type.Missing);
+            FormatBordes(Rango);
+        }
+
+
+
+
+    }
 }

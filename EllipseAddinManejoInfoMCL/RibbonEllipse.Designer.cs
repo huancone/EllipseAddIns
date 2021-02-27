@@ -40,8 +40,10 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAcciones = this.Factory.CreateRibbonMenu();
             this.btnConsultar = this.Factory.CreateRibbonButton();
+            this.BtnAcciones = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.bLimpiar = this.Factory.CreateRibbonButton();
+            this.btnRestoreEvents = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
@@ -78,17 +80,26 @@
             // menuAcciones
             // 
             this.menuAcciones.Items.Add(this.btnConsultar);
+            this.menuAcciones.Items.Add(this.BtnAcciones);
             this.menuAcciones.Items.Add(this.btnStopThread);
             this.menuAcciones.Items.Add(this.bLimpiar);
+            this.menuAcciones.Items.Add(this.btnRestoreEvents);
             this.menuAcciones.Label = "Acciones";
             this.menuAcciones.Name = "menuAcciones";
             // 
             // btnConsultar
             // 
-            this.btnConsultar.Label = "Consultar Personal";
+            this.btnConsultar.Label = "Consultar";
             this.btnConsultar.Name = "btnConsultar";
             this.btnConsultar.ShowImage = true;
             this.btnConsultar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsultar_Click);
+            // 
+            // BtnAcciones
+            // 
+            this.BtnAcciones.Label = "Acciones";
+            this.BtnAcciones.Name = "BtnAcciones";
+            this.BtnAcciones.ShowImage = true;
+            this.BtnAcciones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAcciones_Click);
             // 
             // btnStopThread
             // 
@@ -101,6 +112,15 @@
             this.bLimpiar.Label = "Limpiar";
             this.bLimpiar.Name = "bLimpiar";
             this.bLimpiar.ShowImage = true;
+            this.bLimpiar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.bLimpiar_Click);
+            // 
+            // btnRestoreEvents
+            // 
+            this.btnRestoreEvents.Label = "Restaurar AutoConsultas";
+            this.btnRestoreEvents.Name = "btnRestoreEvents";
+            this.btnRestoreEvents.ShowImage = true;
+            this.btnRestoreEvents.Visible = false;
+            this.btnRestoreEvents.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRestoreEvents_Click);
             // 
             // btnAbout
             // 
@@ -130,9 +150,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAcciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultar;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAcciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bLimpiar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRestoreEvents;
     }
 
     partial class ThisRibbonCollection
