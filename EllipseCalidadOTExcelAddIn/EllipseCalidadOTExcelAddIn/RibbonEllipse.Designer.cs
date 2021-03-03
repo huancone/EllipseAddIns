@@ -40,12 +40,12 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.bConsultar = this.Factory.CreateRibbonButton();
+            this.btnConsulta2 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.bCalificar = this.Factory.CreateRibbonButton();
             this.bLimpiar = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnConsulta2 = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCalidadOt.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +96,13 @@
             this.bConsultar.ShowImage = true;
             this.bConsultar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.bConsultar_Click);
             // 
+            // btnConsulta2
+            // 
+            this.btnConsulta2.Label = "Consultar servicios contratados";
+            this.btnConsulta2.Name = "btnConsulta2";
+            this.btnConsulta2.ShowImage = true;
+            this.btnConsulta2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsulta2_Click);
+            // 
             // button1
             // 
             this.button1.Label = "Re consultar";
@@ -129,13 +136,6 @@
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click_1);
-            // 
-            // btnConsulta2
-            // 
-            this.btnConsulta2.Label = "Consultar servicios contratados";
-            this.btnConsulta2.Name = "btnConsulta2";
-            this.btnConsulta2.ShowImage = true;
-            this.btnConsulta2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsulta2_Click);
             // 
             // RibbonEllipse
             // 

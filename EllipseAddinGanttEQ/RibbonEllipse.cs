@@ -864,9 +864,15 @@ namespace EllipseAddinGanttEQ
                 //Excel.Name Nombre = _excelApp.ActiveWorkbook.ActiveSheet.Names(tableName01);
                 if(_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
-                    _cells.DeleteTableRange(TableName05);
-                    _excelApp.Application.Goto("ComentExt");
-                    _excelApp.Application.Selection.EntireRow.Delete();
+                    var x = _cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2;
+                    if (_cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2 == 1)
+                    {
+                        _excelApp.Application.Goto("ComentExt");
+                        _cells.DeleteTableRange(TableName05);
+                        _excelApp.Application.Selection.EntireRow.Delete();
+
+                    }
+                    //
                     //_cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
                     _cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 10000)).Clear();
                     _excelApp.Application.Goto(tableName01);

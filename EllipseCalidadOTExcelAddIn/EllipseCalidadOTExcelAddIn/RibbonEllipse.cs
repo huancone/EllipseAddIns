@@ -366,7 +366,7 @@ namespace EllipseCalidadOTExcelAddIn
                     }
                     if(WoCode7 != "")
                     {
-                        sqlQuery += "AND W.WO_JOB_CODEX8 = 'SC   ' ";
+                        sqlQuery += "AND TRIM(W.WO_JOB_CODEX8) = 'SC' ";
                         WoCode7 = "";
                     }
 
@@ -419,7 +419,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '034'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS CALIDAD
+                                ) AS CALIDAD,
+                                (
+                                  SELECT
+                                    REF_CODE
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '024'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS GARANTIA
                               FROM
                                 A
                             )
@@ -449,11 +463,12 @@ namespace EllipseCalidadOTExcelAddIn
                               B.COSTOS_MAT,  
                               B.HORAS_LAB,  
                               B.T_COMENTARIO,  
+                              B.WO_JOB_CODEX8,
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.WO_JOB_CODEX8
+                              B.GARANTIA
                             FROM
-                              B WHERE B.CALIDAD IS NULL";
+                              B /*WHERE B.CALIDAD IS NULL*/";
                     if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
                         sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
@@ -492,6 +507,7 @@ namespace EllipseCalidadOTExcelAddIn
                         _cells.GetCell("P" + currentRow).WrapText = true;
                         _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                         _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
+                        _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
 
                         if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                         {
@@ -711,6 +727,7 @@ namespace EllipseCalidadOTExcelAddIn
                                 A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
                                 A.WO_JOB_CODEX2 AS PARTE_FALLO,
                                 A.WO_JOB_CODEX3 AS MODO_FALLA,
+                                A.WO_JOB_CODEX8,
                                 (
                                   SELECT
                                   CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
@@ -730,7 +747,20 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
                                 ) AS CALIDAD,
-                                A.WO_JOB_CODEX8
+                                (
+                                  SELECT
+                                    REF_CODE
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '024'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS GARANTIA
                               FROM
                                 A
                             )
@@ -759,10 +789,11 @@ namespace EllipseCalidadOTExcelAddIn
                               B.RELATED_WO,  
                               B.COSTOS_MAT,  
                               B.HORAS_LAB,  
-                              B.T_COMENTARIO,  
+                              B.T_COMENTARIO, 
+                              B.WO_JOB_CODEX8, 
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.WO_JOB_CODEX8
+                              B.GARANTIA
                             FROM
                               B ";
                 
@@ -799,6 +830,7 @@ namespace EllipseCalidadOTExcelAddIn
                     _excelApp.ActiveCell.WrapText = true;
                     _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                     _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
+                    _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
 
                     if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                     {
@@ -1096,27 +1128,18 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 calif = "4";
             }
-            else
+            var User = "";
+            if(calif != "")
             {
-                calif = "";
+                User = _frmAuth.EllipseUser;
             }
 
-
-            var woRefCodes = new WorkOrderReferenceCodes();
-            /*{
+            var woRefCodes = new WorkOrderReferenceCodes
+            {
                 CalificacionCalidadOt = calif,
-                CalificacionCalidadPor = _frmAuth.EllipseUser,
-            };*/
-            woRefCodes.CalificacionCalidadOt = calif;
-            woRefCodes.Garantia = Garantia;
-            if (calif != "")
-            {
-                woRefCodes.CalificacionCalidadPor = _frmAuth.EllipseUser;
-            }
-            else
-            {
-                woRefCodes.CalificacionCalidadPor = "";
-            }
+                CalificacionCalidadPor = User,
+                Garantia = Garantia
+            };
             var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
 
             if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
