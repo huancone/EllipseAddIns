@@ -864,7 +864,7 @@ namespace EllipseAddinGanttEQ
                 //Excel.Name Nombre = _excelApp.ActiveWorkbook.ActiveSheet.Names(tableName01);
                 if(_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
-                    var x = _cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2;
+                    //var x = _cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2;
                     if (_cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2 == 1)
                     {
                         _excelApp.Application.Goto("ComentExt");
