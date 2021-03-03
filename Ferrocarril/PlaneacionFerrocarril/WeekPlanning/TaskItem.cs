@@ -39,7 +39,7 @@ namespace PlaneacionFerrocarril
             Mst= dr["MAINT_SCH_TASK"].ToString();
             NextSchedule= dr["NEXT_SCH"].ToString();
             TaskStatus= dr["STATUS"].ToString();
-            ResType= dr["RESOURCE_TYPE"].ToString();
+            ResType= ("" + dr["RESOURCE_TYPE"].ToString()).Trim();
             ActResHours= dr["ACT_RESRCE_HRS"].ToString();
             EstResHours= dr["EST_RESRCE_HRS"].ToString();
         }

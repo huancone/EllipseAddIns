@@ -489,7 +489,7 @@ namespace EllipseMSO627RodillosAddin
 
                 var opSheet = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -591,7 +591,7 @@ namespace EllipseMSO627RodillosAddin
 
                 var opSheet = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,

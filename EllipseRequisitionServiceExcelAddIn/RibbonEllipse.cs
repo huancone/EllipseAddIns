@@ -1012,8 +1012,8 @@ namespace EllipseRequisitionServiceExcelAddIn
             if (isExtended)
             {
                 allocPcA = "100";
-                districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? "ICOR" : _frmAuth.EllipseDsct;
-                costDistrictAllocation = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? "ICOR" : _frmAuth.EllipseDsct;
+                districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct) ? "ICOR" : _frmAuth.EllipseDstrct;
+                costDistrictAllocation = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct) ? "ICOR" : _frmAuth.EllipseDstrct;
                 requestedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null ? _frmAuth.EllipseUser : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                 requiredByPosition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) == null ? _frmAuth.EllipsePost : _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                 seriesIndicator = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
@@ -1057,8 +1057,8 @@ namespace EllipseRequisitionServiceExcelAddIn
             else
             {
                 allocPcA = "100";
-                districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? "ICOR" : _frmAuth.EllipseDsct;
-                costDistrictAllocation = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? "ICOR" : _frmAuth.EllipseDsct;
+                districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct) ? "ICOR" : _frmAuth.EllipseDstrct;
+                costDistrictAllocation = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct) ? "ICOR" : _frmAuth.EllipseDstrct;
                 requestedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null ? _frmAuth.EllipseUser : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                 requiredByPosition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) == null ? _frmAuth.EllipsePost : _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                 seriesIndicator = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
@@ -1332,7 +1332,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/RequisitionService";
 
-                opRequisition.district = _frmAuth.EllipseDsct;
+                opRequisition.district = _frmAuth.EllipseDstrct;
                 opRequisition.maxInstances = 100;
                 opRequisition.position = _frmAuth.EllipsePost;
                 opRequisition.returnWarnings = false;
@@ -1690,7 +1690,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //ScreenService Opción en reemplazo de los servicios
                 var opSheet = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -2421,7 +2421,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
 
-                opRequisition.district = _frmAuth.EllipseDsct;
+                opRequisition.district = _frmAuth.EllipseDstrct;
                 opRequisition.maxInstances = 100;
                 opRequisition.position = _frmAuth.EllipsePost;
                 opRequisition.returnWarnings = false;
@@ -2455,9 +2455,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 break;
                         }
 
-                        headerCreateReturnReply.districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct)
+                        headerCreateReturnReply.districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct)
                             ? "ICOR"
-                            : _frmAuth.EllipseDsct;
+                            : _frmAuth.EllipseDstrct;
                         headerCreateReturnReply.processedBy =
                             _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null
                                 ? _frmAuth.EllipseUser
@@ -2561,7 +2561,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                opRequisition.district = _frmAuth.EllipseDsct;
+                opRequisition.district = _frmAuth.EllipseDstrct;
                 opRequisition.maxInstances = 100;
                 opRequisition.position = _frmAuth.EllipsePost;
                 opRequisition.returnWarnings = false;
@@ -2582,9 +2582,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                         headerCreateReturnReply.projectNumberx1 = _cells.GetNullOrTrimmedValue(_cells.GetCell(12, currentRow).Value);
                         headerCreateReturnReply.costCodex1 = _cells.GetNullOrTrimmedValue(_cells.GetCell(13, currentRow).Value);
 
-                        headerCreateReturnReply.districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct)
+                        headerCreateReturnReply.districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDstrct)
                             ? "ICOR"
-                            : _frmAuth.EllipseDsct;
+                            : _frmAuth.EllipseDstrct;
                         headerCreateReturnReply.processedBy =
                             _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null
                                 ? _frmAuth.EllipseUser

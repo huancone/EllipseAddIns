@@ -87,8 +87,6 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
 
                 ef.RevertOperation(opContext, screenService);
                 //Default Values
-                if (string.IsNullOrWhiteSpace(invoice.District))
-                    invoice.District = "ICOR";
                 if (string.IsNullOrWhiteSpace(invoice.Currency))
                     invoice.Currency = "PES";
                 if (string.IsNullOrWhiteSpace(invoice.HandlingCode))

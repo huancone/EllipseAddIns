@@ -422,14 +422,14 @@ namespace EllipseMSE345ExcelAddIn
 
 
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct,
                     _frmAuth.EllipsePost);
                 var proxySheet =
                     new CondMeasurementService.CondMeasurementService {Url = urlService + "/CondMeasurementService"};
-                var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false);
+                var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false);
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -544,14 +544,14 @@ namespace EllipseMSE345ExcelAddIn
             }
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct,
                 _frmAuth.EllipsePost);
             var proxySheet =
                 new CondMeasurementService.CondMeasurementService {Url = urlService + "/CondMeasurementService"};
-            var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false);
+            var stdTextOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings

@@ -240,7 +240,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -660,7 +660,7 @@ namespace EllipseWorkRequestExcelAddIn
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var opContext = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -1526,7 +1526,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1600,7 +1600,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1817,7 +1817,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1876,7 +1876,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1999,7 +1999,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2100,7 +2100,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2183,7 +2183,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2276,7 +2276,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2437,7 +2437,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2527,7 +2527,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2602,7 +2602,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2763,7 +2763,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2813,7 +2813,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2863,7 +2863,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2911,7 +2911,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2959,7 +2959,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3006,7 +3006,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3053,7 +3053,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3101,7 +3101,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3162,7 +3162,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3222,7 +3222,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3282,7 +3282,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3482,7 +3482,7 @@ namespace EllipseWorkRequestExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,

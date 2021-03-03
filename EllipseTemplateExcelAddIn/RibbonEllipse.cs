@@ -347,7 +347,7 @@ namespace EllipseTemplateExcelAddIn
             ////Instanciar el Contexto de Operación
             //var opContext = new NameService.OperationContext
             //{
-            //    district = _frmAuth.EllipseDsct,
+            //    district = _frmAuth.EllipseDstrct,
             //    position = _frmAuth.EllipsePost,
             //    maxInstances = 100,
             //    maxInstancesSpecified = true,
@@ -360,7 +360,7 @@ namespace EllipseTemplateExcelAddIn
             //ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             //var i = titleRow + 1;
-            //var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            //var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             //while (!string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2)))
             //{
             //    try

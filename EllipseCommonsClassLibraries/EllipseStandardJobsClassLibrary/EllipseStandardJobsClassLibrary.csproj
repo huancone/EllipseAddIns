@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EllipseStdTextClassLibrary">
       <HintPath>..\EllipseStdTextClassLibrary\bin\Debug\EllipseStdTextClassLibrary.dll</HintPath>
@@ -459,6 +462,10 @@
       <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
       <Name>EllipseReferenceCodesClassLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UpdateLog.txt" />
+    <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

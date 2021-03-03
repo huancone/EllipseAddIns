@@ -202,7 +202,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 var opContext = new Screen.OperationContext()
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings

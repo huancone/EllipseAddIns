@@ -1004,7 +1004,7 @@ namespace EllipseMSO265ExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1103,7 +1103,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    
+                    if (string.IsNullOrWhiteSpace(invoice.District))
+                        invoice.District = _frmAuth.EllipseDstrct;
                     var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
                     for (var i = startRow; i <= currentRow; i++)
@@ -1151,7 +1152,7 @@ namespace EllipseMSO265ExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1256,6 +1257,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
+                    if (string.IsNullOrWhiteSpace(invoice.District))
+                        invoice.District = _frmAuth.EllipseDstrct;
                     var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
@@ -1293,7 +1296,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void LoadCesantias()
         {
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
@@ -1303,7 +1306,7 @@ namespace EllipseMSO265ExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1394,7 +1397,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    
+                    if (string.IsNullOrWhiteSpace(invoice.District))
+                        invoice.District = _frmAuth.EllipseDstrct;
                     var reply = Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, opContext, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)

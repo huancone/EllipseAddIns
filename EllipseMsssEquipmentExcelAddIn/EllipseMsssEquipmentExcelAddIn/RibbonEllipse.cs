@@ -249,7 +249,7 @@ namespace EllipseMsssEquipmentExcelAddIn
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             msssService.Url = urlService + "/MSSSService";
-            msssOpContext.district = _frmAuth.EllipseDsct;
+            msssOpContext.district = _frmAuth.EllipseDstrct;
             msssOpContext.position = _frmAuth.EllipsePost;
             msssOpContext.maxInstances = 100;
             msssOpContext.returnWarnings = Debugger.DebugWarnings;

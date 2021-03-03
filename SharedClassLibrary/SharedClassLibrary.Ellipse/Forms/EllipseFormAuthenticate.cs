@@ -11,7 +11,7 @@ namespace SharedClassLibrary.Ellipse.Forms
         public string EllipseUser = "";
         public string EllipsePswd = "";
         public string EllipsePost = "";
-        public string EllipseDsct = "";
+        public string EllipseDstrct = "";
 
         // ReSharper disable once FieldCanBeMadeReadOny.Local
         //EllipseFunctions _eFunctions = new EllipseFunctions();
@@ -23,7 +23,7 @@ namespace SharedClassLibrary.Ellipse.Forms
             txtUsername.Text = EllipseUser;
             txtPassword.Text = EllipsePswd;
             drpPosition.Text = EllipsePost;
-            txtDistrict.Text = EllipseDsct;
+            txtDistrict.Text = EllipseDstrct;
         }
         public FormAuthenticate(string user, string password, string position, string district)
         {
@@ -31,26 +31,26 @@ namespace SharedClassLibrary.Ellipse.Forms
             txtUsername.Text = EllipseUser = user;
             txtPassword.Text = EllipsePswd = password;
             drpPosition.Text = EllipsePost = position;
-            txtDistrict.Text = EllipseDsct = district;
+            txtDistrict.Text = EllipseDstrct = district;
         }
         public void SetUserAuthentication(string user, string password, string position, string district)
         {
             txtUsername.Text = EllipseUser = user;
             txtPassword.Text = EllipsePswd = password;
             drpPosition.Text = EllipsePost = position;
-            txtDistrict.Text = EllipseDsct = district;
+            txtDistrict.Text = EllipseDstrct = district;
         }
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
             EllipseUser = txtUsername.Text.ToUpper();
             EllipsePswd = txtPassword.Text;
             EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
-            EllipseDsct = txtDistrict.Text.ToUpper();
+            EllipseDstrct = txtDistrict.Text.ToUpper();
 
             var authSer = new Authenticator.AuthenticatorService();
             var opAuth = new Authenticator.OperationContext
             {
-                district = EllipseDsct,
+                district = EllipseDstrct,
                 position = EllipsePost,
                 returnWarnings = true,
                 returnWarningsSpecified = true
@@ -65,7 +65,7 @@ namespace SharedClassLibrary.Ellipse.Forms
                 }
 
                 authSer.Url = Connections.Environments.GetServiceUrl(SelectedEnvironment) + "/AuthenticatorService";
-                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
+                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDstrct, EllipsePost);
                 authSer.authenticate(opAuth);
 
                 #region Form Population
@@ -83,7 +83,7 @@ namespace SharedClassLibrary.Ellipse.Forms
                 {
                     var districts = authSer.getDistricts(opAuth);
                     if (districts != null && districts.Length > 0)
-                        txtDistrict.Text = EllipseDsct = districts[0].name.ToUpper();
+                        txtDistrict.Text = EllipseDstrct = districts[0].name.ToUpper();
                 }
                 else
                     txtDistrict.Text = txtDistrict.Text.ToUpper();
@@ -107,7 +107,7 @@ namespace SharedClassLibrary.Ellipse.Forms
                     {
                         var districts = authSer.getDistricts(opAuth);
                         if (districts != null && districts.Length > 0)
-                            txtDistrict.Text = EllipseDsct = districts[0].name.ToUpper();
+                            txtDistrict.Text = EllipseDstrct = districts[0].name.ToUpper();
                     }
                     else
                         txtDistrict.Text = txtDistrict.Text.ToUpper();

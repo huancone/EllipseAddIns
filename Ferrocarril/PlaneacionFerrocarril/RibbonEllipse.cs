@@ -415,8 +415,8 @@ namespace PlaneacionFerrocarril
                     FormatTempLogsPlain();
 
                 const string tableName = TableNamePlain;
-
-                _cells.ClearTableRange(tableName);
+                
+                //_cells.ClearTableRange(tableName);
 
                 var files = Directory.GetFiles(fbd.SelectedPath);
                 var filesList = new List<string>();
@@ -427,6 +427,8 @@ namespace PlaneacionFerrocarril
                     if (!file.EndsWith(".log"))
                         continue;
 
+                    var startingRow = _cells.GetTableLastRowIndex(tableName) + 1;
+                    TempWagonActions.TransformLogToPlain(file, _cells, startingRow);
                     filesList.Add(Path.GetFileName(file));
                 }
 
@@ -661,7 +663,7 @@ namespace PlaneacionFerrocarril
                     //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(() => ReviewWeekPlanning());
+                    _thread = new Thread(() => ReviewWeekPlanningAndResources());
 
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
@@ -671,12 +673,53 @@ namespace PlaneacionFerrocarril
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanningAndResources()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
-
         private void ReviewWeekPlanning()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var workGroup = "" + _cells.GetCell(2, 3).Value;
+                var additional = "" + _cells.GetCell(2, 4).Value;
+                var searchType = "" + _cells.GetCell(2, 5).Value;
+                var startDate = "" + _cells.GetCell(4, 3).Value;
+                var finishDate = "" + _cells.GetCell(4, 4).Value;
+
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                }
+
+                _cells?.SetCursorWait();
+
+                var tableName = TableNameWkP;
+                _cells.ClearTableRange(tableName);
+
+                if (searchType.Equals(SearchType.WorkOrderOnly))
+                    ReviewWeekPlanningTasks(_eFunctions, workGroup, startDate, finishDate, additional);
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                    ReviewWeekPlanningTasksServices(_eFunctions, workGroup, startDate, finishDate, additional);
+                UpdateResourceRequiredTable();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+            }
+        }
+        private void ReviewWeekPlanningAndResources()
         {
             try
             {
@@ -769,9 +812,9 @@ namespace PlaneacionFerrocarril
                 _cells.GetCell(5, currentRow).Value = task.TaskStatus;
                 _cells.GetCell(6, currentRow).Value = task.NextSchedule;
                 _cells.GetCell(7, currentRow).Value = task.ResType;
-                _cells.GetCell(8, currentRow).Value = MyUtilities.ToDecimal(task.ActResHours);
-                _cells.GetCell(9, currentRow).Value = MyUtilities.ToDecimal(task.EstResHours, 2);
-                var resPending = MyUtilities.ToDecimal(task.EstResHours, 2) - MyUtilities.ToDecimal(task.ActResHours);
+                _cells.GetCell(8, currentRow).Value = MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
+                _cells.GetCell(9, currentRow).Value = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty);
+                var resPending = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty) - MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
                 _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
                 if (resPending < 0)
                 {
@@ -790,7 +833,7 @@ namespace PlaneacionFerrocarril
                 _cells = new ExcelStyleCells(_excelApp);
 
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            var district = _frmAuth.EllipseDsct;
+            var district = _frmAuth.EllipseDstrct;
 
             const int titleRow = TitleRowWkP;
             
@@ -828,26 +871,69 @@ namespace PlaneacionFerrocarril
                 MessageBox.Show(ex.Message);
             }
 
+            if (ellipseJobTasks == null)
+                return;
             foreach (var task in ellipseJobTasks)
             {
-                if (task.LabourResourcesList.Count > 0)
+                try
                 {
-                    foreach (var r in task.LabourResourcesList)
+                    if (task.LabourResourcesList.Count > 0)
                     {
+                        foreach (var r in task.LabourResourcesList)
+                        {
+                            _cells.GetCell(1, currentRow).ClearComments();
+                            _cells.GetCell(1, currentRow).AddComment("" + task.ItemName1);
+                            _cells.GetCell(1, currentRow).Value = task.EquipNo;
+                            _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
+                            if (string.IsNullOrWhiteSpace(task.WorkOrder))
+                                _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
+                            _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
+                            _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
+                            _cells.GetCell(5, currentRow).Value = task.WoStatusUDescription;
+                            _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
+                            _cells.GetCell(7, currentRow).Value = r.ResourceCode;
+                            _cells.GetCell(8, currentRow).Value = r.RealLabourHours;
+                            _cells.GetCell(9, currentRow).Value = r.EstimatedLabourHours;
+                            var resPending = r.EstimatedLabourHours - r.RealLabourHours;
+                            _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
+                            if (resPending < 0)
+                            {
+                                _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
+                                _cells.GetCell(10, currentRow).ClearComments();
+                                _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
+                            }
+
+                            currentRow++;
+                        }
+                    }
+                    else
+                    {
+                        double estimatedLabHours = 0;
+                        double realLabHours = 0;
+                        string resourceCode = "";
+                        foreach (var r in task.LabourResourcesList)
+                        {
+                            resourceCode += " " + r.ResourceCode;
+                            estimatedLabHours += r.EstimatedLabourHours;
+                            realLabHours += r.RealLabourHours;
+                        }
+
+                        resourceCode = resourceCode.Trim();
+
                         _cells.GetCell(1, currentRow).ClearComments();
-                        _cells.GetCell(1, currentRow).AddComment("" + task.ItemName1);
+                        _cells.GetCell(1, currentRow).AddComment(task.ItemName1);
                         _cells.GetCell(1, currentRow).Value = task.EquipNo;
                         _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
                         if (string.IsNullOrWhiteSpace(task.WorkOrder))
                             _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
                         _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
                         _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
-                        _cells.GetCell(5, currentRow).Value = task.WoStatusUDescription;
+                        _cells.GetCell(5, currentRow).Value = "";
                         _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
-                        _cells.GetCell(7, currentRow).Value = r.ResourceCode;
-                        _cells.GetCell(8, currentRow).Value = r.RealLabourHours;
-                        _cells.GetCell(9, currentRow).Value = r.EstimatedLabourHours;
-                        var resPending = r.EstimatedLabourHours - r.RealLabourHours;
+                        _cells.GetCell(7, currentRow).Value = resourceCode;
+                        _cells.GetCell(8, currentRow).Value = realLabHours;
+                        _cells.GetCell(9, currentRow).Value = estimatedLabHours;
+                        var resPending = estimatedLabHours - realLabHours;
                         _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
                         if (resPending < 0)
                         {
@@ -859,43 +945,15 @@ namespace PlaneacionFerrocarril
                         currentRow++;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    double estimatedLabHours = 0;
-                    double realLabHours = 0;
-                    string resourceCode = "";
-                    foreach (var r in task.LabourResourcesList)
-                    {
-                        resourceCode += " " + r.ResourceCode;
-                        estimatedLabHours += r.EstimatedLabourHours;
-                        realLabHours += r.RealLabourHours;
-                    }
-
-                    resourceCode = resourceCode.Trim();
-
-                    _cells.GetCell(1, currentRow).ClearComments();
-                    _cells.GetCell(1, currentRow).AddComment(task.ItemName1);
-                    _cells.GetCell(1, currentRow).Value = task.EquipNo;
-                    _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
-                    if (string.IsNullOrWhiteSpace(task.WorkOrder))
-                        _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
-                    _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
-                    _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
-                    _cells.GetCell(5, currentRow).Value = "";
-                    _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
-                    _cells.GetCell(7, currentRow).Value = resourceCode;
-                    _cells.GetCell(8, currentRow).Value = realLabHours;
-                    _cells.GetCell(9, currentRow).Value = estimatedLabHours;
-                    var resPending = estimatedLabHours - realLabHours;
-                    _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
-                    if (resPending < 0)
-                    {
-                        _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(10, currentRow).ClearComments();
-                        _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
-                    }
-
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
                     currentRow++;
+                }
+                finally
+                {
+                    _cells?.SetCursorDefault();
                 }
             }
         }
@@ -912,7 +970,8 @@ namespace PlaneacionFerrocarril
             
             while(!string.IsNullOrWhiteSpace(_cells.GetCell(2, currentRow).Value) || !string.IsNullOrWhiteSpace(_cells.GetCell(6, currentRow).Value))
             {
-                string resType = "" + _cells.GetCell(7, currentRow).Value;
+                string resType = ("" + _cells.GetCell(7, currentRow).Value).Trim();
+                
                 if(!string.IsNullOrWhiteSpace(resType) && !schedResList.Contains(resType))
                     schedResList.Add(resType);
                 currentRow++;
@@ -958,6 +1017,32 @@ namespace PlaneacionFerrocarril
             FormatWeeklyPlanning();
             if (!_cells.IsDecimalDotSeparator())
                 MessageBox.Show(@"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
+        }
+
+        private void btnReviewWeekPlanning_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameWkP)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(() => ReviewWeekPlanning());
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
     }
 }

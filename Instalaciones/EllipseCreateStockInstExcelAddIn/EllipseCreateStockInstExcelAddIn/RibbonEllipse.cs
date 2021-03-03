@@ -228,12 +228,12 @@ namespace EllipseCreateStockInstExcelAddIn
 
             var currentRow = TittleRow + 1;
 
-            catalogueOp.district = _frmAuth.EllipseDsct;
+            catalogueOp.district = _frmAuth.EllipseDstrct;
             catalogueOp.position = _frmAuth.EllipsePost;
             catalogueOp.maxInstances = 100;
             catalogueOp.returnWarnings = Debugger.DebugWarnings;
 
-            productServiceOp.district = _frmAuth.EllipseDsct;
+            productServiceOp.district = _frmAuth.EllipseDstrct;
             productServiceOp.position = _frmAuth.EllipsePost;
             productServiceOp.maxInstances = 100;
             productServiceOp.returnWarnings = Debugger.DebugWarnings;

@@ -11,35 +11,6 @@ namespace SharedClassLibrary.Utilities
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public partial class MyUtilities
     {
-
-        public class ConversionConstants
-        {
-            public static readonly IxConversionConstant DefaultNormal = 0;
-            public static readonly IxConversionConstant DefaultEmptyOnly = 1;
-            public static readonly IxConversionConstant DefaultNullAndEmpty = 2;
-            public static readonly IxConversionConstant DefaultAllNonNullValues = 3;
-
-            public static bool IsValidDefaultNullableConstant(int defaultConstant)
-            {
-                return IsValidDefaultNullableConstant(new IxConversionConstant(defaultConstant));
-            }
-            public static bool IsValidDefaultNullableConstant(IxConversionConstant defaultConstant)
-            {
-                if (defaultConstant == null)
-                    return true;
-                if (defaultConstant.Equals(DefaultNormal))
-                    return true;
-                if (defaultConstant.Equals(DefaultEmptyOnly))
-                    return true;
-                if (defaultConstant.Equals(DefaultNullAndEmpty))
-                    return true;
-                if (defaultConstant.Equals(DefaultAllNonNullValues))
-                    return true;
-
-                return false;
-            }
-        }
-
         /// <summary>
         ///     Obtiene una cadena con el nombre de una variable dada
         /// </summary>
@@ -146,25 +117,25 @@ namespace SharedClassLibrary.Utilities
         ///     Obtiene el valor verdadero según el criterio de entrada. Si value es TRUE, VERDADERO, Y, YES, SI, ó 1
         /// </summary>
         /// <param name="value">Object: valor a analizar</param>
-        /// <param name="nullOrEmpty">ConversionConstants: indica si se asume nulo/vacío como predeterminado ConversionConstants.DEFAULT_NORMAL</param>
+        /// <param name="nullOrEmpty">IxConversionConstant: indica si se asume nulo/vacío como predeterminado [IxConversionConstant.DefaultNormal]</param>
         /// <returns>boolean: true si value es TRUE, VERDADERO, Y, YES, SI ó 1</returns>
         public static bool IsTrue(object value, IxConversionConstant nullOrEmpty = null)
         {
             try
             {
                 if (nullOrEmpty == null)
-                    nullOrEmpty = ConversionConstants.DefaultNormal;
-                if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                    nullOrEmpty = IxConversionConstant.DefaultNormal;
+                if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 {
                     var errorMessage = "Error al intentar determinar si un valor es verdadero. Parámetro de nullOrEmpty no válido.";
                     Debugger.LogError("MyUtilities.IsTrue", errorMessage);
                     throw new ArgumentException(errorMessage);
                 }
 
-                if (value == null && (nullOrEmpty == ConversionConstants.DefaultNormal || nullOrEmpty == ConversionConstants.DefaultEmptyOnly))
+                if (value == null && (nullOrEmpty == IxConversionConstant.DefaultNormal || nullOrEmpty == IxConversionConstant.DefaultEmptyOnly))
                     return false;
                 var stringValue = Convert.ToString(value);
-                if (value != null && string.IsNullOrWhiteSpace(stringValue) && nullOrEmpty == ConversionConstants.DefaultNormal)
+                if (value != null && string.IsNullOrWhiteSpace(stringValue) && nullOrEmpty == IxConversionConstant.DefaultNormal)
                     return false;
 
                 stringValue = stringValue.Trim();
@@ -188,23 +159,23 @@ namespace SharedClassLibrary.Utilities
         ///     Convierte un objeto a Decimal.
         /// </summary>
         /// <param name="value">Object: valor a analizar</param>
-        /// <param name="nullOrEmpty">ConversionConstants: Indica si se toma el valor nulo y/o vacío como predeterminado decimal (0)</param>
+        /// <param name="nullOrEmpty">IxConversionConstant: Indica si se toma el valor nulo y/o vacío como predeterminado decimal (0) [IxConversionConstant.DefaultNormal]</param>
         /// <param name="cultureInfo">CultureInfo: Indica el tipo de convención de signos para números (Default: en-US. Coma , para miles y . para decimales</param>
         /// <returns>decimal. Puede retornar una excepción si el valor es nulo o vacío según el criterio del parámetro nullOrEmpty</returns>
         public static decimal ToDecimal(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if(nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a decimal. Parámetro de conversión a decimal nullOrEmpty no válido.");
             if(cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (value == null && nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
                 return default(decimal);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == IxConversionConstant.DefaultEmptyOnly || nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty))
                 return default(decimal);
             
             return Convert.ToDecimal(value, cultureInfo);
@@ -212,17 +183,17 @@ namespace SharedClassLibrary.Utilities
         public static short ToInteger16(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (value == null && nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == IxConversionConstant.DefaultEmptyOnly || nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt16(value, cultureInfo);
@@ -230,17 +201,17 @@ namespace SharedClassLibrary.Utilities
         public static int ToInteger32(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (value == null && nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == IxConversionConstant.DefaultEmptyOnly || nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt32(value, cultureInfo);
@@ -248,8 +219,8 @@ namespace SharedClassLibrary.Utilities
         public static int? ToInteger32Null(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero null. Parámetro de conversión a entero nullOrEmpty no válido.");
             
             if (cultureInfo == null)
@@ -267,13 +238,13 @@ namespace SharedClassLibrary.Utilities
         public static int ToInteger(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
             return ToInteger32(value, nullOrEmpty, cultureInfo);
         }
         public static int? ToIntegerNull(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
             
             return ToInteger32Null(value, nullOrEmpty, cultureInfo);
         }
@@ -281,8 +252,8 @@ namespace SharedClassLibrary.Utilities
         public static decimal? ToDecimalNull(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a decimal null. Parámetro de conversión a entero nullOrEmpty no válido.");
 
             if (cultureInfo == null)
@@ -300,17 +271,17 @@ namespace SharedClassLibrary.Utilities
         public static long ToInteger64(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (value == null && nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == IxConversionConstant.DefaultEmptyOnly || nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt64(value, cultureInfo);
@@ -318,17 +289,17 @@ namespace SharedClassLibrary.Utilities
         public static double ToDouble(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNormal;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNormal;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a double. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (value == null && nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
                 return default(double);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == IxConversionConstant.DefaultEmptyOnly || nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty))
                 return default(double);
 
             return Convert.ToDouble(value, cultureInfo);
@@ -570,11 +541,11 @@ namespace SharedClassLibrary.Utilities
         public static bool EqualUpper(string a, string b, IxConversionConstant nullOrEmpty = null)
         {
             if (nullOrEmpty == null)
-                nullOrEmpty = ConversionConstants.DefaultNullAndEmpty;
-            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                nullOrEmpty = IxConversionConstant.DefaultNullAndEmpty;
+            if (!IxConversionConstant.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar comparar dos strings. Parámetro de conversión nullOrEmpty no válido.");
 
-            if (nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
+            if (nullOrEmpty == IxConversionConstant.DefaultNullAndEmpty)
             {
                 a = "" + a;
                 b = "" + b;

@@ -32,6 +32,8 @@ namespace PlaneacionFerrocarril.TemperatureWagon
             //Array(52, 1),
             //Array(58, 1),
             //Array(64, 1))
+            if (string.IsNullOrWhiteSpace(stringLine) || stringLine.Length < 52)
+                throw new Exception("No se puede crear el registro de Log. La línea de información de Log no tiene las características requeridas. Por favor verifique el archivo de Log");
             Order = stringLine.Substring(0, 5).Trim();
             Owner = stringLine.Substring(5, 6).Trim();
             Number = stringLine.Substring(11, 9).Trim();

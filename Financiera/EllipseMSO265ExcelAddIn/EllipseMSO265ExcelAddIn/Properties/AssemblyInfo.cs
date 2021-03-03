@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseMSO265ExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2016-2018")]
+[assembly: AssemblyCopyright("Copyright ©  2016-2021")]
 [assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.3.0.3")]
-[assembly: AssemblyFileVersion("1.3.0.3")]
+[assembly: AssemblyVersion("1.3.0.4")]
+[assembly: AssemblyFileVersion("1.3.0.4")]

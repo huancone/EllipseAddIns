@@ -735,7 +735,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -814,7 +814,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1874,7 +1874,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2001,7 +2001,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2118,7 +2118,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2129,7 +2129,7 @@ namespace EllipseWorkOrderExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRowD01 + 1;
-            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
             var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
@@ -2144,7 +2144,7 @@ namespace EllipseWorkOrderExcelAddIn
                     // ReSharper disable once UseObjectOrCollectionInitializer
                     var wo = new WorkOrder();
                     //GENERAL
-                    wo.districtCode = _frmAuth.EllipseDsct;
+                    wo.districtCode = _frmAuth.EllipseDstrct;
                     wo.workGroup = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
                     string workNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     if (workNo != null)
@@ -2288,7 +2288,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -2300,7 +2300,7 @@ namespace EllipseWorkOrderExcelAddIn
             var i = TitleRowD01 + 1;
             const int validationRow = TitleRowD01 - 1;
 
-            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
             var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
@@ -3026,7 +3026,7 @@ namespace EllipseWorkOrderExcelAddIn
             var i = TitleRow01 + 1;
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3036,7 +3036,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
             var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
@@ -3172,7 +3172,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3181,7 +3181,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
             var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
@@ -3314,7 +3314,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3396,7 +3396,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3501,10 +3501,10 @@ namespace EllipseWorkOrderExcelAddIn
 
             var i = TitleRow05 + 1;
 
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3560,7 +3560,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 var opSheet = new WorkOrderService.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -3626,7 +3626,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3728,7 +3728,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -3824,7 +3824,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -4052,7 +4052,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -4152,7 +4152,7 @@ namespace EllipseWorkOrderExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -4412,7 +4412,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(TableName02);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
+            var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, true);
             _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
             woCells.SetFixedWorkingWorkSheet(true);
@@ -4553,7 +4553,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -4630,7 +4630,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -4706,7 +4706,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -4790,7 +4790,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var tkCells = new ExcelStyleCells(_excelApp, SheetName02);
@@ -4876,7 +4876,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -5149,7 +5149,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opSheet = new WorkOrderTaskService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -5221,7 +5221,7 @@ namespace EllipseWorkOrderExcelAddIn
                             _cells.GetCell(16, i).Value = reply.planFinDate;
                             _cells.GetCell(17, i).Value = reply.planFinTime;
                         }
-                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.Create))
                     {
@@ -5233,7 +5233,7 @@ namespace EllipseWorkOrderExcelAddIn
                             _cells.GetCell(16, i).Value = reply.planFinDate;
                             _cells.GetCell(17, i).Value = reply.planFinTime;
                         }
-                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.Delete))
                     {
@@ -5242,7 +5242,7 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals(WorkOrderTaskActions.Close))
                     {
                         replyMsg = WorkOrderTaskActions.CompleteWorkOrderTask(urlService, opSheet, woTask);
-                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.ReOpen))
                     {
@@ -5306,7 +5306,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var opContextResource = new ResourceReqmntsService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings,
@@ -5315,7 +5315,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
             var opContextMaterial = new MaterialReqmntsService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings,
@@ -5324,7 +5324,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
             var opContextEquipment = new EquipmentReqmntsService.OperationContext()
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings,

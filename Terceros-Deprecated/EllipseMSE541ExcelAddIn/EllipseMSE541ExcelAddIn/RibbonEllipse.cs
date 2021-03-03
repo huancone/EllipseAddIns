@@ -54,7 +54,7 @@ namespace EllipseMSE541ExcelAddIn
             if (_frmAuth.ShowDialog() == DialogResult.OK)
             //if(true)
             {
-               //frmAuth.EllipseDsct = "ICOR";
+               //frmAuth.EllipseDstrct = "ICOR";
                //frmAuth.EllipsePost = "ADMIN";
                //frmAuth.EllipseUser = "hvilla1";
                //frmAuth.EllipsePswd = "h,1990";
@@ -118,7 +118,7 @@ namespace EllipseMSE541ExcelAddIn
                             
                             proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                            opSheet.district = _frmAuth.EllipseDsct;
+                            opSheet.district = _frmAuth.EllipseDstrct;
                             opSheet.position = _frmAuth.EllipsePost;
                             opSheet.maxInstances = 100;
                             opSheet.returnWarnings = _eFunctions.DebugWarnings;
@@ -154,7 +154,7 @@ namespace EllipseMSE541ExcelAddIn
                             
                             if (!string.IsNullOrEmpty(descExt))
                             {                                
-                                StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "WQ" + replySheet.requestId, descExt);
+                                StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "WQ" + replySheet.requestId, descExt);
                             }
 
                             if (!string.IsNullOrEmpty(stoCode1) || !string.IsNullOrEmpty(stoCode2) || !string.IsNullOrEmpty(stoCode3) || !string.IsNullOrEmpty(stoCode4) || !string.IsNullOrEmpty(stoCode5))
@@ -164,7 +164,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                 proxySheet2.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/RefCodesService";
 
-                                opSheet2.district = _frmAuth.EllipseDsct;
+                                opSheet2.district = _frmAuth.EllipseDstrct;
                                 opSheet2.position = _frmAuth.EllipsePost;
                                 opSheet2.maxInstances = 100;
                                 opSheet2.returnWarnings = _eFunctions.DebugWarnings;
@@ -183,7 +183,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant1))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant1);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant1);
                                     }
                                 }
 
@@ -199,7 +199,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant2))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant2);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant2);
                                     }
                                 }
 
@@ -215,7 +215,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant3))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant3);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant3);
                                     }
                                 }
 
@@ -231,7 +231,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant4))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant4);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant4);
                                     }
                                 }
 
@@ -247,7 +247,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant5))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant5);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant5);
                                     }
                                 }
 
@@ -270,7 +270,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     proxySheetSla.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                                    opSheetSla.district = _frmAuth.EllipseDsct;
+                                    opSheetSla.district = _frmAuth.EllipseDstrct;
                                     opSheetSla.position = _frmAuth.EllipsePost;
                                     opSheetSla.maxInstances = 100;
                                     opSheetSla.returnWarnings = _eFunctions.DebugWarnings;
@@ -969,7 +969,7 @@ namespace EllipseMSE541ExcelAddIn
             if (_frmAuth.ShowDialog() == DialogResult.OK)
             //if(true)
             {
-               // frmAuth.EllipseDsct = "ICOR";
+               // frmAuth.EllipseDstrct = "ICOR";
                // frmAuth.EllipsePost = "ADMIN";
                // frmAuth.EllipseUser = "hvilla1";
                // frmAuth.EllipsePswd = "h,1990";
@@ -1035,7 +1035,7 @@ namespace EllipseMSE541ExcelAddIn
                             
                             proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                            opSheet.district = _frmAuth.EllipseDsct;
+                            opSheet.district = _frmAuth.EllipseDstrct;
                             opSheet.position = _frmAuth.EllipsePost;
                             opSheet.maxInstances = 100;
                             opSheet.returnWarnings = _eFunctions.DebugWarnings;
@@ -1071,7 +1071,7 @@ namespace EllipseMSE541ExcelAddIn
                             
                             if (!string.IsNullOrEmpty(descExt))
                             {                                
-                                StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "WQ" + replySheet.requestId, descExt);
+                                StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "WQ" + replySheet.requestId, descExt);
                             }
 
                             if (!string.IsNullOrEmpty(stoCode1) || !string.IsNullOrEmpty(stoCode2) || !string.IsNullOrEmpty(stoCode3) || !string.IsNullOrEmpty(stoCode4) || !string.IsNullOrEmpty(stoCode5))
@@ -1081,7 +1081,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                 proxySheet2.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/RefCodesService";
 
-                                opSheet2.district = _frmAuth.EllipseDsct;
+                                opSheet2.district = _frmAuth.EllipseDstrct;
                                 opSheet2.position = _frmAuth.EllipsePost;
                                 opSheet2.maxInstances = 100;
                                 opSheet2.returnWarnings = _eFunctions.DebugWarnings;
@@ -1100,7 +1100,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant1))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant1);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant1);
                                     }
                                 }
 
@@ -1116,7 +1116,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant2))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant2);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant2);
                                     }
                                 }
 
@@ -1132,7 +1132,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant3))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant3);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant3);
                                     }
                                 }
 
@@ -1148,7 +1148,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant4))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant4);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant4);
                                     }
                                 }
 
@@ -1164,7 +1164,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     if (!string.IsNullOrEmpty(cant5))
                                     {
-                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant5);
+                                        StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDstrct, _frmAuth.EllipsePost, 100, false), "RC" + replySheet2.stdTxtKey, cant5);
                                     }
                                 }
 
@@ -1186,7 +1186,7 @@ namespace EllipseMSE541ExcelAddIn
 
                                     proxySheetSla.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                                    opSheetSla.district = _frmAuth.EllipseDsct;
+                                    opSheetSla.district = _frmAuth.EllipseDstrct;
                                     opSheetSla.position = _frmAuth.EllipsePost;
                                     opSheetSla.maxInstances = 100;
                                     opSheetSla.returnWarnings = _eFunctions.DebugWarnings;
@@ -1268,7 +1268,7 @@ namespace EllipseMSE541ExcelAddIn
             if (_frmAuth.ShowDialog() == DialogResult.OK)
             //if (true)
             {
-               // frmAuth.EllipseDsct = "ICOR";
+               // frmAuth.EllipseDstrct = "ICOR";
                // frmAuth.EllipsePost = "ADMIN";
                // frmAuth.EllipseUser = "hvilla1";
                // frmAuth.EllipsePswd = "h,1990";
@@ -1295,7 +1295,7 @@ namespace EllipseMSE541ExcelAddIn
 
                         proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                        opSheet.district = _frmAuth.EllipseDsct;
+                        opSheet.district = _frmAuth.EllipseDstrct;
                         opSheet.position = _frmAuth.EllipsePost;
                         opSheet.maxInstances = 100;
                         opSheet.returnWarnings = _eFunctions.DebugWarnings;
@@ -1388,7 +1388,7 @@ namespace EllipseMSE541ExcelAddIn
             //if (frmAuth.ShowDialog() == DialogResult.OK)
             if (true)
             {
-                _frmAuth.EllipseDsct = "ICOR";
+                _frmAuth.EllipseDstrct = "ICOR";
                 _frmAuth.EllipsePost = "AGSS";
                 _frmAuth.EllipseUser = "interctd";
                 _frmAuth.EllipsePswd = "fe0679";
@@ -1415,7 +1415,7 @@ namespace EllipseMSE541ExcelAddIn
 
                         proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/WorkRequestService";
 
-                        opSheet.district = _frmAuth.EllipseDsct;
+                        opSheet.district = _frmAuth.EllipseDstrct;
                         opSheet.position = _frmAuth.EllipsePost;
                         opSheet.maxInstances = 100;
                         opSheet.returnWarnings = _eFunctions.DebugWarnings;

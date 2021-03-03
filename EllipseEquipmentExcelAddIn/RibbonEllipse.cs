@@ -659,7 +659,7 @@ namespace EllipseEquipmentExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -814,7 +814,7 @@ namespace EllipseEquipmentExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -959,7 +959,7 @@ namespace EllipseEquipmentExcelAddIn
             const int validationRow = TitleRow01 - 1;
             var opSheet = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1140,7 +1140,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1322,7 +1322,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1383,7 +1383,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1435,7 +1435,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipmentService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1495,7 +1495,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipTraceService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1582,7 +1582,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new EquipTraceService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1940,7 +1940,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new ListService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -2009,7 +2009,7 @@ namespace EllipseEquipmentExcelAddIn
 
             var opSheet = new ListService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings

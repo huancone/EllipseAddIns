@@ -482,7 +482,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 //
                 //var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
-                //_eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
+                //_eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDstrct, urlServicePost);
                 //
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
@@ -492,7 +492,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var opContext = new BMUService.OperationContext()
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     maxInstances = 100,
                     position = _frmAuth.EllipsePost,
                     returnWarnings = false
@@ -502,7 +502,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 itemService.Url = urlService + "/BulkMaterialUsageSheetItem";
                 var opItem = new BMUItemService.OperationContext()
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     maxInstances = 100,
                     position = _frmAuth.EllipsePost,
                     returnWarnings = false
@@ -781,7 +781,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 var service = new BMUService.BulkMaterialUsageSheetService();
                 var opContext = new BMUService.OperationContext()
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     maxInstances = 100,
                     position = _frmAuth.EllipsePost,
                     returnWarnings = false,
@@ -1273,7 +1273,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var opSheet = new ListService.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1372,7 +1372,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var opSheet = new ListService.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings

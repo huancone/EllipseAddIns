@@ -43,6 +43,8 @@ namespace PlaneacionFerrocarril
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuWeeklyPlanning = this.Factory.CreateRibbonMenu();
+            this.btnFormatWeekPlanning = this.Factory.CreateRibbonButton();
+            this.btnReviewWeekPlanningAndResources = this.Factory.CreateRibbonButton();
             this.btnReviewWeekPlanning = this.Factory.CreateRibbonButton();
             this.btnUpdateAvaResourceTable = this.Factory.CreateRibbonButton();
             this.btnUpdateReqResourceTable = this.Factory.CreateRibbonButton();
@@ -51,7 +53,6 @@ namespace PlaneacionFerrocarril
             this.btnLoadTempLogMse345 = this.Factory.CreateRibbonButton();
             this.cbTempWagIgnoreLocomotives = this.Factory.CreateRibbonCheckBox();
             this.btnStop = this.Factory.CreateRibbonButton();
-            this.btnFormatWeekPlanning = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -106,6 +107,7 @@ namespace PlaneacionFerrocarril
             // menuWeeklyPlanning
             // 
             this.menuWeeklyPlanning.Items.Add(this.btnFormatWeekPlanning);
+            this.menuWeeklyPlanning.Items.Add(this.btnReviewWeekPlanningAndResources);
             this.menuWeeklyPlanning.Items.Add(this.btnReviewWeekPlanning);
             this.menuWeeklyPlanning.Items.Add(this.btnUpdateAvaResourceTable);
             this.menuWeeklyPlanning.Items.Add(this.btnUpdateReqResourceTable);
@@ -113,12 +115,26 @@ namespace PlaneacionFerrocarril
             this.menuWeeklyPlanning.Name = "menuWeeklyPlanning";
             this.menuWeeklyPlanning.ShowImage = true;
             // 
+            // btnFormatWeekPlanning
+            // 
+            this.btnFormatWeekPlanning.Label = "Formatear Programación";
+            this.btnFormatWeekPlanning.Name = "btnFormatWeekPlanning";
+            this.btnFormatWeekPlanning.ShowImage = true;
+            this.btnFormatWeekPlanning.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatWeekPlanning_Click);
+            // 
+            // btnReviewWeekPlanningAndResources
+            // 
+            this.btnReviewWeekPlanningAndResources.Label = "Consultar Periodo de Programación y Recursos";
+            this.btnReviewWeekPlanningAndResources.Name = "btnReviewWeekPlanningAndResources";
+            this.btnReviewWeekPlanningAndResources.ShowImage = true;
+            this.btnReviewWeekPlanningAndResources.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWeekPlanning_Click);
+            // 
             // btnReviewWeekPlanning
             // 
             this.btnReviewWeekPlanning.Label = "Consultar Periodo de Programación";
             this.btnReviewWeekPlanning.Name = "btnReviewWeekPlanning";
             this.btnReviewWeekPlanning.ShowImage = true;
-            this.btnReviewWeekPlanning.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWeekPlanning_Click);
+            this.btnReviewWeekPlanning.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWeekPlanning_Click_1);
             // 
             // btnUpdateAvaResourceTable
             // 
@@ -171,13 +187,6 @@ namespace PlaneacionFerrocarril
             this.btnStop.ShowImage = true;
             this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
             // 
-            // btnFormatWeekPlanning
-            // 
-            this.btnFormatWeekPlanning.Label = "Formatear Programación";
-            this.btnFormatWeekPlanning.Name = "btnFormatWeekPlanning";
-            this.btnFormatWeekPlanning.ShowImage = true;
-            this.btnFormatWeekPlanning.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatWeekPlanning_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -208,11 +217,12 @@ namespace PlaneacionFerrocarril
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadTempLogMse345;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadTempLogPlain;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuWeeklyPlanning;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWeekPlanning;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWeekPlanningAndResources;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateReqResourceTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateAvaResourceTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbTempWagIgnoreLocomotives;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatWeekPlanning;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWeekPlanning;
     }
 
     partial class ThisRibbonCollection

@@ -382,13 +382,13 @@ namespace EllipseMSO200ExcelAddIn
         {
 
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
             proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -411,7 +411,7 @@ namespace EllipseMSO200ExcelAddIn
                     {
                         if (replySheet.mapName != "MSM200A") return;
                         var arrayFields = new ArrayScreenNameValue();
-                        arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDsct);
+                        arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDstrct);
                         arrayFields.Add("OPTION1I", "6");
                         arrayFields.Add("SUPPLIER_NO1I",_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
                         requestSheet.screenFields = arrayFields.ToArray();
@@ -469,13 +469,13 @@ namespace EllipseMSO200ExcelAddIn
         private void LoadInactivarSupplierAddress()
         {
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
             proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -557,13 +557,13 @@ namespace EllipseMSO200ExcelAddIn
             //
 
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
             proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -647,13 +647,13 @@ namespace EllipseMSO200ExcelAddIn
         {
 
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
             proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -693,7 +693,7 @@ namespace EllipseMSO200ExcelAddIn
                         if (replySheet.mapName != "MSM200A") return;
 
                         var arrayFields = new ArrayScreenNameValue();
-                        arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDsct);
+                        arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDstrct);
                         arrayFields.Add("OPTION1I", "4");
                         arrayFields.Add("SUP_MNEMONIC1I", employee.Cedula);
                         requestSheet.screenFields = arrayFields.ToArray();
