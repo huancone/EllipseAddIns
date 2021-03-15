@@ -20,6 +20,7 @@ using Settings = SharedClassLibrary.Ellipse.Settings;
 using System.Text;
 using EllipseJobsClassLibrary;
 using EllipseJobsClassLibrary.WorkOrderTaskMWPService;
+using EllipseStandardJobsClassLibrary;
 using Microsoft.Office.Tools.Excel;
 using PlaneacionFerrocarril.TemperatureWagon;
 
@@ -32,16 +33,26 @@ namespace PlaneacionFerrocarril
         private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
 
-        private const string SheetName01 = "TemplateSheet";
-        private const string TableName01 = "TemplateTable";
-        private const int TitleRow01 = 7;
-        private const int ResultColumn01 = 4;
-
         private const string SheetNameWkP = "Programación";
         private const int TitleRowWkP = 22;
         private const int ResourceRowWkP = 7;
         private const int ResultColumnWkP = 11;
         private const string TableNameWkP = "WeekPlanning";
+
+        private const string SheetNameFcEq = "Forecast";
+        private const int TitleRowFcEq = 13;
+        private const int ResultColumnFcEq = 11;
+        private const string TableNameFcEq = "ForecastTable";
+
+        private const string SheetNameFcTk = "ForecastTask";
+        private const int TitleRowFcTk = 7;
+        private const int ResultColumnFcTk = 27;
+        private const string TableNameFcTk = "ForecastTaskTable";
+
+        private const string SheetNameFcRq = "ForecastRequirements";
+        private const int TitleRowFcRq = 7;
+        private const int ResultColumnFcRq = 33;
+        private const string TableNameFcRq = "ForecastRequirementsTable";
 
         private const string SheetNameMse345 = "MSE345";
         private const int TitleRowMse345 = 13;
@@ -52,6 +63,12 @@ namespace PlaneacionFerrocarril
         private const int TitleRowPlain = 1;
         private const string TableNamePlain = "PlainTable";
 
+
+        private const string SheetNamePlanHist = "BD";
+        private const int TitleRowPlanHist = 1;
+        private const int ResultColumnPlanHist = 7;
+        private const string TableNamePlanHist = "PlanHistoryTable";
+
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
 
@@ -59,7 +76,7 @@ namespace PlaneacionFerrocarril
         {
             LoadSettings();
         }
-
+        #region General
         private void LoadSettings()
         {
             var settings = new Settings();
@@ -133,6 +150,520 @@ namespace PlaneacionFerrocarril
             }
         }
 
+        
+
+        
+
+        #endregion
+
+        #region Forecast
+        private void btnForecastFormat_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormatForecast();
+        }
+
+        private void btnReviewForecastTask_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameFcTk)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(ReviewForecastTasks);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void btnForecastReviewRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameFcRq)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(ReviewForecastRequirements);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+    
+        private void FormatForecast()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                _cells.SetCursorWait();
+
+                var sheetName = SheetNameFcEq;
+                var titleRow = TitleRowFcEq;
+                var resultColumn = ResultColumnFcEq;
+                var tableName = TableNameFcEq;
+
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = sheetName;
+
+
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A5");
+
+                _cells.GetCell("B1").Value = "EQUIPMENT FORECAST - ELLIPSE 8";
+                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("B1", "K5");
+                _cells.MergeCells("C6", "L11");
+                _cells.MergeCells("A12", "L12");
+
+                _cells.GetCell("L1").Value = "OBLIGATORIO";
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L2").Value = "OPCIONAL";
+                _cells.GetCell("L2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("L3").Value = "INFORMATIVO";
+                _cells.GetCell("L3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("L4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("L4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell("L5").Value = "REQUERIDO ADICIONAL";
+                _cells.GetCell("L5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+
+                _cells.GetRange("A6", "A11").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B6", "B11").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleInformation;
+
+
+                _cells.GetCell(1, titleRow).Value = "WORKGROUP";
+                _cells.GetCell(2, titleRow).Value = "EQUIPO";
+                _cells.GetCell(3, titleRow).Value = "EQ DESC";
+                _cells.GetCell(4, titleRow).Value = "COMP CODE";
+                _cells.GetCell(5, titleRow).Value = "COMP MOD CODE";
+                _cells.GetCell(6, titleRow).Value = "WO/FORECAST";
+                _cells.GetCell(7, titleRow).Value = "MST";
+                _cells.GetCell(8, titleRow).Value = "STD JOB NO";
+                _cells.GetCell(9, titleRow).Value = "WO DESC";
+                _cells.GetCell(10, titleRow).Value = "PLAN STR DATE";
+
+
+                _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
+
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
+                #region Hoja 2
+
+                sheetName = SheetNameFcTk;
+                titleRow = TitleRowFcTk;
+                resultColumn = ResultColumnFcTk;
+                tableName = TableNameFcTk;
+
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = sheetName;
+
+
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A5");
+
+                _cells.GetCell("B1").Value = "TASK FORECAST - ELLIPSE 8";
+                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("B1", "K5");
+
+
+                _cells.GetCell("L1").Value = "OBLIGATORIO";
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L2").Value = "OPCIONAL";
+                _cells.GetCell("L2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("L3").Value = "INFORMATIVO";
+                _cells.GetCell("L3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("L4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("L4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell("L5").Value = "REQUERIDO ADICIONAL";
+                _cells.GetCell("L5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+
+                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleInformation;
+
+
+                _cells.GetCell(1, titleRow).Value = "WORKGROUP";
+                _cells.GetCell(2, titleRow).Value = "EQUIPO";
+                _cells.GetCell(3, titleRow).Value = "EQ DESC";
+                _cells.GetCell(4, titleRow).Value = "COMP CODE";
+                _cells.GetCell(5, titleRow).Value = "COMP MOD CODE";
+                _cells.GetCell(6, titleRow).Value = "WO/FORECAST";
+                _cells.GetCell(7, titleRow).Value = "MST";
+                _cells.GetCell(8, titleRow).Value = "STD JOB NO";
+                _cells.GetCell(9, titleRow).Value = "WO DESC";
+                _cells.GetCell(10, titleRow).Value = "PLAN STR DATE";
+
+                _cells.GetCell(11, titleRow).Value = "TASK NO";
+                _cells.GetCell(12, titleRow).Value = "TASK DESC";
+                _cells.GetCell(13, titleRow).Value = "JOB DESC CODE";
+                _cells.GetCell(14, titleRow).Value = "SAFETY INSTR";
+                _cells.GetCell(15, titleRow).Value = "COMPLETE INSTR";
+                _cells.GetCell(16, titleRow).Value = "COMP TEXT CODE";
+                _cells.GetCell(17, titleRow).Value = "ASSIGN PERSON";
+                _cells.GetCell(18, titleRow).Value = "EST MACH HOURS";
+                _cells.GetCell(19, titleRow).Value = "EST DUR HRS";
+                _cells.GetCell(20, titleRow).Value = "NO LABOR";
+                _cells.GetCell(21, titleRow).Value = "NO MATERIAL";
+                _cells.GetCell(22, titleRow).Value = "APL EGI";
+                _cells.GetCell(23, titleRow).Value = "APL TYPE";
+                _cells.GetCell(24, titleRow).Value = "APL COMP CODE";
+                _cells.GetCell(25, titleRow).Value = "APL COMP MOD CODE";
+                _cells.GetCell(26, titleRow).Value = "APL SEQ NO";
+
+                _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
+
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
+
+                #region Hoja 3
+
+                sheetName = SheetNameFcRq;
+                titleRow = TitleRowFcRq;
+                resultColumn = ResultColumnFcRq;
+                tableName = TableNameFcRq;
+
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = sheetName;
+
+
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A5");
+
+                _cells.GetCell("B1").Value = "REQUIREMENTS FORECAST - ELLIPSE 8";
+                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("B1", "K5");
+
+
+                _cells.GetCell("L1").Value = "OBLIGATORIO";
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L2").Value = "OPCIONAL";
+                _cells.GetCell("L2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("L3").Value = "INFORMATIVO";
+                _cells.GetCell("L3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("L4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("L4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell("L5").Value = "REQUERIDO ADICIONAL";
+                _cells.GetCell("L5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+
+                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleInformation;
+
+
+                _cells.GetCell(1, titleRow).Value = "WORKGROUP";
+                _cells.GetCell(2, titleRow).Value = "EQUIPO";
+                _cells.GetCell(3, titleRow).Value = "EQ DESC";
+                _cells.GetCell(4, titleRow).Value = "COMP CODE";
+                _cells.GetCell(5, titleRow).Value = "COMP MOD CODE";
+                _cells.GetCell(6, titleRow).Value = "WO/FORECAST";
+                _cells.GetCell(7, titleRow).Value = "MST";
+                _cells.GetCell(8, titleRow).Value = "STD JOB NO";
+                _cells.GetCell(9, titleRow).Value = "WO DESC";
+                _cells.GetCell(10, titleRow).Value = "PLAN STR DATE";
+
+                _cells.GetCell(11, titleRow).Value = "TASK NO";
+                _cells.GetCell(12, titleRow).Value = "TASK DESC";
+                _cells.GetCell(13, titleRow).Value = "JOB DESC CODE";
+                _cells.GetCell(14, titleRow).Value = "SAFETY INSTR";
+                _cells.GetCell(15, titleRow).Value = "COMPLETE INSTR";
+                _cells.GetCell(16, titleRow).Value = "COMP TEXT CODE";
+                _cells.GetCell(17, titleRow).Value = "ASSIGN PERSON";
+                _cells.GetCell(18, titleRow).Value = "EST MACH HOURS";
+                _cells.GetCell(19, titleRow).Value = "EST DUR HRS";
+                _cells.GetCell(20, titleRow).Value = "NO LABOR";
+                _cells.GetCell(21, titleRow).Value = "NO MATERIAL";
+                _cells.GetCell(22, titleRow).Value = "APL EGI";
+                _cells.GetCell(23, titleRow).Value = "APL TYPE";
+                _cells.GetCell(24, titleRow).Value = "APL COMP CODE";
+                _cells.GetCell(25, titleRow).Value = "APL COMP MOD CODE";
+                _cells.GetCell(26, titleRow).Value = "APL SEQ NO";
+                _cells.GetCell(27, titleRow).Value = "REQ TYPE";
+                _cells.GetCell(28, titleRow).Value = "REQ SEQ NO";
+                _cells.GetCell(29, titleRow).Value = "REQ CODE";
+                _cells.GetCell(30, titleRow).Value = "REQ DESC";
+                _cells.GetCell(31, titleRow).Value = "QTY REQ";
+                _cells.GetCell(32, titleRow).Value = "HRS REQ";
+                
+                _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
+
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:FormatEquipmentForecast()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                throw new Exception(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+            }
+        }
+
+        private void ReviewForecastTasks()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            _cells.SetCursorWait();
+
+            const int titleRow01 = TitleRowFcEq;
+            const int titleRow02 = TitleRowFcTk;
+            const string sheetName01 = SheetNameFcEq;
+            const string sheetName02 = SheetNameFcTk;
+            const string tableName01 = TableNameFcEq;
+            const string tableName02 = TableNameFcTk;
+            const int resultColumn01 = ResultColumnFcEq;
+            const int resultColumn02 = ResultColumnFcTk;
+
+            var stdCells = new ExcelStyleCells(_excelApp, sheetName01);
+            var taskCells = new ExcelStyleCells(_excelApp, sheetName02);
+
+            taskCells.ClearTableRange(tableName02);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+
+
+
+
+
+            var j = titleRow01 + 1;//itera según cada estándar
+            var i = titleRow02 + 1;//itera la celda para cada tarea
+
+            while (!string.IsNullOrEmpty("" + stdCells.GetCell(6, j).Value))
+            {
+                try
+                {
+                    var stdJob = new StandardJob();
+                    stdJob.DistrictCode = "ICOR";
+                    stdJob.WorkGroup = _cells.GetEmptyIfNull(stdCells.GetCell(1, j).Value2);
+                    var equipmentNo = _cells.GetEmptyIfNull(stdCells.GetCell(2, j).Value2);
+                    var equipmentDesc = _cells.GetEmptyIfNull(stdCells.GetCell(3, j).Value2);
+                    stdJob.CompCode = _cells.GetEmptyIfNull(stdCells.GetCell(4, j).Value2);
+                    stdJob.CompModCode = _cells.GetEmptyIfNull(stdCells.GetCell(5, j).Value2);
+                    var woForecastId = _cells.GetEmptyIfNull(stdCells.GetCell(6, j).Value2);
+                    stdJob.NoMsts = _cells.GetEmptyIfNull(stdCells.GetCell(7, j).Value2);
+                    stdJob.StandardJobNo = _cells.GetEmptyIfNull(stdCells.GetCell(8, j).Value2);
+                    stdJob.StandardJobDescription = _cells.GetEmptyIfNull(stdCells.GetCell(9, j).Value2);
+                    var planStartDate = _cells.GetEmptyIfNull(stdCells.GetCell(10, j).Value2);
+
+                    var taskList = StandardJobActions.FetchStandardJobTask(_eFunctions, stdJob.DistrictCode, stdJob.WorkGroup, stdJob.StandardJobNo);
+
+
+                    foreach (var task in taskList)
+                    {
+                        //Para resetear el estilo
+                        taskCells.GetRange(1, i, resultColumn02, i).Style = StyleConstants.Normal;
+                        //GENERAL
+                        taskCells.GetCell(1, i).Value = "" + stdJob.WorkGroup;
+                        taskCells.GetCell(2, i).Value = "'" + equipmentNo;
+                        taskCells.GetCell(3, i).Value = "'" + equipmentDesc;
+                        taskCells.GetCell(4, i).Value = "'" + stdJob.CompCode;
+                        taskCells.GetCell(5, i).Value = "'" + stdJob.CompModCode;
+                        taskCells.GetCell(6, i).Value = "'" + woForecastId;
+                        taskCells.GetCell(7, i).Value = "'" + stdJob.NoMsts;
+                        taskCells.GetCell(8, i).Value = "'" + task.StandardJob;
+                        taskCells.GetCell(9, i).Value = "" + task.StandardJobDescription;
+                        taskCells.GetCell(10, i).Value = "" + planStartDate;
+                        //GENERAL
+                        taskCells.GetCell(11, i).Value = "'" + task.SjTaskNo;
+                        taskCells.GetCell(12, i).Value = "" + task.SjTaskDesc;
+                        taskCells.GetCell(13, i).Value = "'" + task.JobDescCode;
+                        taskCells.GetCell(14, i).Value = "'" + task.SafetyInstr;
+                        taskCells.GetCell(15, i).Value = "'" + task.CompleteInstr;
+                        taskCells.GetCell(16, i).Value = "'" + task.ComplTextCode;
+
+                        taskCells.GetCell(17, i).Value = "" + task.AssignPerson;
+                        taskCells.GetCell(18, i).Value = "'" + task.EstimatedMachHrs;
+                        taskCells.GetCell(19, i).Value = "" + task.EstimatedDurationsHrs;
+                        taskCells.GetCell(20, i).Value = "" + task.NoLabor;
+                        taskCells.GetCell(21, i).Value = "" + task.NoMaterial;
+                        //APL
+                        taskCells.GetCell(22, i).Value = "'" + task.AplEquipmentGrpId;
+                        taskCells.GetCell(23, i).Value = "'" + task.AplType;
+                        taskCells.GetCell(24, i).Value = "'" + task.AplCompCode;
+                        taskCells.GetCell(25, i).Value = "'" + task.AplCompModCode;
+                        taskCells.GetCell(26, i).Value = "'" + task.AplSeqNo;
+
+
+                        i++;//aumenta tarea
+                    }
+                }
+                catch (Exception ex)
+                {
+                    taskCells.GetCell(1, i).Style = StyleConstants.Error;
+                    taskCells.GetCell(1, i).Value = _cells.GetEmptyIfNull(stdCells.GetCell(1, j).Value2);
+                    taskCells.GetCell(2, i).Value = _cells.GetEmptyIfNull(stdCells.GetCell(2, j).Value2);
+                    taskCells.GetCell(3, i).Value = _cells.GetEmptyIfNull(stdCells.GetCell(3, j).Value2);
+                    taskCells.GetCell(resultColumn02, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewForecastTasks()", ex.Message);
+                    i++;
+                }
+                finally
+                {
+                    j++;//aumenta std
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
+        }
+
+        private void ReviewForecastRequirements()
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            const string sheetName02 = SheetNameFcTk;
+            const string sheetName03 = SheetNameFcRq;
+            const string tableName02 = TableNameFcTk;
+            const string tableName03 = TableNameFcRq;
+            const int resultColumn02 = ResultColumnFcTk;
+            const int resultColumn03 = ResultColumnFcRq;
+            const int titleRow02 = TitleRowFcTk;
+            const int titleRow03 = TitleRowFcRq;
+
+            var taskCells = new ExcelStyleCells(_excelApp, sheetName02);
+            var reqCells = new ExcelStyleCells(_excelApp, sheetName03);
+
+            reqCells.ClearTableRange(tableName03);
+            var j = titleRow02 + 1;//itera según cada tarea
+            var i = titleRow03 + 1;//itera la celda para cada requerimiento
+
+            while (!string.IsNullOrEmpty("" + taskCells.GetCell(6, j).Value) && !string.IsNullOrEmpty("" + taskCells.GetCell(11, j).Value))
+            {
+                try
+                {
+                    var task = new StandardJobTask();
+                    var stdJob = new StandardJob();
+                    stdJob.DistrictCode = "ICOR";
+                    stdJob.WorkGroup = _cells.GetEmptyIfNull(taskCells.GetCell(1, j).Value2);
+                    var equipmentNo = _cells.GetEmptyIfNull(taskCells.GetCell(2, j).Value2);
+                    var equipmentDesc = _cells.GetEmptyIfNull(taskCells.GetCell(3, j).Value2);
+                    stdJob.CompCode = _cells.GetEmptyIfNull(taskCells.GetCell(4, j).Value2);
+                    stdJob.CompModCode = _cells.GetEmptyIfNull(taskCells.GetCell(5, j).Value2);
+                    var woForecastId = _cells.GetEmptyIfNull(taskCells.GetCell(6, j).Value2);
+                    stdJob.NoMsts = _cells.GetEmptyIfNull(taskCells.GetCell(7, j).Value2);
+                    stdJob.StandardJobNo = _cells.GetEmptyIfNull(taskCells.GetCell(8, j).Value2);
+                    stdJob.StandardJobDescription = _cells.GetEmptyIfNull(taskCells.GetCell(9, j).Value2);
+                    var planStartDate = _cells.GetEmptyIfNull(taskCells.GetCell(10, j).Value2);
+
+                    task.SjTaskNo = _cells.GetEmptyIfNull(taskCells.GetCell(11, j).Value2);
+                    task.SjTaskDesc = _cells.GetEmptyIfNull(taskCells.GetCell(12, j).Value2);
+                    task.JobDescCode = _cells.GetEmptyIfNull(taskCells.GetCell(13, j).Value2);
+                    task.SafetyInstr = _cells.GetEmptyIfNull(taskCells.GetCell(14, j).Value2);
+                    task.CompleteInstr = _cells.GetEmptyIfNull(taskCells.GetCell(15, j).Value2);
+                    task.ComplTextCode = _cells.GetEmptyIfNull(taskCells.GetCell(16, j).Value2);
+                    task.AssignPerson = _cells.GetEmptyIfNull(taskCells.GetCell(17, j).Value2);
+                    task.EstimatedMachHrs = _cells.GetEmptyIfNull(taskCells.GetCell(18, j).Value2);
+                    task.EstimatedDurationsHrs = _cells.GetEmptyIfNull(taskCells.GetCell(19, j).Value2);
+                    task.NoLabor = _cells.GetEmptyIfNull(taskCells.GetCell(20, j).Value2);
+                    task.NoMaterial = _cells.GetEmptyIfNull(taskCells.GetCell(21, j).Value2);
+                    task.AplEquipmentGrpId = _cells.GetEmptyIfNull(taskCells.GetCell(22, j).Value2);
+                    task.AplType = _cells.GetEmptyIfNull(taskCells.GetCell(23, j).Value2);
+                    task.AplCompCode = _cells.GetEmptyIfNull(taskCells.GetCell(24, j).Value2);
+                    task.AplCompModCode = _cells.GetEmptyIfNull(taskCells.GetCell(25, j).Value2);
+                    task.AplSeqNo = _cells.GetEmptyIfNull(taskCells.GetCell(26, j).Value2);
+
+
+                    var reqList = StandardJobActions.FetchTaskRequirements(_eFunctions, stdJob.DistrictCode, stdJob.WorkGroup, stdJob.StandardJobNo, task.SjTaskNo);
+
+                    foreach (var req in reqList)
+                    {
+                        //Para resetear el estilo
+                        reqCells.GetRange(1, i, resultColumn02, i).Style = StyleConstants.Normal;
+                        //GENERAL
+                        reqCells.GetCell(1, i).Value = "" + task.WorkGroup;
+                        reqCells.GetCell(2, i).Value = "'" + equipmentNo;
+                        reqCells.GetCell(3, i).Value = "'" + equipmentDesc;
+                        reqCells.GetCell(4, i).Value = "'" + stdJob.CompCode;
+                        reqCells.GetCell(5, i).Value = "'" + stdJob.CompModCode;
+                        reqCells.GetCell(6, i).Value = "'" + woForecastId;
+                        reqCells.GetCell(7, i).Value = "'" + stdJob.NoMsts;
+                        reqCells.GetCell(8, i).Value = "'" + task.StandardJob;
+                        reqCells.GetCell(9, i).Value = "" + task.StandardJobDescription;
+                        reqCells.GetCell(10, i).Value = "" + planStartDate;
+                        //GENERAL
+                        reqCells.GetCell(11, i).Value = "'" + task.SjTaskNo;
+                        reqCells.GetCell(12, i).Value = "" + task.SjTaskDesc;
+                        reqCells.GetCell(13, i).Value = "'" + task.JobDescCode;
+                        reqCells.GetCell(14, i).Value = "'" + task.SafetyInstr;
+                        reqCells.GetCell(15, i).Value = "'" + task.CompleteInstr;
+                        reqCells.GetCell(16, i).Value = "'" + task.ComplTextCode;
+
+                        reqCells.GetCell(17, i).Value = "" + task.AssignPerson;
+                        reqCells.GetCell(18, i).Value = "'" + task.EstimatedMachHrs;
+                        reqCells.GetCell(19, i).Value = "" + task.EstimatedDurationsHrs;
+                        reqCells.GetCell(20, i).Value = "" + task.NoLabor;
+                        reqCells.GetCell(21, i).Value = "" + task.NoMaterial;
+                        //APL
+                        reqCells.GetCell(22, i).Value = "'" + task.AplEquipmentGrpId;
+                        reqCells.GetCell(23, i).Value = "'" + task.AplType;
+                        reqCells.GetCell(24, i).Value = "'" + task.AplCompCode;
+                        reqCells.GetCell(25, i).Value = "'" + task.AplCompModCode;
+                        reqCells.GetCell(26, i).Value = "'" + task.AplSeqNo;
+
+                        reqCells.GetCell(27, i).Value = "" + req.ReqType;
+                        reqCells.GetCell(28, i).Value = "" + req.SeqNo;
+                        reqCells.GetCell(29, i).Value = "" + req.ReqCode;
+                        reqCells.GetCell(30, i).Value = "" + req.ReqDesc;
+                        reqCells.GetCell(31, i).Value = "" + req.QtyReq;
+                        reqCells.GetCell(32, i).Value = "" + req.HrsReq;
+                        i++;//aumenta req
+                    }
+                }
+                catch (Exception ex)
+                {
+                    reqCells.GetCell(1, i).Style = StyleConstants.Error;
+                    reqCells.GetCell(1, i).Value = _cells.GetEmptyIfNull(taskCells.GetCell(1, j).Value2);
+                    reqCells.GetCell(2, i).Value = _cells.GetEmptyIfNull(taskCells.GetCell(2, j).Value2);
+                    reqCells.GetCell(3, i).Value = _cells.GetEmptyIfNull(taskCells.GetCell(3, j).Value2);
+                    reqCells.GetCell(4, i).Value = _cells.GetEmptyIfNull(taskCells.GetCell(6, j).Value2);
+                    reqCells.GetCell(resultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewForecastRequirements()", ex.Message);
+                    i++;
+                }
+                finally
+                {
+                    j++;//aumenta task
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells?.SetCursorDefault();
+        }
+
+        #endregion
+
+        #region  WeekPlanning
         private void FormatWeeklyPlanning()
         {
             try
@@ -183,7 +714,7 @@ namespace PlaneacionFerrocarril
                 };
                 _cells.SetValidationList(_cells.GetCell("B5"), searchType, ValidationSheetName, 3);
                 _cells.GetCell("B5").Value = SearchType.WorkOrderOnly;
-                
+
                 _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
 
@@ -198,7 +729,7 @@ namespace PlaneacionFerrocarril
                 _cells.GetRange("C3", "C4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D4").Style = _cells.GetStyle(StyleConstants.Select);
 
-                
+
 
 
                 //Task Table
@@ -213,10 +744,10 @@ namespace PlaneacionFerrocarril
                 _cells.GetCell(9, titleRow).Value = "HH ESTIMADAS";
                 _cells.GetCell(10, titleRow).Value = "PENDIENTE (EST-ACT)";
 
-                _cells.GetRange(1, titleRow, resultColumn -1 , titleRow).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleRequired;
 
-                _cells.GetRange(1, titleRow + 1, resultColumn-1, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn-1, titleRow + 1), tableName);
+                _cells.GetRange(1, titleRow + 1, resultColumn - 1, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn - 1, titleRow + 1), tableName);
                 //
 
                 //Resource Table
@@ -271,7 +802,7 @@ namespace PlaneacionFerrocarril
 
                 var totalAvRange = _cells.GetCell(8, resourceRow + 12);
                 var totalPrRange = _cells.GetCell(9, resourceRow + 12);
-                _cells.GetCell(10, 6).Formula = "="+ totalPrRange.Address + "/" + totalAvRange.Address;
+                _cells.GetCell(10, 6).Formula = "=" + totalPrRange.Address + "/" + totalAvRange.Address;
                 _cells.GetCell(10, 6).Style = StyleConstants.Select;
                 _cells.GetCell(10, 6).NumberFormat = NumberFormatConstants.Percentage;
 
@@ -288,7 +819,7 @@ namespace PlaneacionFerrocarril
                 cond3.Interior.Color = 192;
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
-                
+
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
@@ -301,6 +832,399 @@ namespace PlaneacionFerrocarril
                 _cells?.SetCursorDefault();
             }
         }
+
+
+
+
+        private void btnReviewWeekPlanning_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameWkP)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(() => ReviewWeekPlanningAndResources());
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanningAndResources()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void ReviewWeekPlanning()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var workGroup = "" + _cells.GetCell(2, 3).Value;
+                var additional = "" + _cells.GetCell(2, 4).Value;
+                var searchType = "" + _cells.GetCell(2, 5).Value;
+                var startDate = "" + _cells.GetCell(4, 3).Value;
+                var finishDate = "" + _cells.GetCell(4, 4).Value;
+
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                }
+
+                _cells?.SetCursorWait();
+
+                var tableName = TableNameWkP;
+                _cells.ClearTableRange(tableName);
+
+                if (searchType.Equals(SearchType.WorkOrderOnly))
+                    ReviewWeekPlanningTasks(_eFunctions, workGroup, startDate, finishDate, additional);
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                    ReviewWeekPlanningTasksServices(_eFunctions, workGroup, startDate, finishDate, additional);
+                UpdateResourceRequiredTable();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+            }
+        }
+        private void ReviewWeekPlanningAndResources()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var workGroup = "" + _cells.GetCell(2, 3).Value;
+                var additional = "" + _cells.GetCell(2, 4).Value;
+                var searchType = "" + _cells.GetCell(2, 5).Value;
+                var startDate = "" + _cells.GetCell(4, 3).Value;
+                var finishDate = "" + _cells.GetCell(4, 4).Value;
+
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                }
+
+                _cells?.SetCursorWait();
+
+                var tableName = TableNameWkP;
+                _cells.ClearTableRange(tableName);
+
+                ReviewWeekPlanningAvailableResources(_eFunctions, workGroup);
+                if (searchType.Equals(SearchType.WorkOrderOnly))
+                    ReviewWeekPlanningTasks(_eFunctions, workGroup, startDate, finishDate, additional);
+                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
+                    ReviewWeekPlanningTasksServices(_eFunctions, workGroup, startDate, finishDate, additional);
+                UpdateResourceRequiredTable();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+            }
+        }
+
+        private void ReviewWeekPlanningAvailableResources(EllipseFunctions eFunctions, string workGroup)
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var availableResources = WeekPlanning.GetWorkGroupAvailableResources(eFunctions, workGroup);
+            if (availableResources.Count > 10)
+                throw new Exception("Error en Recursos de Grupo de Trabajo. No se pueden analizar más de 10 tipos de recursos diferentes");
+
+            const int resourceRow = ResourceRowWkP;
+
+            for (var i = resourceRow + 2; i < resourceRow + 12; i++)
+            {
+                _cells.GetCell(7, i).ClearComments();
+                _cells.GetCell(7, i).Value = "";
+                _cells.GetCell(8, i).Value = "";
+            }
+
+            var currentRow = resourceRow + 2;
+            foreach (var res in availableResources)
+            {
+                _cells.GetCell(7, currentRow).AddComment(res.Description);
+                _cells.GetCell(7, currentRow).Value = ("" + res.Type).Trim();
+                _cells.GetCell(8, currentRow).Value = res.EstimatedHours;
+                currentRow++;
+            }
+        }
+
+        private void ReviewWeekPlanningTasks(EllipseFunctions eFunctions, string workGroup, string startDate, string finishDate, string additional)
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            const int titleRow = TitleRowWkP;
+
+            var currentRow = titleRow + 1;
+
+            var taskList = WeekPlanning.GetWorkGroupTaskItems(eFunctions, workGroup, startDate, finishDate, additional);
+            foreach (var task in taskList)
+            {
+                _cells.GetCell(1, currentRow).ClearComments();
+                _cells.GetCell(1, currentRow).AddComment(task.EquipDesc);
+                _cells.GetCell(1, currentRow).Value = task.EquipNo;
+                _cells.GetCell(2, currentRow).Value = task.StdWo;
+                _cells.GetCell(3, currentRow).Value = task.TaskNo;
+                _cells.GetCell(4, currentRow).Value = task.TaskDescription;
+                _cells.GetCell(5, currentRow).Value = task.TaskStatus;
+                _cells.GetCell(6, currentRow).Value = task.NextSchedule;
+                _cells.GetCell(7, currentRow).Value = task.ResType;
+                _cells.GetCell(8, currentRow).Value = MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
+                _cells.GetCell(9, currentRow).Value = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty);
+                var resPending = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty) - MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
+                _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
+                if (resPending < 0)
+                {
+                    _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(10, currentRow).ClearComments();
+                    _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
+                }
+
+                currentRow++;
+            }
+        }
+        private void btnFormatWeekPlanning_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormatWeeklyPlanning();
+            if (!_cells.IsDecimalDotSeparator())
+                MessageBox.Show(@"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
+        }
+
+        private void btnReviewWeekPlanning_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameWkP)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(() => ReviewWeekPlanning());
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+
+        private void ReviewWeekPlanningTasksServices(EllipseFunctions eFunctions, string workGroup, string startDate, string finishDate, string additional, string searchType = null)
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var district = _frmAuth.EllipseDstrct;
+
+            const int titleRow = TitleRowWkP;
+            
+
+            var currentRow = titleRow + 1;
+
+            var taskOperationContext = new OperationContext
+            {
+                district = district,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
+            var workGroupList = new List<string> { workGroup };
+            var taskSearchParam = new TaskSearchParam();
+            taskSearchParam.AdditionalInformation = false;
+            taskSearchParam.IncludeMst = true;
+            taskSearchParam.OverlappingDates = true;
+            taskSearchParam.StartDate = startDate;
+            taskSearchParam.FinishDate = finishDate;
+            taskSearchParam.DateInclude = additional;
+            taskSearchParam.District = district;
+            taskSearchParam.WorkGroups = workGroupList;
+            taskSearchParam.SearchEntity = searchType;
+            List<JobTask> ellipseJobTasks = null;
+            try
+            {
+                ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, taskSearchParam);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (ellipseJobTasks == null)
+                return;
+            foreach (var task in ellipseJobTasks)
+            {
+                try
+                {
+                    if (task.LabourResourcesList.Count > 0)
+                    {
+                        foreach (var r in task.LabourResourcesList)
+                        {
+                            _cells.GetCell(1, currentRow).ClearComments();
+                            _cells.GetCell(1, currentRow).AddComment("" + task.ItemName1);
+                            _cells.GetCell(1, currentRow).Value = task.EquipNo;
+                            _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
+                            if (string.IsNullOrWhiteSpace(task.WorkOrder))
+                                _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
+                            _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
+                            _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
+                            _cells.GetCell(5, currentRow).Value = task.WoStatusUDescription;
+                            _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
+                            _cells.GetCell(7, currentRow).Value = r.ResourceCode;
+                            _cells.GetCell(8, currentRow).Value = r.RealLabourHours;
+                            _cells.GetCell(9, currentRow).Value = r.EstimatedLabourHours;
+                            var resPending = r.EstimatedLabourHours - r.RealLabourHours;
+                            _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
+                            if (resPending < 0)
+                            {
+                                _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
+                                _cells.GetCell(10, currentRow).ClearComments();
+                                _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
+                            }
+
+                            currentRow++;
+                        }
+                    }
+                    else
+                    {
+                        double estimatedLabHours = 0;
+                        double realLabHours = 0;
+                        string resourceCode = "";
+                        foreach (var r in task.LabourResourcesList)
+                        {
+                            resourceCode += " " + r.ResourceCode;
+                            estimatedLabHours += r.EstimatedLabourHours;
+                            realLabHours += r.RealLabourHours;
+                        }
+
+                        resourceCode = resourceCode.Trim();
+
+                        _cells.GetCell(1, currentRow).ClearComments();
+                        _cells.GetCell(1, currentRow).AddComment(task.ItemName1);
+                        _cells.GetCell(1, currentRow).Value = task.EquipNo;
+                        _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
+                        if (string.IsNullOrWhiteSpace(task.WorkOrder))
+                            _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
+                        _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
+                        _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
+                        _cells.GetCell(5, currentRow).Value = "";
+                        _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
+                        _cells.GetCell(7, currentRow).Value = resourceCode;
+                        _cells.GetCell(8, currentRow).Value = realLabHours;
+                        _cells.GetCell(9, currentRow).Value = estimatedLabHours;
+                        var resPending = estimatedLabHours - realLabHours;
+                        _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
+                        if (resPending < 0)
+                        {
+                            _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(10, currentRow).ClearComments();
+                            _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
+                        }
+
+                        currentRow++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                    currentRow++;
+                }
+                finally
+                {
+                    _cells?.SetCursorDefault();
+                }
+            }
+        }
+
+        private void UpdateResourceRequiredTable()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var resourceRow = ResourceRowWkP;
+            var titleRow = TitleRowWkP;
+            var currentRow = titleRow + 1;
+            var schedResList = new List<string>();
+            
+            while(!string.IsNullOrWhiteSpace(_cells.GetCell(2, currentRow).Value) || !string.IsNullOrWhiteSpace(_cells.GetCell(6, currentRow).Value))
+            {
+                string resType = ("" + _cells.GetCell(7, currentRow).Value).Trim();
+                
+                if(!string.IsNullOrWhiteSpace(resType) && !schedResList.Contains(resType))
+                    schedResList.Add(resType);
+                currentRow++;
+            }
+
+            currentRow = resourceRow + 2;
+            while (!string.IsNullOrWhiteSpace(_cells.GetCell(7, currentRow).Value))
+            {
+                string resType = "" + _cells.GetCell(7, currentRow).Value;
+                if (schedResList.Contains(resType))
+                    schedResList.Remove(resType);
+                currentRow++;
+            }
+            foreach(var res in schedResList)
+            {
+                _cells.GetCell(7, currentRow).Value = res;
+                currentRow++;
+            }
+        }
+
+        private void btnUpdateReqResourceTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            UpdateResourceRequiredTable();
+        }
+
+        private void btnUpdateAvaResourceTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var workGroup = "" + _cells.GetCell(2, 3).Value;
+
+            ReviewWeekPlanningAvailableResources(_eFunctions, workGroup);
+            UpdateResourceRequiredTable();
+        }
+        #endregion
+
+        #region Temperature Wagons
         
         private void TransformPlainLogsToMse345()
         {
@@ -392,6 +1316,7 @@ namespace PlaneacionFerrocarril
                 _cells?.SetCursorDefault();
             }
         }
+
         private void LoadLocationLogsToPlain()
         {
             try
@@ -402,7 +1327,7 @@ namespace PlaneacionFerrocarril
                     _cells = new ExcelStyleCells(_excelApp);
 
                 var defaultPath = Settings.CurrentSettings.GetCustomSettingValue(CustomVariables.WagonTemperatureLogPath);
-                var fbd = new FolderBrowserDialog {SelectedPath = defaultPath};
+                var fbd = new FolderBrowserDialog { SelectedPath = defaultPath };
                 var result = fbd.ShowDialog();
 
                 if (result != DialogResult.OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
@@ -415,7 +1340,7 @@ namespace PlaneacionFerrocarril
                     FormatTempLogsPlain();
 
                 const string tableName = TableNamePlain;
-                
+
                 //_cells.ClearTableRange(tableName);
 
                 var files = Directory.GetFiles(fbd.SelectedPath);
@@ -630,7 +1555,7 @@ namespace PlaneacionFerrocarril
                     "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
-            
+
         }
 
         private void btnLoadTempLogPlain_Click(object sender, RibbonControlEventArgs e)
@@ -652,359 +1577,6 @@ namespace PlaneacionFerrocarril
             }
         }
 
-        private void btnReviewWeekPlanning_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameWkP)
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(() => ReviewWeekPlanningAndResources());
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanningAndResources()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-        private void ReviewWeekPlanning()
-        {
-            try
-            {
-                if (_cells == null)
-                    _cells = new ExcelStyleCells(_excelApp);
-
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var workGroup = "" + _cells.GetCell(2, 3).Value;
-                var additional = "" + _cells.GetCell(2, 4).Value;
-                var searchType = "" + _cells.GetCell(2, 5).Value;
-                var startDate = "" + _cells.GetCell(4, 3).Value;
-                var finishDate = "" + _cells.GetCell(4, 4).Value;
-
-                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                }
-
-                _cells?.SetCursorWait();
-
-                var tableName = TableNameWkP;
-                _cells.ClearTableRange(tableName);
-
-                if (searchType.Equals(SearchType.WorkOrderOnly))
-                    ReviewWeekPlanningTasks(_eFunctions, workGroup, startDate, finishDate, additional);
-                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
-                    ReviewWeekPlanningTasksServices(_eFunctions, workGroup, startDate, finishDate, additional);
-                UpdateResourceRequiredTable();
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-            finally
-            {
-                _cells?.SetCursorDefault();
-            }
-        }
-        private void ReviewWeekPlanningAndResources()
-        {
-            try
-            {
-                if (_cells == null)
-                    _cells = new ExcelStyleCells(_excelApp);
-                
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var workGroup = "" + _cells.GetCell(2, 3).Value;
-                var additional = "" + _cells.GetCell(2, 4).Value;
-                var searchType = "" + _cells.GetCell(2, 5).Value;
-                var startDate = "" + _cells.GetCell(4, 3).Value;
-                var finishDate = "" + _cells.GetCell(4, 4).Value;
-
-                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                }
-
-                _cells?.SetCursorWait();
-
-                var tableName = TableNameWkP;
-                _cells.ClearTableRange(tableName);
-
-                ReviewWeekPlanningAvailableResources(_eFunctions, workGroup);
-                if (searchType.Equals(SearchType.WorkOrderOnly))
-                    ReviewWeekPlanningTasks(_eFunctions, workGroup, startDate, finishDate, additional);
-                if (searchType.Equals(SearchType.MstForecastOnly) || searchType.Equals(SearchType.WorkOrderAndMstForecast))
-                    ReviewWeekPlanningTasksServices(_eFunctions, workGroup, startDate, finishDate, additional);
-                UpdateResourceRequiredTable();
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-            finally
-            {
-                _cells?.SetCursorDefault();
-            }
-        }
-
-        private void ReviewWeekPlanningAvailableResources(EllipseFunctions eFunctions, string workGroup)
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
-            var availableResources = WeekPlanning.GetWorkGroupAvailableResources(eFunctions, workGroup);
-            if (availableResources.Count > 10)
-                throw new Exception("Error en Recursos de Grupo de Trabajo. No se pueden analizar más de 10 tipos de recursos diferentes");
-            
-            const int resourceRow = ResourceRowWkP;
-
-            for (var i = resourceRow + 2; i < resourceRow + 12; i++)
-            {
-                _cells.GetCell(7, i).ClearComments();
-                _cells.GetCell(7, i).Value = "";
-                _cells.GetCell(8, i).Value = "";
-            }
-
-            var currentRow = resourceRow + 2;
-            foreach(var res in availableResources)
-            {
-                _cells.GetCell(7, currentRow).AddComment(res.Description);
-                _cells.GetCell(7, currentRow).Value = ("" + res.Type).Trim();
-                _cells.GetCell(8, currentRow).Value = res.EstimatedHours;
-                currentRow++;
-            }
-        }
-
-        private void ReviewWeekPlanningTasks(EllipseFunctions eFunctions, string workGroup, string startDate, string finishDate, string additional)
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
-            const int titleRow = TitleRowWkP;
-            
-            var currentRow = titleRow + 1;
-
-            var taskList = WeekPlanning.GetWorkGroupTaskItems(eFunctions, workGroup, startDate, finishDate, additional);
-            foreach (var task in taskList)
-            {
-                _cells.GetCell(1, currentRow).ClearComments();
-                _cells.GetCell(1, currentRow).AddComment(task.EquipDesc);
-                _cells.GetCell(1, currentRow).Value = task.EquipNo;
-                _cells.GetCell(2, currentRow).Value = task.StdWo;
-                _cells.GetCell(3, currentRow).Value = task.TaskNo;
-                _cells.GetCell(4, currentRow).Value = task.TaskDescription;
-                _cells.GetCell(5, currentRow).Value = task.TaskStatus;
-                _cells.GetCell(6, currentRow).Value = task.NextSchedule;
-                _cells.GetCell(7, currentRow).Value = task.ResType;
-                _cells.GetCell(8, currentRow).Value = MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
-                _cells.GetCell(9, currentRow).Value = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty);
-                var resPending = MyUtilities.ToDecimal(task.EstResHours, IxConversionConstant.DefaultNullAndEmpty) - MyUtilities.ToDecimal(task.ActResHours, IxConversionConstant.DefaultNullAndEmpty);
-                _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
-                if (resPending < 0)
-                {
-                    _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(10, currentRow).ClearComments();
-                    _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
-                }
-
-                currentRow++;
-            }
-        }
-
-        private void ReviewWeekPlanningTasksServices(EllipseFunctions eFunctions, string workGroup, string startDate, string finishDate, string additional, string searchType = null)
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-            var district = _frmAuth.EllipseDstrct;
-
-            const int titleRow = TitleRowWkP;
-            
-
-            var currentRow = titleRow + 1;
-
-            var taskOperationContext = new OperationContext
-            {
-                district = district,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                maxInstancesSpecified = true,
-                returnWarnings = Debugger.DebugWarnings,
-                returnWarningsSpecified = true
-            };
-
-            var workGroupList = new List<string> { workGroup };
-            var taskSearchParam = new TaskSearchParam();
-            taskSearchParam.AdditionalInformation = false;
-            taskSearchParam.IncludeMst = true;
-            taskSearchParam.OverlappingDates = true;
-            taskSearchParam.StartDate = startDate;
-            taskSearchParam.FinishDate = finishDate;
-            taskSearchParam.DateInclude = additional;
-            taskSearchParam.District = district;
-            taskSearchParam.WorkGroups = workGroupList;
-            taskSearchParam.SearchEntity = searchType;
-            List<JobTask> ellipseJobTasks = null;
-            try
-            {
-                ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, taskSearchParam);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            if (ellipseJobTasks == null)
-                return;
-            foreach (var task in ellipseJobTasks)
-            {
-                try
-                {
-                    if (task.LabourResourcesList.Count > 0)
-                    {
-                        foreach (var r in task.LabourResourcesList)
-                        {
-                            _cells.GetCell(1, currentRow).ClearComments();
-                            _cells.GetCell(1, currentRow).AddComment("" + task.ItemName1);
-                            _cells.GetCell(1, currentRow).Value = task.EquipNo;
-                            _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
-                            if (string.IsNullOrWhiteSpace(task.WorkOrder))
-                                _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
-                            _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
-                            _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
-                            _cells.GetCell(5, currentRow).Value = task.WoStatusUDescription;
-                            _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
-                            _cells.GetCell(7, currentRow).Value = r.ResourceCode;
-                            _cells.GetCell(8, currentRow).Value = r.RealLabourHours;
-                            _cells.GetCell(9, currentRow).Value = r.EstimatedLabourHours;
-                            var resPending = r.EstimatedLabourHours - r.RealLabourHours;
-                            _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
-                            if (resPending < 0)
-                            {
-                                _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
-                                _cells.GetCell(10, currentRow).ClearComments();
-                                _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
-                            }
-
-                            currentRow++;
-                        }
-                    }
-                    else
-                    {
-                        double estimatedLabHours = 0;
-                        double realLabHours = 0;
-                        string resourceCode = "";
-                        foreach (var r in task.LabourResourcesList)
-                        {
-                            resourceCode += " " + r.ResourceCode;
-                            estimatedLabHours += r.EstimatedLabourHours;
-                            realLabHours += r.RealLabourHours;
-                        }
-
-                        resourceCode = resourceCode.Trim();
-
-                        _cells.GetCell(1, currentRow).ClearComments();
-                        _cells.GetCell(1, currentRow).AddComment(task.ItemName1);
-                        _cells.GetCell(1, currentRow).Value = task.EquipNo;
-                        _cells.GetCell(2, currentRow).Value = task.WorkOrder ?? task.MaintSchTask + " " + task.StdJobNo;
-                        if (string.IsNullOrWhiteSpace(task.WorkOrder))
-                            _cells.GetCell(2, currentRow).Style = StyleConstants.Warning;
-                        _cells.GetCell(3, currentRow).Value = task.WoTaskNo ?? task.StdJobTask;
-                        _cells.GetCell(4, currentRow).Value = task.WoTaskDesc ?? task.WoDesc;
-                        _cells.GetCell(5, currentRow).Value = "";
-                        _cells.GetCell(6, currentRow).Value = task.PlanStrDate;
-                        _cells.GetCell(7, currentRow).Value = resourceCode;
-                        _cells.GetCell(8, currentRow).Value = realLabHours;
-                        _cells.GetCell(9, currentRow).Value = estimatedLabHours;
-                        var resPending = estimatedLabHours - realLabHours;
-                        _cells.GetCell(10, currentRow).Value = resPending > 0 ? resPending : 0;
-                        if (resPending < 0)
-                        {
-                            _cells.GetCell(10, currentRow).Style = StyleConstants.Error;
-                            _cells.GetCell(10, currentRow).ClearComments();
-                            _cells.GetCell(10, currentRow).AddComment("Valor menor a Cero = " + resPending);
-                        }
-
-                        currentRow++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                    MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-                    currentRow++;
-                }
-                finally
-                {
-                    _cells?.SetCursorDefault();
-                }
-            }
-        }
-
-        private void UpdateResourceRequiredTable()
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
-            var resourceRow = ResourceRowWkP;
-            var titleRow = TitleRowWkP;
-            var currentRow = titleRow + 1;
-            var schedResList = new List<string>();
-            
-            while(!string.IsNullOrWhiteSpace(_cells.GetCell(2, currentRow).Value) || !string.IsNullOrWhiteSpace(_cells.GetCell(6, currentRow).Value))
-            {
-                string resType = ("" + _cells.GetCell(7, currentRow).Value).Trim();
-                
-                if(!string.IsNullOrWhiteSpace(resType) && !schedResList.Contains(resType))
-                    schedResList.Add(resType);
-                currentRow++;
-            }
-
-            currentRow = resourceRow + 2;
-            while (!string.IsNullOrWhiteSpace(_cells.GetCell(7, currentRow).Value))
-            {
-                string resType = "" + _cells.GetCell(7, currentRow).Value;
-                if (schedResList.Contains(resType))
-                    schedResList.Remove(resType);
-                currentRow++;
-            }
-            foreach(var res in schedResList)
-            {
-                _cells.GetCell(7, currentRow).Value = res;
-                currentRow++;
-            }
-        }
-
-        private void btnUpdateReqResourceTable_Click(object sender, RibbonControlEventArgs e)
-        {
-            UpdateResourceRequiredTable();
-        }
-
-        private void btnUpdateAvaResourceTable_Click(object sender, RibbonControlEventArgs e)
-        {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var workGroup = "" + _cells.GetCell(2, 3).Value;
-
-            ReviewWeekPlanningAvailableResources(_eFunctions, workGroup);
-            UpdateResourceRequiredTable();
-        }
 
         private void cbTempWagIgnoreLocomotives_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1012,37 +1584,63 @@ namespace PlaneacionFerrocarril
             Settings.CurrentSettings.SaveCustomSettings();
         }
 
-        private void btnFormatWeekPlanning_Click(object sender, RibbonControlEventArgs e)
+
+        #endregion
+
+        #region Plan History
+        private void btnPlanHistoryFormat_Click(object sender, RibbonControlEventArgs e)
         {
-            FormatWeeklyPlanning();
-            if (!_cells.IsDecimalDotSeparator())
-                MessageBox.Show(@"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
+
         }
 
-        private void btnReviewWeekPlanning_Click_1(object sender, RibbonControlEventArgs e)
+        private void FormatPlanHistory()
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameWkP)
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    //_frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(() => ReviewWeekPlanning());
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
 
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                _cells.SetCursorWait();
+
+                var sheetName = SheetNamePlanHist;
+                var titleRow = TitleRowPlanHist;
+                var resultColumn = ResultColumnPlanHist;
+                var tableName = TableNamePlanHist;
+
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = sheetName;
+
+                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleRequired;
+
+
+                _cells.GetCell(1, titleRow).Value = "FECHA";
+                _cells.GetCell(2, titleRow).Value = "GRUPO";
+                _cells.GetCell(3, titleRow).Value = "ID_CONCEPTO";
+                _cells.GetCell(4, titleRow).Value = "CONCEPTO";
+                _cells.GetCell(5, titleRow).Value = "VALOR1";
+                _cells.GetCell(6, titleRow).Value = "VALOR2";
+
+                _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
+
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWeekPlanning()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:FormatPlanHistory()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                throw new Exception(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
             }
         }
+        #endregion
     }
 }

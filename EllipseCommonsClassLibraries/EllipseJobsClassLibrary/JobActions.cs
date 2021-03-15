@@ -134,7 +134,8 @@ namespace EllipseJobsClassLibrary
             taskSearchParams.allDistrictsForTasks = false;
             taskSearchParams.allDistrictsForTasksSpecified = true;
             taskSearchParams.dstrctCode = searchParam.District;
-            taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
+            if(searchParam.WorkGroups != null && searchParam.WorkGroups.Count > 0)
+                taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
             taskSearchParams.status = "N";
             taskSearchParams.unassigned = false;
             taskSearchParams.unassignedSpecified = true;
@@ -169,6 +170,10 @@ namespace EllipseJobsClassLibrary
             taskSearchParams.crewTotalsOnly = false;
             taskSearchParams.crewTotalsOnlySpecified = true;
             taskSearchParams.searchEntity = searchParam.SearchEntity;
+
+            //taskSearchParams.equipmentNumber = searchParam.EquipmentNumber;
+            //taskSearchParams.taskEquipmentNumber = searchParam.TaskEquipmentNumber;
+            //taskSearchParams.data1732 = searchParam.EquipmentNumber;
 
             var restartTask = new TasksMWPDTO(); 
             var reply = taskService.tasksSearch(opContext, taskSearchParams, restartTask);

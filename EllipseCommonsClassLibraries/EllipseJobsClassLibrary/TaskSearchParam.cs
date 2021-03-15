@@ -16,7 +16,8 @@ namespace EllipseJobsClassLibrary
         public string DateInclude;
         public string District;
         public string SearchEntity;
-
+        public string EquipmentNumber;
+        public string TaskEquipmentNumber;
         public List<string> WorkGroups;
 
         public TaskSearchParam()

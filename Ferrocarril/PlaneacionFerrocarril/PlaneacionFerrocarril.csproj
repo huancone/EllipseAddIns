@@ -118,6 +118,10 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="SharedClassLibrary, Version=1.0.1.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
@@ -191,6 +195,9 @@
   -->
   <ItemGroup>
     <Compile Include="CustomVariables.cs" />
+    <Compile Include="PlanHistory\PlanHistoryActions.cs" />
+    <Compile Include="PlanHistory\PlanHistoryItem.cs" />
+    <Compile Include="PlanHistory\Queries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -249,7 +256,16 @@
       <Project>{838948ce-353c-41fe-904e-753b4678aeeb}</Project>
       <Name>EllipseJobsClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj">
+      <Project>{d83698a3-3b22-4af7-b92a-26e2a05b1764}</Project>
+      <Name>EllipseStandardJobsClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

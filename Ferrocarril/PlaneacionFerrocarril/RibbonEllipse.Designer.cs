@@ -48,11 +48,19 @@ namespace PlaneacionFerrocarril
             this.btnReviewWeekPlanning = this.Factory.CreateRibbonButton();
             this.btnUpdateAvaResourceTable = this.Factory.CreateRibbonButton();
             this.btnUpdateReqResourceTable = this.Factory.CreateRibbonButton();
+            this.menuForecast = this.Factory.CreateRibbonMenu();
+            this.btnForecastFormat = this.Factory.CreateRibbonButton();
+            this.btnReviewForcastTask = this.Factory.CreateRibbonButton();
+            this.btnForecastReviewRequirements = this.Factory.CreateRibbonButton();
             this.menuWagonsTemperature = this.Factory.CreateRibbonMenu();
             this.btnLoadTempLogPlain = this.Factory.CreateRibbonButton();
             this.btnLoadTempLogMse345 = this.Factory.CreateRibbonButton();
             this.cbTempWagIgnoreLocomotives = this.Factory.CreateRibbonCheckBox();
             this.btnStop = this.Factory.CreateRibbonButton();
+            this.menuPlanHistory = this.Factory.CreateRibbonMenu();
+            this.btnPlanHistoryFormat = this.Factory.CreateRibbonButton();
+            this.btnPlanHistoryLoad = this.Factory.CreateRibbonButton();
+            this.btnPlanHistoryReview = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -99,6 +107,8 @@ namespace PlaneacionFerrocarril
             // menuActions
             // 
             this.menuActions.Items.Add(this.menuWeeklyPlanning);
+            this.menuActions.Items.Add(this.menuForecast);
+            this.menuActions.Items.Add(this.menuPlanHistory);
             this.menuActions.Items.Add(this.menuWagonsTemperature);
             this.menuActions.Items.Add(this.btnStop);
             this.menuActions.Label = "&Acciones";
@@ -150,6 +160,36 @@ namespace PlaneacionFerrocarril
             this.btnUpdateReqResourceTable.ShowImage = true;
             this.btnUpdateReqResourceTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateReqResourceTable_Click);
             // 
+            // menuForecast
+            // 
+            this.menuForecast.Items.Add(this.btnForecastFormat);
+            this.menuForecast.Items.Add(this.btnReviewForcastTask);
+            this.menuForecast.Items.Add(this.btnForecastReviewRequirements);
+            this.menuForecast.Label = "Proyección";
+            this.menuForecast.Name = "menuForecast";
+            this.menuForecast.ShowImage = true;
+            // 
+            // btnForecastFormat
+            // 
+            this.btnForecastFormat.Label = "Formatear Proyeccion";
+            this.btnForecastFormat.Name = "btnForecastFormat";
+            this.btnForecastFormat.ShowImage = true;
+            this.btnForecastFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnForecastFormat_Click);
+            // 
+            // btnReviewForcastTask
+            // 
+            this.btnReviewForcastTask.Label = "Consultar Tareas";
+            this.btnReviewForcastTask.Name = "btnReviewForcastTask";
+            this.btnReviewForcastTask.ShowImage = true;
+            this.btnReviewForcastTask.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewForecastTask_Click);
+            // 
+            // btnForecastReviewRequirements
+            // 
+            this.btnForecastReviewRequirements.Label = "Consultar Materiales";
+            this.btnForecastReviewRequirements.Name = "btnForecastReviewRequirements";
+            this.btnForecastReviewRequirements.ShowImage = true;
+            this.btnForecastReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnForecastReviewRequirements_Click);
+            // 
             // menuWagonsTemperature
             // 
             this.menuWagonsTemperature.Items.Add(this.btnLoadTempLogPlain);
@@ -187,6 +227,34 @@ namespace PlaneacionFerrocarril
             this.btnStop.ShowImage = true;
             this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
             // 
+            // menuPlanHistory
+            // 
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryFormat);
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryReview);
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryLoad);
+            this.menuPlanHistory.Label = "Historia de Programación";
+            this.menuPlanHistory.Name = "menuPlanHistory";
+            this.menuPlanHistory.ShowImage = true;
+            // 
+            // btnPlanHistoryFormat
+            // 
+            this.btnPlanHistoryFormat.Label = "Formatear";
+            this.btnPlanHistoryFormat.Name = "btnPlanHistoryFormat";
+            this.btnPlanHistoryFormat.ShowImage = true;
+            this.btnPlanHistoryFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanHistoryFormat_Click);
+            // 
+            // btnPlanHistoryLoad
+            // 
+            this.btnPlanHistoryLoad.Label = "Cargar";
+            this.btnPlanHistoryLoad.Name = "btnPlanHistoryLoad";
+            this.btnPlanHistoryLoad.ShowImage = true;
+            // 
+            // btnPlanHistoryReview
+            // 
+            this.btnPlanHistoryReview.Label = "Consultar Historia";
+            this.btnPlanHistoryReview.Name = "btnPlanHistoryReview";
+            this.btnPlanHistoryReview.ShowImage = true;
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -223,6 +291,14 @@ namespace PlaneacionFerrocarril
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbTempWagIgnoreLocomotives;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatWeekPlanning;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWeekPlanning;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuForecast;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnForecastFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnForecastReviewRequirements;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewForcastTask;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuPlanHistory;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPlanHistoryFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPlanHistoryReview;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPlanHistoryLoad;
     }
 
     partial class ThisRibbonCollection
