@@ -11,7 +11,7 @@ namespace PlaneacionFerrocarril.PlanHistory
         public static List<PlanHistoryItem> ReviewPlanHistory(EllipseFunctions ef, string startDate, string finishDate, string workGroup, string idConcepto)
         {
             var list = new List<PlanHistoryItem>();
-            var sqlQuery = Queries.ReviewPlanHistoryQuery(startDate, finishDate, workGroup, idConcepto);
+            var sqlQuery = Queries.GetReviewPlanHistoryQuery(startDate, finishDate, workGroup, idConcepto);
             var dr = ef.GetQueryResult(sqlQuery);
             if (dr == null || dr.IsClosed)
                 return list;
@@ -21,6 +21,13 @@ namespace PlaneacionFerrocarril.PlanHistory
             }
 
             return list;
+        }
+
+        public static int LoadPlanHistoryItem(EllipseFunctions ef, PlanHistoryItem item)
+        {
+            var sqlQuery = Queries.GetUpdatePlanHistoryItemQuery(item.Fecha, item.Grupo, item.IdConcepto, item.Concepto, item.Valor1, item.Valor2);
+            
+            return ef.ExecuteQuery(sqlQuery.GetGeneratedSql());
         }
     }
 }

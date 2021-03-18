@@ -52,15 +52,15 @@ namespace PlaneacionFerrocarril
             this.btnForecastFormat = this.Factory.CreateRibbonButton();
             this.btnReviewForcastTask = this.Factory.CreateRibbonButton();
             this.btnForecastReviewRequirements = this.Factory.CreateRibbonButton();
+            this.menuPlanHistory = this.Factory.CreateRibbonMenu();
+            this.btnPlanHistoryFormat = this.Factory.CreateRibbonButton();
+            this.btnPlanHistoryReview = this.Factory.CreateRibbonButton();
+            this.btnPlanHistoryLoad = this.Factory.CreateRibbonButton();
             this.menuWagonsTemperature = this.Factory.CreateRibbonMenu();
             this.btnLoadTempLogPlain = this.Factory.CreateRibbonButton();
             this.btnLoadTempLogMse345 = this.Factory.CreateRibbonButton();
             this.cbTempWagIgnoreLocomotives = this.Factory.CreateRibbonCheckBox();
             this.btnStop = this.Factory.CreateRibbonButton();
-            this.menuPlanHistory = this.Factory.CreateRibbonMenu();
-            this.btnPlanHistoryFormat = this.Factory.CreateRibbonButton();
-            this.btnPlanHistoryLoad = this.Factory.CreateRibbonButton();
-            this.btnPlanHistoryReview = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -190,6 +190,36 @@ namespace PlaneacionFerrocarril
             this.btnForecastReviewRequirements.ShowImage = true;
             this.btnForecastReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnForecastReviewRequirements_Click);
             // 
+            // menuPlanHistory
+            // 
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryFormat);
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryReview);
+            this.menuPlanHistory.Items.Add(this.btnPlanHistoryLoad);
+            this.menuPlanHistory.Label = "Historia de Programación";
+            this.menuPlanHistory.Name = "menuPlanHistory";
+            this.menuPlanHistory.ShowImage = true;
+            // 
+            // btnPlanHistoryFormat
+            // 
+            this.btnPlanHistoryFormat.Label = "Formatear";
+            this.btnPlanHistoryFormat.Name = "btnPlanHistoryFormat";
+            this.btnPlanHistoryFormat.ShowImage = true;
+            this.btnPlanHistoryFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanHistoryFormat_Click);
+            // 
+            // btnPlanHistoryReview
+            // 
+            this.btnPlanHistoryReview.Label = "Consultar Historia";
+            this.btnPlanHistoryReview.Name = "btnPlanHistoryReview";
+            this.btnPlanHistoryReview.ShowImage = true;
+            this.btnPlanHistoryReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanHistoryReview_Click);
+            // 
+            // btnPlanHistoryLoad
+            // 
+            this.btnPlanHistoryLoad.Label = "Cargar";
+            this.btnPlanHistoryLoad.Name = "btnPlanHistoryLoad";
+            this.btnPlanHistoryLoad.ShowImage = true;
+            this.btnPlanHistoryLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanHistoryLoad_Click);
+            // 
             // menuWagonsTemperature
             // 
             this.menuWagonsTemperature.Items.Add(this.btnLoadTempLogPlain);
@@ -226,34 +256,6 @@ namespace PlaneacionFerrocarril
             this.btnStop.Name = "btnStop";
             this.btnStop.ShowImage = true;
             this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
-            // 
-            // menuPlanHistory
-            // 
-            this.menuPlanHistory.Items.Add(this.btnPlanHistoryFormat);
-            this.menuPlanHistory.Items.Add(this.btnPlanHistoryReview);
-            this.menuPlanHistory.Items.Add(this.btnPlanHistoryLoad);
-            this.menuPlanHistory.Label = "Historia de Programación";
-            this.menuPlanHistory.Name = "menuPlanHistory";
-            this.menuPlanHistory.ShowImage = true;
-            // 
-            // btnPlanHistoryFormat
-            // 
-            this.btnPlanHistoryFormat.Label = "Formatear";
-            this.btnPlanHistoryFormat.Name = "btnPlanHistoryFormat";
-            this.btnPlanHistoryFormat.ShowImage = true;
-            this.btnPlanHistoryFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanHistoryFormat_Click);
-            // 
-            // btnPlanHistoryLoad
-            // 
-            this.btnPlanHistoryLoad.Label = "Cargar";
-            this.btnPlanHistoryLoad.Name = "btnPlanHistoryLoad";
-            this.btnPlanHistoryLoad.ShowImage = true;
-            // 
-            // btnPlanHistoryReview
-            // 
-            this.btnPlanHistoryReview.Label = "Consultar Historia";
-            this.btnPlanHistoryReview.Name = "btnPlanHistoryReview";
-            this.btnPlanHistoryReview.ShowImage = true;
             // 
             // RibbonEllipse
             // 

@@ -68,7 +68,7 @@ namespace PlaneacionFerrocarril
         private const int TitleRowPlanHist = 1;
         private const int ResultColumnPlanHist = 7;
         private const string TableNamePlanHist = "PlanHistoryTable";
-
+        private string SelectedStartDatePlanHist = "";
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
 
@@ -1590,9 +1590,44 @@ namespace PlaneacionFerrocarril
         #region Plan History
         private void btnPlanHistoryFormat_Click(object sender, RibbonControlEventArgs e)
         {
+            FormatPlanHistory();
+        }
+        private void btnPlanHistoryReview_Click(object sender, RibbonControlEventArgs e)
+        {
+            //si ya hay un thread corriendo que no se ha detenido
+            if (_thread != null && _thread.IsAlive) return;
+            _thread = new Thread(ReviewPlanHistory);
 
+            _thread.SetApartmentState(ApartmentState.STA);
+            _thread.Start();
         }
 
+        private void btnPlanHistoryLoad_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePlanHist)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(LoadPlanHistory);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        @"Debe seleccionar una hoja con el formato de Cargue de Historia de Programación");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:LoadPlanHistory()",
+                    "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
         private void FormatPlanHistory()
         {
             try
@@ -1641,6 +1676,105 @@ namespace PlaneacionFerrocarril
                 _cells?.SetCursorDefault();
             }
         }
+
+        private void ReviewPlanHistory()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            _cells.SetCursorWait();
+            if (!_cells.ActiveSheet.Name.Equals(SheetNamePlanHist))
+                FormatPlanHistory();
+
+            const int titleRow = TitleRowPlanHist;
+            const string sheetName = SheetNamePlanHist;
+            const string tableName = TableNamePlanHist;
+            const int resultColumn = ResultColumnPlanHist;
+
+
+            _cells.ClearTableRange(tableName);
+            _eFunctions.SetDBSettings(Environments.SigcorProductivo);
+
+            var i = titleRow + 1;//itera la celda para cada tarea
+
+            if (string.IsNullOrWhiteSpace(SelectedStartDatePlanHist))
+                SelectedStartDatePlanHist = MyUtilities.ToString(DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD);
+            var startDate = InputBox.GetValue("CONSULTAR HISTORIA DE PLANEACIÓN", "Fecha de Pogramación a Consultar (YYYYMMDD):", SelectedStartDatePlanHist);
+            var planItems = PlanHistory.PlanHistoryActions.ReviewPlanHistory(_eFunctions, startDate, null, null, null);
+
+            foreach (var item in planItems)
+            {
+                //Para resetear el estilo
+                _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+
+                _cells.GetCell(1, i).Value = item.Fecha;
+                _cells.GetCell(2, i).Value = item.Grupo;
+                _cells.GetCell(3, i).Value = "'" + item.IdConcepto;
+                _cells.GetCell(4, i).Value = item.Concepto;
+                _cells.GetCell(5, i).Value = item.Valor1;
+                _cells.GetCell(6, i).Value = item.Valor2;
+
+                i++;//aumenta tarea
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
+        }
+
+        private void LoadPlanHistory()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            _cells.SetCursorWait();
+
+            const int titleRow = TitleRowPlanHist;
+            const string sheetName = SheetNamePlanHist;
+            const string tableName = TableNamePlanHist;
+            const int resultColumn = ResultColumnPlanHist;
+
+            _eFunctions.SetDBSettings(Environments.SigcorProductivo);
+
+            var i = titleRow + 1;//itera la celda para cada tarea
+
+            while(!string.IsNullOrWhiteSpace(_cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var item = new PlanHistory.PlanHistoryItem();
+                    item.Fecha = _cells.GetCell(1, i).Value;
+                    item.Grupo = _cells.GetCell(2, i).Value;
+                    item.IdConcepto = _cells.GetCell(3, i).Value;
+                    item.Concepto = _cells.GetCell(4, i).Value;
+                    item.Valor1 = "" + _cells.GetCell(5, i).Value;
+                    item.Valor2 = "" + _cells.GetCell(6, i).Value;
+
+                    var result = PlanHistory.PlanHistoryActions.LoadPlanHistoryItem(_eFunctions, item);
+                    if (result == 0)
+                        throw new Exception("No se ha cargado ningún registro");
+
+                    _cells.GetCell(resultColumn, i).Value = "CARGADO";
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("RibbonEllipse:LoadPlanHistory()",
+                        "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                    _cells.GetCell(resultColumn, i).Value = ex.Message;
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Error;
+                }
+                finally
+                {
+                    i++;
+                }
+                
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells?.SetCursorDefault();
+            _eFunctions.CloseConnection();
+        }
         #endregion
+
+
     }
 }

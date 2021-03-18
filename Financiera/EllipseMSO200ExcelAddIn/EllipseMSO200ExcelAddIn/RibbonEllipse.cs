@@ -23,7 +23,7 @@ namespace EllipseMSO200ExcelAddIn
 
         private Thread _thread;
         private const int TittleRow = 5;
-        private static int _resultColumn = 13;
+        private static int _resultColumn = 14;
         private EllipseFunctions _eFunctions;
         private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
@@ -233,6 +233,8 @@ namespace EllipseMSO200ExcelAddIn
 
         private void ValidateBancos()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
             {
@@ -381,6 +383,9 @@ namespace EllipseMSO200ExcelAddIn
         private void LoadInactivarSupplierBusiness()
         {
 
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
@@ -468,6 +473,9 @@ namespace EllipseMSO200ExcelAddIn
 
         private void LoadInactivarSupplierAddress()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
@@ -555,6 +563,8 @@ namespace EllipseMSO200ExcelAddIn
         private void LoadSuspenderSupplier()
         {
             //
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
 
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
@@ -645,6 +655,8 @@ namespace EllipseMSO200ExcelAddIn
 
         private void LoadCambioCuentas()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
 
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
