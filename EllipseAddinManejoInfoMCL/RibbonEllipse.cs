@@ -301,16 +301,16 @@ namespace EllipseAddinManejoInfoMCL
             if (SW == 0)
             {
                 var dbi = Environments.GetDatabaseItem(Environments.EllipseProductivo);
-                dbi.DbUser = "consulbo";
-                dbi.DbPassword = "ventyx15";
+                dbi.DbUser = VarEncript.Encryption.Decrypt("MIWSjri3U2kHeLVJQtTgpSDsNVy3d+x+8cbt5wy9iw/Vq56wBADnB1PWt1ZXCp7jlSWzLfb4Fzi5zh46FLSXFJeC9w6M1MV62N7bCG19JDdidzqeut+Dqno0pPwSF3GZ");
+                dbi.DbPassword = VarEncript.Encryption.Decrypt("M72B5zDxwGSZdaW44Hiu4LbzjiqGD8tfoQKmbw78ELAByRyXujj1tK6FSK2/G6KdZPayz7DCqbT0cfvPxIbJUfju3aH1iTj0l618bm3bnEdAYlSS3whP01s4T6vmSxxw");
                 _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
                 _eFunctions.SetConnectionTimeOut(0);
             }
             else
             {
                 var dbi = Environments.GetDatabaseItem(Environments.SigmanProductivo);
-                dbi.DbUser = "sigman";
-                dbi.DbPassword = "sig0679";
+                dbi.DbUser = VarEncript.Encryption.Decrypt("VDppSMCRaK7ZTG63w9k5WKc3ON0rTcnAf7+eEDM+a+HpZfC3DRpODpJ2KzkZjufVFle/R7LRdw2wLoNTourt1qr96ckLHV4E2uMR+ROoMrLppzAm6xZaiuP7bLRTZm65");
+                dbi.DbPassword = VarEncript.Encryption.Decrypt("Wx9o0zzjjw2vjAmhUD/nb/qCTqK9pD6rXg1JxePXdxCnVQXlrAZZAEliXG3O8/yHXtt3TyUrzpGv3YaeBwqnRd02y6ovBHnPny8ikERW2fRXKvDbMxnUC2GIX4dWQjCT");
                 _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
                 _eFunctions.SetConnectionTimeOut(0);
             }
