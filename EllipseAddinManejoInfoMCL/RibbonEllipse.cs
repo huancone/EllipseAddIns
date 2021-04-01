@@ -117,7 +117,18 @@ namespace EllipseAddinManejoInfoMCL
         //public event Microsoft.Office.Interop.Excel.DocEvents_ChangeEventHandler Change;
         //public event Microsoft.Office.Interop.Excel.WorkbookEvents_SheetChangeEventHandler SheetChange;
         Microsoft.Office.Tools.Excel.NamedRange changesRange;
-
+        Microsoft.Office.Tools.Excel.NamedRange changesRange2;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange3;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange4;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange5;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange6;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange7;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange8;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange9;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange10;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange11;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange12;
+        Microsoft.Office.Tools.Excel.NamedRange changesRange13;
 
         //private const int titleRow = 8;
 
@@ -974,7 +985,7 @@ namespace EllipseAddinManejoInfoMCL
                     F++;
                 }
                 FormatCamposMenu(_cells.GetCell("Q" + ((Tam3 + 9) + F)), true, false, true, Tam7.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetRange(17, ((Tam3 + 9) + F + 1), 24, ((Tam3 + 9) + F + 1)), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetRange(17, ((Tam3 + 9) + F), 24, ((Tam3 + 9) + F)), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetRange("Q" + ((Tam3 + 9) + F + 1), "S" + ((Tam3 + 9) + F + 1)), true, true, true, "TOTAL SERVICIOS", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatCamposMenu(_cells.GetRange("T" + ((Tam3 + 9) + F + 1), "X" + ((Tam3 + 9) + F + 1)), true, false, true, "", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatBordes(_cells.GetRange("Q5", "X" + ((Tam3 + 9) + F + 1)));
@@ -1007,7 +1018,7 @@ namespace EllipseAddinManejoInfoMCL
                     F++;
                 }
                 FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + 9) + F)), true, false, true, Tam7.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetRange(25, ((Tam4 + 9) + F + 1), 32, ((Tam4 + 9) + F + 1)), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetRange(25, ((Tam4 + 9) + F), 32, ((Tam4 + 9) + F)), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetRange("Y" + ((Tam4 + 9) + F + 1), "AA" + ((Tam4 + 9) + F + 1)), true, true, true, "TOTAL SERVICIOS", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatCamposMenu(_cells.GetRange("AB" + ((Tam4 + 9) + F + 1), "AF" + ((Tam4 + 9) + F + 1)), true, false, true, "", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatBordes(_cells.GetRange("Y5", "AF" + ((Tam4 + 9) + F + 1)));
@@ -1045,7 +1056,7 @@ namespace EllipseAddinManejoInfoMCL
                     F++;
                 }
                 FormatCamposMenu(_cells.GetCell("AG" + ((Tam5 + 9 + F))), true, false, true, Tam9.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetRange(33, ((Tam5 + 10 + F)), 42, ((Tam5 + 10 + F))), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetRange(33, ((Tam5 + 9 + F)), 42, ((Tam5 + 9 + F))), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetRange("AG" + ((Tam5 + 10 + F)), "AI" + ((Tam5 + 10 + F))), true, true, true, "TOTAL SERVICIOS", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatCamposMenu(_cells.GetRange("AJ" + ((Tam5 + 10 + F)), "AP" + ((Tam5 + 10 + F))), true, false, true, "", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatBordes(_cells.GetRange("AG5", "AP" + ((Tam5 + 10 + F))));
@@ -1138,9 +1149,9 @@ namespace EllipseAddinManejoInfoMCL
 
 
 
-                _cells.GetRange("Z" + ((Tam4 + Tam8) + 8 + 1 + 3), "Z" + ((Tam4 + Tam8) + 8 + 3 + 1 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
-                _cells.GetRange("AA" + ((Tam4 + Tam8) + 8 + 1 + 3), "AA" + ((Tam4 + Tam8) + 8 + 3 + 1 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
-                _cells.GetRange("AB" + ((Tam4 + Tam8) + 8 + 1 + 3), "AB" + ((Tam4 + Tam8) + 8 + 3 + 1 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                _cells.GetRange("Z" + ((Tam4 + Tam8) + 8 + 1 + 3), "Z" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
+                _cells.GetRange("AA" + ((Tam4 + Tam8) + 8 + 1 + 3), "AA" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
+                _cells.GetRange("AB" + ((Tam4 + Tam8) + 8 + 1 + 3), "AB" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
 
                 FormatBordes(_cells.GetRange("Y" + ((Tam4 + Tam8) + 8 + 3), "AF" + ((Tam4 + Tam8) + 8 + 3 + Tam11)));
 
@@ -1218,10 +1229,10 @@ namespace EllipseAddinManejoInfoMCL
 
 
 
-
+                Recargar();
                 //Para detectar el evento de cambio en un rango especifico
                 NotifyChanges();
-                //NotifyChanges2();
+                NotifyChanges2();
                 //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
 
@@ -2710,7 +2721,7 @@ namespace EllipseAddinManejoInfoMCL
 
         private void NotifyChanges()
         {
-            _excelApp.Visible = true;
+            _excelApp.Visible = false;
             _excelApp.ScreenUpdating = false;
             _excelApp.DisplayAlerts = false;
           
@@ -2732,12 +2743,42 @@ namespace EllipseAddinManejoInfoMCL
             //_excelApp.ActiveSheet.Names.Add(Name: "compositeRange", RefersToR1C1: _cells.GetRange("O3", "S3"));
             Worksheet worksheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[SheetName01]);
             
-            changesRange = worksheet.Controls.AddNamedRange(_cells.GetCell("AG" + (6 + Tam5 + Tam9 + 3)), "RangoTaladros3");
+            //Palas
             changesRange = worksheet.Controls.AddNamedRange(_cells.GetCell("AG" + (6 + Tam5)), "RangoTaladros2");
-            //changesRange = worksheet.Controls.AddNamedRange(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[SheetName01].Columns, "RangoTaladros");
-            //changesRange = worksheet.Application.Worksheets[SheetName01];
+            changesRange2 = worksheet.Controls.AddNamedRange(_cells.GetCell("AG" + (6 + Tam5 + Tam9 + 3)), "RangoTaladros3");
+            changesRange3 = worksheet.Controls.AddNamedRange(_cells.GetCell("AG" + (6 + Tam5 + Tam9 + Tam12 + 6)), "RangoTaladros4");
+
+            //Equipos Aux
+            changesRange4 = worksheet.Controls.AddNamedRange(_cells.GetCell("A" + (6 + Tam1)), "RangoTaladros5");
+            changesRange5 = worksheet.Controls.AddNamedRange(_cells.GetCell("A" + (6 + Tam1 + Tam10 + 3)), "RangoTaladros6");
+            changesRange6 = worksheet.Controls.AddNamedRange(_cells.GetCell("I" + (6 + Tam2)), "RangoTaladros7");
+            changesRange7 = worksheet.Controls.AddNamedRange(_cells.GetCell("I" + (6 + Tam2 + Tam6 + 3)), "RangoTaladros8");
+            changesRange8 = worksheet.Controls.AddNamedRange(_cells.GetCell("Q" + (6 + Tam3)), "RangoTaladros9");
+            changesRange9 = worksheet.Controls.AddNamedRange(_cells.GetCell("Q" + (6 + Tam3 + Tam7 + 3)), "RangoTaladros10");
+            changesRange10 = worksheet.Controls.AddNamedRange(_cells.GetCell("Y" + (6 + Tam4)), "RangoTaladros11");
+            changesRange11 = worksheet.Controls.AddNamedRange(_cells.GetCell("Y" + (6 + Tam4 + Tam8 + 3)), "RangoTaladros12");
+            changesRange12 = worksheet.Controls.AddNamedRange(_cells.GetCell("AG" + (6 + Tam5 + Tam9 + Tam12 + 6)), "RangoTaladros13");
+
+            changesRange13 = worksheet.Controls.AddNamedRange(_cells.GetRange("A" + (6), "A" + (5 + Tam1)), "RangoTaladros14");
+
+
+            //Palas
             changesRange.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
-            changesRange.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange2.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange3.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            //Equipos Aux
+            changesRange4.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange5.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange6.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange7.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange8.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange9.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange10.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange11.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange12.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+            changesRange13.Change += new Excel.DocEvents_ChangeEventHandler(changesRange_Change2);
+
+
             _excelApp.ScreenUpdating = true;
         }
 
@@ -2750,10 +2791,6 @@ namespace EllipseAddinManejoInfoMCL
 
 
         void changesRange_Change(Excel.Range Target)
-
-
-
-
         {
             //string cellAddress = Target.get_Address(Excel.XlReferenceStyle.xlA1);
             //MessageBox.Show("Cell " + cellAddress + " changed.");
@@ -2765,10 +2802,124 @@ namespace EllipseAddinManejoInfoMCL
 
         private void Recargar()
         {
+            //Palas
             Int32 RowInicial = 6;
-            Int32 P1 = Convert.ToInt32(string.IsNullOrWhiteSpace(_cells.GetCell("AG" + (RowInicial + Tam5)).Value) ? "0" : _cells.GetCell("AG" + (RowInicial + Tam5)).Value);
-            Int32 P2 = Convert.ToInt32(string.IsNullOrWhiteSpace(_cells.GetCell("AG" + ((RowInicial + Tam5 + Tam9 + 3))).Value) ? "0" : _cells.GetCell("AG" + (RowInicial + Tam5 + Tam9 + 3)).Value);
-            _cells.GetCell("Y1").Value = (P1 + P2);
+            _cells.GetCell("Y1").NumberFormat = "0";
+            _cells.GetCell("Y1").FormulaLocal = "=COUNTA(AG" + (RowInicial) + ":AG" + (RowInicial + (Tam5 - 1)) + ") + " + "COUNTA(AG" + (RowInicial + Tam5 + 3) + ":AG" + (RowInicial + (Tam5 + Tam9 + 2)) + ") +" + "COUNTA(AG" + (RowInicial + Tam5 + Tam9 + 6) + ":AG" + (RowInicial + Tam5 + Tam9 + Tam12 + 5) + ")";
+
+
+            _cells.GetCell("AA1").NumberFormat = "0";
+            _cells.GetCell("AA1").FormulaLocal = "=COUNTIF(AJ" + (RowInicial) + ":AJ" + (RowInicial + (Tam5 - 1)) + "," + @"""SIN COMB""" + ") + " + "COUNTIF(AJ" + (RowInicial + Tam5 + 3) + ":AJ" + (RowInicial + (Tam5 + Tam9 + 2)) + ", " + @"""SIN COMB""" + ") +" + "COUNTIF(AJ" + (RowInicial + Tam5 + Tam9 + 6) + ":AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 5) + ", " + @"""SIN COMB""" + ")";
+
+            _cells.GetCell("AA2").NumberFormat = "0";
+            _cells.GetCell("AA2").FormulaLocal = "=COUNTIF(D" + (RowInicial) + ":D" + (RowInicial + (Tam1 - 1)) + "," + @"""SIN COMB""" + ") + " + "COUNTIF(L" + (RowInicial) + ":L" + (RowInicial + (Tam2 - 1)) + ", " + @"""SIN COMB""" + ") +" + "COUNTIF(T" + (RowInicial) + ":T" + (RowInicial + (Tam3 - 1)) + ", " + @"""SIN COMB""" + ")+ " + "COUNTIF(AB" + (RowInicial) + ":AB" + (RowInicial + (Tam4)) + ", " + @"""SIN COMB""" + ")+" + "COUNTIF(L" + (RowInicial + Tam2 + 3) + ":L" + (RowInicial + (Tam2 + Tam6 + 2)) + ", " + @"""SIN COMB""" + ") + " + "COUNTIF(T" + (RowInicial + Tam3 + 3) + ":T" + (RowInicial + (Tam3 + Tam7 + 2)) + ", " + @"""SIN COMB""" + ") +" + "COUNTIF(AB" + (RowInicial + Tam4 + 3) + ":AB" + (RowInicial + (Tam4 + Tam8 + 2)) + ", " + @"""SIN COMB""" + ") +" + "COUNTIF(AB" + (RowInicial + Tam4 + Tam8 + 6) + ":AB" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ", " + @"""SIN COMB""" + ") +" + "COUNTIF(AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 9) + ":AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 8) + ", " + @"""SIN COMB""" + ")";
+
+            _cells.GetCell("AA3").NumberFormat = "0";
+            _cells.GetCell("AA3").FormulaLocal = "=COUNTIF(D" + (RowInicial + Tam1 + 3) + ":D" + (RowInicial + (Tam1 + Tam10 + 2)) + "," + @"""SIN COMB""" + ")";
+
+            _cells.GetCell("AA4").NumberFormat = "0";
+            _cells.GetCell("AA4").FormulaLocal = "=COUNTIF(AB" + (RowInicial + Tam4 + Tam8 + 6) + ":AB" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ", " + @"""SIN COMB""" + ")";
+
+            //Cumplidoss
+            _cells.GetCell("AC1").NumberFormat = "0";
+            _cells.GetCell("AC1").FormulaLocal = "=COUNTA(AK" + (RowInicial) + ":AK" + (RowInicial + (Tam5 - 1)) + ") + " + "COUNTA(AK" + (RowInicial + Tam5 + 3) + ":AK" + (RowInicial + (Tam5 + Tam9 + 2)) + ") +" + "COUNTA(AK" + (RowInicial + Tam5 + Tam9 + 6) + ":AK" + (RowInicial + Tam5 + Tam9 + Tam12 + 5) + ") - AA1";
+
+            _cells.GetCell("AC2").NumberFormat = "0";
+            _cells.GetCell("AC2").FormulaLocal = "=COUNTA(E" + (RowInicial) + ":E" + (RowInicial + (Tam1 - 1)) + ") + " + "COUNTA(M" + (RowInicial) + ":M" + (RowInicial + (Tam2 - 1)) + ") +" + "COUNTA(U" + (RowInicial) + ":U" + (RowInicial + (Tam3 - 1)) + ")+ " + "COUNTA(AC" + (RowInicial) + ":AC" + (RowInicial + (Tam4)) + ")+" + "COUNTA(M" + (RowInicial + Tam2 + 3) + ":M" + (RowInicial + (Tam2 + Tam6 + 2)) + ") + " + "COUNTA(U" + (RowInicial + Tam3 + 3) + ":U" + (RowInicial + (Tam3 + Tam7 + 2)) + ") +" + "COUNTA(AC" + (RowInicial + Tam4 + 3) + ":AC" + (RowInicial + (Tam4 + Tam8 + 2)) + ") +" + "COUNTA(AC" + (RowInicial + Tam4 + Tam8 + 6) + ":AC" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ") +" + "COUNTA(AK" + (RowInicial + Tam5 + Tam9 + Tam12 + 9) + ":AK" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 8) + ") - AA2";
+
+            _cells.GetCell("AC3").NumberFormat = "0";
+            _cells.GetCell("AC3").FormulaLocal = "=COUNTA(E" + (RowInicial + Tam1 + 3) + ":E" + (RowInicial + (Tam1 + Tam10 + 2)) + ") - AA3";
+
+            _cells.GetCell("AC4").NumberFormat = "0";
+            _cells.GetCell("AC4").FormulaLocal = "=COUNTA(AC" + (RowInicial + Tam4 + Tam8 + 6) + ":AC" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ") - AA4";
+
+            //Equipos Aux
+            _cells.GetCell("Y2").NumberFormat = "0";
+            _cells.GetCell("Y2").FormulaLocal = "=COUNTA(A" + (RowInicial) + ":A" + (RowInicial + (Tam1 - 1)) + ") + " + "COUNTA(I" + (RowInicial) + ":I" + (RowInicial + (Tam2 - 1)) + ") +" + "COUNTA(Q" + (RowInicial) + ":Q" + (RowInicial + (Tam3 - 1)) + ")+ " + "COUNTA(Y" + (RowInicial) + ":Y" + (RowInicial + (Tam4)) + ")+" + "COUNTA(I" + (RowInicial + Tam2 + 3) + ":I" + (RowInicial + (Tam2 + Tam6 + 2)) + ") + " + "COUNTA(Q" + (RowInicial + Tam3 + 3) + ":Q" + (RowInicial + (Tam3 + Tam7 + 2)) + ") +" + "COUNTA(Y" + (RowInicial + Tam4 + 3) + ":Y" + (RowInicial + (Tam4 + Tam8 + 2)) + ") +" + "COUNTA(Y" + (RowInicial + Tam4 + Tam8 + 6) + ":Y" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ") +" + "COUNTA(AG" + (RowInicial + Tam5 + Tam9 + Tam12 + 9) + ":AG" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 8) + ")";
+
+            //Equipos Cargadores
+            //Int32 P13 = Convert.ToInt32(string.IsNullOrWhiteSpace(_cells.GetCell("A" + (RowInicial + Tam1 + Tam10 + 3)).Value) ? "0" : _cells.GetCell("A" + (RowInicial + Tam1 + Tam10 + 3)).Value);
+            _cells.GetCell("Y3").NumberFormat = "0";
+            _cells.GetCell("Y3").FormulaLocal = "=COUNTA(A" + (RowInicial + Tam1 + 3) + ":A" + (RowInicial + (Tam1 + Tam10 + 2)) + ")";
+
+            //Equipos Gaico
+            //Int32 P14 = Convert.ToInt32(string.IsNullOrWhiteSpace(_cells.GetCell("Y" + (RowInicial + Tam1 + Tam10 + 3)).Value) ? "0" : _cells.GetCell("Y" + (RowInicial + Tam1 + Tam10 + 3)).Value);
+            _cells.GetCell("Y4").NumberFormat = "0";
+            _cells.GetCell("Y4").FormulaLocal = "=COUNTA(Y" + (RowInicial + Tam4 + Tam8 + 6) + ":Y" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ")";
+
+
+            //Cumplimiento Cuenta
+            //PALAS
+            _cells.GetCell("AJ" + (RowInicial + Tam5)).NumberFormat = "0";
+            _cells.GetCell("AJ" + (RowInicial + Tam5)).FormulaLocal = "=COUNTIF(AJ" + (RowInicial) + ":AJ" + (RowInicial + (Tam5 - 1)) + "," + @"""SIN COMB""" + ")";
+
+            _cells.GetCell("AJ" + (RowInicial + (Tam5 + Tam9 + 3))).NumberFormat = "0";
+            _cells.GetCell("AJ" + (RowInicial + (Tam5 + Tam9 + 3))).FormulaLocal = "=COUNTIF(AJ" + (RowInicial + Tam5 + 3) + ":AJ" + (RowInicial + (Tam5 + Tam9 + 2)) + "," + @"""SIN COMB""" + ")";
+
+            _cells.GetCell("AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 6)).NumberFormat = "0";
+            _cells.GetCell("AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 6)).FormulaLocal = "=COUNTIF(AJ" + (RowInicial + Tam5 + Tam9 + 6) + ":AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 5) + "," + @"""SIN COMB""" + ")";
+            //AUX
+            _cells.GetCell("D" + (RowInicial + Tam1)).NumberFormat = "0";
+            _cells.GetCell("D" + (RowInicial + Tam1)).FormulaLocal = "=COUNTIF(D" + (RowInicial) + ":D" + (RowInicial + (Tam1 - 1)) + "," + @"""SIN COMB""" + ")";
+            _cells.GetCell("L" + (RowInicial + Tam2)).NumberFormat = "0";
+            _cells.GetCell("L" + (RowInicial + Tam2)).FormulaLocal = "=COUNTIF(L" + (RowInicial) + ":L" + (RowInicial + (Tam2 - 1)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("T" + (RowInicial + Tam3)).NumberFormat = "0";
+            _cells.GetCell("T" + (RowInicial + Tam3)).FormulaLocal = "=COUNTIF(T" + (RowInicial) + ":T" + (RowInicial + (Tam3 - 1)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("AB" + (RowInicial + Tam4)).NumberFormat = "0";
+            _cells.GetCell("AB" + (RowInicial + Tam4)).FormulaLocal = "=COUNTIF(AB" + (RowInicial) + ":AB" + (RowInicial + (Tam4)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("L" + (RowInicial + Tam2 + Tam6 + 3)).NumberFormat = "0";
+            _cells.GetCell("L" + (RowInicial + Tam2 + Tam6 + 3)).FormulaLocal = "=COUNTIF(L" + (RowInicial + Tam2 + 3) + ":L" + (RowInicial + (Tam2 + Tam6 + 2)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("T" + (RowInicial + (Tam3 + Tam7 + 3))).NumberFormat = "0";
+            _cells.GetCell("T" + (RowInicial + (Tam3 + Tam7 + 3))).FormulaLocal = "=COUNTIF(T" + (RowInicial + Tam3 + 3) + ":T" + (RowInicial + (Tam3 + Tam7 + 2)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("AB" + (RowInicial + (Tam4 + Tam8 + 3))).NumberFormat = "0";
+            _cells.GetCell("AB" + (RowInicial + (Tam4 + Tam8 + 3))).FormulaLocal = "=COUNTIF(AB" + (RowInicial + Tam4 + 3) + ":AB" + (RowInicial + (Tam4 + Tam8 + 2)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("AB" + (RowInicial + (Tam4 + Tam8 + Tam11 + 6))).NumberFormat = "0";
+            _cells.GetCell("AB" + (RowInicial + (Tam4 + Tam8 + Tam11 + 6))).FormulaLocal = "=COUNTIF(AB" + (RowInicial + Tam4 + Tam8 + 6) + ":AB" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ", " + @"""SIN COMB""" + ")";
+            _cells.GetCell("AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 9)).NumberFormat = "0";
+            _cells.GetCell("AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 9)).FormulaLocal = "=COUNTIF(AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + 9) + ":AJ" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 8) + ", " + @"""SIN COMB""" + ")";
+            //Cargador
+            _cells.GetCell("D" + (RowInicial + Tam1 + Tam10 + 3)).NumberFormat = "0";
+            _cells.GetCell("D" + (RowInicial + Tam1 + Tam10 + 3)).FormulaLocal = "=COUNTIF(D" + (RowInicial + Tam1 + 3) + ":D" + (RowInicial + Tam1 + Tam10 + 2) + "," + @"""SIN COMB""" + ")";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            _cells.GetCell("AC2").NumberFormat = "0";
+            _cells.GetCell("AC2").FormulaLocal = "=COUNTA(E" + (RowInicial) + ":E" + (RowInicial + (Tam1 - 1)) + ") + " + "COUNTA(M" + (RowInicial) + ":M" + (RowInicial + (Tam2 - 1)) + ") +" + "COUNTA(U" + (RowInicial) + ":U" + (RowInicial + (Tam3 - 1)) + ")+ " + "COUNTA(AC" + (RowInicial) + ":AC" + (RowInicial + (Tam4)) + ")+" + "COUNTA(M" + (RowInicial + Tam2 + 3) + ":M" + (RowInicial + (Tam2 + Tam6 + 2)) + ") + " + "COUNTA(U" + (RowInicial + Tam3 + 3) + ":U" + (RowInicial + (Tam3 + Tam7 + 2)) + ") +" + "COUNTA(AC" + (RowInicial + Tam4 + 3) + ":AC" + (RowInicial + (Tam4 + Tam8 + 2)) + ") +" + "COUNTA(AC" + (RowInicial + Tam4 + Tam8 + 6) + ":AC" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ") +" + "COUNTA(AK" + (RowInicial + Tam5 + Tam9 + Tam12 + 9) + ":AK" + (RowInicial + Tam5 + Tam9 + Tam12 + Tam13 + 8) + ") - AA2";
+
+            _cells.GetCell("AC3").NumberFormat = "0";
+            _cells.GetCell("AC3").FormulaLocal = "=COUNTA(E" + (RowInicial + Tam1 + 3) + ":E" + (RowInicial + (Tam1 + Tam10 + 2)) + ") - AA3";
+
+            _cells.GetCell("AC4").NumberFormat = "0";
+            _cells.GetCell("AC4").FormulaLocal = "=COUNTA(AC" + (RowInicial + Tam4 + Tam8 + 6) + ":AC" + (RowInicial + (Tam4 + Tam8 + Tam11 + 5)) + ") - AA4";
+
+
+
+
+            //% Cumplimiento
+            _cells.GetCell("AF1").NumberFormat = "0.00%";
+            _cells.GetCell("AF1").FormulaLocal = "=AC1/Y1";
+            _cells.GetCell("AF2").NumberFormat = "0.00%";
+            _cells.GetCell("AF2").FormulaLocal = "=AC2/Y2";
+            _cells.GetCell("AF3").NumberFormat = "0.00%";
+            _cells.GetCell("AF3").FormulaLocal = "=AC3/Y3";
+            _cells.GetCell("AF4").NumberFormat = "0.00%";
+            _cells.GetCell("AF4").FormulaLocal = "=AC4/Y4";
+
+
+
+
         }
 
         private void Reload_Info_Select(Excel.Range Rango, List<string> Lista, Int32 TamLetr = 8, Int32 Rf = 166, Int32 Gf = 166, Int32 Bf = 166, Int32 Rl = 0, Int32 Gl = 0, Int32 Bl = 0)
