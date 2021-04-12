@@ -471,7 +471,7 @@ namespace EllipseCalidadOTExcelAddIn
                               B /*WHERE B.CALIDAD IS NULL*/";
                     if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
-                        sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
+                        sqlQuery += " WHERE rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                     }
                     
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
