@@ -482,5 +482,12 @@ namespace SharedClassLibrary.Connections
             }
         }
         #endregion
+
+        public void Dispose()
+        {
+            _transaction?.Dispose();
+            _sqlComm?.Dispose();
+            _sqlConn?.Dispose();
+        }
     }
 }

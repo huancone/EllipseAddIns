@@ -257,7 +257,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var opContext = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -549,7 +549,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         {
                             var opContext = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 maxInstancesSpecified = true,

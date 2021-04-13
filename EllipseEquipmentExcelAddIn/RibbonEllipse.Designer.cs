@@ -210,8 +210,9 @@
             // 
             // btnReviewFromEquipmentList
             // 
-            this.btnReviewFromEquipmentList.Label = "Consultar de Listado de &Equipos";
+            this.btnReviewFromEquipmentList.Label = "Consultar de Hoja de &Equipos";
             this.btnReviewFromEquipmentList.Name = "btnReviewFromEquipmentList";
+            this.btnReviewFromEquipmentList.ScreenTip = "Consulta los equipos de la hoja de equipos para saber en qué listado existen";
             this.btnReviewFromEquipmentList.ShowImage = true;
             this.btnReviewFromEquipmentList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewFromEquipmentList_Click);
             // 

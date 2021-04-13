@@ -302,7 +302,7 @@ namespace EllipseMse81SExcelAddin
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstancesSpecified = true,
                 maxInstances = 100,
@@ -461,7 +461,7 @@ namespace EllipseMse81SExcelAddin
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstancesSpecified = true,
                 maxInstances = 100,
@@ -594,7 +594,7 @@ namespace EllipseMse81SExcelAddin
             _cells.SetCursorWait();
             var opSheet = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstancesSpecified = true,
                 maxInstances = 100,

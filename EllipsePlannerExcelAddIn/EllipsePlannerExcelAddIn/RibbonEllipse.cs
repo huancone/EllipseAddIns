@@ -557,7 +557,7 @@ private void FormatSheet()
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var taskOperationContext = new EllipseJobsClassLibrary.WorkOrderTaskMWPService.OperationContext()
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -865,14 +865,14 @@ private void FormatSheet()
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                 var opContext = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
                     returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
-                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct,
                     _frmAuth.EllipsePost);
                 var titleRow = TitleRowEllipse;
 
@@ -986,14 +986,14 @@ private void FormatSheet()
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opContext = new OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
                 returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
 
             var titleRow = TitleRowResources;
             var resultColumn = ResultColumnResources;
@@ -1009,7 +1009,7 @@ private void FormatSheet()
 
                     var taskReq = new TaskRequirement
                     {
-                        DistrictCode = _frmAuth.EllipseDsct,
+                        DistrictCode = _frmAuth.EllipseDstrct,
                         WorkGroup = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
                         WorkOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value),
                         WoTaskNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value),
@@ -1044,7 +1044,7 @@ private void FormatSheet()
                         };
                         var woTask = new WorkOrderTask
                         {
-                            DistrictCode = _frmAuth.EllipseDsct,
+                            DistrictCode = _frmAuth.EllipseDstrct,
                             WorkOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value),
                             WoTaskNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value),
                             CompletedBy = _frmAuth.EllipseUser,

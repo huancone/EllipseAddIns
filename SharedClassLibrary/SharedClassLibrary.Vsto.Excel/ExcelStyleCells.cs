@@ -1192,6 +1192,41 @@ namespace SharedClassLibrary.Vsto.Excel
                 tableRange.ListObject.ListColumns[columnIndex].Range.Column,
                 tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count);
         }
+
+        public int GetTableLastRowIndex(string tableRangeName)
+        {
+            var range = GetRange(tableRangeName);
+            var rowCount = range.Rows.Count;
+
+            var lastCell = GetRangeLastCell(tableRangeName).Row;
+            if (rowCount > 2)
+                return lastCell;
+
+            var empty = true;
+            var rowCells = range.ListObject.ListRows[range.Rows.Count].Range;
+            foreach (Range cell in rowCells)
+            {
+                var x = cell.Column;
+                var y = cell.Row;
+
+                if(cell.Value2 != null && !string.IsNullOrWhiteSpace(cell.Value2))
+                {
+                    empty = false;
+                    break;
+                }
+            }
+
+            if (empty)
+                lastCell--;
+            return lastCell;
+        }
+        public Range GetRangeLastCell(string tableRangeName, XlCellType cellType = XlCellType.xlCellTypeLastCell)
+        {
+            var cells = GetRange(tableRangeName).SpecialCells(cellType).Areas;
+            var lastCell = cells[cells.Count];
+
+            return lastCell;
+        }
         /// <summary>
         /// Obtiene la letra de una columna Excel según el índice ingresado (Ej. columnNumber: 8, resultado: H)
         /// </summary>

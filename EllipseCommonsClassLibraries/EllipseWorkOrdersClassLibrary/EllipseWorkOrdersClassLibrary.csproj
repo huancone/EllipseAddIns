@@ -637,6 +637,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\UpdateLog.txt" />
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>

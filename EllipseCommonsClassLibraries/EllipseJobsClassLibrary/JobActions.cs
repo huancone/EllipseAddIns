@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using EllipseJobsClassLibrary.WorkOrderTaskMWPService;
 using SharedClassLibrary.Connections.Oracle;
@@ -25,37 +24,41 @@ namespace EllipseJobsClassLibrary
             service.Url = urlService + "/JobsMWPService";
             var jobDto = new JobsMWPService.JobsMWPDTO();
 
+            if (!string.IsNullOrWhiteSpace(searchParam.DateIncludes))
+                searchParam.DateIncludes = searchParam.DateIncludes.ToUpper();
             switch (searchParam.DateIncludes)
             {
-                case "Backlog":
+                case "BACKLOG":
                     searchParam.DateIncludes = "BI";
                     break;
-                case "Unscheduled":
+                case "UNSCHEDULED":
                     searchParam.DateIncludes = "UI";
                     break;
-                case "Backlog and Unscheduled":
+                case "BACKLOG AND UNSCHEDULED":
                     searchParam.DateIncludes = "BU";
                     break;
-                case "Backlog Only":
+                case "BACKLOG ONLY":
                     searchParam.DateIncludes = "BO";
                     break;
-                case "Unscheduled Only":
+                case "UNSCHEDULED ONLY":
                     searchParam.DateIncludes = "UO";
                     break;
-                case "Backlog and Unscheduled Only":
+                case "BACKLOG AND UNSCHEDULED ONLY":
                     searchParam.DateIncludes = "UB";
                     break;
             }
 
+            if (!string.IsNullOrWhiteSpace(searchParam.SearchEntity))
+                searchParam.SearchEntity = searchParam.SearchEntity.ToUpper();
             switch (searchParam.SearchEntity)
             {
-                case "Work Orders Only":
+                case "WORK ORDERS ONLY":
                     searchParam.SearchEntity = "W";
                     break;
-                case "MST Forecast Only":
+                case "MST FORECAST ONLY":
                     searchParam.SearchEntity = "M";
                     break;
-                case "Work Orders and MST Forecast":
+                case "WORK ORDERS AND MST FORECAST":
                     searchParam.SearchEntity = "A";
                     break;
             }
@@ -73,33 +76,49 @@ namespace EllipseJobsClassLibrary
         public static List<JobTask> FetchJobsTasks(EllipseFunctions ef, string urlService, WorkOrderTaskMWPService.OperationContext opContext, TaskSearchParam searchParam)
         {
 
-
+            if (!string.IsNullOrWhiteSpace(searchParam.DateInclude))
+                searchParam.DateInclude = searchParam.DateInclude.ToUpper();
             switch (searchParam.DateInclude)
             {
-                case "Backlog":
+                case "BACKLOG":
                     searchParam.DateInclude = "BI";
                     break;
-                case "Unscheduled":
+                case "UNSCHEDULED":
                     searchParam.DateInclude = "UI";
                     break;
-                case "Backlog and Unscheduled":
+                case "BACKLOG AND UNSCHEDULED":
                     searchParam.DateInclude = "BU";
                     break;
-                case "Backlog Only":
+                case "BACKLOG ONLY":
                     searchParam.DateInclude = "BO";
                     break;
-                case "Unscheduled Only":
+                case "UNSCHEDULED ONLY":
                     searchParam.DateInclude = "UO";
                     break;
-                case "Backlog and Unscheduled Only":
+                case "BACKLOG AND UNSCHEDULED ONLY":
                     searchParam.DateInclude = "UB";
+                    break;
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam.SearchEntity))
+                searchParam.SearchEntity = searchParam.SearchEntity.ToUpper();
+            switch (searchParam.SearchEntity)
+            {
+                case "WORK ORDERS ONLY":
+                    searchParam.SearchEntity = "W";
+                    break;
+                case "MST FORECAST ONLY":
+                    searchParam.SearchEntity = "M";
+                    break;
+                case "WORK ORDERS AND MST FORECAST":
+                    searchParam.SearchEntity = "A";
                     break;
             }
 
             var taskService = new WorkOrderTaskMWPService.WorkOrderTaskMWPService();
             taskService.Url = urlService + "/WorkOrderTaskMWPService";
            
-
+            
             var taskSearchParams = new TasksMWPSearchParam();
             taskSearchParams.taskSearchType = "T";
             taskSearchParams.isTaskSearch = true;
@@ -108,14 +127,17 @@ namespace EllipseJobsClassLibrary
             taskSearchParams.taskDatePreset = "N";
             taskSearchParams.taskDateIncrement = "1";
             taskSearchParams.taskDateIncrementUnit = "D";
-            taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
+            if(!string.IsNullOrWhiteSpace(searchParam.StartDate))
+                taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
             taskSearchParams.startDateSpecified = !string.IsNullOrWhiteSpace(searchParam.StartDate);
-            taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
+            if (!string.IsNullOrWhiteSpace(searchParam.FinishDate))
+                taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
             taskSearchParams.finishDateSpecified = !string.IsNullOrWhiteSpace(searchParam.FinishDate);
             taskSearchParams.allDistrictsForTasks = false;
             taskSearchParams.allDistrictsForTasksSpecified = true;
             taskSearchParams.dstrctCode = searchParam.District;
-            taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
+            if(searchParam.WorkGroups != null && searchParam.WorkGroups.Count > 0)
+                taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
             taskSearchParams.status = "N";
             taskSearchParams.unassigned = false;
             taskSearchParams.unassignedSpecified = true;
@@ -149,7 +171,11 @@ namespace EllipseJobsClassLibrary
             taskSearchParams.includePreferedEGISpecified = true;
             taskSearchParams.crewTotalsOnly = false;
             taskSearchParams.crewTotalsOnlySpecified = true;
+            taskSearchParams.searchEntity = searchParam.SearchEntity;
 
+            //taskSearchParams.equipmentNumber = searchParam.EquipmentNumber;
+            //taskSearchParams.taskEquipmentNumber = searchParam.TaskEquipmentNumber;
+            //taskSearchParams.data1732 = searchParam.EquipmentNumber;
 
             var restartTask = new TasksMWPDTO(); 
             var reply = taskService.tasksSearch(opContext, taskSearchParams, restartTask);
@@ -168,41 +194,8 @@ namespace EllipseJobsClassLibrary
                 if (!string.IsNullOrWhiteSpace(errorMessages))
                     throw new Exception(errorMessages);
 
-                var task = new JobTask();
-                task.AssignPerson = item.tasksMWPDTO.assignPerson;
-                task.DstrctAcctCode = item.tasksMWPDTO.dstrctAcctCode;
-                task.DstrctCode = item.tasksMWPDTO.dstrctCode;
-                task.EquipNo = item.tasksMWPDTO.equipNo;
-                task.CompCode = item.tasksMWPDTO.compCode;
-                task.CompModCode = item.tasksMWPDTO.compModCode;
-                task.ItemName1 = item.tasksMWPDTO.itemName1;
-                task.ItemName2 = item.tasksMWPDTO.itemName2;
-                task.JobId = item.tasksMWPDTO.jobId;
-                task.JobParentId = item.tasksMWPDTO.jobParentId;
-                task.JobType = item.tasksMWPDTO.jobType;
-                task.MaintSchTask = item.tasksMWPDTO.maintSchTask;
-                task.MaintType = item.tasksMWPDTO.maintType;
-                task.MstReference = item.tasksMWPDTO.mstReference;
-                task.OrigPriority = item.tasksMWPDTO.origPriority;
-                task.OriginalPlannedStartDate = MyUtilities.ToString(item.tasksMWPDTO.originalPlannedStartDate);
-                task.PlanPriority = item.tasksMWPDTO.planPriority;
-                task.PlanStrDate = MyUtilities.ToString(item.tasksMWPDTO.planStrDate);
-                task.PlanStrTime = item.tasksMWPDTO.planStrTime;
-                task.PlanFinDate = MyUtilities.ToString(item.tasksMWPDTO.planFinDate);
-                task.PlanFinTime = item.tasksMWPDTO.planFinTime;
-                task.EstimatedDurationsHrs = item.tasksMWPDTO.estDurHrs.ToString(CultureInfo.InvariantCulture);
-                task.RaisedDate = MyUtilities.ToString(item.tasksMWPDTO.raisedDate);
-                task.Reference = item.tasksMWPDTO.reference;
-                task.StdJobNo = item.tasksMWPDTO.stdJobNo;
-                task.StdJobTask = item.tasksMWPDTO.WOTaskNo;
-                task.WoStatusM = item.tasksMWPDTO.woStatusM;
-                task.WoStatusU = item.tasksMWPDTO.woStatusU;
-                task.WoType = item.tasksMWPDTO.woType;
-                task.WorkGroup = item.tasksMWPDTO.workGroup;
-                task.WorkOrder = item.tasksMWPDTO.workOrder;
-                task.WoDesc = item.tasksMWPDTO.woDesc;
-                task.WoTaskNo = item.tasksMWPDTO.WOTaskNo;
-                task.WoTaskDesc = item.tasksMWPDTO.taskDescription;
+                var task = new JobTask(item.tasksMWPDTO);
+                
                 
                 jobTasks.Add(task);
             }
@@ -226,8 +219,8 @@ namespace EllipseJobsClassLibrary
                             WorkGroup = req.WorkGroup,
                             ResourceCode = req.ReqCode,
                             Date = task.PlanStrDate,
-                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty),
-                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty)
+                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, IxConversionConstant.DefaultNullAndEmpty),
+                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, IxConversionConstant.DefaultNullAndEmpty)
                         };
                         task.LabourResourcesList.Add(requirement);
                     }
@@ -341,35 +334,8 @@ namespace EllipseJobsClassLibrary
             if (drConn == null || drConn.IsClosed) return null;
             drConn.Read();
 
-            
-            var taskAdd = new JobTaskAdditional()
-            {
-                DistrictCode= drConn["DSTRCT_CODE"].ToString().Trim(),
-                WorkOrder= drConn["WORK_GROUP"].ToString().Trim(),
-                TaskNo= drConn["WO_TASK_NO"].ToString().Trim(),
-                EquipNo= drConn["EQUIP_NO"].ToString().Trim(),
-                CompCode= drConn["COMP_CODE"].ToString().Trim(),
-                CompModCode= drConn["COMP_MOD_CODE"].ToString().Trim(),
-                MaintScheduleTask= drConn["MAINT_SCH_TASK"].ToString().Trim(),
-                StandardJobNo= drConn["STD_JOB_NO"].ToString().Trim(),
-                PlanStartDate= drConn["PLAN_STR_DATE"].ToString().Trim(),
-                OriginalSchedDate= drConn["ORIG_SCHED_DATE"].ToString().Trim(),
-                RequiredStartDate= drConn["REQ_START_DATE"].ToString().Trim(),
-                RequiredByDate= drConn["REQ_BY_DATE"].ToString().Trim(),
-                CompletedCode= drConn["COMPLETED_CODE"].ToString().Trim(),
-                WorkOrderAssignPerson = drConn["WO_ASSIGN_PERSON"].ToString().Trim(),
-                AssignPerson = drConn["ASSIGN_PERSON"].ToString().Trim(),
-                MaintenanceType= drConn["MAINT_TYPE"].ToString().Trim(),
-                JobDescCode = drConn["JOB_DESC_CODE"].ToString().Trim(),
-                WorkOrderType = drConn["WO_TYPE"].ToString().Trim(),
-                EquipPrimaryStatType= drConn["EQ_STAT_TYPE_PR"].ToString().Trim(),
-                ScheduleStatValue= drConn["SCHED_STAT_VALUE"].ToString().Trim(),
-                ActualStatValue= drConn["ACTUAL_STAT_VALUE"].ToString().Trim(),
-                MinSchedDate= drConn["MIN_SCHED_DT"].ToString().Trim(),
-                MaxSchedDate= drConn["MAX_SCHED_DT"].ToString().Trim(),
-                MinSchedStat= drConn["MIN_SCH_STAT"].ToString().Trim(),
-                MaxSchedStat= drConn["MAX_SCH_STAT"].ToString().Trim(),
-            };
+
+            var taskAdd = new JobTaskAdditional(drConn);
 
             return taskAdd;
         }
@@ -383,20 +349,7 @@ namespace EllipseJobsClassLibrary
             if (drResources == null || drResources.IsClosed) return list;
             while (drResources.Read())
             {
-                var res = new DailyJobs()
-                {
-                    WorkGroup = drResources["WORK_GROUP"].ToString().Trim(),
-                    WorkOrder = drResources["WORK_ORDER"].ToString().Trim(),
-                    WoTaskNo = drResources["WO_TASK_NO"].ToString().Trim(),
-                    WoTaskDesc = drResources["WO_TASK_DESC"].ToString().Trim(),
-                    Shift = drResources["SHIFT"].ToString().Trim(),
-                    PlanStrDate = drResources["PLAN_STR_DATE"].ToString().Trim(),
-                    PlanFinDate = drResources["PLAN_FIN_DATE"].ToString().Trim(),
-                    EstimatedDurationsHrs = drResources["TSK_DUR_HOURS"].ToString().Trim(),
-                    EstimatedShiftDurationsHrs = drResources["SHIFT_TSK_DUR_HOURS"].ToString().Trim(),
-                    ResourceCode = drResources["RES_CODE"].ToString().Trim(),
-                    ShiftLabourHours = drResources["SHIFT_LAB_HOURS"].ToString().Trim()
-                };
+                var res = new DailyJobs(drResources);
                 list.Add(res);
             }
 

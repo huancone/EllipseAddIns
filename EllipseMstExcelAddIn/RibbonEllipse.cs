@@ -660,7 +660,7 @@ namespace EllipseMstExcelAddIn
             //Para Servicios WSDL
             var opContext = new EllipseMaintSchedTaskClassLibrary.MstService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings,
@@ -668,7 +668,7 @@ namespace EllipseMstExcelAddIn
                 returnWarningsSpecified = Debugger.DebugWarnings,
             };
             
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -801,7 +801,7 @@ namespace EllipseMstExcelAddIn
             //Para Servicios WSDL
             var opContext = new EllipseMaintSchedTaskClassLibrary.MstService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings,
@@ -853,6 +853,9 @@ namespace EllipseMstExcelAddIn
 
                     mst.LastSchedDate = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
                     mst.LastPerfDate = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    
+                    mst.ConAstSegFr = "0";
+                    mst.ConAstSegTo = "0";
 
                     mst.StatutoryFlg = "N";
 
@@ -937,7 +940,7 @@ namespace EllipseMstExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new EllipseMaintSchedTaskClassLibrary.MstService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
@@ -1047,7 +1050,7 @@ namespace EllipseMstExcelAddIn
 
             var opContext = new EllipseMaintSchedTaskClassLibrary.MstService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings

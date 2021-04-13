@@ -276,7 +276,7 @@ namespace EllipseConsolidacionesExcelAddIn
                 //ScreenService Opción en reemplazo de los servicios
                 var opContext = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -417,7 +417,7 @@ namespace EllipseConsolidacionesExcelAddIn
 
                 var opContext = new CatalogueService.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,

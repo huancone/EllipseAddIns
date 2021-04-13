@@ -4,6 +4,7 @@ using EllipseReferenceCodesClassLibrary;
 using EllipseStandardJobsClassLibrary.StandardJobService;
 using EllipseStdTextClassLibrary;
 using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseStandardJobsClassLibrary
 {
@@ -41,14 +42,14 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.compCode = stdJob.CompCode ?? requestStdJob.compCode;
             requestStdJob.compModCode = stdJob.CompModCode ?? requestStdJob.compModCode;
             requestStdJob.unitOfWork = stdJob.UnitOfWork ?? requestStdJob.unitOfWork;
-            requestStdJob.unitsRequired = stdJob.UnitsRequired != null ? Convert.ToDecimal(stdJob.UnitsRequired) : default(decimal);
-            requestStdJob.unitsRequiredSpecified = stdJob.UnitsRequired != null;
+            requestStdJob.unitsRequired = !string.IsNullOrEmpty(stdJob.UnitsRequired) ? MyUtilities.ToDecimal(stdJob.UnitsRequired, IxConversionConstant.DefaultEmptyOnly) : default(decimal);
+            requestStdJob.unitsRequiredSpecified = !string.IsNullOrEmpty(stdJob.UnitsRequired);
 
             requestStdJob.accountCode = stdJob.AccountCode ?? requestStdJob.accountCode;
             requestStdJob.reallocAccCode = stdJob.ReallocAccCode ?? requestStdJob.reallocAccCode;
             requestStdJob.projectNo = stdJob.ProjectNo ?? requestStdJob.projectNo;
-            requestStdJob.estimatedOtherCost = stdJob.EstimatedOtherCost != null ? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
-            requestStdJob.estimatedOtherCostSpecified = stdJob.EstimatedOtherCost != null;
+            requestStdJob.estimatedOtherCost = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost)? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
+            requestStdJob.estimatedOtherCostSpecified = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost);
             requestStdJob.estimatedDurationsHrs = stdJob.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdJob.EstimatedDurationsHrs) : default(decimal);
             requestStdJob.estimatedDurationsHrsSpecified = stdJob.EstimatedDurationsHrs != null;
             requestStdJob.calculatedDurationsHrsFlg = Convert.ToBoolean(stdJob.CalculatedDurationsHrsFlg);
@@ -574,33 +575,60 @@ namespace EllipseStandardJobsClassLibrary
             var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", stdJobReferenceCodes.Departamento);
             var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", stdJobReferenceCodes.Localizacion);
 
-            itemList.Add(item001);
-            itemList.Add(item002);
-            itemList.Add(item003);
-            itemList.Add(item005);
-            itemList.Add(item006);
-            itemList.Add(item007);
-            itemList.Add(item008);
-            itemList.Add(item009);
-            itemList.Add(item010);
-            itemList.Add(item011);
-            itemList.Add(item012);
-            itemList.Add(item013);
-            itemList.Add(item014);
-            itemList.Add(item015);
-            itemList.Add(item016);
-            itemList.Add(item017);
-            itemList.Add(item018);
-            itemList.Add(item019);
-            itemList.Add(item020);
-            itemList.Add(item021);
-            itemList.Add(item022);
-            itemList.Add(item024);
-            itemList.Add(item025);
-            itemList.Add(item026);
-            itemList.Add(item029);
-            itemList.Add(item030);
-            itemList.Add(item031);
+            if (item001.RefCode != null)
+                itemList.Add(item001);
+            if (item002.RefCode != null)
+                itemList.Add(item002);
+            if (item003.RefCode != null)
+                itemList.Add(item003);
+            if (item005.RefCode != null)
+                itemList.Add(item005);
+            if (item006.RefCode != null)
+                itemList.Add(item006);
+            if (item007.RefCode != null)
+                itemList.Add(item007);
+            if (item008.RefCode != null)
+                itemList.Add(item008);
+            if (item009.RefCode != null)
+                itemList.Add(item009);
+            if (item010.RefCode != null)
+                itemList.Add(item010);
+            if (item011.RefCode != null)
+                itemList.Add(item011);
+            if (item012.RefCode != null)
+                itemList.Add(item012);
+            if (item013.RefCode != null)
+                itemList.Add(item013);
+            if (item014.RefCode != null)
+                itemList.Add(item014);
+            if (item015.RefCode != null)
+                itemList.Add(item015);
+            if (item016.RefCode != null)
+                itemList.Add(item016);
+            if (item017.RefCode != null)
+                itemList.Add(item017);
+            if (item018.RefCode != null)
+                itemList.Add(item018);
+            if (item019.RefCode != null)
+                itemList.Add(item019);
+            if (item020.RefCode != null)
+                itemList.Add(item020);
+            if (item021.RefCode != null)
+                itemList.Add(item021);
+            if (item022.RefCode != null)
+                itemList.Add(item022);
+            if (item024.RefCode != null)
+                itemList.Add(item024);
+            if (item025.RefCode != null)
+                itemList.Add(item025);
+            if (item026.RefCode != null)
+                itemList.Add(item026);
+            if (item029.RefCode != null)
+                itemList.Add(item029);
+            if (item030.RefCode != null)
+                itemList.Add(item030);
+            if (item031.RefCode != null)
+                itemList.Add(item031);
 
             var refOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 

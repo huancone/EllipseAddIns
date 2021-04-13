@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using LINQtoCSV;
-using SharedClassLibrary.Connections.Oracle;
-using SharedClassLibrary.Ellipse;
-using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary;
 using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Connections.Oracle;
+using SharedClassLibrary.Ellipse.Connections;
 using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 
@@ -14,18 +17,40 @@ namespace BonoDeTopeados
     public partial class FormMainScreen : Form
     {
         private Thread _thread;
-
+        private EllipseFunctions _eFunctions;
+        private Application _excelApp;
 
         public FormMainScreen()
         {
             InitializeComponent();
-
+            LoadSettings();
             cbPeriodMode.Items.Add("NORMAL");
             cbPeriodMode.Items.Add("MES CORRIDO");
             cbPeriodMode.Items.Add("MES FIJO");
             cbPeriodMode.SelectedIndex = 0;
-        }
 
+            var currentDate = DateTime.Today.AddDays(-30);
+            tbYear.Text = "" + currentDate.Year;
+            tbPeriod.Text = "" + (currentDate.Month / 3);
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            settings.SaveCustomSettings();
+        }
         private void btnLoadEmployeeTurns_Click(object sender, EventArgs e)
         {
             var periodMode = "" + cbPeriodMode.SelectedItem;
@@ -38,6 +63,10 @@ namespace BonoDeTopeados
 
         public void LoadEmployeeTurns(string periodMode)
         {
+            var ef = new OracleConnector(Environments.GetDatabaseItem(Environments.SigcorProductivo));
+            var btYear = MyUtilities.ToInteger(tbYear.Text);
+            var btPeriod = MyUtilities.ToInteger(tbPeriod.Text);
+            DatePeriod.SetPeriod(btYear, btPeriod);
             try
             {
                 //Abrir el archivo
@@ -66,60 +95,79 @@ namespace BonoDeTopeados
                 Debugger.DebugginMode = false;
 
                 EmployeeTurns prevEmp = null;
-
-                var ef = new EllipseFunctions();
-                ef.SetDBSettings(Environments.SigcorProductivo);
-
+                var totalItems = listadoEmpleadoFile.Count();
+                var currentItem = 0;
                 foreach (var f in listadoEmpleadoFile)
                 {
-                    if(prevEmp == null)
-                        prevEmp = new EmployeeTurns(f, periodMode);
+
+                    currentItem++;
+                    Invoke((MethodInvoker)delegate ()
+                    {
+                        lblProgress.Text = currentItem + "/" + totalItems;
+                    });
+
                     var curEmp = new EmployeeTurns(f, periodMode);
+                    //Si no es del periodo
+                    if (curEmp.Anho != btYear || curEmp.Periodo != btPeriod)
+                        continue;
 
                     //Si es diferente  estas superintendencias
                     if (!(curEmp.DescSuperintendencia.Equals("PLANTAS DE CARBON") ||
-                        curEmp.DescSuperintendencia.Equals("PLANTAS FLUJO Y CONT CAL CARB") ||
-                        curEmp.DescSuperintendencia.Equals("SUPERINTENDENTE ASISTENTE OPM") ||
-                        curEmp.DescSuperintendencia.Equals("FERROCARRIL") ||
-                        curEmp.DescSuperintendencia.Equals("PUERTO") ||
-                        curEmp.DescSuperintendencia.Equals("PLANEACION ANALISIS Y MEJORAM")))
+                          curEmp.DescSuperintendencia.Equals("PLANTAS FLUJO Y CONT CAL CARB") ||
+                          curEmp.DescSuperintendencia.Equals("SUPERINTENDENTE ASISTENTE OPM") ||
+                          curEmp.DescSuperintendencia.Equals("FERROCARRIL") ||
+                          curEmp.DescSuperintendencia.Equals("PUERTO") ||
+                          curEmp.DescSuperintendencia.Equals("PLANEACION ANALISIS Y MEJORAM")))
                     {
                         continue;
                     }
 
-                    if (curEmp.Equals(prevEmp, true))
+                    if (prevEmp == null)
+                        prevEmp = curEmp;
+                    else if (curEmp.Equals(prevEmp, true))
                         prevEmp.SumTurns(curEmp);
                     else
                     {
                         //INGRESAR
                         Debugger.LogDebugging(prevEmp.Cedula + "\t" + prevEmp.Nombre + "\t" + prevEmp.Anho + "\t" + prevEmp.Periodo + "\t" + prevEmp.TurnoD +
-                                              "\t" + prevEmp.TurnoD + 
-                                              "\t" + prevEmp.TurnoL + 
-                                              "\t" + prevEmp.TurnoI + 
-                                              "\t" + prevEmp.TurnoM + 
-                                              "\t" + prevEmp.TurnoN + 
-                                              "\t" + prevEmp.TurnoP + 
-                                              "\t" + prevEmp.TurnoT + 
-                                              "\t" + prevEmp.TurnoV + 
-                                                "\t" + prevEmp.TurnoOtro);
+                                              "\t" + prevEmp.TurnoD +
+                                              "\t" + prevEmp.TurnoL +
+                                              "\t" + prevEmp.TurnoI +
+                                              "\t" + prevEmp.TurnoM +
+                                              "\t" + prevEmp.TurnoN +
+                                              "\t" + prevEmp.TurnoP +
+                                              "\t" + prevEmp.TurnoT +
+                                              "\t" + prevEmp.TurnoV +
+                                              "\t" + prevEmp.TurnoOtro);
                         var sqlQuery = Queries.InsertEmployeeTurnType(prevEmp);
                         ef.GetQueryResult(sqlQuery);
                         prevEmp = curEmp;
                     }
+
+                    
+                    
                 }
-                this.UseWaitCursor = false;
+
+                
                 MessageBox.Show("Proceso terminado");
             }
             catch (Exception ex)
             {
-                this.UseWaitCursor = false;
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                this.UseWaitCursor = false;
+                ef.CloseConnection();
             }
         }
 
         public void LoadEmployeeCovidValue(string periodMode)
         {
-            var ef = new EllipseFunctions();
+            var ef = new OracleConnector(Environments.GetDatabaseItem(Environments.SigcorProductivo));
+            var btYear = MyUtilities.ToInteger(tbYear.Text);
+            var btPeriod = MyUtilities.ToInteger(tbPeriod.Text);
+            DatePeriod.SetPeriod(btYear, btPeriod);
             try
             {
                 //Abrir el archivo
@@ -145,21 +193,32 @@ namespace BonoDeTopeados
                 var cc = new CsvContext();
                 var listadoEmpleadoFile = cc.Read<AusentismoEmpleadoItem>(filePath, inputFileDescription);
                 //
-                Debugger.DebugginMode = false;
+                Debugger.DebugginMode = true;
 
                 EmployeeTurns prevEmp = null;
-
-                ef.SetDBSettings(Environments.SigcorProductivo);
-
+                var totalItems = listadoEmpleadoFile.Count();
+                var currentItem = 0;
                 foreach (var f in listadoEmpleadoFile)
                 {
-                    if (prevEmp == null)
-                        prevEmp = GetEmployeeTurn(f.EmployeeId, f.Anho, f.Mes, periodMode);
+                    currentItem++;
+                    Invoke((MethodInvoker)delegate ()
+                    {
+                        lblProgress.Text = currentItem + "/" + totalItems;
+                    });
 
                     if (prevEmp == null)
+                        prevEmp = GetEmployeeTurn(f.EmployeeId, btYear, btPeriod, periodMode);
+                    if (prevEmp == null)
                         continue;
-                    if (f.EmployeeId.Equals(prevEmp.Cedula) && prevEmp.Period(prevEmp.Cedula, prevEmp.CodDependencia, f.Mes, periodMode) == prevEmp.Periodo)
+
+
+                    if (f.EmployeeId.Equals(prevEmp.Cedula))
+                    {
+                        var filePeriod = DatePeriod.GetPeriod(f.EmployeeId, prevEmp.CodDependencia, f.Anho, f.Mes, periodMode);
+                        if (filePeriod.Year != btYear || filePeriod.Period != btPeriod)
+                            continue;
                         prevEmp.TurnoOtro += f.Hr886;
+                    }
                     else
                     {
                         //INGRESAR
@@ -173,18 +232,31 @@ namespace BonoDeTopeados
                                               //"\t" + prevEmp.TurnoT +
                                               //"\t" + prevEmp.TurnoV +
                                               "\t" + prevEmp.TurnoOtro);
-                        if (prevEmp.Periodo == 2 || prevEmp.Periodo == 3)
-                        {
-                            var sqlQuery = Queries.InsertEmployeeTurn886(prevEmp);
-                            ef.GetQueryResult(sqlQuery);
-                        }
 
-                        prevEmp = GetEmployeeTurn(f.EmployeeId, f.Anho, f.Mes, periodMode);
+
+                        var sqlQuery = Queries.InsertEmployeeTurn886(prevEmp);
+                        ef.ExecuteQuery(sqlQuery);
+
+
+                        prevEmp = GetEmployeeTurn(f.EmployeeId, btYear, btPeriod, periodMode);
                         if (prevEmp != null)
+                        {
+                            var filePeriod = DatePeriod.GetPeriod(f.EmployeeId, prevEmp.CodDependencia, f.Anho, f.Mes, periodMode);
+                            if (filePeriod.Year != btYear || filePeriod.Period != btPeriod)
+                                continue;
                             prevEmp.TurnoOtro += f.Hr886;
+                        }
                     }
+
+
+
                 }
 
+                if (prevEmp != null)
+                {
+                    var sqlQuery = Queries.InsertEmployeeTurn886(prevEmp);
+                    ef.ExecuteQuery(sqlQuery);
+                }
                 MessageBox.Show("Proceso terminado");
             }
             catch (Exception ex)
@@ -199,23 +271,22 @@ namespace BonoDeTopeados
             }
         }
 
-        public EmployeeTurns GetEmployeeTurn(string cedula, int anho, int mes, string periodMode)
+        public EmployeeTurns GetEmployeeTurn(string cedula, int anho, int period, string periodMode)
         {
-            var ef = new OracleConnector(Environments.GetDatabaseItem(Environments.SigcorProductivo));
+            var dbConn = new OracleConnector(Environments.GetDatabaseItem(Environments.SigcorProductivo));
             var empTurn = new EmployeeTurns();
 
-            var sqlQuery = Queries.GetEmployeeTurnType(cedula, anho);
-            var dReader = ef.GetQueryResult(sqlQuery);
-            if (dReader == null || dReader.IsClosed)
+            var sqlQuery = Queries.GetEmployeeTurnType(cedula, anho, period);
+            var dReader = dbConn.GetQueryResult(sqlQuery);
+            if (dReader == null || dReader.IsClosed || !dReader.Read())
             {
-                ef.CloseConnection();
+                dbConn.CloseConnection();
                 return null;
             }
 
-            dReader.Read();
             empTurn.Cedula = "" + dReader["CEDULA"].ToString().Trim();
             empTurn.Anho = MyUtilities.ToInteger("" + dReader["ANO"].ToString().Trim());
-            //empTurn.Periodo = MyUtilities.ToInteger("" + dReader["PERIODO"].ToString().Trim());
+            empTurn.Periodo = MyUtilities.ToInteger("" + dReader["PERIODO"].ToString().Trim());
             empTurn.Nombre = "" + dReader["NOMBRE"].ToString().Trim();
             empTurn.Cargo = "" + dReader["CARGO"].ToString().Trim();
             empTurn.CodSuperintendencia = MyUtilities.ToInteger("" + dReader["COD_SUPERINTENDENCIA"].ToString().Trim());
@@ -237,8 +308,7 @@ namespace BonoDeTopeados
             empTurn.TurnoV = MyUtilities.ToInteger("" + dReader["TURNO_V"].ToString().Trim());
             //empTurn.TurnoOtro = MyUtilities.ToInteger("" + dReader["TURNO_OTRO"].ToString().Trim());
 
-            empTurn.Periodo = empTurn.Period(empTurn.Cedula, empTurn.CodDependencia, mes, periodMode);
-            ef.CloseConnection();
+            dbConn.CloseConnection();
             return empTurn;
         }
 

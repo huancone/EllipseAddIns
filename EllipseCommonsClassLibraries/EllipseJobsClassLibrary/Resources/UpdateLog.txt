@@ -1,0 +1,8 @@
+﻿EllipseWorkOrderClassLibrary
+
+Versión 1.0.2.0, Liberada el 23 de Enero de 2021
+* Actualización de enlace a servicios de Ellipse 9
+* Se adiciona el archivo de UpdateLog.txt para registro de actualizaciones
+
+Versión 1.0.2.1, Liberada el 23 de Febrero de 2021
+* Se actualiza por ajuste de estandarización de clase IxConversionContants de librería SharedClassLibrary 

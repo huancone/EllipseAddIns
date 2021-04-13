@@ -1,0 +1,9 @@
+﻿EllipseEquipmentExcelAddIn
+
+Versión 1.2.0.0, Liberada el 23 de Enero de 2021
+* Actualización de enlace a servicios de Ellipse 9 para los servicios de EquipmentListService, EquipmentService y EquipTraceService
+* Se adiciona el archivo de UpdateLog.txt para registro de actualizaciones
+Versión 1.2.0.3, Liberada el 15 de Febrero de 2022
+* Se corrige la consulta del campo stock code del equipo (al actualizar la librería)
+* Se corrige el cierre del datareader al hacer consultas de equipos no existentes en la reconsulta
+* Se corrige el mensaje de no recibir respuesta siempre que se realizaba una acción de montaje/desmontaje

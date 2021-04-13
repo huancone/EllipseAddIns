@@ -268,7 +268,7 @@ namespace EllipseMSO210ExcelAddin
 
             var opSheet = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -328,7 +328,7 @@ namespace EllipseMSO210ExcelAddin
                                         //Opcion 1, selecciona la opcion de creacion de Supplier preferido.
                                         arrayFields = new ArrayScreenNameValue();
                                         arrayFields.Add("OPTION1I", "1");
-                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDsct);
+                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDstrct);
                                         arrayFields.Add("STOCK_CODE1I", stockCode);
                                         requestSheet.screenFields = arrayFields.ToArray();
 
@@ -365,7 +365,7 @@ namespace EllipseMSO210ExcelAddin
                                         //Opcion 1, selecciona la opcion de creacion de Supplier preferido.
                                         arrayFields = new ArrayScreenNameValue();
                                         arrayFields.Add("OPTION1I", "3");
-                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDsct);
+                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDstrct);
                                         arrayFields.Add("STOCK_CODE1I", stockCode);
                                         arrayFields.Add("SUPPLIER_NO1I", supplierNo);
                                         arrayFields.Add("PRICE_CODE1I", priceCode);
@@ -399,7 +399,7 @@ namespace EllipseMSO210ExcelAddin
                                         //Opcion 1, selecciona la opcion de creacion de Supplier preferido.
                                         arrayFields = new ArrayScreenNameValue();
                                         arrayFields.Add("OPTION1I", "4");
-                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDsct);
+                                        arrayFields.Add("DISTRICT_CODE1I", _frmAuth.EllipseDstrct);
                                         arrayFields.Add("STOCK_CODE1I", stockCode);
                                         arrayFields.Add("SUPPLIER_NO1I", supplierNo);
                                         arrayFields.Add("PRICE_CODE1I", priceCode);

@@ -324,7 +324,7 @@ namespace EllipseMonitoreoExcelAddIn
                 {
                     /* if (true)
                      {
-                         frmAuth.EllipseDsct = "ICOR";
+                         frmAuth.EllipseDstrct = "ICOR";
                          frmAuth.EllipsePost = "";
                          frmAuth.EllipseUser = "";
                          frmAuth.EllipsePswd = "";*/
@@ -367,7 +367,7 @@ namespace EllipseMonitoreoExcelAddIn
 
                                     proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/CondMeasurementService";
 
-                                    opSheet.district = frmAuth.EllipseDsct;
+                                    opSheet.district = frmAuth.EllipseDstrct;
                                     opSheet.position = frmAuth.EllipsePost;
                                     opSheet.maxInstances = 100;
                                     opSheet.returnWarnings = Debugger.DebugWarnings;
@@ -427,7 +427,7 @@ namespace EllipseMonitoreoExcelAddIn
                 {
                     /* if (true)
                      {
-                         frmAuth.EllipseDsct = "ICOR";
+                         frmAuth.EllipseDstrct = "ICOR";
                          frmAuth.EllipsePost = "";
                          frmAuth.EllipseUser = "";
                          frmAuth.EllipsePswd = "";*/
@@ -470,7 +470,7 @@ namespace EllipseMonitoreoExcelAddIn
 
                                     proxySheet.Url = "http://ews-eamprd.lmnerp01.cerrejon.com/ews/services" + "/CondMeasurementService";
 
-                                    opSheet.district = frmAuth.EllipseDsct;
+                                    opSheet.district = frmAuth.EllipseDstrct;
                                     opSheet.position = frmAuth.EllipsePost;
                                     opSheet.maxInstances = 100;
                                     opSheet.returnWarnings = Debugger.DebugWarnings;
@@ -549,7 +549,7 @@ namespace EllipseMonitoreoExcelAddIn
                 {
                     /*if (true)
                     {
-                        frmAuth.EllipseDsct = "";
+                        frmAuth.EllipseDstrct = "";
                         frmAuth.EllipsePost = "";
                         frmAuth.EllipseUser = "";
                         frmAuth.EllipsePswd = "";*/
@@ -590,7 +590,7 @@ namespace EllipseMonitoreoExcelAddIn
 
                                 proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/CondMeasurementService";
 
-                                opSheet.district = frmAuth.EllipseDsct;
+                                opSheet.district = frmAuth.EllipseDstrct;
                                 opSheet.position = frmAuth.EllipsePost;
                                 opSheet.maxInstances = 100;
                                 opSheet.returnWarnings = Debugger.DebugWarnings;
@@ -635,7 +635,7 @@ namespace EllipseMonitoreoExcelAddIn
                 {
                     /*if (true)
                     {
-                        frmAuth.EllipseDsct = "";
+                        frmAuth.EllipseDstrct = "";
                         frmAuth.EllipsePost = "";
                         frmAuth.EllipseUser = "";
                         frmAuth.EllipsePswd = "";*/
@@ -676,7 +676,7 @@ namespace EllipseMonitoreoExcelAddIn
 
                                 proxySheet.Url = "http://ews-eamprd.lmnerp01.cerrejon.com/ews/services" + "/CondMeasurementService";
 
-                                opSheet.district = frmAuth.EllipseDsct;
+                                opSheet.district = frmAuth.EllipseDstrct;
                                 opSheet.position = frmAuth.EllipsePost;
                                 opSheet.maxInstances = 100;
                                 opSheet.returnWarnings = Debugger.DebugWarnings;

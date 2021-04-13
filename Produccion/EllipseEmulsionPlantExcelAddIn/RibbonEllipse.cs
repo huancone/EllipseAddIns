@@ -1,30 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Text;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.MyDateTime;
-using Excel = Microsoft.Office.Interop.Excel;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using SharedClassLibrary.Utilities;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Oracle.ManagedDataAccess.Client;
 using System.Web.Services.Ellipse;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 using System.Windows.Forms;
 using EllipseEmulsionPlantExcelAddIn.LogSheet;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseEmulsionPlantExcelAddIn
 {
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Application _excelApp;
 
         private const string SheetName01 = "Emulsión";
@@ -44,6 +38,14 @@ namespace EllipseEmulsionPlantExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -53,7 +55,40 @@ namespace EllipseEmulsionPlantExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-            
+
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+            //settings.SetDefaultCustomSettingValue("AllowBackgroundWork", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Always"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+            //cbAllowBackgroundWork.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AllowBackgroundWork"));
+
+            //
+            settings.SaveCustomSettings();
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
@@ -325,11 +360,11 @@ namespace EllipseEmulsionPlantExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -419,11 +454,11 @@ namespace EllipseEmulsionPlantExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -518,11 +553,11 @@ namespace EllipseEmulsionPlantExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -578,11 +613,11 @@ namespace EllipseEmulsionPlantExcelAddIn
             _cells.ClearTableRangeColumn(tableName, resultColumn);
 
             var i = titleRow + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var opContext = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,

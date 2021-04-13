@@ -220,7 +220,7 @@ namespace BonoDeTopeados
             return query;
         }
 
-        public static string GetEmployeeTurnType(string cedula, int anho)
+        public static string GetEmployeeTurnType(string cedula, int anho, int periodo)
         {
             var query = "SELECT " +
                         "  E.ANO, " +
@@ -247,8 +247,16 @@ namespace BonoDeTopeados
                         "  E.TURNO_V, " +
                         "  E.TURNO_OTRO " +
                         " FROM SIGMDC.TBL_RH_EMPLOYEE_TURNOTYPE E" +
-                        " WHERE E.CEDULA = '" + cedula + "' AND E.ANO = '" + anho + "'";
+                        " WHERE E.CEDULA = '" + cedula + "' AND E.ANO = '" + anho + "' AND E.PERIODO = '" + periodo + "'";
 
+            return query;
+        }
+
+        public static string GetPlantOperationsEmployees(string anho, string periodo)
+        {
+            var query = "SELECT EMPS.CEDULA" +
+            " FROM SIGMDC.TBL_KPIS_SILOS EMPS" +
+                " WHERE EMPS.ANO = '" + anho + "' AND EMPS.PERIODO = '" + periodo + "'";
             return query;
         }
     }

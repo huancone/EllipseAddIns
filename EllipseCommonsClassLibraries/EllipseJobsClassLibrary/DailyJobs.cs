@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -23,5 +24,24 @@ namespace EllipseJobsClassLibrary
         public string EstimatedResourceHours { get; set; }
         public string ActualResourceHours { get; set; }
         public string ShiftLabourHours { get; set; }
+
+        public DailyJobs()
+        {
+
+        }
+        public DailyJobs(IDataRecord dr)
+        {
+            WorkGroup = dr["WORK_GROUP"].ToString().Trim();
+            WorkOrder = dr["WORK_ORDER"].ToString().Trim();
+            WoTaskNo = dr["WO_TASK_NO"].ToString().Trim();
+            WoTaskDesc = dr["WO_TASK_DESC"].ToString().Trim();
+            Shift = dr["SHIFT"].ToString().Trim();
+            PlanStrDate = dr["PLAN_STR_DATE"].ToString().Trim();
+            PlanFinDate = dr["PLAN_FIN_DATE"].ToString().Trim();
+            EstimatedDurationsHrs = dr["TSK_DUR_HOURS"].ToString().Trim();
+            EstimatedShiftDurationsHrs = dr["SHIFT_TSK_DUR_HOURS"].ToString().Trim();
+            ResourceCode = dr["RES_CODE"].ToString().Trim();
+            ShiftLabourHours = dr["SHIFT_LAB_HOURS"].ToString().Trim();
+        }
     }
 }

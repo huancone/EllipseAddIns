@@ -11,7 +11,7 @@ using SharedClassLibrary.Utilities;
 
 namespace SharedClassLibrary.Ellipse
 {
-    public class EllipseFunctions
+    public class EllipseFunctions : IDisposable
     {
         private DatabaseItem _dbItem;
 
@@ -578,9 +578,9 @@ namespace SharedClassLibrary.Ellipse
 
         //Post methods deprecated
         /*
-        public PostService SetPostService(string ellipseUser, string ellipsePswd, string ellipsePost, string ellipseDsct, string urlService)
+        public PostService SetPostService(string ellipseUser, string ellipsePswd, string ellipsePost, string EllipseDstrct, string urlService)
         {
-            PostServiceProxy = new PostService(ellipseUser, ellipsePswd, ellipsePost, ellipseDsct, urlService);
+            PostServiceProxy = new PostService(ellipseUser, ellipsePswd, ellipsePost, EllipseDstrct, urlService);
             return PostServiceProxy;
         }
 
@@ -597,6 +597,12 @@ namespace SharedClassLibrary.Ellipse
         }
         */
 
+        public void Dispose()
+        {
+            _sqlConn?.Dispose();
+            _sqlComm?.Dispose();
+            _oracleConnector?.Dispose();
+        }
     }
     
 

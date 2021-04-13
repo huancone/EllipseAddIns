@@ -80,22 +80,18 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
             return (int)Math.Round(calculatedTaxValue, MidpointRounding.AwayFromZero);
         }
 
-        public static Screen.ScreenDTO LoadNonInvoice(EllipseFunctions ef, string urlService, Invoice invoice, List<InvoiceItem> invoiceItemList)
+        public static Screen.ScreenDTO LoadNonInvoice(EllipseFunctions ef, string urlService, Screen.OperationContext opContext, Invoice invoice, List<InvoiceItem> invoiceItemList)
         {
                 var screenService = new Screen.ScreenService();
-                var opContext = new Screen.OperationContext();
-
                 screenService.Url = urlService + "/ScreenService";
 
-
+                ef.RevertOperation(opContext, screenService);
                 //Default Values
-                if (string.IsNullOrWhiteSpace(invoice.District))
-                    invoice.District = "ICOR";
                 if (string.IsNullOrWhiteSpace(invoice.Currency))
                     invoice.Currency = "PES";
                 if (string.IsNullOrWhiteSpace(invoice.HandlingCode))
                     invoice.HandlingCode = "PN";
-
+                
                 if (string.IsNullOrWhiteSpace(invoice.BankBranchCode) || string.IsNullOrWhiteSpace(invoice.BankAccountNo))
                 {
                     var supplier = new Supplier(ef, invoice.SupplierNo, invoice.SupplierMnemonic, invoice.District);
@@ -142,7 +138,7 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                             arrayFields.Add("MNEMONIC1I", invoice.SupplierMnemonic);
                         if (!string.IsNullOrWhiteSpace(invoice.GovernmentId))
                             arrayFields.Add("GOVT_ID1I", invoice.GovernmentId);
-                        arrayFields.Add("SUPPLIEINV_NO1IR_NO1I", invoice.InvoiceNo);
+                        arrayFields.Add("INV_NO1I", invoice.InvoiceNo);
                         arrayFields.Add("INV_AMT1I", invoice.InvoiceAmount);
                         if (invoice.TaxAmount != 0)
                             arrayFields.Add("ADD_TAX_AMOUNT1I", "" + invoice.TaxAmount);
@@ -183,7 +179,7 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                             arrayFields.Add("WORK_ORDER1I" + iItem, invoiceItemList[i].WorkOrderProjectNo);
 
                         if (!string.IsNullOrWhiteSpace(invoiceItemList[i].WorkOrderProjectIndicator))
-                            arrayFields.Add("WORK_PROJ_IND" + iItem, invoiceItemList[i].WorkOrderProjectIndicator);
+                            arrayFields.Add("PROJECT_IND1I" + iItem, invoiceItemList[i].WorkOrderProjectIndicator);
 
                         if (!string.IsNullOrWhiteSpace(invoiceItemList[i].EquipNo))
                             arrayFields.Add("PLANT_NO1I" + iItem, invoiceItemList[i].EquipNo);
@@ -199,7 +195,11 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                     };
                     reply = screenService.submit(opContext, request);
                     if (ef.CheckReplyError(reply))
+                    {
+                        if(reply != null && !string.IsNullOrWhiteSpace(reply.message) && reply.message.Contains("X2:0011 - INPUT REQUIRED"))
+                            throw new Exception(reply.message + " " + reply.currentCursorFieldName);
                         throw new Exception(reply.message);
+                    }
 
                     //Pantalla de información del proveedor a la que ingresa internamente por el MNEMONIC / Cedula. Aquí es <4 porque el contador es válido para los tres primeros ítems
                     if (currentItemIndex < 4 && string.IsNullOrWhiteSpace(invoice.SupplierNo) && !string.IsNullOrWhiteSpace(invoice.SupplierMnemonic))
@@ -309,7 +309,7 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                         if (ef.CheckReplyError(reply))
                             throw new Exception(reply.message);
 
-                    } while (ef.CheckReplyWarning(reply) || reply.message.Contains("4493: ALL AMOUNTS ARE IN THE CURRENCY DISPLAYED ABOVE"));
+                    } while (ef.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.message.Contains("4493: ALL AMOUNTS ARE IN THE CURRENCY DISPLAYED ABOVE"));
 
                     currentItemLimit = currentItemLimit + 3;
                 }
@@ -328,7 +328,7 @@ namespace EllipseMSO265ExcelAddIn.Invoice265
                         throw new Exception(reply.message);
                 }
 
-                return reply;
+            return reply;
         }
 
         /*

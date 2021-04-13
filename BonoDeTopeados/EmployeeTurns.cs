@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.Shifts;
+using SharedClassLibrary.Utilities;
 
 namespace BonoDeTopeados
 {
@@ -39,7 +38,9 @@ namespace BonoDeTopeados
             var date = MyUtilities.ToDateTime(empleadoItem.Fecha, "yyyy-mm-dd");
             Anho = MyUtilities.ToInteger(MyUtilities.ToString(date, "yyyy"));
             var month = MyUtilities.ToInteger(MyUtilities.ToString(date, "mm"));
-            Periodo = Period(empleadoItem.EmployeeId, empleadoItem.CodCuadrilla, month, modoPeriodo);
+            var datePeriod = DatePeriod.GetPeriod(empleadoItem.EmployeeId, empleadoItem.CodCuadrilla, Anho, month, modoPeriodo);
+            Anho = datePeriod.Year;
+            Periodo = datePeriod.Period;
             Nombre = empleadoItem.Nombre;
             Cargo = empleadoItem.Cargo;
 
@@ -81,65 +82,7 @@ namespace BonoDeTopeados
 
         }
 
-        public int Period(string cedula, int codDependencia, int month, string modoPeriodo = "NORMAL")
-        {
-            if (modoPeriodo.Equals("MES CORRIDO"))
-                return LagPeriod(month);
-            if(modoPeriodo.Equals("MES FIJO"))
-                return NormalPeriod(month);
-            //Dependencias Operaciones
-            var fcOperacionesDependencias = new List<int> {102571, 102572, 102573, 102574};
-            var pbvOperacionesDependencias = new List<int> {104262,104261 };
-            var pbvOperacionesMarinasDependencias = new List<int> { 104482, 104483, 104484, 104485, 104490, 104491, 105014 , 105015, 105016, 105017 };
-            var plOperacionesCedulas = new List<string> { "8791029", "84032997", "84009505", "5172132", "5165706", "5164429", "84009735", "17957448", "84080914", "15186148", "1120746035", "17971385", "84093114", "84008323"};
-
-            foreach(var d in fcOperacionesDependencias)
-            {
-                if (d == codDependencia)
-                    return NormalPeriod(month);
-            }
-            foreach (var d in pbvOperacionesDependencias)
-            {
-                if (d == codDependencia)
-                    return NormalPeriod(month);
-            }
-            foreach (var d in pbvOperacionesMarinasDependencias)
-            {
-                if (d == codDependencia)
-                    return NormalPeriod(month);
-            }
-            foreach (var c in plOperacionesCedulas)
-            {
-                if (c.Equals(cedula))
-                    return NormalPeriod(month);
-            }
-            //NORMAL PERIOD - OPERACIONES
-            return LagPeriod(month);
-        }
-
-        private int LagPeriod(int month)
-        {
-            //LAGPERIOD
-            if (month >= 12)
-                return 1;
-            else if (month < 3)
-                return 1;
-            else if (month < 6)
-                return 2;
-            else if (month < 9)
-                return 3;
-            else return 4;
-        }
-        private int NormalPeriod(int month)
-        {
-            if (month <= 3)
-                return 1;
-            else if (month <= 6)
-                return 2;
-            else if (month <= 9)
-                return 3;
-            else return 4;
-        }
+        
         public bool Equals(EmployeeTurns employeeTurn, bool ignoreTurns = false)
         {
             //Cedula

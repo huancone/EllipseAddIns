@@ -41,14 +41,14 @@
     <PublishUrl>D:\Projects\Release\EllipseEquipmentExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.0.0</ApplicationVersion>
+    <ApplicationVersion>1.2.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>EllipseEquipmentExcelAddIn</ProductName>
     <PublisherName>Hambings SAS</PublisherName>
-    <SupportUrl />
+    <SupportUrl>http://mailto:hernandezrhectorj%40gmail.com</SupportUrl>
     <FriendlyName>EllipseEquipmentExcelAddIn</FriendlyName>
     <OfficeApplicationDescription>Loader de consulta y actualización masiva de equipos para Ellipse 8 en Cerrejon Ltda</OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
@@ -263,8 +263,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\UpdateLog.txt" />
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

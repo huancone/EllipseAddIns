@@ -164,7 +164,7 @@ namespace EllipseStatisticsProfileExcelAddIn
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             var opSheet = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
