@@ -11,7 +11,7 @@ using SharedClassLibrary.Utilities;
 
 namespace SharedClassLibrary.Ellipse
 {
-    public class EllipseFunctions
+    public class EllipseFunctions : IDisposable
     {
         private DatabaseItem _dbItem;
 
@@ -597,6 +597,12 @@ namespace SharedClassLibrary.Ellipse
         }
         */
 
+        public void Dispose()
+        {
+            _sqlConn?.Dispose();
+            _sqlComm?.Dispose();
+            _oracleConnector?.Dispose();
+        }
     }
     
 

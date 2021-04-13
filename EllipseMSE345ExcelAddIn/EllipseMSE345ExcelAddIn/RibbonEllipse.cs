@@ -525,6 +525,9 @@ namespace EllipseMSE345ExcelAddIn
 
         private void LoadInfoMntto()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
             var monitorType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B7").Value);
             var monitorEquipment = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B8").Value);
             var monitorDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B9").Value);

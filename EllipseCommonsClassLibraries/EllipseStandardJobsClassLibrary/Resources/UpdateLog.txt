@@ -6,3 +6,6 @@ Versión 1.0.2.0, Liberada el 23 de Enero de 2021
 
 Versión 1.0.2.5, Liberada el 01 de Marzo de 2021
 * Se corrige cambio en el servicio de Reference Codes donde ya no se ignora si no que se muestra error si el atributo RefCode es nulo
+
+Versión 1.0.2.5, Liberada el 28 de Marzo de 2021
+* Se corrige en la actualización el valor para las units required cuando está vacío

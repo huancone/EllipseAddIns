@@ -4,6 +4,7 @@ using EllipseReferenceCodesClassLibrary;
 using EllipseStandardJobsClassLibrary.StandardJobService;
 using EllipseStdTextClassLibrary;
 using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseStandardJobsClassLibrary
 {
@@ -41,14 +42,14 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.compCode = stdJob.CompCode ?? requestStdJob.compCode;
             requestStdJob.compModCode = stdJob.CompModCode ?? requestStdJob.compModCode;
             requestStdJob.unitOfWork = stdJob.UnitOfWork ?? requestStdJob.unitOfWork;
-            requestStdJob.unitsRequired = stdJob.UnitsRequired != null ? Convert.ToDecimal(stdJob.UnitsRequired) : default(decimal);
-            requestStdJob.unitsRequiredSpecified = stdJob.UnitsRequired != null;
+            requestStdJob.unitsRequired = !string.IsNullOrEmpty(stdJob.UnitsRequired) ? MyUtilities.ToDecimal(stdJob.UnitsRequired, IxConversionConstant.DefaultEmptyOnly) : default(decimal);
+            requestStdJob.unitsRequiredSpecified = !string.IsNullOrEmpty(stdJob.UnitsRequired);
 
             requestStdJob.accountCode = stdJob.AccountCode ?? requestStdJob.accountCode;
             requestStdJob.reallocAccCode = stdJob.ReallocAccCode ?? requestStdJob.reallocAccCode;
             requestStdJob.projectNo = stdJob.ProjectNo ?? requestStdJob.projectNo;
-            requestStdJob.estimatedOtherCost = stdJob.EstimatedOtherCost != null ? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
-            requestStdJob.estimatedOtherCostSpecified = stdJob.EstimatedOtherCost != null;
+            requestStdJob.estimatedOtherCost = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost)? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
+            requestStdJob.estimatedOtherCostSpecified = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost);
             requestStdJob.estimatedDurationsHrs = stdJob.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdJob.EstimatedDurationsHrs) : default(decimal);
             requestStdJob.estimatedDurationsHrsSpecified = stdJob.EstimatedDurationsHrs != null;
             requestStdJob.calculatedDurationsHrsFlg = Convert.ToBoolean(stdJob.CalculatedDurationsHrsFlg);

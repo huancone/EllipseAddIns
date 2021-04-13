@@ -981,6 +981,7 @@ namespace PlaneacionFerrocarril
                 _cells = new ExcelStyleCells(_excelApp);
 
             const int titleRow = TitleRowWkP;
+            const string tableName = TableNameWkP;
 
             var currentRow = titleRow + 1;
 
@@ -1009,6 +1010,20 @@ namespace PlaneacionFerrocarril
 
                 currentRow++;
             }
+
+            var tableRange = _cells.GetRange(tableName);
+            
+            tableRange.Sort(
+                tableRange.Columns[6], Excel.XlSortOrder.xlAscending,
+                tableRange.Columns[1], Type.Missing, Excel.XlSortOrder.xlAscending,
+                Type.Missing, Excel.XlSortOrder.xlAscending,
+                Excel.XlYesNoGuess.xlYes, Type.Missing, Type.Missing,
+                Excel.XlSortOrientation.xlSortColumns,
+                Excel.XlSortMethod.xlPinYin,
+                Excel.XlSortDataOption.xlSortNormal,
+                Excel.XlSortDataOption.xlSortNormal,
+                Excel.XlSortDataOption.xlSortNormal);
+
         }
         private void btnFormatWeekPlanning_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1053,7 +1068,7 @@ namespace PlaneacionFerrocarril
             var district = _frmAuth.EllipseDstrct;
 
             const int titleRow = TitleRowWkP;
-            
+            const string tableName = TableNameWkP;
 
             var currentRow = titleRow + 1;
 
@@ -1173,6 +1188,18 @@ namespace PlaneacionFerrocarril
                     _cells?.SetCursorDefault();
                 }
             }
+            var tableRange = _cells.GetRange(tableName);
+
+            tableRange.Sort(
+                tableRange.Columns[6], Excel.XlSortOrder.xlAscending,
+                tableRange.Columns[1], Type.Missing, Excel.XlSortOrder.xlAscending,
+                Type.Missing, Excel.XlSortOrder.xlAscending,
+                Excel.XlYesNoGuess.xlYes, Type.Missing, Type.Missing,
+                Excel.XlSortOrientation.xlSortColumns,
+                Excel.XlSortMethod.xlPinYin,
+                Excel.XlSortDataOption.xlSortNormal,
+                Excel.XlSortDataOption.xlSortNormal,
+                Excel.XlSortDataOption.xlSortNormal);
         }
 
         private void UpdateResourceRequiredTable()
@@ -1180,8 +1207,8 @@ namespace PlaneacionFerrocarril
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var resourceRow = ResourceRowWkP;
-            var titleRow = TitleRowWkP;
+            const int resourceRow = ResourceRowWkP;
+            const int titleRow = TitleRowWkP;
             var currentRow = titleRow + 1;
             var schedResList = new List<string>();
             

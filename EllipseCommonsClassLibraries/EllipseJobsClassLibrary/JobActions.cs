@@ -127,9 +127,11 @@ namespace EllipseJobsClassLibrary
             taskSearchParams.taskDatePreset = "N";
             taskSearchParams.taskDateIncrement = "1";
             taskSearchParams.taskDateIncrementUnit = "D";
-            taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
+            if(!string.IsNullOrWhiteSpace(searchParam.StartDate))
+                taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
             taskSearchParams.startDateSpecified = !string.IsNullOrWhiteSpace(searchParam.StartDate);
-            taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
+            if (!string.IsNullOrWhiteSpace(searchParam.FinishDate))
+                taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
             taskSearchParams.finishDateSpecified = !string.IsNullOrWhiteSpace(searchParam.FinishDate);
             taskSearchParams.allDistrictsForTasks = false;
             taskSearchParams.allDistrictsForTasksSpecified = true;

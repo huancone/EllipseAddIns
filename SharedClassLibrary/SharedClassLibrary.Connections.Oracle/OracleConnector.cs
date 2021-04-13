@@ -13,7 +13,7 @@ using SharedClassLibrary.Utilities;
 
 namespace SharedClassLibrary.Connections.Oracle
 {
-    public class OracleConnector : IDbConnector
+    public class OracleConnector : IDbConnector, IDisposable
     {
         private string _currentConnectionString;
         private int _queryAttempt;
@@ -214,7 +214,6 @@ namespace SharedClassLibrary.Connections.Oracle
             _oracleComm.FetchSize = size;
         }
 
-        
         #region ExecuteQuery - Execute Implementations
         public int ExecuteQuery(IQueryParamCollection queryParamCollection)
         {
@@ -482,5 +481,12 @@ namespace SharedClassLibrary.Connections.Oracle
             }
         }
         #endregion
+
+        public void Dispose()
+        {
+            _transaction?.Dispose();
+            _oracleComm?.Dispose();
+            _oracleConn?.Dispose();
+        }
     }
 }

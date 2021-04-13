@@ -42,8 +42,8 @@
             this.btnFormatMntto = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
-            this.btnCreate = this.Factory.CreateRibbonButton();
             this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnStopProcess = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
@@ -103,19 +103,19 @@
             this.drpEnvironment.Label = "Env.";
             this.drpEnvironment.Name = "drpEnvironment";
             // 
-            // btnCreate
-            // 
-            this.btnCreate.Label = "Cargar Info";
-            this.btnCreate.Name = "btnCreate";
-            this.btnCreate.ShowImage = true;
-            this.btnCreate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreate_Click);
-            // 
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnCreate);
             this.menuActions.Items.Add(this.btnStopProcess);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.Label = "Cargar Info";
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.ShowImage = true;
+            this.btnCreate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreate_Click);
             // 
             // btnStopProcess
             // 

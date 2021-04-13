@@ -102,20 +102,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
-      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
-      <Name>SharedClassLibrary.Connections.Oracle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
-      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
-      <Name>SharedClassLibrary.Connections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
-      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
-      <Name>SharedClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +180,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

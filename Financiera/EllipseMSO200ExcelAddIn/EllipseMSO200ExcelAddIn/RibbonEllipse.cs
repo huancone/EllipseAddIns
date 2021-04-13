@@ -236,6 +236,10 @@ namespace EllipseMSO200ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             var currentRow = TittleRow + 1;
+
+            if (ListaBancos == null)
+                ListaBancos = new List<Bancos>();
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
             {
                 try
@@ -259,24 +263,28 @@ namespace EllipseMSO200ExcelAddIn
                         _cells.GetCell(8, currentRow).Value = employee.NumeroCuenta.Replace("-", "");
                     }
 
-                    var existe = false;
                     // ReSharper disable once UnusedVariable
-                    foreach (var banco in ListaBancos.Where(banco => employee.CodigoBanco.PadLeft(2, '0') == banco.CodigoNomina.PadLeft(2, '0')))
+                    if (ListaBancos.Any(banco => employee.CodigoBanco.PadLeft(2, '0') == banco.CodigoNomina.PadLeft(2, '0')))
                     {
-                        existe = true;
                         employee.TipoCuenta = employee.TipoCuenta.ToUpper() == "AHORRO" ? "02" : "01";
                         _cells.GetCell(9, currentRow).Value = "2-" + employee.CodigoBanco.PadLeft(4, '0') + "-0000-" + employee.TipoCuenta;
                     }
-
-                    _cells.GetCell(9, currentRow).Value = existe == false? "Verificar Banco": _cells.GetCell(9, currentRow).Value;
-                    _cells.GetCell(9, currentRow).Style = existe == false? _cells.GetStyle(StyleConstants.Error): _cells.GetStyle(StyleConstants.Normal);
-                    _cells.GetCell(10, currentRow).Value = "NM009";
-                    _cells.GetCell(11, currentRow).Value = "1209";
-                    _cells.GetCell(12, currentRow).Value = "47703371338";
+                    else
+                    {
+                        _cells.GetCell(9, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetCell(9, currentRow).ClearComments();
+                        _cells.GetCell(9, currentRow).AddComment("Verificar Banco");
+                    }
+                    
+                    if(string.IsNullOrWhiteSpace("" + _cells.GetCell(10, currentRow).Value))
+                        _cells.GetCell(10, currentRow).Value = "NM009";
+                    if (string.IsNullOrWhiteSpace("" + _cells.GetCell(11, currentRow).Value))
+                        _cells.GetCell(11, currentRow).Value = "1209";
+                    if (string.IsNullOrWhiteSpace("" + _cells.GetCell(12, currentRow).Value))
+                        _cells.GetCell(12, currentRow).Value = "47703371338";
 
 
                     var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", employee.Cedula, _eFunctions.DbReference, _eFunctions.DbLink);
-                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                     var drSupplierInfo = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -298,6 +306,8 @@ namespace EllipseMSO200ExcelAddIn
                         {
                             _cells.GetCell(1, currentRow).Value = drSupplierInfo["SUPPLIER_NO"].ToString();
                             _cells.GetCell(13, currentRow).Value = drSupplierInfo["BANK_ACCT_NO"].ToString();
+                            if (employee.BankAccount == null)
+                                employee.BankAccount = "";
                             _cells.GetCell(_resultColumn, currentRow).Value = drSupplierInfo["BANK_ACCT_NO"].ToString().Contains(employee.BankAccount) ? "Cuentas Iguales":"Numero de Cuenta Diferente";
                             _cells.GetCell(_resultColumn, currentRow).Style = drSupplierInfo["BANK_ACCT_NO"].ToString().Contains(employee.BankAccount) ? StyleConstants.Success : StyleConstants.Error;
                         }
