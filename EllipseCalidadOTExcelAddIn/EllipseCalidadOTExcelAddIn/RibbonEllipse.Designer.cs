@@ -40,6 +40,7 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.bConsultar = this.Factory.CreateRibbonButton();
+            this.btnConsulta2 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.bCalificar = this.Factory.CreateRibbonButton();
             this.bLimpiar = this.Factory.CreateRibbonButton();
@@ -80,6 +81,7 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.bConsultar);
+            this.menuActions.Items.Add(this.btnConsulta2);
             this.menuActions.Items.Add(this.button1);
             this.menuActions.Items.Add(this.bCalificar);
             this.menuActions.Items.Add(this.bLimpiar);
@@ -93,6 +95,13 @@
             this.bConsultar.Name = "bConsultar";
             this.bConsultar.ShowImage = true;
             this.bConsultar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.bConsultar_Click);
+            // 
+            // btnConsulta2
+            // 
+            this.btnConsulta2.Label = "Consultar servicios contratados";
+            this.btnConsulta2.Name = "btnConsulta2";
+            this.btnConsulta2.ShowImage = true;
+            this.btnConsulta2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsulta2_Click);
             // 
             // button1
             // 
@@ -155,6 +164,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bLimpiar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsulta2;
     }
 
     partial class ThisRibbonCollection

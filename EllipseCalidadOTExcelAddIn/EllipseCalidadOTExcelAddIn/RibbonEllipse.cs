@@ -42,9 +42,10 @@ namespace EllipseCalidadOTExcelAddIn
 
         private const string SheetName01 = "WorkOrders";
         private const int TitleRow01 = 7;
-        private const int ResultColumn01 = 17;
+        private const int ResultColumn01 = 19;
         private const string TableName01 = "WorkOrderTable";
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
+        public string WoCode7 = "";
         //public bool CR;
 
         private Thread _thread;
@@ -187,12 +188,16 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells.GetCell("C4").Value = "FECHA HASTA";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
-                _cells.GetCell("E3").Value = "FECHA DESDE(CLOSED_DT)";
-                _cells.GetCell("F3").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + "01";
-                _cells.GetCell("F3").AddComment("YYYYMMDD");
-                _cells.GetCell("E4").Value = "FECHA HASTA(CLOSED_DT)";
-                _cells.GetCell("F4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
-                _cells.GetCell("F4").AddComment("YYYYMMDD");
+                _cells.GetRange("E3", "E4").Merge();
+                _cells.GetCell("E3").Value = "Tipo Fecha";
+                _cells.SetValidationList(_cells.GetCell("F3"), new List<string> { "PLAN_STR_DATE", "CLOSED_DT", "RAISED_DATE", "CREATION_DATE" });
+                //_cells.GetCell("F3").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + "01";
+                _cells.GetRange("F3", "F4").Merge();
+                _cells.GetCell("F3").AddComment("SELECCIONA EL TIPO DE FECHA QUE SE VA A UTILIZAR PARA EJECUTAR LA CONSULTA");
+                _cells.GetCell("F3").Value = "CLOSED_DT";
+                //_cells.GetCell("E4").Value = "FECHA HASTA(CLOSED_DT)";
+                //_cells.GetCell("F4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                // _cells.GetCell("F4").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D4").Style = _cells.GetStyle(StyleConstants.Select);
                 _cells.GetRange("E3", "E4").Style = _cells.GetStyle(StyleConstants.Option);
@@ -219,14 +224,17 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells.GetCell(12, TitleRow01).Value = "FALLA FUNCIONAL";
                 _cells.GetCell(13, TitleRow01).Value = "PARTE QUE FALLO";
                 _cells.GetCell(14, TitleRow01).Value = "MODO DE FALLA";
-                _cells.GetCell(15, TitleRow01).Value = "COMENTARIO DE CIERRE";
-                _cells.GetCell(16, TitleRow01).Value = "CALIFICACION";
-                _cells.GetCell(16, TitleRow01).AddComment("<60% - Calidad Baja\n" +
+                _cells.GetCell(15, TitleRow01).Value = "WO_JOB_CODEX8";
+                _cells.GetCell(16, TitleRow01).Value = "COMENTARIO DE CIERRE";
+                _cells.GetCell(17, TitleRow01).Value = "CALIFICACION";
+                _cells.GetCell(17, TitleRow01).AddComment("<60% - Calidad Baja\n" +
                     ">=60% y <80% - Calidad Regular\n" +
                     ">=80% y <=99% - Calidad Buena\n" +
                     "100% - Calidad Excelente");
-                _cells.GetCell(15, TitleRow01).Style = StyleConstants.TitleRequired;
-                _cells.SetValidationList(_cells.GetCell(16, TitleRow01 + 1), new List<string> { "1 - Baja", "2 - Regular", "3 - Buena", "4 - Excelente" });
+                _cells.GetCell(18, TitleRow01).Value = "GARANTIA";
+                _cells.GetCell(16, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - Baja", "2 - Regular", "3 - Buena", "4 - Excelente" });
+                _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), new List<string> { "Y", "N"});
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
@@ -314,24 +322,16 @@ namespace EllipseCalidadOTExcelAddIn
                                         f.work_order= W.WORK_ORDER
                                         GROUP BY 
                                         F.STD_KEY
-                                    ) AS COMENTARIO_CIERRE
+                                    ) AS COMENTARIO_CIERRE,
+                                    W.WO_JOB_CODEX8
                                 FROM
                                     ELLIPSE.MSF620 W 
                                     INNER JOIN ELLIPSE.MSF621 E ON(W.WORK_ORDER = E.WORK_ORDER)  
                                     INNER JOIN SIGMAN.EQMTLIST@DBLSIG EQ ON(RPAD(EQ.EQU,12,' ') = W.EQUIP_NO)
                                 WHERE
-                                    W.DSTRCT_CODE = 'ICOR' ";
-                if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("D3").Value)  != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell("D4").Value) != null)
-                {
-                    sqlQuery += "AND W.PLAN_STR_DATE BETWEEN '" + _cells.GetEmptyIfNull(_cells.GetCell("D3").Value) + "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("D4").Value) + "' ";
+                                    W.DSTRCT_CODE = 'ICOR' " + @"
+                                    AND W."  + _cells.GetCell("F3").Value +  @" BETWEEN '" + _cells.GetEmptyIfNull(_cells.GetCell("D3").Value) + "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("D4").Value) + "' ";
                 
-                  }
-                if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("F3").Value) != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell("F4").Value) != null)
-                {
-                    sqlQuery += "AND W.CLOSED_DT BETWEEN '" + _cells.GetEmptyIfNull(_cells.GetCell("F3").Value) + "' AND '" + _cells.GetEmptyIfNull(_cells.GetCell("F4").Value) + "' ";
-
-
-                }
                 //"AND W.WO_JOB_CODEX10 <> 'IG'" +
                 sqlQuery += "AND SUBSTR(W.WORK_ORDER, 1, 2) <> 'EV'" +
                              "AND W.WORK_ORDER = E.WORK_ORDER " +
@@ -364,6 +364,11 @@ namespace EllipseCalidadOTExcelAddIn
                         //sqlQuery += "AND W.WO_STATUS_M in ('" + _cells.GetEmptyIfNull( _cells.GetCell("H4").Value.Replace(';', ',')) + ") ";
                         sqlQuery += "AND W.WO_STATUS_M = '" + WoStatusList.GetStatusCode(_cells.GetEmptyIfNull(_cells.GetCell("J4").Value)) + "' ";
                     }
+                    if(WoCode7 != "")
+                    {
+                        sqlQuery += "AND TRIM(W.WO_JOB_CODEX8) = 'SC' ";
+                        WoCode7 = "";
+                    }
 
                     sqlQuery += @" ),
                             B AS
@@ -395,6 +400,7 @@ namespace EllipseCalidadOTExcelAddIn
                                 A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
                                 A.WO_JOB_CODEX2 AS PARTE_FALLO,
                                 A.WO_JOB_CODEX3 AS MODO_FALLA,
+                                A.WO_JOB_CODEX8,
                                 (
                                   SELECT
                                   CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
@@ -413,7 +419,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '034'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS CALIDAD
+                                ) AS CALIDAD,
+                                (
+                                  SELECT
+                                    REF_CODE
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '024'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS GARANTIA
                               FROM
                                 A
                             )
@@ -443,13 +463,15 @@ namespace EllipseCalidadOTExcelAddIn
                               B.COSTOS_MAT,  
                               B.HORAS_LAB,  
                               B.T_COMENTARIO,  
+                              B.WO_JOB_CODEX8,
                               B.COMENTARIO_CIERRE,  
-                              B.CALIDAD
+                              B.CALIDAD,
+                              B.GARANTIA
                             FROM
-                              B WHERE B.CALIDAD IS NULL";
+                              B /*WHERE B.CALIDAD IS NULL*/";
                     if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
-                        sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
+                        sqlQuery += " WHERE rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                     }
                     
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
@@ -479,11 +501,13 @@ namespace EllipseCalidadOTExcelAddIn
                         _cells.GetCell("L" + currentRow).Value = odr["FALLA_FUNCIONAL"] + "";
                         _cells.GetCell("M" + currentRow).Value = odr["PARTE_FALLO"] + "";
                         _cells.GetCell("N" + currentRow).Value = odr["MODO_FALLA"] + "";
-                        _cells.GetCell("O" + currentRow).Value = odr["COMENTARIO_CIERRE"] + "";
-                        _cells.GetCell("O" + currentRow).EntireColumn.ColumnWidth = 150;
-                        _cells.GetCell("O" + currentRow).WrapText = true;
-                        _cells.GetCell("P" + currentRow).Value = odr["CALIDAD"] + "";
-                        _cells.GetCell("P" + currentRow).NumberFormat = "###,##%";
+                        _cells.GetCell("O" + currentRow).Value = odr["WO_JOB_CODEX8"] + "";
+                        _cells.GetCell("P" + currentRow).Value = odr["COMENTARIO_CIERRE"] + "";
+                        _cells.GetCell("P" + currentRow).EntireColumn.ColumnWidth = 150;
+                        _cells.GetCell("P" + currentRow).WrapText = true;
+                        _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
+                        _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
+                        _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
 
                         if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                         {
@@ -546,11 +570,11 @@ namespace EllipseCalidadOTExcelAddIn
 
                         if (odr["COMENTARIO_CIERRE"] == null || odr["COMENTARIO_CIERRE"].ToString().Trim() == "")
                         {
-                            _cells.GetCell("O" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                            _cells.GetCell("P" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
                         }
                         else
                         {
-                            _cells.GetCell("O" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+                            _cells.GetCell("P" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
                         }
 
                         currentRow = currentRow + 1;
@@ -644,7 +668,8 @@ namespace EllipseCalidadOTExcelAddIn
                                         f.work_order= W.WORK_ORDER
                                         GROUP BY 
                                         F.STD_KEY
-                                    ) AS COMENTARIO_CIERRE
+                                    ) AS COMENTARIO_CIERRE,
+                                    W.WO_JOB_CODEX8
                                 FROM
                                     ELLIPSE.MSF620 W 
                                     INNER JOIN ELLIPSE.MSF621 E ON(W.WORK_ORDER = E.WORK_ORDER)  
@@ -702,6 +727,7 @@ namespace EllipseCalidadOTExcelAddIn
                                 A.WO_JOB_CODEX1 AS FALLA_FUNCIONAL,
                                 A.WO_JOB_CODEX2 AS PARTE_FALLO,
                                 A.WO_JOB_CODEX3 AS MODO_FALLA,
+                                A.WO_JOB_CODEX8,
                                 (
                                   SELECT
                                   CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
@@ -720,7 +746,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '034'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS CALIDAD
+                                ) AS CALIDAD,
+                                (
+                                  SELECT
+                                    REF_CODE
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '024'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS GARANTIA
                               FROM
                                 A
                             )
@@ -749,9 +789,11 @@ namespace EllipseCalidadOTExcelAddIn
                               B.RELATED_WO,  
                               B.COSTOS_MAT,  
                               B.HORAS_LAB,  
-                              B.T_COMENTARIO,  
+                              B.T_COMENTARIO, 
+                              B.WO_JOB_CODEX8, 
                               B.COMENTARIO_CIERRE,  
-                              B.CALIDAD
+                              B.CALIDAD,
+                              B.GARANTIA
                             FROM
                               B ";
                 
@@ -782,11 +824,13 @@ namespace EllipseCalidadOTExcelAddIn
                     _cells.GetCell("L" + currentRow).Value = odr["FALLA_FUNCIONAL"] + "";
                     _cells.GetCell("M" + currentRow).Value = odr["PARTE_FALLO"] + "";
                     _cells.GetCell("N" + currentRow).Value = odr["MODO_FALLA"] + "";
-                    _cells.GetCell("O" + currentRow).Value = odr["COMENTARIO_CIERRE"] + "";
+                    _cells.GetCell("O" + currentRow).Value = odr["WO_JOB_CODEX8"] + "";
+                    _cells.GetCell("P" + currentRow).Value = odr["COMENTARIO_CIERRE"] + "";
                     //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                     _excelApp.ActiveCell.WrapText = true;
-                    _cells.GetCell("P" + currentRow).Value = odr["CALIDAD"] + "";
-                    _cells.GetCell("P" + currentRow).NumberFormat = "###,##%";
+                    _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
+                    _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
+                    _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
 
                     if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                     {
@@ -849,11 +893,11 @@ namespace EllipseCalidadOTExcelAddIn
 
                     if (odr["COMENTARIO_CIERRE"] == null || odr["COMENTARIO_CIERRE"].ToString().Trim() == "")
                     {
-                        _cells.GetCell("O" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                        _cells.GetCell("P" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
                     }
                     else
                     {
-                        _cells.GetCell("O" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+                        _cells.GetCell("P" + currentRow).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
                     }
 
 
@@ -887,8 +931,8 @@ namespace EllipseCalidadOTExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
+                    
                     _thread = new Thread(Consultar);
-
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -1063,7 +1107,8 @@ namespace EllipseCalidadOTExcelAddIn
             var district = distrito;
             var workOrder = WO;
             var calif = "";
-            var calificacion = _cells.GetEmptyIfNull(_cells.GetCell(16, fila).Value);
+            var calificacion = _cells.GetEmptyIfNull(_cells.GetCell(17, fila).Value);
+            var Garantia = _cells.GetEmptyIfNull(_cells.GetCell(18, fila).Value);
             //var CalificacionCalidadOT = "";
             //var CalificadoPor = "";
 
@@ -1083,27 +1128,18 @@ namespace EllipseCalidadOTExcelAddIn
             {
                 calif = "4";
             }
-            else
+            var User = "";
+            if(calif != "")
             {
-                calif = "";
+                User = _frmAuth.EllipseUser;
             }
 
-
-            var woRefCodes = new WorkOrderReferenceCodes();
-            /*{
+            var woRefCodes = new WorkOrderReferenceCodes
+            {
                 CalificacionCalidadOt = calif,
-                CalificacionCalidadPor = _frmAuth.EllipseUser,
-            };*/
-            woRefCodes.CalificacionCalidadOt = calif;
-            if (calif != "")
-            {
-                woRefCodes.CalificacionCalidadPor = _frmAuth.EllipseUser;
-            }
-            else
-            {
-                woRefCodes.CalificacionCalidadPor = "";
-            }
-
+                CalificacionCalidadPor = User,
+                Garantia = Garantia
+            };
             var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
 
             if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
@@ -1166,6 +1202,29 @@ namespace EllipseCalidadOTExcelAddIn
         {
             AboutBoxExcelAddIn About = new AboutBoxExcelAddIn("Gustavo Vargas", "");
             About.ShowDialog();
+        }
+
+        private void btnConsulta2_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    WoCode7 = "1";
+                    _thread = new Thread(Consultar);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
     }
 }

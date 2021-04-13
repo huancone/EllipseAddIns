@@ -480,7 +480,7 @@ namespace EllipseAddinGanttEQ
             _excelApp.DisplayAlerts = true;
             //búsquedas especiales de tabla
             //_cells.SetCursorWait();
-            /*_AuthG.StartPosition = FormStartPosition.CenterScreen;
+            _AuthG.StartPosition = FormStartPosition.CenterScreen;
              if (_AuthG.ShowDialog() == DialogResult.OK)
              {
                  if (_AuthG.Permiso == "2")
@@ -488,7 +488,7 @@ namespace EllipseAddinGanttEQ
                      menuAcciones.Items[3].Visible = false;
                      menuAcciones.Items[4].Visible = false;
                      menuAcciones.Items[5].Visible = false;
-                 }*/
+                 }
                 try
                 {
                     _excelApp.Cursor = Excel.XlMousePointer.xlWait;
@@ -512,12 +512,12 @@ namespace EllipseAddinGanttEQ
                     _excelApp.ScreenUpdating = true;
                     _excelApp.DisplayAlerts = true;
                 }
-            /*}
+            }
             else
             {
                 MessageBox.Show(@"Regrese cuando tenga autorizacion del administrador del sistema.");
                 _excelApp.Application.Quit();
-            }*/
+            }
         }
         private void SobreEncabezado(Int32 FinCol)
         {
@@ -864,9 +864,15 @@ namespace EllipseAddinGanttEQ
                 //Excel.Name Nombre = _excelApp.ActiveWorkbook.ActiveSheet.Names(tableName01);
                 if(_excelApp.ActiveWorkbook.ActiveSheet.Names.count > 0)
                 {
-                    _cells.DeleteTableRange(TableName05);
-                    _excelApp.Application.Goto("ComentExt");
-                    _excelApp.Application.Selection.EntireRow.Delete();
+                    //var x = _cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2;
+                    if (_cells.GetRange(1, StartRowTable + FinRowTablaOneSheet + 3, 1, StartRowTable + FinRowTablaOneSheet + 3).Value2 == 1)
+                    {
+                        _excelApp.Application.Goto("ComentExt");
+                        _cells.DeleteTableRange(TableName05);
+                        _excelApp.Application.Selection.EntireRow.Delete();
+
+                    }
+                    //
                     //_cells.GetRange(StartColHrs - 1, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 1)).ClearContents();
                     _cells.GetRange(StartColTable, (StartRowTable + FinRowTablaOneSheet + 1), FinColTablaOneSheet, (StartRowTable + FinRowTablaOneSheet + 10000)).Clear();
                     _excelApp.Application.Goto(tableName01);

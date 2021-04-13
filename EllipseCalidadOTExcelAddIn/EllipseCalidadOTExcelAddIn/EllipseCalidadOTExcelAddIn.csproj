@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\gvargas4\Desktop\Ejecutable AddIn\Ejecutable Calidad Ot\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.34</ApplicationVersion>
+    <ApplicationVersion>1.0.0.36</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -279,7 +279,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C28AE97543FA8D3B8A2837C2AF3F36CFC63060DF</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F0B2A600A1F47A422599236A7A7994316DB8352D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

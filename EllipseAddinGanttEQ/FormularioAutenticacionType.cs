@@ -63,15 +63,15 @@ namespace EllipseAddinGanttEQ
             try
             {
                 EllipseDsct = txtDistrict.Text.ToUpper();
-                EllipsePost = "AGSS"/*(drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper())*/;
+                EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
                 EllipsePswd = txtPassword.Text;
                 EllipseUser = txtUsername.Text.ToUpper();
 
                 authSer.Url = Environments.GetServiceUrl("Productivo") + "/AuthenticatorService";
                 ClientConversation.authenticate(EllipseUser, EllipsePswd);
                 Authenticator.NameValuePair[] districts = authSer.getDistricts(opAuth);
-                //Authenticator.NameValuePair[] positionsx = authSer.getPositions(opAuth);
-                //EllipsePost = positionsx[0].name.ToUpper();
+                Authenticator.NameValuePair[] positionsx = authSer.getPositions(opAuth);
+                EllipsePost = positionsx[0].name.ToUpper();
                 EllipseDsct = districts[0].name.ToUpper();
 
 
