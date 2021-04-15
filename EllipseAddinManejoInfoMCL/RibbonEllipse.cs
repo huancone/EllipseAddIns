@@ -606,6 +606,26 @@ namespace EllipseAddinManejoInfoMCL
                             SHIFTINDEX = " + Param1 + @" AND ROWNUM = 1 " + ORDEN);
                 table = getdata(Sql, 1);
             }
+            else if (Tipo == 14)
+            {
+                Sql = (@"select
+                          Convert(char(10),shiftdate,120) AS SHIFTDATE
+                        from
+                          PowerView.dbo.hist_exproot 
+                        Where
+                          shiftindex = " + Param1 + " " + ORDEN);
+                table = getdataSql(Sql);
+            }
+            else if (Tipo == 15)
+            {
+                Sql = (@"SELECT
+                            SHIFTINDEX
+                        FROM
+                            SIGMAN.APP_PTC_COMBUSTIBLE
+                        WHERE
+                            SHIFTINDEX = " + Param1 + @" AND ROWNUM = 1 " + ORDEN);
+                table = getdata(Sql, 1);
+            }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
             //Filas de la consulta
@@ -655,7 +675,7 @@ namespace EllipseAddinManejoInfoMCL
                 //3 Y 4 FILA DESDE A HASTA S
                 FormatCamposMenu(_cells.GetRange("A3", "A4"), true, true, true, "FECHA", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatBordes(_cells.GetRange("A3", "A4"));
-                FormatCamposMenu(_cells.GetRange("B3", "C4"), true, true, true, DateTime.Now.ToString("yyyy-MM-dd"), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetRange("B3", "C4"), true, true, true, /*DateTime.Now.ToString("yyyy-MM-dd")*/ ListaDatos(14, ListaDatos(1)[0])[0], "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatBordes(_cells.GetRange("B3", "C4"));
                 FormatCamposMenu(_cells.GetRange("D3", "E3"), true, true, true, "SHIFTINDEX", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatBordes(_cells.GetRange("D3", "E3"));
@@ -1741,6 +1761,24 @@ namespace EllipseAddinManejoInfoMCL
                                     SHIFTINDEX = " + P2 + @"
                                      AND EQMTLIST.EQMTTYPE " + P1;
                 }
+                else if (Tipe == 3)
+                {
+                    sqlQuery = @"SELECT
+                                    EQUIP_NO,
+                                    OPERADOR,
+                                    RUTA,
+                                    CUMPLIMIENTO,
+                                    GALONES,
+                                    HORA,
+                                    HORA_PROG,
+                                    DEMORA--,s
+                                    --EQMTLIST.UNIT
+                                FROM
+                                    SIGMAN.APP_PTC_COMBUSTIBLE
+                                WHERE
+                                    SHIFTINDEX = " + P2 + @"
+                                     AND TYPE_EQUIP_NO " + P1;
+                }
             }
             else if (Hoja == 2)
             {
@@ -1860,7 +1898,9 @@ namespace EllipseAddinManejoInfoMCL
             {
                 //Table = getdata(Consulta(1, 1), 1);
                 string action = _cells.GetCell("A1").Value;
+
                 ProcesoHoja1(action);
+                
             }
             else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
@@ -2476,12 +2516,19 @@ namespace EllipseAddinManejoInfoMCL
             {
                 if (action == "GUARDAR")
                 {
-                    
-                    /*string[] Nombre = new string[Table.Columns.Count];
-                    for (Int32 H = 0; H < Table.Columns.Count; H++)
+                    var ValorComp = ListaDatos(15, _cells.GetRange(4, 4, 4, 4).Value);
+                    if (ValorComp.Count != 0)
                     {
-                        Nombre[H] = "Var" + H;
-                    }*/
+                        MessageBox.Show("Ya se encuentra este turno Guardado, Elimine y vuelva a guardar. ");
+                        SW = 1;
+                        return;
+                    }
+
+                        /*string[] Nombre = new string[Table.Columns.Count];
+                        for (Int32 H = 0; H < Table.Columns.Count; H++)
+                        {
+                            Nombre[H] = "Var" + H;
+                        }*/
                     Excel.Worksheet SheetOne = _excelApp.ActiveWorkbook.Sheets[SheetName01];
                     string Var1 = "";
                     string Var2 = "";
@@ -2597,14 +2644,14 @@ namespace EllipseAddinManejoInfoMCL
                     //string[] DatosWo = DatosWoG.Distinct().ToArray();
                     Filas = DatosWoG.GetLength(0);
                     Columnas = DatosWoG.GetUpperBound(1);
-                    SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6);
+                    SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6, 1);
 
                     TamVar = Tam4 + Tam8 + Tam11;
                     DatosWoG = GetStringArray(SheetOne.Range["Y" + (FilaInicial + (Tam4 + Tam8) + 6), "AD" + (TamVar + 6 + (FilaInicial - 1))].Cells.Value2);
                     //string[] DatosWo = DatosWoG.Distinct().ToArray();
                     Filas = DatosWoG.GetLength(0);
                     Columnas = DatosWoG.GetUpperBound(1);
-                    SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6);
+                    SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6, 2);
 
                     TamVar = Tam5 + Tam9 + Tam12;
                     DatosWoG = GetStringArray(SheetOne.Range["AG" + (FilaInicial + (Tam5 + Tam9) + 6), "AN" + (TamVar + 6 + (FilaInicial - 1))].Cells.Value2);
@@ -2636,7 +2683,7 @@ namespace EllipseAddinManejoInfoMCL
             }
             catch (Exception ex)
             {
-                ConexionDataBase("SIGMAN");
+                //ConexionDataBase("SIGMAN");
                 EjecutarSql("DELETE FROM SIGMAN.APP_PTC_COMBUSTIBLE WHERE SHIFTINDEX = " + _cells.GetRange(4, 4, 4, 4).Value + " ");
                 //Debugger.LogError("RibbonEllipse.cs:AccionesPers()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
@@ -2652,7 +2699,7 @@ namespace EllipseAddinManejoInfoMCL
 
         }
 
-        private void SaveOneSheet(string action, Int32 Filas, Int32 Columnas, string Var1, string Var2, string Var3, string Var4, string[,] DatosWoG, Int32 tipe = 1, string Var5 = "", string Var6 = "")
+        private void SaveOneSheet(string action, Int32 Filas, Int32 Columnas, string Var1, string Var2, string Var3, string Var4, string[,] DatosWoG, Int32 tipe = 1, string Var5 = "", string Var6 = "", Int32 TypeEquip = 0)
         {
             if (action.Equals("GUARDAR"))
             {
@@ -2664,7 +2711,7 @@ namespace EllipseAddinManejoInfoMCL
                         {
                             if (DatosWoG[i, j] != null)
                             {
-                                EjecutarSql("INSERT INTO SIGMAN.APP_PTC_COMBUSTIBLE (SHIFTINDEX, FECHA, TURNO, GRUPO, EQUIP_NO, OPERADOR, RUTA, CUMPLIMIENTO, GALONES, HORA, DESPACHADOR, SUPERVISOR) VALUES ('" + Var1 + "', '" + Var2.Trim().ToUpper() + "', '" + Var3.Trim() + "', '" + Var4.Trim() + "', '" + DatosWoG[i, j] + "', '" + DatosWoG[i, j + 1] + "', '" + DatosWoG[i, j + 2] + "', '" + DatosWoG[i, j + 3] + "', '" + DatosWoG[i, j + 4] + "', '" + DatosWoG[i, j + 5] + "', '" + Var5 + "', '" + Var6 + "')");
+                                EjecutarSql("INSERT INTO SIGMAN.APP_PTC_COMBUSTIBLE (SHIFTINDEX, FECHA, TURNO, GRUPO, EQUIP_NO, OPERADOR, RUTA, CUMPLIMIENTO, GALONES, HORA, DESPACHADOR, SUPERVISOR, TYPE_EQUIP_NO) VALUES ('" + Var1 + "', '" + Var2.Trim().ToUpper() + "', '" + Var3.Trim() + "', '" + Var4.Trim() + "', '" + DatosWoG[i, j] + "', '" + DatosWoG[i, j + 1] + "', '" + DatosWoG[i, j + 2] + "', '" + DatosWoG[i, j + 3] + "', '" + DatosWoG[i, j + 4] + "', '" + DatosWoG[i, j + 5] + "', '" + Var5 + "', '" + Var6 + "', '" + TypeEquip + "')");
 
                             }
                         }
@@ -3507,8 +3554,8 @@ namespace EllipseAddinManejoInfoMCL
                 i++;
             }
             //_cells.GetRange("A" + 6, "H" + Tam1 + 5).NumberFormat = "@";
-            _cells.GetRange("AG" + 6, "AP" + (Tam5 + 5)).Value = data;
-            _cells.GetRange("AG" + 6, "AP" + (Tam5 + 5)).Value = _cells.GetRange("AG" + 6, "AP" + (Tam5 + 5)).Value;
+            _cells.GetRange("AG" + 6, "AN" + (Tam5 + 5)).Value = data;
+            _cells.GetRange("AG" + 6, "AN" + (Tam5 + 5)).Value = _cells.GetRange("AG" + 6, "AN" + (Tam5 + 5)).Value;
 
 
             FormatCamposMenu(_cells.GetCell("AG" + (Tam5 + 6)), true, false, true, Tam5.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
@@ -3722,8 +3769,8 @@ namespace EllipseAddinManejoInfoMCL
                 i++;
             }
             //_cells.GetRange("A" + 6, "H" + Tam1 + 5).NumberFormat = "@";
-            _cells.GetRange("AG" + (Tam5 + 9), "AP" + (Tam5 + 8 + Tam9)).Value = data;
-            _cells.GetRange("AG" + (Tam5 + 9), "AP" + (Tam5 + 8 + Tam9)).Value = _cells.GetRange("AG" + (Tam5 + 9), "AP" + (Tam5 + 8 + Tam8)).Value;
+            _cells.GetRange("AG" + (Tam5 + 9), "AN" + (Tam5 + 8 + Tam9)).Value = data;
+            _cells.GetRange("AG" + (Tam5 + 9), "AN" + (Tam5 + 8 + Tam9)).Value = _cells.GetRange("AG" + (Tam5 + 9), "AN" + (Tam5 + 8 + Tam8)).Value;
 
 
 
@@ -3799,11 +3846,33 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("O" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("P" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
 
-            Tam15 = 10;
+            data.DataTable OTROS = getdata(Consulta(3, 1, "= 1", _cells.GetCell("D4").Value), 1);
+
+            Tam15 = OTROS.Rows.Count;
 
             _cells.GetRange("J" + ((Tam2 + Tam6) + 8 + 1 + 3), "J" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
             _cells.GetRange("K" + ((Tam2 + Tam6) + 8 + 1 + 3), "K" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
             _cells.GetRange("L" + ((Tam2 + Tam6) + 8 + 1 + 3), "L" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+
+
+            i = 0;
+            data = null;
+            data = new string[OTROS.Rows.Count, OTROS.Columns.Count];
+            foreach (data.DataRow row in OTROS.Rows)
+            {
+                int j = 0;
+                //Columnas de la consulta
+                foreach (data.DataColumn col in OTROS.Columns)
+                {
+                    data[i, j] = row[col].ToString();
+                    j++;
+                }
+                i++;
+            }
+            //_cells.GetRange("A" + 6, "H" + Tam1 + 5).NumberFormat = "@";
+            _cells.GetRange("I" + ((Tam2 + Tam6) + 8 + 1 + 3), "N" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Value = data;
+            _cells.GetRange("I" + ((Tam2 + Tam6) + 8 + 1 + 3), "N" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Value = _cells.GetRange("I" + ((Tam2 + Tam6) + 8 + 1 + 3), "N" + ((Tam2 + Tam6) + 8 + 3 + Tam15)).Value;
+
 
             FormatBordes(_cells.GetRange("I" + ((Tam2 + Tam6) + 8 + 3), "P" + ((Tam2 + Tam6) + 8 + 3 + Tam15)));
 
@@ -3819,31 +3888,33 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AE" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AF" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
 
-            Tam11 = 25;
-
-
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 1 + 3)), true, false, true, "174", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 2 + 3)), true, false, true, "160", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 3 + 3)), true, false, true, "170", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 4 + 3)), true, false, true, "169", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 5 + 3)), true, false, true, "211", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 6 + 3)), true, false, true, "180", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 7 + 3)), true, false, true, "692", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 8 + 3)), true, false, true, "162", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 9 + 3)), true, false, true, "159", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 10 + 3)), true, false, true, "44", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 11 + 3)), true, false, true, "161", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 12 + 3)), true, false, true, "164", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 13 + 3)), true, false, true, "182", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 14 + 3)), true, false, true, "159", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 15 + 3)), true, false, true, "174", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 16 + 3)), true, false, true, "171", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
-
-
+            data.DataTable GAICO = getdata(Consulta(3, 1, "= 2", _cells.GetCell("D4").Value), 1);
+            Tam11 = GAICO.Rows.Count;
 
             _cells.GetRange("Z" + ((Tam4 + Tam8) + 8 + 1 + 3), "Z" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
             _cells.GetRange("AA" + ((Tam4 + Tam8) + 8 + 1 + 3), "AA" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
             _cells.GetRange("AB" + ((Tam4 + Tam8) + 8 + 1 + 3), "AB" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+
+            i = 0;
+            data = null;
+            data = new string[GAICO.Rows.Count, GAICO.Columns.Count];
+            foreach (data.DataRow row in GAICO.Rows)
+            {
+                int j = 0;
+                //Columnas de la consulta
+                foreach (data.DataColumn col in GAICO.Columns)
+                {
+                    data[i, j] = row[col].ToString();
+                    j++;
+                }
+                i++;
+            }
+            //_cells.GetRange("A" + 6, "H" + Tam1 + 5).NumberFormat = "@";
+            _cells.GetRange("Y" + ((Tam4 + Tam8) + 8 + 1 + 3), "AD" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Value = data;
+            _cells.GetRange("Y" + ((Tam4 + Tam8) + 8 + 1 + 3), "AD" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Value = _cells.GetRange("Y" + ((Tam4 + Tam8) + 8 + 1 + 3), "AD" + ((Tam4 + Tam8) + 8 + 3 + Tam11)).Value;
+            
+
+
 
             FormatBordes(_cells.GetRange("Y" + ((Tam4 + Tam8) + 8 + 3), "AF" + ((Tam4 + Tam8) + 8 + 3 + Tam11)));
 
@@ -3898,8 +3969,8 @@ namespace EllipseAddinManejoInfoMCL
                 i++;
             }
             //_cells.GetRange("A" + 6, "H" + Tam1 + 5).NumberFormat = "@";
-            _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AP" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value = data;
-            _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AP" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value = _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AP" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value;
+            _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AN" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value = data;
+            _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AN" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value = _cells.GetRange("AG" + (Tam5 + Tam9 + 12), "AN" + (Tam5 + Tam9 + 8 + 3 + Tam12)).Value;
 
 
             FormatCamposMenu(_cells.GetCell("AG" + ((Tam5 + Tam9 + 8 + 3 + 1 + Tam12))), true, false, true, Tam12.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
@@ -3973,6 +4044,8 @@ namespace EllipseAddinManejoInfoMCL
 
 
             _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Select();
+
+            _excelApp.ScreenUpdating = true;
 
         }
 
