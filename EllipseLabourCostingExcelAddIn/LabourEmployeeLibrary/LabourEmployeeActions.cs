@@ -156,7 +156,8 @@ namespace EllipseLabourCostingExcelAddIn.LabourEmployeeLibrary
             //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
             var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
             //Existe un elemento
-            if (replySearch == null || replySearch.Length < 1) return proxyLt.create(opContext, requestLt);
+            if (replySearch == null || replySearch.Length < 1)
+                throw new Exception("No se ha encontrado el registro. Id: " + requestSearch.employee + " Fecha: " + requestSearch.transactionDate + " WorkOrder/Project: " + requestSearch.workOrder + " " + requestSearch.workOrderTask + requestSearch.project);
             foreach (var replyItem in replySearch)
             {
                 //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
@@ -186,7 +187,7 @@ namespace EllipseLabourCostingExcelAddIn.LabourEmployeeLibrary
                 }
                 return delResult;
             }
-            return null;
+            throw new Exception("No se ha encontrado el registro. Id: " + requestSearch.employee + " Fecha: " + requestSearch.transactionDate + " WorkOrder/Project: " + requestSearch.workOrder + " " + requestSearch.workOrderTask + requestSearch.project);
         }
 
         /// <summary>

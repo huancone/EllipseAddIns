@@ -438,7 +438,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                     if (_frmAuth.ShowDialog() == DialogResult.OK)
                     //if (true)
                     {
-                        //  _frmAuth.EllipseDsct = "ICOR";
+                        //  _frmAuth.EllipseDstrct = "ICOR";
                         //  _frmAuth.EllipsePost = "ADMIN";
                         //  _frmAuth.EllipseUser = "ljuvinao";
                         //  _frmAuth.EllipsePswd = "";
@@ -467,7 +467,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                 proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
 
-                                opSheet.district = _frmAuth.EllipseDsct;
+                                opSheet.district = _frmAuth.EllipseDstrct;
                                 opSheet.position = _frmAuth.EllipsePost;
                                 opSheet.maxInstances = 100;
                                 opSheet.returnWarnings = Debugger.DebugWarnings;
@@ -497,7 +497,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                     proxySheet2.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
 
-                                    opSheet2.district = _frmAuth.EllipseDsct;
+                                    opSheet2.district = _frmAuth.EllipseDstrct;
                                     opSheet2.position = _frmAuth.EllipsePost;
                                     opSheet2.maxInstances = 100;
                                     opSheet2.returnWarnings = Debugger.DebugWarnings;
@@ -529,7 +529,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                         proxySheet3.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
 
-                                        opSheet3.district = _frmAuth.EllipseDsct;
+                                        opSheet3.district = _frmAuth.EllipseDstrct;
                                         opSheet3.position = _frmAuth.EllipsePost;
                                         opSheet3.maxInstances = 100;
                                         opSheet3.returnWarnings = Debugger.DebugWarnings;
@@ -567,7 +567,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                                 proxySheet4.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
 
-                                                opSheet4.district = _frmAuth.EllipseDsct;
+                                                opSheet4.district = _frmAuth.EllipseDstrct;
                                                 opSheet4.position = _frmAuth.EllipsePost;
                                                 opSheet4.maxInstances = 100;
                                                 opSheet4.returnWarnings = Debugger.DebugWarnings;
@@ -678,7 +678,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                     if (_frmAuth.ShowDialog() == DialogResult.OK)
                     //if (true)
                     {
-                        //  _frmAuth.EllipseDsct = "ICOR";
+                        //  _frmAuth.EllipseDstrct = "ICOR";
                         //  _frmAuth.EllipsePost = "ADMIN";
                         //  _frmAuth.EllipseUser = "ljuvinao";
                         //  _frmAuth.EllipsePswd = "";
@@ -708,7 +708,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                 proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/DiscrepancyTaskService";
 
-                                opSheet.district = _frmAuth.EllipseDsct;
+                                opSheet.district = _frmAuth.EllipseDstrct;
                                 opSheet.position = _frmAuth.EllipsePost;
                                 opSheet.maxInstances = 100;
                                 opSheet.returnWarnings = Debugger.DebugWarnings;
@@ -746,7 +746,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                             proxySheet2.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/DiscrepancyLogService";
 
-                                            opSheet2.district = _frmAuth.EllipseDsct;
+                                            opSheet2.district = _frmAuth.EllipseDstrct;
                                             opSheet2.position = _frmAuth.EllipsePost;
                                             opSheet2.maxInstances = 100;
                                             opSheet2.returnWarnings = Debugger.DebugWarnings;
@@ -793,7 +793,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                         proxySheet3.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/AdjustDiscrepantHoldingService";
 
-                                        opSheet3.district = _frmAuth.EllipseDsct;
+                                        opSheet3.district = _frmAuth.EllipseDstrct;
                                         opSheet3.position = _frmAuth.EllipsePost;
                                         opSheet3.maxInstances = 100;
                                         opSheet3.returnWarnings = Debugger.DebugWarnings;
@@ -818,7 +818,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                         proxySheet4.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/AdjustDiscrepantHoldingService";
 
-                                        opSheet4.district = _frmAuth.EllipseDsct;
+                                        opSheet4.district = _frmAuth.EllipseDstrct;
                                         opSheet4.position = _frmAuth.EllipsePost;
                                         opSheet4.maxInstances = 100;
                                         opSheet4.returnWarnings = Debugger.DebugWarnings;
@@ -864,7 +864,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                             proxySheet5.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/AdjustDiscrepantHoldingService";
 
-                                            opSheet5.district = _frmAuth.EllipseDsct;
+                                            opSheet5.district = _frmAuth.EllipseDstrct;
                                             opSheet5.position = _frmAuth.EllipsePost;
                                             opSheet5.maxInstances = 100;
                                             opSheet5.returnWarnings = Debugger.DebugWarnings;
@@ -905,7 +905,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                             proxySheet4.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/AdjustDiscrepantHoldingService";
 
-                                            opSheet4.district = _frmAuth.EllipseDsct;
+                                            opSheet4.district = _frmAuth.EllipseDstrct;
                                             opSheet4.position = _frmAuth.EllipsePost;
                                             opSheet4.maxInstances = 100;
                                             opSheet4.returnWarnings = Debugger.DebugWarnings;
@@ -949,7 +949,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                                 proxySheet5.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/AdjustDiscrepantHoldingService";
 
-                                                opSheet5.district = _frmAuth.EllipseDsct;
+                                                opSheet5.district = _frmAuth.EllipseDstrct;
                                                 opSheet5.position = _frmAuth.EllipsePost;
                                                 opSheet5.maxInstances = 100;
                                                 opSheet5.returnWarnings = Debugger.DebugWarnings;
@@ -993,7 +993,7 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                                         proxySheet6.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/DiscrepancyTaskService";
 
-                                        opSheet6.district = _frmAuth.EllipseDsct;
+                                        opSheet6.district = _frmAuth.EllipseDstrct;
                                         opSheet6.position = _frmAuth.EllipsePost;
                                         opSheet6.maxInstances = 100;
                                         opSheet6.returnWarnings = Debugger.DebugWarnings;

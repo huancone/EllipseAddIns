@@ -772,7 +772,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Deprecated
                 //var opSheet = new Screen.OperationContext
                 //{
-                //    district = _frmAuth.EllipseDsct,
+                //    district = _frmAuth.EllipseDstrct,
                 //    position = _frmAuth.EllipsePost,
                 //    maxInstances = 100,
                 //    returnWarnings = Debugger.DebugWarnings
@@ -781,7 +781,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -878,7 +878,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -996,7 +996,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new Screen.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1100,7 +1100,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new EquipmentHireOperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1195,7 +1195,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new EquipmentHireOperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1290,7 +1290,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1415,7 +1415,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
@@ -1525,7 +1525,7 @@ namespace EllipseLabourCostingExcelAddIn
                 i = titleRow + 1;
                 var opWo = new EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings

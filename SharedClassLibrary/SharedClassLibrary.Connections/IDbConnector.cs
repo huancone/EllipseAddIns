@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SharedClassLibrary.Connections
 {
-    public interface IDbConnector
+    public interface IDbConnector : IDisposable
     {
         int ConnectionTimeOut { get; set; }
         string DbCatalog { get; set; }

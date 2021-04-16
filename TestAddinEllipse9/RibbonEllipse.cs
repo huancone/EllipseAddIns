@@ -137,7 +137,7 @@ namespace TestAddinEllipse9
             //Instanciar el Contexto de Operación
             var opContext = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost
             };
 
@@ -194,7 +194,7 @@ namespace TestAddinEllipse9
             //Instanciar el Contexto de Operación
             var opContext = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost
             };
 
@@ -242,7 +242,7 @@ namespace TestAddinEllipse9
             _cells.GetCell(1, 2).Value2 = serviceUrl;
             ef.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, serviceUrl);
+            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDstrct, serviceUrl);
             var resp = proxy.InitConexion();
 
             var groupList = new List<string>();
@@ -459,7 +459,7 @@ namespace TestAddinEllipse9
             var workGroup = "MTOLOC";
             var woDesc = "delete order";
 
-            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, serviceUrl);
+            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDstrct, serviceUrl);
             proxy.InitConexionE9();
 
             var requestXml = "";
@@ -559,7 +559,7 @@ namespace TestAddinEllipse9
             _cells.GetCell(1, 2).Value2 = serviceUrl;
             ef.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, serviceUrl);
+            var proxy = new PostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDstrct, serviceUrl);
             var resp = proxy.InitConexionE9();
 
             var groupList = new List<string>();

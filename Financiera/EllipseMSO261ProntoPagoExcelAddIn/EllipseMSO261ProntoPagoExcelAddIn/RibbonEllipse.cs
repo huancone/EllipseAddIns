@@ -396,7 +396,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             var opSheet = new screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,

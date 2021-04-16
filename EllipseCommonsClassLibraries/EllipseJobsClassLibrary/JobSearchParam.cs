@@ -129,14 +129,14 @@ namespace EllipseJobsClassLibrary
             searchParam.attachedToOutage = MyUtilities.IsTrue(AttachedToOutage);
             searchParam.attachedToOutageSpecified = AttachedToOutage != null;
             
-            searchParam.backlogToleranceDays = MyUtilities.ToDecimal(BacklogToleranceDays, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.backlogToleranceDays = MyUtilities.ToDecimal(BacklogToleranceDays, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.backlogToleranceDaysSpecified = BacklogToleranceDays != null;
             
             searchParam.compCode = CompCode;
             searchParam.compModCode = CompModCode;
-            searchParam.conAstSegFr = MyUtilities.ToDecimal(ConAstSegFr, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.conAstSegFr = MyUtilities.ToDecimal(ConAstSegFr, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.conAstSegFrSpecified = ConAstSegFr != null;
-            searchParam.conAstSegTo = MyUtilities.ToDecimal(ConAstSegTo, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.conAstSegTo = MyUtilities.ToDecimal(ConAstSegTo, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.conAstSegToSpecified = ConAstSegTo != null;
             searchParam.crews = Crews;
 
@@ -199,7 +199,7 @@ namespace EllipseJobsClassLibrary
             
             searchParam.origPriority = OrigPriority;
             searchParam.originatorId = OriginatorId;
-            searchParam.outageId = MyUtilities.ToDecimal(OutageId, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.outageId = MyUtilities.ToDecimal(OutageId, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.outageIdSpecified = OutageId != null;
             searchParam.overlappingDateSearch = MyUtilities.IsTrue(OverlappingDateSearch);
             searchParam.overlappingDateSearchSpecified = OverlappingDateSearch != null;
@@ -218,7 +218,7 @@ namespace EllipseJobsClassLibrary
             //searchParam.projectHierarchy = ProjectHierarchy;
             searchParam.projectNo = ProjectNo;
 
-            searchParam.recallTimeHrs = MyUtilities.ToDecimal(RecallTimeHrs, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.recallTimeHrs = MyUtilities.ToDecimal(RecallTimeHrs, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.recallTimeHrsSpecified = RecallTimeHrs != null;
             searchParam.reportId = ReportId;
             searchParam.requestId = RequestId;
@@ -237,9 +237,9 @@ namespace EllipseJobsClassLibrary
             searchParam.retrieveResourceRequirements = MyUtilities.IsTrue(RetrieveResourceRequirements);
             searchParam.retrieveResourceRequirementsSpecified = RetrieveResourceRequirements != null;
             
-            searchParam.schSegFr = MyUtilities.ToDecimal(SchSegFr, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.schSegFr = MyUtilities.ToDecimal(SchSegFr, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.schSegFrSpecified = SchSegFr != null;
-            searchParam.schSegTo = MyUtilities.ToDecimal(SchSegTo, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
+            searchParam.schSegTo = MyUtilities.ToDecimal(SchSegTo, IxConversionConstant.DefaultNullAndEmpty);
             searchParam.schSegToSpecified = SchSegTo != null;
             searchParam.searchEntity = SearchEntity;
             searchParam.searchView = MyUtilities.IsTrue(SearchView);

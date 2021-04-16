@@ -254,6 +254,8 @@ namespace EllipseStdTextExcelAddIn
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
+
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
 
                 //CONSTRUYO LA HOJA 1

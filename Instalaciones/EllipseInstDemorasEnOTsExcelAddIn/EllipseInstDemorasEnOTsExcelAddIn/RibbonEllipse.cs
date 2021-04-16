@@ -316,7 +316,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
@@ -457,7 +457,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 var opSheet = new OperationContext
                 {
-                    district = _frmAuth.EllipseDsct,
+                    district = _frmAuth.EllipseDstrct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,

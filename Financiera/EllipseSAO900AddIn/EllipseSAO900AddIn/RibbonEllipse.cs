@@ -1261,7 +1261,7 @@ namespace EllipseSAO900AddIn
 
             var opSheet = new Screen.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -1276,7 +1276,7 @@ namespace EllipseSAO900AddIn
 
                     //valida la transaccion contable
 
-                    var districtCode = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct).ToUpper();
+                    var districtCode = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct).ToUpper();
                     var transaction = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(transactionColumn, currentRow).Value);
 
 

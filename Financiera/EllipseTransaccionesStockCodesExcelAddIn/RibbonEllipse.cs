@@ -1154,7 +1154,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings
@@ -1255,7 +1255,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings
@@ -1347,7 +1347,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings
@@ -1431,7 +1431,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings
@@ -1623,7 +1623,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings
@@ -1719,7 +1719,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
-                                district = _frmAuth.EllipseDsct,
+                                district = _frmAuth.EllipseDstrct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 returnWarnings = Debugger.DebugWarnings

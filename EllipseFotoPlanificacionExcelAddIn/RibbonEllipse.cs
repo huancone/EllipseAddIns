@@ -374,8 +374,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             try
             {
-                //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
-                var ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
+                //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
+                var ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
                 var i = titleRow + 1;
                 foreach (var item in ellipseJobs)
                 {
@@ -506,7 +506,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             try
             {
-                List<PlannerItem> ellipseJobs = PlannerActions.FetchSigmanPhotoItems(_eFunctions,_frmAuth.EllipseDsct, searchParam);
+                List<PlannerItem> ellipseJobs = PlannerActions.FetchSigmanPhotoItems(_eFunctions,_frmAuth.EllipseDstrct, searchParam);
                 var i = titleRow + 1;
                 foreach (var item in ellipseJobs)
                 {

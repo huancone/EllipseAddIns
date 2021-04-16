@@ -979,7 +979,7 @@ namespace EllipseCalidadOTExcelAddIn
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
@@ -988,7 +988,7 @@ namespace EllipseCalidadOTExcelAddIn
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+            var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDstrct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
 
             while (!string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2)))
@@ -1053,7 +1053,7 @@ namespace EllipseCalidadOTExcelAddIn
 
             var opSheet = new WorkOrderService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
