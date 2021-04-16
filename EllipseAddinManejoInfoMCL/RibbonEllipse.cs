@@ -326,9 +326,12 @@ namespace EllipseAddinManejoInfoMCL
             else
             {
                 var dbi = Environments.GetDatabaseItem(Environments.SigmanProductivo);
-                dbi.DbUser = VarEncript.Encryption.Decrypt("VDppSMCRaK7ZTG63w9k5WKc3ON0rTcnAf7+eEDM+a+HpZfC3DRpODpJ2KzkZjufVFle/R7LRdw2wLoNTourt1qr96ckLHV4E2uMR+ROoMrLppzAm6xZaiuP7bLRTZm65");
-                dbi.DbPassword = VarEncript.Encryption.Decrypt("Wx9o0zzjjw2vjAmhUD/nb/qCTqK9pD6rXg1JxePXdxCnVQXlrAZZAEliXG3O8/yHXtt3TyUrzpGv3YaeBwqnRd02y6ovBHnPny8ikERW2fRXKvDbMxnUC2GIX4dWQjCT");
-                _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                //dbi.DbUser = VarEncript.Encryption.Decrypt("VDppSMCRaK7ZTG63w9k5WKc3ON0rTcnAf7+eEDM+a+HpZfC3DRpODpJ2KzkZjufVFle/R7LRdw2wLoNTourt1qr96ckLHV4E2uMR+ROoMrLppzAm6xZaiuP7bLRTZm65");
+                //dbi.DbPassword = VarEncript.Encryption.Decrypt("Wx9o0zzjjw2vjAmhUD/nb/qCTqK9pD6rXg1JxePXdxCnVQXlrAZZAEliXG3O8/yHXtt3TyUrzpGv3YaeBwqnRd02y6ovBHnPny8ikERW2fRXKvDbMxnUC2GIX4dWQjCT");
+                //dbi.DbUser = "sigman";
+                //dbi.DbPassword = "sig0679";
+                //_eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                _eFunctions.SetDBSettings(Environments.SigmanProductivo);
                 _eFunctions.SetConnectionTimeOut(0);
             }
 
@@ -2763,9 +2766,10 @@ namespace EllipseAddinManejoInfoMCL
                 }
                 else if (action.Equals("BUSCAR"))
                 {
+                    var Fect = _cells.GetCell("B" + 3).Value; Fect.Substring(0, 4);
                     var turn = "";
                     if (_cells.GetCell("G" + 3).Value == "A1") { turn = "1"; } else { turn = "2"; }
-                    var ValorCom = ListaDatos(1, "'" + _cells.GetCell("B" + 3).Value + "'", turn);
+                    var ValorCom = ListaDatos(1, "'" + (Fect.Substring(0, 4)+ Fect.Substring(5, 2)+ Fect.Substring(8, 2)) + "'", turn);
                     if (ValorCom.Count > 0)
                     {
                         BUSCAR("PLAN DE TANQUEO DE COMBUSTIBLE", SheetName01);
