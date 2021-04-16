@@ -468,10 +468,13 @@ namespace EllipseCalidadOTExcelAddIn
 
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
 
-                    var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
-                    dbi.DbUser = "consulbo";
-                    dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
-                    _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                    //var dbi = Environments.GetDatabaseItem(/*drpEnvironment.SelectedItem.Label*/Environments.EllipseSigmanProductivo);
+                    //dbi.DbPassword = "ventyx15";
+                    //dbi.DbUser = "consulbo";
+
+                    //dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                    //_eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                    _eFunctions.SetDBSettings(Environments.EllipseSigmanProductivo);
                     _eFunctions.SetConnectionTimeOut(0);
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
                     _cells.ClearTableRange(TableName01);
@@ -763,10 +766,11 @@ namespace EllipseCalidadOTExcelAddIn
                 
 
                 _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
-                var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
-                dbi.DbUser = "consulbo";
-                dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
-                _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                //var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
+                //dbi.DbUser = "consulbo";
+                //dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                //_eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                _eFunctions.SetDBSettings(Environments.EllipseSigmanProductivo);
                 _eFunctions.SetConnectionTimeOut(0);
                 var odr = _eFunctions.GetQueryResult(sqlQuery);
                 _cells.ClearTableRange(TableName01);
