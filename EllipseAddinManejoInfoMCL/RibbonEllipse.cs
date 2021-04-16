@@ -626,6 +626,16 @@ namespace EllipseAddinManejoInfoMCL
                             SHIFTINDEX = " + Param1 + @" AND ROWNUM = 1 " + ORDEN);
                 table = getdata(Sql, 1);
             }
+            else if (Tipo == 16)
+            {
+                Sql = (@"SELECT
+                            MAX(FECHA)
+                        FROM
+                            SIGMAN.APP_PTC_COMBUSTIBLE
+                        WHERE
+                            shiftindex < " + Param2 + @" AND EQUIP_NO = RPAD('" + Param1 + "',12,' ') " + ORDEN);
+                table = getdata(Sql, 1);
+            }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
             //Filas de la consulta
@@ -779,7 +789,7 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("C5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("D5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("E5"), true, false, true, "GL-300-600", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("F5"), true, false, true, "HORA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("F5"), true, false, true, "HORA", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("G5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("H5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -792,6 +802,7 @@ namespace EllipseAddinManejoInfoMCL
                 var Datos5 = ListaDatos(10);
                 Tam1 = Perforadora.Count;
                 Int32 F = 0;
+                List<string> Verf = null;
                 foreach (var Result in Perforadora)
                 {
                     //_cells.GetCell("G" + (6 + F)).NumberFormat = "@";
@@ -799,7 +810,12 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("B" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("C" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("D" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
-                    //FormatCamposMenu(_cells.GetCell("G" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("A" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+                    Verf = ListaDatos(16, _cells.GetCell("A" + (6 + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("G" + (6 + F)).Value = Verf[0];
+                    }
+                     
                     //FormatCamposMenu(_cells.GetCell("H" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("A" + (6 + F)).Value, _cells.GetCell("G" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
                 }
@@ -817,13 +833,13 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("K5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("L5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("M5"), true, false, true, "GLS 413  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("N5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("N5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("O5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("P5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
                 var TractoresLlantas = ListaDatos(5, "T Llantas 854%", _cells.GetCell("D4").Value, "eqmttype LIKE '", ORDEN: "ASC");
                 Tam2 = TractoresLlantas.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in TractoresLlantas)
                 {
@@ -832,6 +848,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("J" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("K" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("L" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("O" + (6 + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -852,12 +873,12 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("S5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("T5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("U5"), true, false, true, "GLS 235  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("V5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("V5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("W5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("X5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 var ORUGA_D9T = ListaDatos(5, "TOruga D9T     ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam3 = ORUGA_D9T.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in ORUGA_D9T)
                 {
@@ -866,6 +887,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("R" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("S" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("T" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("Q" + (6 + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("W" + (6 + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -884,14 +910,14 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AA5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AB5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AC5"), true, false, true, "GLS 170  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AD5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AD5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AE5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AF5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
 
                 var ORUGA_D8T = ListaDatos(5, "TOruga D8T     ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam4 = ORUGA_D8T.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in ORUGA_D8T)
                 {
@@ -900,6 +926,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("Z" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("AA" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("AB" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("Y" + (6 + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AE" + (6 + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -918,8 +949,8 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AI5"), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AJ5"), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AK5"), true, false, true, "GLS 2960 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AL5"), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AM5"), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AL5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AM5"), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AN5"), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AO5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AP5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -927,7 +958,8 @@ namespace EllipseAddinManejoInfoMCL
 
                 var HIT_EX5500 = ListaDatos(5, "Hitachi EX5500 ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam5 = HIT_EX5500.Count;
-                var Cont = "";
+                //var Cont = "";
+                Verf = null;
                 F = 0;
                 foreach (var Result in HIT_EX5500)
                 {
@@ -943,6 +975,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("AI" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("AJ" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     _cells.GetCell("AN" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos5), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("AG" + (6 + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AO" + (6 + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -993,14 +1030,14 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("K" + (Tam2 + 8)), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("L" + (Tam2 + 8)), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("M" + (Tam2 + 8)), true, false, true, "GLS 209  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("N" + (Tam2 + 8)), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("N" + (Tam2 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("O" + (Tam2 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("P" + (Tam2 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
 
                 var LL834 = ListaDatos(5, "Tractor 834H   ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam6 = LL834.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in LL834)
                 {
@@ -1011,6 +1048,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("L" + ((Tam2 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+                    Verf = ListaDatos(16, _cells.GetCell("I" + ((Tam2 + 9) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("O" + ((Tam2 + 9) + F)).Value = Verf[0];
+                    }
                     F++;
                 }
 
@@ -1029,12 +1071,12 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("S" + (Tam3 + 8)), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("T" + (Tam3 + 8)), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("U" + (Tam3 + 8)), true, false, true, "GLS 318  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("V" + (Tam3 + 8)), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("V" + (Tam3 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("W" + (Tam3 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("X" + (Tam3 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 var ORUGA_D10T = ListaDatos(5, "TOruga D10T    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam7 = ORUGA_D10T.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in ORUGA_D10T)
                 {
@@ -1043,6 +1085,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("R" + ((Tam3 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("S" + ((Tam3 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("T" + ((Tam3 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("Q" + ((Tam3 + 9) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("W" + ((Tam3 + 9) + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -1060,14 +1107,14 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AA" + ((Tam4 + 8))), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AB" + ((Tam4 + 8))), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AC" + ((Tam4 + 8))), true, false, true, "GLS 520  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + 8))), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + 8))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AE" + ((Tam4 + 8))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AF" + ((Tam4 + 8))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
 
                 var ORUGA_D11T = ListaDatos(5, "TOruga D11T    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam8 = ORUGA_D11T.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in ORUGA_D11T)
                 {
@@ -1076,6 +1123,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("Z" + ((Tam4 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("AA" + ((Tam4 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("AB" + ((Tam4 + 9) + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("Y" + ((Tam4 + 9) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AE" + ((Tam4 + 9) + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -1095,8 +1147,8 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + 8))), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + 8))), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + 8))), true, false, true, "GLS 2960 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + 8))), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + 8))), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + 8))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + 8))), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + 8))), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AO" + ((Tam5 + 8))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AP" + ((Tam5 + 8))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -1104,7 +1156,7 @@ namespace EllipseAddinManejoInfoMCL
 
                 var HIT_EX3600 = ListaDatos(5, "Hit EX3600R    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam9 = HIT_EX3600.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in HIT_EX3600)
                 {
@@ -1120,6 +1172,12 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("AI" + ((Tam5 + 9 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("AJ" + ((Tam5 + 9 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     _cells.GetCell("AN" + ((Tam5 + 9 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos5), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + 9) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AO" + ((Tam5 + 9) + F)).Value = Verf[0];
+                    }
+
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -1138,13 +1196,13 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("C" + (Tam1 + 8)), true, false, true, "RUTA", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("D" + (Tam1 + 8)), true, false, true, "CUMP", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("E" + (Tam1 + 8)), true, false, true, "GLS 900  ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("F" + (Tam1 + 8)), true, false, true, "HORA  ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("F" + (Tam1 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("G" + (Tam1 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("H" + (Tam1 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
 
                 var CARGADORES = ListaDatos(5, "L1350          ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam10 = CARGADORES.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in CARGADORES)
                 {
@@ -1153,6 +1211,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("B" + (Tam1 + 9 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos2), Type.Missing);
                     _cells.GetCell("C" + (Tam1 + 9 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("D" + (Tam1 + 9 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
+                    Verf = ListaDatos(16, _cells.GetCell("A" + ((Tam1 + 9) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("G" + ((Tam1 + 9) + F)).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -1172,7 +1235,7 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("K" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("L" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("M" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "GALONES", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("N" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("N" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("O" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("P" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
 
@@ -1192,10 +1255,10 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AA" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "RUTA", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AB" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "CUMP", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AC" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "GALONES", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HORA  ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AE" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AF" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
-
+                
                 Tam11 = 25;
 
 
@@ -1215,6 +1278,17 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 14 + 3)), true, false, true, "159", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 15 + 3)), true, false, true, "174", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("Y" + ((Tam4 + Tam8) + 8 + 16 + 3)), true, false, true, "171", "", 11, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+                F = 0;
+                Verf = null;
+                for(F = 0; F <= Tam11; F++)
+                {
+                    Verf = ListaDatos(16, _cells.GetCell("Y" + (((Tam4 + Tam8) + 8 + 13 + 3) + F)).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AE" + (((Tam4 + Tam8) + 8 + 13 + 3) + F)).Value = Verf[0];
+                    }
+                }
+                
 
 
 
@@ -1232,8 +1306,8 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "GLS 1690 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AP" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -1241,7 +1315,7 @@ namespace EllipseAddinManejoInfoMCL
 
                 var PC4000 = ListaDatos(5, "PC4000         ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam12 = PC4000.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in PC4000)
                 {
@@ -1256,7 +1330,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("AI" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("AJ" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     _cells.GetCell("AN" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos5), Type.Missing);
-
+                    Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value = Verf[0];
+                    }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
@@ -1265,7 +1343,7 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetRange(33, ((Tam5 + Tam9 + 8 + 3 + 1 + F)), 42, ((Tam5 + Tam9 + 8 + 3 + 1 + F))), true, false, true, "", "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetRange("AG" + ((Tam5 + Tam9 + 8 + 3 + 2 + F)), "AI" + ((Tam5 + Tam9 + 8 + 3 + 2 + F))), true, true, true, "TOTAL SERVICIOS", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
                 FormatCamposMenu(_cells.GetRange("AJ" + ((Tam5 + Tam9 + 8 + 3 + 2 + F)), "AP" + ((Tam5 + Tam9 + 8 + 3 + 2 + F))), true, false, true, "", "", 11, Rf: 0, Gf: 32, Bf: 96, Rl: 255, Gl: 255, Bl: 255);
-                FormatBordes(_cells.GetRange("AG5", "AP" + ((Tam5 + Tam9 + Tam12 + 8 + F))));
+                FormatBordes(_cells.GetRange("AG5", "AP" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 2 + F))));
 
 
 
@@ -1275,14 +1353,14 @@ namespace EllipseAddinManejoInfoMCL
                 FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "GLS 1690 ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+                FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
                 FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
 
                 var LIEBHERR = ListaDatos(5, "LIE984C        ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam13 = LIEBHERR.Count;
-
+                Verf = null;
                 F = 0;
                 foreach (var Result in LIEBHERR)
                 {
@@ -1293,6 +1371,11 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("AJ" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
+                    Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value, _cells.GetCell("D4").Value);
+                    if (Verf.Count != 0)
+                    {
+                        _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value = Verf[0];
+                    }
                     F++;
                 }
                 FormatCamposMenu(_cells.GetCell("AG" + ((Tam5 + Tam9 + Tam12 + 15 + F))), true, false, true, Tam13.ToString(), "", 11, Rf: 166, Gf: 166, Bf: 166, Rl: 0, Gl: 0, Bl: 0);
@@ -2639,13 +2722,15 @@ namespace EllipseAddinManejoInfoMCL
                     Columnas = DatosWoG.GetUpperBound(1);
                     SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6);
 
-                    TamVar = Tam2 + Tam6 + Tam15;
-                    DatosWoG = GetStringArray(SheetOne.Range["I" + (FilaInicial + (Tam2 + Tam6) + 6), "N" + (TamVar + 6 + (FilaInicial - 1))].Cells.Value2);
-                    //string[] DatosWo = DatosWoG.Distinct().ToArray();
-                    Filas = DatosWoG.GetLength(0);
-                    Columnas = DatosWoG.GetUpperBound(1);
-                    SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6, 1);
-
+                    if (Tam15 != 0)
+                    {
+                        TamVar = Tam2 + Tam6 + Tam15;
+                        DatosWoG = GetStringArray(SheetOne.Range["I" + (FilaInicial + (Tam2 + Tam6) + 6), "N" + (TamVar + 6 + (FilaInicial - 1))].Cells.Value2);
+                        //string[] DatosWo = DatosWoG.Distinct().ToArray();
+                        Filas = DatosWoG.GetLength(0);
+                        Columnas = DatosWoG.GetUpperBound(1);
+                        SaveOneSheet(action, Filas, Columnas, Var1, Var2, Var3, Var4, DatosWoG, 1, Var5, Var6, 1);
+                    }
                     TamVar = Tam4 + Tam8 + Tam11;
                     DatosWoG = GetStringArray(SheetOne.Range["Y" + (FilaInicial + (Tam4 + Tam8) + 6), "AD" + (TamVar + 6 + (FilaInicial - 1))].Cells.Value2);
                     //string[] DatosWo = DatosWoG.Distinct().ToArray();
@@ -2678,7 +2763,19 @@ namespace EllipseAddinManejoInfoMCL
                 }
                 else if (action.Equals("BUSCAR"))
                 {
-                    BUSCAR("PLAN DE TANQUEO DE COMBUSTIBLE", SheetName01);
+                    var turn = "";
+                    if (_cells.GetCell("G" + 3).Value == "A1") { turn = "1"; } else { turn = "2"; }
+                    var ValorCom = ListaDatos(1, "'" + _cells.GetCell("B" + 3).Value + "'", turn);
+                    if (ValorCom.Count > 0)
+                    {
+                        BUSCAR("PLAN DE TANQUEO DE COMBUSTIBLE", SheetName01);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontro el turno a buscar. ");
+                        SW = 1;
+                        return;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2712,7 +2809,6 @@ namespace EllipseAddinManejoInfoMCL
                             if (DatosWoG[i, j] != null)
                             {
                                 EjecutarSql("INSERT INTO SIGMAN.APP_PTC_COMBUSTIBLE (SHIFTINDEX, FECHA, TURNO, GRUPO, EQUIP_NO, OPERADOR, RUTA, CUMPLIMIENTO, GALONES, HORA, DESPACHADOR, SUPERVISOR, TYPE_EQUIP_NO) VALUES ('" + Var1 + "', '" + Var2.Trim().ToUpper() + "', '" + Var3.Trim() + "', '" + Var4.Trim() + "', '" + DatosWoG[i, j] + "', '" + DatosWoG[i, j + 1] + "', '" + DatosWoG[i, j + 2] + "', '" + DatosWoG[i, j + 3] + "', '" + DatosWoG[i, j + 4] + "', '" + DatosWoG[i, j + 5] + "', '" + Var5 + "', '" + Var6 + "', '" + TypeEquip + "')");
-
                             }
                         }
                     }
@@ -3299,7 +3395,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("C5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("D5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("E5"), true, false, true, "GL-300-600", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("F5"), true, false, true, "HORA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("F5"), true, false, true, "HORA", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("G5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("H5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3356,7 +3452,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("K5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("L5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("M5"), true, false, true, "GLS 413  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("N5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("N5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("O5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("P5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3413,7 +3509,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("S5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("T5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("U5"), true, false, true, "GLS 235  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("V5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("V5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("W5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("X5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3466,7 +3562,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AA5"), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AB5"), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AC5"), true, false, true, "GLS 170  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AD5"), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AD5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AE5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AF5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3519,8 +3615,8 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AI5"), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AJ5"), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AK5"), true, false, true, "GLS 2960 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AL5"), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AM5"), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AL5"), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AM5"), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AN5"), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AO5"), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AP5"), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -3572,7 +3668,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("K" + (Tam2 + 8)), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("L" + (Tam2 + 8)), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("M" + (Tam2 + 8)), true, false, true, "GLS 209  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("N" + (Tam2 + 8)), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("N" + (Tam2 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("O" + (Tam2 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("P" + (Tam2 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3626,7 +3722,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("S" + (Tam3 + 8)), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("T" + (Tam3 + 8)), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("U" + (Tam3 + 8)), true, false, true, "GLS 318  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("V" + (Tam3 + 8)), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("V" + (Tam3 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("W" + (Tam3 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("X" + (Tam3 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             data.DataTable ORUGA_D10T = getdata(Consulta(2, 1, "='TOruga D10T    '", _cells.GetCell("D4").Value), 1);
@@ -3679,7 +3775,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AA" + ((Tam4 + 8))), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AB" + ((Tam4 + 8))), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AC" + ((Tam4 + 8))), true, false, true, "GLS 520  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + 8))), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + 8))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AE" + ((Tam4 + 8))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AF" + ((Tam4 + 8))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3733,8 +3829,8 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + 8))), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + 8))), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + 8))), true, false, true, "GLS 2960 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + 8))), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + 8))), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + 8))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + 8))), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + 8))), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AO" + ((Tam5 + 8))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AP" + ((Tam5 + 8))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -3788,7 +3884,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("C" + (Tam1 + 8)), true, false, true, "RUTA", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("D" + (Tam1 + 8)), true, false, true, "CUMP", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("E" + (Tam1 + 8)), true, false, true, "GLS 900  ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("F" + (Tam1 + 8)), true, false, true, "HORA  ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("F" + (Tam1 + 8)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("G" + (Tam1 + 8)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("H" + (Tam1 + 8)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 189, Gf: 89, Bf: 17, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3842,7 +3938,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("K" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("L" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("M" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "GALONES", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("N" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("N" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("O" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("P" + ((Tam2 + Tam6) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 0, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3884,7 +3980,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AA" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "RUTA", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AB" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "CUMP", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AC" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "GALONES", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HORA  ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AD" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AE" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AF" + ((Tam4 + Tam8) + 8 + 3)), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 155, Gf: 194, Bf: 230, Rl: 0, Gl: 0, Bl: 0);
 
@@ -3926,8 +4022,8 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "RUTA", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "CUMP", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "GLS 1690 ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA  ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA PROG. D", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HORA PROG. D", "FORMATO DE HORA EJ: 06:00", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "DEMORAS", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AP" + ((Tam5 + Tam9 + 8 + 3))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 255, Gf: 192, Bf: 0, Rl: 0, Gl: 0, Bl: 0);
@@ -3987,7 +4083,7 @@ namespace EllipseAddinManejoInfoMCL
             FormatCamposMenu(_cells.GetCell("AI" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "RUTA", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AJ" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "CUMP", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AK" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "GLS 1690 ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
-            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HORA  ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
+            FormatCamposMenu(_cells.GetCell("AL" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HORA  ", "FORMATO DE HORA EJ: 06:00", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "FECHA-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
             FormatCamposMenu(_cells.GetCell("AN" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3))), true, false, true, "HRS-ULT-TANQ", "", 11, Rf: 169, Gf: 208, Bf: 142, Rl: 0, Gl: 0, Bl: 0);
 
