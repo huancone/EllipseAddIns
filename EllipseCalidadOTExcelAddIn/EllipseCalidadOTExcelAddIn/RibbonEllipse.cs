@@ -238,7 +238,7 @@ namespace EllipseCalidadOTExcelAddIn
                     "100% - Calidad Excelente");
                 _cells.GetCell(18, TitleRow01).Value = "GARANTIA";
                 _cells.GetCell(16, TitleRow01).Style = StyleConstants.TitleRequired;
-                _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - Baja", "2 - Regular", "3 - Buena", "4 - Excelente" });
+                _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - BAJA", "2 - REGULAR", "3 - BUENA", "4 - EXCELENTE" });
                 _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), new List<string> { "Y", "N"});
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
@@ -972,7 +972,7 @@ namespace EllipseCalidadOTExcelAddIn
 
         private void CalificarOT()
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(Environments.EllipseProductivo);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -980,7 +980,7 @@ namespace EllipseCalidadOTExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(Environments.EllipseProductivo);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDstrct,
@@ -1051,8 +1051,8 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(Environments.EllipseProductivo);
+            var urlService = Environments.GetServiceUrl(Environments.EllipseProductivo);
 
 
             var opSheet = new WorkOrderService.OperationContext
@@ -1080,19 +1080,19 @@ namespace EllipseCalidadOTExcelAddIn
             //var CalificacionCalidadOT = "";
             //var CalificadoPor = "";
 
-            if (calificacion == "1 - Baja")
+            if (calificacion == "1 - BAJA")
             {
                 calif = "1";
             }
-            else if (calificacion == "2 - Regular")
+            else if (calificacion == "2 - REGULAR")
             {
                 calif = "2";
             }
-            else if (calificacion == "3 - Buena")
+            else if (calificacion == "3 - BUENA")
             {
                 calif = "3";
             }
-            else if (calificacion == "4 - Excelente")
+            else if (calificacion == "4 - EXCELENTE")
             {
                 calif = "4";
             }
