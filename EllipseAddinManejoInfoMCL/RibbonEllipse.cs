@@ -639,6 +639,16 @@ namespace EllipseAddinManejoInfoMCL
                             shiftindex < " + Param2 + @" AND EQUIP_NO = RPAD('" + Param1 + "',12,' ') " + ORDEN);
                 table = getdata(Sql, 1);
             }
+            else if (Tipo == 17)
+            {
+                Sql = (@"SELECT
+                            SHIFTINDEX
+                        FROM
+                            SIGMAN.APP_PTC_COMBUSTIBLE
+                        WHERE
+                            FECHA = " + Param1 + @" AND  TURNO = '" + Param2 + "' " + ORDEN);
+                table = getdata(Sql, 1);
+            }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
             //Filas de la consulta
@@ -2766,10 +2776,8 @@ namespace EllipseAddinManejoInfoMCL
                 }
                 else if (action.Equals("BUSCAR"))
                 {
-                    var Fect = _cells.GetCell("B" + 3).Value; Fect.Substring(0, 4);
-                    var turn = "";
-                    if (_cells.GetCell("G" + 3).Value == "A1") { turn = "1"; } else { turn = "2"; }
-                    var ValorCom = ListaDatos(1, "'" + (Fect.Substring(0, 4)+ Fect.Substring(5, 2)+ Fect.Substring(8, 2)) + "'", turn);
+                    var Fect = _cells.GetCell("B" + 3).Value;
+                    var ValorCom = ListaDatos(17, "'" + (Fect.Substring(0, 4)+ Fect.Substring(5, 2)+ Fect.Substring(8, 2)) + "'", _cells.GetCell("G" + 3).Value);
                     if (ValorCom.Count > 0)
                     {
                         BUSCAR("PLAN DE TANQUEO DE COMBUSTIBLE", SheetName01);
