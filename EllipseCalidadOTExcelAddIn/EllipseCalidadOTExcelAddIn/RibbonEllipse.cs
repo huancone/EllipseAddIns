@@ -42,7 +42,7 @@ namespace EllipseCalidadOTExcelAddIn
 
         private const string SheetName01 = "WorkOrders";
         private const int TitleRow01 = 7;
-        private const int ResultColumn01 = 19;
+        private const int ResultColumn01 = 20;
         private const string TableName01 = "WorkOrderTable";
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
         public string WoCode7 = "";
@@ -237,6 +237,7 @@ namespace EllipseCalidadOTExcelAddIn
                     ">=80% y <=99% - Calidad Buena\n" +
                     "100% - Calidad Excelente");
                 _cells.GetCell(18, TitleRow01).Value = "GARANTIA";
+                _cells.GetCell(19, TitleRow01).Value = "CALIFICADO_POR";
                 _cells.GetCell(16, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - BAJA", "2 - REGULAR", "3 - BUENA", "4 - EXCELENTE" });
                 _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), new List<string> { "Y", "N"});
@@ -416,7 +417,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '024'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS GARANTIA
+                                ) AS GARANTIA,
+                                (
+                                  SELECT
+                                    TRIM(REF_CODE)
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '035'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIFICADO_POR
                               FROM
                                 A
                             )
@@ -449,7 +464,8 @@ namespace EllipseCalidadOTExcelAddIn
                               B.WO_JOB_CODEX8,
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.GARANTIA
+                              B.GARANTIA,
+                              B.CALIFICADO_POR
                             FROM
                               B ";
                     if (WoCode7 != "")
@@ -503,6 +519,7 @@ namespace EllipseCalidadOTExcelAddIn
                         _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                         _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
                         _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
+                        _cells.GetCell("S" + currentRow).Value = odr["CALIFICADO_POR"] + "";
 
                         if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                         {
@@ -727,7 +744,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '024'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS GARANTIA
+                                ) AS GARANTIA,
+                                (
+                                  SELECT
+                                    TRIM(REF_CODE)
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '035'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIFICADO_POR
                               FROM
                                 A
                             )
@@ -760,7 +791,8 @@ namespace EllipseCalidadOTExcelAddIn
                               B.WO_JOB_CODEX8, 
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.GARANTIA
+                              B.GARANTIA,
+                              B.CALIFICADO_POR
                             FROM
                               B /*WHERE B.CALIDAD IS NULL*/";
                 
@@ -799,6 +831,7 @@ namespace EllipseCalidadOTExcelAddIn
                     _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                     _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
                     _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
+                    _cells.GetCell("S" + currentRow).Value = odr["CALIFICADO_POR"] + "";
 
                     if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                     {
@@ -1077,6 +1110,7 @@ namespace EllipseCalidadOTExcelAddIn
             var calif = "";
             var calificacion = _cells.GetEmptyIfNull(_cells.GetCell(17, fila).Value);
             var Garantia = _cells.GetEmptyIfNull(_cells.GetCell(18, fila).Value);
+            var CalifPor = _cells.GetEmptyIfNull(_cells.GetCell(19, fila).Value);
             //var CalificacionCalidadOT = "";
             //var CalificadoPor = "";
 
@@ -1099,7 +1133,8 @@ namespace EllipseCalidadOTExcelAddIn
             var User = "";
             if(calif != "")
             {
-                User = _frmAuth.EllipseUser;
+                //User = _frmAuth.EllipseUser;
+                User = CalifPor;
             }
 
             var woRefCodes = new WorkOrderReferenceCodes
