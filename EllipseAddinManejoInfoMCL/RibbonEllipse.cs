@@ -632,11 +632,11 @@ namespace EllipseAddinManejoInfoMCL
             else if (Tipo == 16)
             {
                 Sql = (@"SELECT
-                            MAX(FECHA)
+                            MAX(FECHA||HORA)
                         FROM
                             SIGMAN.APP_PTC_COMBUSTIBLE
                         WHERE
-                            shiftindex < " + Param2 + @" AND EQUIP_NO = RPAD('" + Param1 + "',12,' ') " + ORDEN);
+                            shiftindex < " + Param2 + @" AND EQUIP_NO = RPAD('" + Param1 + "',12,' ') HAVING MAX(FECHA||HORA) IS NOT NULL " + ORDEN);
                 table = getdata(Sql, 1);
             }
             else if (Tipo == 17)
@@ -648,6 +648,19 @@ namespace EllipseAddinManejoInfoMCL
                         WHERE
                             FECHA = " + Param1 + @" AND  TURNO = '" + Param2 + "' " + ORDEN);
                 table = getdata(Sql, 1);
+            }
+            else if (Tipo == 18)
+            {
+                Sql = (@"SELECT
+                            ROUND(SUM(hist_statusevents.duration)/3600,2) AS HRS_M_PM      
+                        FROM
+                            dbo.hist_statusevents
+                            LEFT JOIN dbo.hist_exproot hist_turnos ON (hist_statusevents.shiftindex=hist_turnos.shiftindex )
+                        WHERE
+                            DATEADD(SECOND, (hist_statusevents.starttime + hist_turnos.start), Convert(datetime, hist_turnos.shiftdate, 112)) >= '" + Param1 + @"'
+                            AND hist_statusevents.eqmt = '" + Param2 + @"'
+                            AND hist_statusevents.category IN('2', '5') " + ORDEN);
+                table = getdataSql(Sql);
             }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
@@ -816,6 +829,7 @@ namespace EllipseAddinManejoInfoMCL
                 Tam1 = Perforadora.Count;
                 Int32 F = 0;
                 List<string> Verf = null;
+                List<string> Verf2 = null;
                 foreach (var Result in Perforadora)
                 {
                     //_cells.GetCell("G" + (6 + F)).NumberFormat = "@";
@@ -824,11 +838,25 @@ namespace EllipseAddinManejoInfoMCL
                     _cells.GetCell("C" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos3), Type.Missing);
                     _cells.GetCell("D" + (6 + F)).Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, string.Join(Separador(), Datos4), Type.Missing);
                     Verf = ListaDatos(16, _cells.GetCell("A" + (6 + F)).Value, _cells.GetCell("D4").Value);
-                    if (Verf.Count != 0)
+                    if (Verf.Count > 0)
                     {
-                        _cells.GetCell("G" + (6 + F)).Value = Verf[0];
+                        //var PPP = _cells.GetEmptyIfNull(_cells.GetCell("G" + (6 + F)).Value);
+                        //var Pruebbb = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("G" + (6 + F)).NumberFormat = "@";
+                            _cells.GetCell("G" + (6 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("G" + (6 + F)).Value, _cells.GetCell("A" + (6 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("H" + (6 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("G" + (6 + F)).Value = Verf[0];
+                        }
                     }
-                     
                     //FormatCamposMenu(_cells.GetCell("H" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("A" + (6 + F)).Value, _cells.GetCell("G" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     F++;
                 }
@@ -853,6 +881,7 @@ namespace EllipseAddinManejoInfoMCL
                 var TractoresLlantas = ListaDatos(5, "T Llantas 854%", _cells.GetCell("D4").Value, "eqmttype LIKE '", ORDEN: "ASC");
                 Tam2 = TractoresLlantas.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in TractoresLlantas)
                 {
@@ -864,7 +893,22 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("O" + (6 + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("O" + (6 + F)).NumberFormat = "@";
+                            _cells.GetCell("O" + (6 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("O" + (6 + F)).Value, _cells.GetCell("I" + (6 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("P" + (6 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("O" + (6 + F)).Value = Verf[0];
+                        }
+
+
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -892,6 +936,7 @@ namespace EllipseAddinManejoInfoMCL
                 var ORUGA_D9T = ListaDatos(5, "TOruga D9T     ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam3 = ORUGA_D9T.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in ORUGA_D9T)
                 {
@@ -903,7 +948,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("Q" + (6 + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("W" + (6 + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("W" + (6 + F)).NumberFormat = "@";
+                            _cells.GetCell("W" + (6 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("W" + (6 + F)).Value, _cells.GetCell("Q" + (6 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("X" + (6 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("W" + (6 + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -931,6 +989,7 @@ namespace EllipseAddinManejoInfoMCL
                 var ORUGA_D8T = ListaDatos(5, "TOruga D8T     ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam4 = ORUGA_D8T.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in ORUGA_D8T)
                 {
@@ -942,7 +1001,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("Y" + (6 + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AE" + (6 + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AE" + (6 + F)).NumberFormat = "@";
+                            _cells.GetCell("AE" + (6 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AE" + (6 + F)).Value, _cells.GetCell("Y" + (6 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AF" + (6 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AE" + (6 + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -973,6 +1045,7 @@ namespace EllipseAddinManejoInfoMCL
                 Tam5 = HIT_EX5500.Count;
                 //var Cont = "";
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in HIT_EX5500)
                 {
@@ -991,7 +1064,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("AG" + (6 + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AO" + (6 + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AO" + (6 + F)).NumberFormat = "@";
+                            _cells.GetCell("AO" + (6 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AO" + (6 + F)).Value, _cells.GetCell("AG" + (6 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AP" + (6 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AO" + (6 + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1051,6 +1137,7 @@ namespace EllipseAddinManejoInfoMCL
                 var LL834 = ListaDatos(5, "Tractor 834H   ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam6 = LL834.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in LL834)
                 {
@@ -1064,7 +1151,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("I" + ((Tam2 + 9) + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("O" + ((Tam2 + 9) + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("O" + ((Tam2 + 9) + F)).NumberFormat = "@";
+                            _cells.GetCell("O" + ((Tam2 + 9) + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("O" + ((Tam2 + 9) + F)).Value, _cells.GetCell("I" + ((Tam2 + 9) + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("P" + ((Tam2 + 9) + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("O" + ((Tam2 + 9) + F)).Value = Verf[0];
+                        }
                     }
                     F++;
                 }
@@ -1090,6 +1190,7 @@ namespace EllipseAddinManejoInfoMCL
                 var ORUGA_D10T = ListaDatos(5, "TOruga D10T    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam7 = ORUGA_D10T.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in ORUGA_D10T)
                 {
@@ -1101,7 +1202,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("Q" + ((Tam3 + 9) + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("W" + ((Tam3 + 9) + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("W" + ((Tam3 + 9) + F)).NumberFormat = "@";
+                            _cells.GetCell("W" + ((Tam3 + 9) + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("W" + ((Tam3 + 9) + F)).Value, _cells.GetCell("Q" + ((Tam3 + 9) + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("X" + ((Tam3 + 9) + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("W" + ((Tam3 + 9) + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1128,6 +1242,7 @@ namespace EllipseAddinManejoInfoMCL
                 var ORUGA_D11T = ListaDatos(5, "TOruga D11T    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam8 = ORUGA_D11T.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in ORUGA_D11T)
                 {
@@ -1139,7 +1254,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("Y" + ((Tam4 + 9) + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AE" + ((Tam4 + 9) + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AE" + ((Tam4 + 9) + F)).NumberFormat = "@";
+                            _cells.GetCell("AE" + ((Tam4 + 9) + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AE" + ((Tam4 + 9) + F)).Value, _cells.GetCell("Y" + ((Tam4 + 9) + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AF" + ((Tam4 + 9) + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AE" + ((Tam4 + 9) + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1170,6 +1298,7 @@ namespace EllipseAddinManejoInfoMCL
                 var HIT_EX3600 = ListaDatos(5, "Hit EX3600R    ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam9 = HIT_EX3600.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in HIT_EX3600)
                 {
@@ -1188,7 +1317,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + 9) + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AO" + ((Tam5 + 9) + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AO" + ((Tam5 + 9) + F)).NumberFormat = "@";
+                            _cells.GetCell("AO" + ((Tam5 + 9) + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AO" + ((Tam5 + 9) + F)).Value, _cells.GetCell("AG" + ((Tam5 + 9) + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AP" + ((Tam5 + 9) + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AO" + ((Tam5 + 9) + F)).Value = Verf[0];
+                        }
                     }
 
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1216,6 +1358,7 @@ namespace EllipseAddinManejoInfoMCL
                 var CARGADORES = ListaDatos(5, "L1350          ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam10 = CARGADORES.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in CARGADORES)
                 {
@@ -1227,7 +1370,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("A" + ((Tam1 + 9) + F)).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("G" + ((Tam1 + 9) + F)).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("G" + (Tam1 + 9 + F)).NumberFormat = "@";
+                            _cells.GetCell("G" + (Tam1 + 9 + F)).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("G" + (Tam1 + 9 + F)).Value, _cells.GetCell("A" + (Tam1 + 9 + F)).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("H" + (Tam1 + 9 + F)).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("G" + (Tam1 + 9 + F)).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1329,6 +1485,7 @@ namespace EllipseAddinManejoInfoMCL
                 var PC4000 = ListaDatos(5, "PC4000         ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam12 = PC4000.Count;
                 Verf = null;
+                Verf2 = null;
                 F = 0;
                 foreach (var Result in PC4000)
                 {
@@ -1346,7 +1503,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).NumberFormat = "@";
+                            _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value, _cells.GetCell("AG" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AP" + ((Tam5 + Tam9 + 8 + 3 + 1 + F))).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AO" + ((Tam5 + Tam9 + 8 + 3 + 3 + 1 + F))).Value = Verf[0];
+                        }
                     }
                     //FormatCamposMenu(_cells.GetCell("O" + (6 + F)), true, false, true, ListaDatos(8, _cells.GetCell("I" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
                     //FormatCamposMenu(_cells.GetCell("P" + (6 + F)), true, false, true, ListaDatos(9, _cells.GetCell("I" + (6 + F)).Value, _cells.GetCell("O" + (6 + F)).Value)[0], "", 8, Rf: 255, Gf: 255, Bf: 255, Rl: 0, Gl: 0, Bl: 0);
@@ -1374,6 +1544,7 @@ namespace EllipseAddinManejoInfoMCL
                 var LIEBHERR = ListaDatos(5, "LIE984C        ", _cells.GetCell("D4").Value, "eqmttype = '", ORDEN: "ASC");
                 Tam13 = LIEBHERR.Count;
                 Verf = null;
+                Verf = null;
                 F = 0;
                 foreach (var Result in LIEBHERR)
                 {
@@ -1387,7 +1558,20 @@ namespace EllipseAddinManejoInfoMCL
                     Verf = ListaDatos(16, _cells.GetCell("AG" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value, _cells.GetCell("D4").Value);
                     if (Verf.Count != 0)
                     {
-                        _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value = Verf[0];
+                        if (Verf[0].ToString().Trim().Length == 13)
+                        {
+                            _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).NumberFormat = "@";
+                            _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value = Verf[0].Substring(0, 4) + "-" + Verf[0].Substring(4, 2) + "-" + Verf[0].Substring(6, 2) + " " + Verf[0].Substring(8, 2) + ":" + Verf[0].Substring(11, 2) + ":00";
+                            Verf2 = ListaDatos(18, _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value, _cells.GetCell("AG" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value);
+                            if (Verf2.Count != 0)
+                            {
+                                _cells.GetCell("AN" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value = Verf2[0];
+                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell("AM" + ((Tam5 + Tam9 + Tam12 + 8 + 3 + 3 + 1 + F))).Value = Verf[0];
+                        }
                     }
                     F++;
                 }
