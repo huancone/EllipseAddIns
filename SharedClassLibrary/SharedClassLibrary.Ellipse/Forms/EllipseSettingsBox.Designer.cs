@@ -32,6 +32,7 @@
             this.labelProductName = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
             this.gbDebugging = new System.Windows.Forms.GroupBox();
+            this.cbDebugMode = new System.Windows.Forms.CheckBox();
             this.cbDebugErrors = new System.Windows.Forms.CheckBox();
             this.cbDebugWarnings = new System.Windows.Forms.CheckBox();
             this.cbDebugQueries = new System.Windows.Forms.CheckBox();
@@ -95,15 +96,27 @@
             // 
             // gbDebugging
             // 
+            this.gbDebugging.Controls.Add(this.cbDebugMode);
             this.gbDebugging.Controls.Add(this.cbDebugErrors);
             this.gbDebugging.Controls.Add(this.cbDebugWarnings);
             this.gbDebugging.Controls.Add(this.cbDebugQueries);
             this.gbDebugging.Location = new System.Drawing.Point(9, 448);
             this.gbDebugging.Name = "gbDebugging";
-            this.gbDebugging.Size = new System.Drawing.Size(318, 103);
+            this.gbDebugging.Size = new System.Drawing.Size(318, 118);
             this.gbDebugging.TabIndex = 37;
             this.gbDebugging.TabStop = false;
             this.gbDebugging.Text = "Debugging";
+            // 
+            // cbDebugMode
+            // 
+            this.cbDebugMode.AutoSize = true;
+            this.cbDebugMode.Location = new System.Drawing.Point(6, 92);
+            this.cbDebugMode.Name = "cbDebugMode";
+            this.cbDebugMode.Size = new System.Drawing.Size(183, 17);
+            this.cbDebugMode.TabIndex = 40;
+            this.cbDebugMode.Text = "Modo Depuración (Activa Todas)";
+            this.cbDebugMode.UseVisualStyleBackColor = true;
+            this.cbDebugMode.CheckedChanged += new System.EventHandler(this.cbDebugMessages_CheckedChanged);
             // 
             // cbDebugErrors
             // 
@@ -484,5 +497,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbCultureOptions;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox cbDebugMode;
     }
 }

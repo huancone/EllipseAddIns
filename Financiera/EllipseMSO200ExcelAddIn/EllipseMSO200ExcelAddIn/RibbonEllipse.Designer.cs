@@ -43,7 +43,7 @@
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.ValidateAccounts = this.Factory.CreateRibbonButton();
+            this.btnValidateAccounts = this.Factory.CreateRibbonButton();
             this.btnLoadAccounts = this.Factory.CreateRibbonButton();
             this.btnInactivateBussiness = this.Factory.CreateRibbonButton();
             this.btnInactivareAddress = this.Factory.CreateRibbonButton();
@@ -109,7 +109,7 @@
             // 
             // menuActions
             // 
-            this.menuActions.Items.Add(this.ValidateAccounts);
+            this.menuActions.Items.Add(this.btnValidateAccounts);
             this.menuActions.Items.Add(this.btnLoadAccounts);
             this.menuActions.Items.Add(this.btnInactivateBussiness);
             this.menuActions.Items.Add(this.btnInactivareAddress);
@@ -118,12 +118,12 @@
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
-            // ValidateAccounts
+            // btnValidateAccounts
             // 
-            this.ValidateAccounts.Label = "Validar Cuentas";
-            this.ValidateAccounts.Name = "ValidateAccounts";
-            this.ValidateAccounts.ShowImage = true;
-            this.ValidateAccounts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ValidateAccounts_Click);
+            this.btnValidateAccounts.Label = "Validar Cuentas";
+            this.btnValidateAccounts.Name = "btnValidateAccounts";
+            this.btnValidateAccounts.ShowImage = true;
+            this.btnValidateAccounts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidateAccounts_Click);
             // 
             // btnLoadAccounts
             // 
@@ -184,7 +184,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeAccounts;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ValidateAccounts;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnValidateAccounts;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadAccounts;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatInactivateSupplierBusiness;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivateSupplier;

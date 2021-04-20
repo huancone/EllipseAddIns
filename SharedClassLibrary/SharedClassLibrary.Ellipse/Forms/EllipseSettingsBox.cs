@@ -48,6 +48,7 @@ namespace SharedClassLibrary.Ellipse.Forms
             Debugger.DebugErrors = cbDebugErrors.Checked;
             Debugger.DebugWarnings = cbDebugWarnings.Checked;
             Debugger.DebugQueries = cbDebugQueries.Checked;
+            Debugger.DebugginMode = cbDebugMode.Checked;
             Settings.CurrentSettings.ServiceFilePath = tbServiceFileNetworkUrl.Text;
             Debugger.DebugErrors = cbDebugErrors.Checked;
             SharedClassLibrary.Connections.Oracle.ConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
@@ -339,6 +340,22 @@ namespace SharedClassLibrary.Ellipse.Forms
             {
                 MessageBox.Show("Se ha producido un error al intentar eliminar el archivo de base de datos. " + ex.Message, @"Delete Local Ellipse Database File", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private void cbDebugMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbDebugMode.Checked)
+            {
+                cbDebugErrors.Checked = true;
+                cbDebugQueries.Checked = true;
+                cbDebugWarnings.Checked = true;
+            }
+            else
+            {
+                cbDebugErrors.Checked = false;
+                cbDebugQueries.Checked = false;
+                cbDebugWarnings.Checked = false;
             }
         }
     }

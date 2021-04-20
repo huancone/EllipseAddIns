@@ -26,7 +26,7 @@
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>EllipseMSO200ExcelAddIn</RootNamespace>
-    <AssemblyName>EllipseMSO200_ExcelAddIn</AssemblyName>
+    <AssemblyName>EllipseMSO200ExcelAddIn</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <TargetFrameworkProfile />
@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\Financiera\EllipseMSO200ExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.1.2</ApplicationVersion>
+    <ApplicationVersion>1.2.1.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -186,7 +186,8 @@
     <Reference Include="SharedClassLibrary.Connections.Oracle">
       <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.Oracle.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Ellipse">
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="SharedClassLibrary.Vsto.Excel">
