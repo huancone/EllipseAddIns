@@ -351,7 +351,7 @@ namespace EllipseCalidadOTExcelAddIn
                     if (WoCode7 != "")
                     {
                         sqlQuery += "AND TRIM(W.WO_JOB_CODEX8) = 'SC' ";
-                        //WoCode7 = "";
+                        WoCode7 = "";
                     }
 
                     sqlQuery += @" ),
@@ -467,19 +467,19 @@ namespace EllipseCalidadOTExcelAddIn
                               B.GARANTIA,
                               B.CALIFICADO_POR
                             FROM
-                              B ";
-                    if (WoCode7 != "")
+                              B WHERE B.CALIDAD IS NULL ";
+                    /*if (WoCode7 != "")
                     {
-                        sqlQuery += " WHERE B.CALIDAD IS NULL ";
                         WoCode7 = "";
                         if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                         {
                             sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                         }
                     }
-                    else if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
+                    else */
+                    if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
-                        sqlQuery += " WHERE rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
+                        sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                     }
 
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
