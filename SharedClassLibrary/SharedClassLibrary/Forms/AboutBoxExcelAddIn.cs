@@ -51,15 +51,14 @@ namespace SharedClassLibrary.Forms
             //logoPictureBox.Image = Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
         }
 
-        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
+        public void ShowAdvancedSettingsButton(bool status)
         {
+            btnAdvancedSettings.Enabled = status;
+            btnAdvancedSettings.Visible = status;
         }
 
-        private void labelProductName_Click(object sender, EventArgs e)
+        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
         {
-            _indexSettings++;
-            if (_indexSettings > 3)
-                ShowAdditionalOptions();
         }
 
         private void btnRepository_Click(object sender, EventArgs e)
@@ -76,8 +75,13 @@ namespace SharedClassLibrary.Forms
         {
             logoPictureBox.ImageLocation = url;
         }
-        public abstract void ShowAdditionalOptions();
+        public abstract void ShowAdvancedSettings();
         public abstract void OpenRepository();
+
+        private void btnAdvancedSettings_Click(object sender, EventArgs e)
+        {
+            ShowAdvancedSettings();
+        }
 
         /*
         //Método de Ejemplo Para Abrir Enlace de Repositorio

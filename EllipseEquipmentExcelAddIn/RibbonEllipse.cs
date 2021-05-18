@@ -404,6 +404,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(46, TitleRow01).Value = "COND. RATING";
                 _cells.GetCell(47, TitleRow01).Value = "LATEST COND. DATE";
                 _cells.GetCell(48, TitleRow01).Value = "MSSS APPLIES FLAG";
+                _cells.GetCell(48, TitleRow01).AddComment("A - Activo, I - Inactivo. No disponible para creación, y solo posible si tiene un EGI asociado");
                 //LINK ONE
                 _cells.GetCell(49, TitleRow01 - 2).Value = "LINK ONE";
                 _cells.MergeCells(49, TitleRow01 - 2, 52, TitleRow01 - 2);

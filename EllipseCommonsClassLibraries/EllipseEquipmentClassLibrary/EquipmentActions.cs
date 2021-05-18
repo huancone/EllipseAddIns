@@ -564,6 +564,8 @@ namespace EllipseEquipmentClassLibrary
                 itemNameCode = equipment.ItemNameCode,
                 latestConditionDate = equipment.LatestConditionDate,
                 mnemonic = equipment.Mnemonic,
+                msssStatusInd = MyUtilities.IsTrue(equipment.MsssFlag),
+                msssStatusIndSpecified = !string.IsNullOrWhiteSpace(equipment.MsssFlag),
                 operatingStandard = equipment.OperatingStandard,
                 operatorId = equipment.OperatorId,
                 operatorPosition = equipment.OperatorPosition,
