@@ -16,7 +16,6 @@ namespace SharedClassLibrary.Forms
 {
     public abstract partial class AboutBoxExcelAddIn : Form
     {
-        private int _indexSettings;
         private AssemblyItem addinAssembly;
         public AboutBoxExcelAddIn()
         {
