@@ -22,14 +22,26 @@ namespace SharedClassLibrary.Ellipse.Forms
             var image = Ellipse.EllipseResources.aboutPictureBox;//Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
 
             UpdatePictureBox(image);
+            ShowAdvancedSettingsButton(true);
         }
-
+        public AboutBoxExcelAddIn(string developer1) : base(developer1, null)
+        {
+            ShowAdvancedSettingsButton(true);
+        }
+        public AboutBoxExcelAddIn(string developer1, bool showAdvancedSettingsButton) : base(developer1, null)
+        {
+            ShowAdvancedSettingsButton(showAdvancedSettingsButton);
+        }
         public AboutBoxExcelAddIn(string developer1, string developer2) : base(developer1, developer2)
         {
+            ShowAdvancedSettingsButton(true);
         }
-
+        public AboutBoxExcelAddIn(string developer1, string developer2, bool showAdvancedSettingsButton) : base(developer1, developer2)
+        {
+            ShowAdvancedSettingsButton(showAdvancedSettingsButton);
+        }
         override 
-        public void ShowAdditionalOptions()
+        public void ShowAdvancedSettings()
         {
             var commonAssembly = new AssemblyItem(Assembly.GetExecutingAssembly());
             var productLabel = commonAssembly.AssemblyProduct + " v" + commonAssembly.AssemblyVersion;

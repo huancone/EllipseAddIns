@@ -32,15 +32,18 @@
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
-            this.labelProductName = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.labelDeveloper1 = new System.Windows.Forms.Label();
             this.labelDeveloper2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.btnRepository = new System.Windows.Forms.Button();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
+            this.labelProductName = new System.Windows.Forms.Label();
+            this.btnRepository = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAdvancedSettings = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -90,20 +93,6 @@
             this.labelVersion.Text = "Version";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // labelProductName
-            // 
-            this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelProductName.Location = new System.Drawing.Point(143, 0);
-            this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
-            this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(271, 17);
-            this.labelProductName.TabIndex = 19;
-            this.labelProductName.Text = "Product Name";
-            this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelProductName.Click += new System.EventHandler(this.labelProductName_Click);
-            // 
             // textBoxDescription
             // 
             this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -147,6 +136,7 @@
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Controls.Add(this.labelDeveloper2, 1, 5);
             this.tableLayoutPanel.Controls.Add(this.labelDeveloper1, 1, 4);
             this.tableLayoutPanel.Controls.Add(this.textBoxDescription, 1, 6);
@@ -157,6 +147,7 @@
             this.tableLayoutPanel.Controls.Add(this.labelCompanyName, 1, 3);
             this.tableLayoutPanel.Controls.Add(this.okButton, 1, 7);
             this.tableLayoutPanel.Controls.Add(this.btnRepository, 0, 7);
+            this.tableLayoutPanel.Controls.Add(this.panel1, 0, 6);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(9, 9);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -176,16 +167,6 @@
             this.tableLayoutPanel.TabIndex = 0;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
-            // btnRepository
-            // 
-            this.btnRepository.Location = new System.Drawing.Point(3, 212);
-            this.btnRepository.Name = "btnRepository";
-            this.btnRepository.Size = new System.Drawing.Size(131, 23);
-            this.btnRepository.TabIndex = 28;
-            this.btnRepository.Text = "Ir al &Repositorio";
-            this.btnRepository.UseVisualStyleBackColor = true;
-            this.btnRepository.Click += new System.EventHandler(this.btnRepository_Click);
-            // 
             // logoPictureBox
             // 
             this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -197,6 +178,49 @@
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
+            // 
+            // labelProductName
+            // 
+            this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelProductName.Location = new System.Drawing.Point(143, 0);
+            this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
+            this.labelProductName.Name = "labelProductName";
+            this.labelProductName.Size = new System.Drawing.Size(271, 17);
+            this.labelProductName.TabIndex = 19;
+            this.labelProductName.Text = "Product Name";
+            this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnRepository
+            // 
+            this.btnRepository.Location = new System.Drawing.Point(3, 212);
+            this.btnRepository.Name = "btnRepository";
+            this.btnRepository.Size = new System.Drawing.Size(131, 23);
+            this.btnRepository.TabIndex = 28;
+            this.btnRepository.Text = "Ir al &Repositorio";
+            this.btnRepository.UseVisualStyleBackColor = true;
+            this.btnRepository.Click += new System.EventHandler(this.btnRepository_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnAdvancedSettings);
+            this.panel1.Location = new System.Drawing.Point(3, 136);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(131, 70);
+            this.panel1.TabIndex = 29;
+            // 
+            // btnAdvancedSettings
+            // 
+            this.btnAdvancedSettings.Enabled = false;
+            this.btnAdvancedSettings.Location = new System.Drawing.Point(0, 34);
+            this.btnAdvancedSettings.Name = "btnAdvancedSettings";
+            this.btnAdvancedSettings.Size = new System.Drawing.Size(131, 33);
+            this.btnAdvancedSettings.TabIndex = 29;
+            this.btnAdvancedSettings.Text = "Configuración Avanzada";
+            this.btnAdvancedSettings.UseVisualStyleBackColor = true;
+            this.btnAdvancedSettings.Visible = false;
+            this.btnAdvancedSettings.Click += new System.EventHandler(this.btnAdvancedSettings_Click);
             // 
             // AboutBoxExcelAddIn
             // 
@@ -218,6 +242,7 @@
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -228,12 +253,14 @@
         private System.Windows.Forms.Label labelCompanyName;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelVersion;
-        private System.Windows.Forms.Label labelProductName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.Label labelDeveloper2;
         private System.Windows.Forms.Label labelDeveloper1;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button btnRepository;
         private System.Windows.Forms.PictureBox logoPictureBox;
+        private System.Windows.Forms.Label labelProductName;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnAdvancedSettings;
     }
 }

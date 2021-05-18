@@ -226,22 +226,26 @@ namespace EllipseMSO200ExcelAddIn
             }
         }
 
-        private void ValidateAccounts_Click(object sender, RibbonControlEventArgs e)
+        private void btnValidateAccounts_Click(object sender, RibbonControlEventArgs e)
         {
             ValidateBancos();
         }
 
         private void ValidateBancos()
         {
+            Debugger.LogDebugging("Inicio del Proceso");
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             var currentRow = TittleRow + 1;
 
+            Debugger.LogDebugging("Preverificación de Bancos");
             if (ListaBancos == null)
                 ListaBancos = new List<Bancos>();
+            Debugger.LogDebugging("Pos Verificación de Bancos");
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
             {
+                Debugger.LogDebugging("Iteración " + currentRow);
                 try
                 {
                     _cells.GetCell(1, currentRow).Select();
