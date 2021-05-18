@@ -55,7 +55,7 @@ namespace SharedClassLibrary.Utilities.Encryption
                                 var cipherTextBytes = saltStringBytes;
                                 cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
                                 cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
-                                memoryStream.Close();
+                                //memoryStream.Close();
                                 //cryptoStream.FlushFinalBlock();
                                 //cryptoStream.Close();
                                 return Convert.ToBase64String(cipherTextBytes);

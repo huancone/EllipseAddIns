@@ -1254,6 +1254,9 @@ namespace EllipseRequisitionServiceExcelAddIn
         /// </summary>
         private void CreateRequisitionService(bool isExtended)
         {
+            //instancia del Servicio
+            var requisitionService = new RequisitionService.RequisitionService();
+
             try
             {
                 if (_cells == null)
@@ -1317,26 +1320,24 @@ namespace EllipseRequisitionServiceExcelAddIn
                 }
 
                 #endregion
-
-                //instancia del Servicio
-                var proxyRequisition = new RequisitionService.RequisitionService();
-
+                
+                
                 //Header
                 var opRequisition = new RequisitionService.OperationContext();
-
+                
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
-                proxyRequisition.Url = urlService + "/RequisitionService";
+                requisitionService.Url = urlService + "/RequisitionService";
 
                 opRequisition.district = _frmAuth.EllipseDstrct;
                 opRequisition.maxInstances = 100;
                 opRequisition.position = _frmAuth.EllipsePost;
                 opRequisition.returnWarnings = false;
-
+                
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
 
@@ -1368,7 +1369,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         {
                             var headerCreateRequest = curReqHeader.GetCreateHeaderRequest();
 
-                            headerCreateReply = proxyRequisition.createHeader(opRequisition, headerCreateRequest);
+                            headerCreateReply = requisitionService.createHeader(opRequisition, headerCreateRequest);
                             curReqHeader.IreqNo = headerCreateReply.ireqNo;
                             prevReqHeader = curReqHeader;
                             currentRowHeader = currentRow;
@@ -1400,7 +1401,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                                     #endregion
 
-                                    proxyRequisition.createItem(opRequisition, itemRequest);
+                                    requisitionService.createItem(opRequisition, itemRequest);
                                     _cells.GetCell(resultColumn, currentRowHeader + item.Index).Value2 = "OK";
                                     _cells.GetCell(resultColumn, currentRowHeader + item.Index).Style = StyleConstants.Success;
                                     _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Value2 = itemRequest.ireqNo;
@@ -1426,7 +1427,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 var addMessage = "";
                                 try
                                 {
-                                    DeleteHeader(proxyRequisition, headerCreateReply, opRequisition);
+                                    DeleteHeader(requisitionService, headerCreateReply, opRequisition);
                                 }
                                 catch (Exception ex)
                                 {
@@ -1458,7 +1459,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 //Se añade este bloque try/catch porque el tiempo excesivo de finalización afecta el siguiente item de la lista. Cuando esto ocurra no afectará el proceso
                                 try
                                 {
-                                    proxyRequisition.finalise(opRequisition, finaliseRequest);
+                                    requisitionService.finalise(opRequisition, finaliseRequest);
                                 }
                                 catch (TimeoutException ex)
                                 {
@@ -1474,7 +1475,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             abortRequisition = false;
                             itemList = new List<RequisitionItem>();
                             var headerCreateRequest = curReqHeader.GetCreateHeaderRequest();
-                            headerCreateReply = proxyRequisition.createHeader(opRequisition, headerCreateRequest);
+                            headerCreateReply = requisitionService.createHeader(opRequisition, headerCreateRequest);
                             curReqHeader.IreqNo = headerCreateReply.ireqNo;
                             prevReqHeader = curReqHeader;
                         }
@@ -1529,7 +1530,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             ireqType = prevReqHeader.IreqType,
                             requisitionItems = itemListDto.ToArray()
                         };
-                        proxyRequisition.createItem(opRequisition, itemRequest);
+                        requisitionService.createItem(opRequisition, itemRequest);
 
                         _cells.GetCell(resultColumn, currentRowHeader + item.Index).Value2 = "OK";
                         _cells.GetCell(resultColumn, currentRowHeader + item.Index).Style = StyleConstants.Success;
@@ -1555,7 +1556,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     var addMessage = "";
                     try
                     {
-                        DeleteHeader(proxyRequisition, headerCreateReply, opRequisition);
+                        DeleteHeader(requisitionService, headerCreateReply, opRequisition);
                     }
                     catch (Exception ex)
                     {
@@ -1581,7 +1582,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                     try
                     {
-                        proxyRequisition.finalise(opRequisition, finaliseRequest);
+                        requisitionService.finalise(opRequisition, finaliseRequest);
                     }
                     catch (TimeoutException ex)
                     {
@@ -1600,6 +1601,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
                 _eFunctions.CloseConnection();
+
+                requisitionService?.Dispose();
             }
         }
 
@@ -2240,38 +2243,6 @@ namespace EllipseRequisitionServiceExcelAddIn
             proxyRequisition.deleteHeader(opRequisition, deleteHeaderRequest);
         }
 
-        ///// <summary>
-        ///// Borra el header de un vale cuando este no se puede finalizar usando el MSO140.
-        ///// </summary>
-        ///// <param name="position"></param>
-        ///// <param name="requisitionHeader"></param>
-        ///// <param name="urlService"></param>
-        ///// <param name="district"></param>
-        //private static void DeleteHeader(string urlService, string district, string position, RequisitionHeader requisitionHeader)
-        //{
-        //    if (requisitionHeader == null)
-        //        return;
-        //    //instancia del Servicio
-        //    var proxyRequisition = new RequisitionService.RequisitionService();
-
-        //    //Header
-        //    var opRequisition = new RequisitionService.OperationContext();
-
-        //    proxyRequisition.Url = urlService + "/RequisitionService";
-        //    //El client conversation se ejecutó previamente en el proceso que hace llamado a este método
-        //    //ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-        //    opRequisition.district = district;
-        //    opRequisition.maxInstances = 100;
-        //    opRequisition.position = position;
-        //    opRequisition.returnWarnings = false;
-
-
-        //    //new RequisitionService.RequisitionServiceDeleteHeaderReplyDTO();
-        //    var deleteHeaderRequest = CreateDeleteRequestDto(requisitionHeader.GetCreateReplyHeader());
-
-        //    proxyRequisition.deleteHeader(opRequisition, deleteHeaderRequest);
-        //}
-
         /// <summary>
         /// Esta funcion copia el encabezado de la creacion de la requisicion en el objeto del encabezado para el borrado
         /// </summary>
@@ -2400,6 +2371,10 @@ namespace EllipseRequisitionServiceExcelAddIn
 
         private void ManualCreditRequisition()
         {
+
+            //instancia del Servicio
+            var issueRequisitionItemStocklessService = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+
             var currentRow = TitleRow01 + 1;
             try
             {
@@ -2408,8 +2383,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.SetCursorWait();
                 _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
-                //instancia del Servicio
-                var proxyRequisition = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+
 
                 //Header
                 var opRequisition = new OperationContext();
@@ -2419,7 +2393,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
-                proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
+                issueRequisitionItemStocklessService.Url = urlService + "/IssueRequisitionItemStocklessService";
 
                 opRequisition.district = _frmAuth.EllipseDstrct;
                 opRequisition.maxInstances = 100;
@@ -2493,7 +2467,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         listHolding.Add(holding);
                         headerCreateReturnReply.holdingDetailsDTO = listHolding.ToArray();
 
-                        var result = proxyRequisition.immediateReturn(opRequisition, headerCreateReturnReply);
+                        var result = issueRequisitionItemStocklessService.immediateReturn(opRequisition, headerCreateReturnReply);
 
                         if (result.errors.Length == 0)
                         {
@@ -2532,11 +2506,15 @@ namespace EllipseRequisitionServiceExcelAddIn
             {
                 if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
+                issueRequisitionItemStocklessService?.Dispose();
             }
         }
 
         private void ManualCreditRequisitionExtended()
         {
+            //instancia del Servicio
+            var issueRequisitionItemStocklessService = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+
             var currentRow = TitleRow01Ext + 1;
             try
             {
@@ -2545,8 +2523,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.SetCursorWait();
                 _cells.ClearTableRangeColumn(TableName01, ResultColumn01Ext);
 
-                //instancia del Servicio
-                var proxyRequisition = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+                
 
                 //Header
                 var opRequisition = new OperationContext();
@@ -2556,7 +2533,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
-                proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
+                issueRequisitionItemStocklessService.Url = urlService + "/IssueRequisitionItemStocklessService";
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
@@ -2620,7 +2597,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         listHolding.Add(holding);
                         headerCreateReturnReply.holdingDetailsDTO = listHolding.ToArray();
 
-                        var result = proxyRequisition.immediateReturn(opRequisition, headerCreateReturnReply);
+                        var result = issueRequisitionItemStocklessService.immediateReturn(opRequisition, headerCreateReturnReply);
 
                         if (result.errors.Length == 0)
                         {
@@ -2659,6 +2636,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             {
                 if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
+                issueRequisitionItemStocklessService?.Dispose();
             }
         }
 
@@ -2866,7 +2844,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 cr.ClearTableRange(TableName03);
                 cr.DeleteTableRange(TableName03);
 
-                cp.SetAlwasActiveAsWorkingSheet(false);
+                cp.SetFixedWorkingWorkSheet(false);
 
                 var currentParam = TitleRow02 + 1; //itera según cada estándar
                 var currentRow = TitleRow03 + 1; //itera la celda para cada tarea

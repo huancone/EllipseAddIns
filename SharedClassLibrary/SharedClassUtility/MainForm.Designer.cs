@@ -81,6 +81,7 @@ namespace SharedClassUtility
             this.btnStartEllipseSettings = new System.Windows.Forms.Button();
             this.btnEllipseSettings = new System.Windows.Forms.Button();
             this.btnEllipseAbout = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabcGeneral.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.tabEncryption.SuspendLayout();
@@ -107,6 +108,7 @@ namespace SharedClassUtility
             // 
             // tabHome
             // 
+            this.tabHome.Controls.Add(this.button1);
             this.tabHome.Controls.Add(this.lblDevelopBy);
             this.tabHome.Controls.Add(this.lblDeveloper);
             this.tabHome.Controls.Add(this.lblTitle);
@@ -622,6 +624,16 @@ namespace SharedClassUtility
             this.btnEllipseAbout.UseVisualStyleBackColor = true;
             this.btnEllipseAbout.Click += new System.EventHandler(this.btnEllipseAbout_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(315, 35);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -705,6 +717,7 @@ namespace SharedClassUtility
         private System.Windows.Forms.Button btnStartEllipseSettings;
         private System.Windows.Forms.Label lblEnvironment;
         private System.Windows.Forms.ComboBox drpEnvironment;
+        private System.Windows.Forms.Button button1;
     }
 }
 

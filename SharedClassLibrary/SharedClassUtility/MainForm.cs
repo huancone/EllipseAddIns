@@ -371,7 +371,7 @@ namespace SharedClassUtility
 
         private void btnEllipseSettings_Click(object sender, EventArgs e)
         {
-            new SharedClassLibrary.Ellipse.Forms.AboutBoxExcelAddIn().ShowAdditionalOptions();
+            new SharedClassLibrary.Ellipse.Forms.AboutBoxExcelAddIn().ShowAdvancedSettings();
         }
 
         private void btnStartEllipseSettings_Click(object sender, EventArgs e)
@@ -416,6 +416,13 @@ namespace SharedClassUtility
 
             //
             settings.SaveCustomSettings();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var dbI = new DatabaseItem();
+            dbI.DbUser = "consulbo";
+            dbI.DbPassword = "ventyx15";
         }
     }
 }
