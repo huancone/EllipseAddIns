@@ -3,3 +3,6 @@
 Versión 1.1.0.0, Liberada el 23 de Enero de 2021
 * Actualización de enlace a servicios de Ellipse 9 para los servicios de RefCodesService
 * Se adiciona el archivo de UpdateLog.txt para registro de actualizaciones
+
+Versión 1.1.0.2, Liberada el 23 de Enero de 2021
+* Asignación de acciones Disposables para servicios de ellipse

@@ -1,0 +1,6 @@
+﻿EllipseWorkOrderExcelAddIn
+
+Versión 1.9.0.3, Liberada el 18 de Mayo de 2021
+* Creación de log de actualizaciones
+* Asignación de acciones Disposables para servicios de ellipse
+* Opciones de To Do deshabilitadas por cambios de Ellipse 9

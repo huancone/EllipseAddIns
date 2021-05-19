@@ -105,45 +105,52 @@ namespace EllipseWorkOrderExcelAddIn
         }
         public void LoadSettings()
         {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnvironment.Items.Add(item);
-            }
-
-            settings.SetDefaultCustomSettingValue("FlagEstDuration", "Y");
-            settings.SetDefaultCustomSettingValue("ValidateTaskPlanDates", "Y");
-            settings.SetDefaultCustomSettingValue("IgnoreClosedStatus", "N");
-
-
-
-            //Setting of Configuration Options from Config File (or default)
             try
             {
-                settings.LoadCustomSettings();
+                var settings = new Settings();
+                _eFunctions = new EllipseFunctions();
+                _frmAuth = new FormAuthenticate();
+                _excelApp = Globals.ThisAddIn.Application;
+
+                var environments = Environments.GetEnvironmentList();
+                foreach (var env in environments)
+                {
+                    var item = Factory.CreateRibbonDropDownItem();
+                    item.Label = env;
+                    drpEnvironment.Items.Add(item);
+                }
+
+                settings.SetDefaultCustomSettingValue("FlagEstDuration", "Y");
+                settings.SetDefaultCustomSettingValue("ValidateTaskPlanDates", "Y");
+                settings.SetDefaultCustomSettingValue("IgnoreClosedStatus", "N");
+
+
+
+                //Setting of Configuration Options from Config File (or default)
+                try
+                {
+                    settings.LoadCustomSettings();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                var flagEstDur = MyUtilities.IsTrue(settings.GetCustomSettingValue("FlagEstDuration"));
+                var valdTaskPlanDates = MyUtilities.IsTrue(settings.GetCustomSettingValue("ValidateTaskPlanDates"));
+                var ignoreCldStat = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreClosedStatus"));
+
+                cbFlagEstDuration.Checked = flagEstDur;
+                cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
+                cbIgnoreClosedStatus.Checked = ignoreCldStat;
+                //
+                settings.SaveCustomSettings();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-
-                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message);
             }
-
-            var flagEstDur = MyUtilities.IsTrue(settings.GetCustomSettingValue("FlagEstDuration"));
-            var valdTaskPlanDates = MyUtilities.IsTrue(settings.GetCustomSettingValue("ValidateTaskPlanDates"));
-            var ignoreCldStat = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreClosedStatus"));
-
-            cbFlagEstDuration.Checked = flagEstDur;
-            cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
-            cbIgnoreClosedStatus.Checked = ignoreCldStat;
-            //
-            settings.SaveCustomSettings();
         }
         
  #region -- buttonActions -- 

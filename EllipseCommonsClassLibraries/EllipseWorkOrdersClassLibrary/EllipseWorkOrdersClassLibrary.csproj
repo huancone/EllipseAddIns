@@ -33,19 +33,19 @@
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharedClassLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Connections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.1.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Vsto.Excel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary.Vsto.Excel, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
     </Reference>
@@ -55,6 +55,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedClassLibrary\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -641,16 +645,6 @@
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
-      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
-      <Name>EllipseReferenceCodesClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
-      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
-      <Name>EllipseStdTextClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\EquipmentReqmntsService\</RelPath>
@@ -717,6 +711,16 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
+      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
+      <Name>EllipseReferenceCodesClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
+      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
+      <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

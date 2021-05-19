@@ -104,7 +104,7 @@ namespace EllipseReferenceCodesClassLibrary
         
         public static RefCodesService.RefCodesServiceModifyReplyDTO ModifyRefCode(EllipseFunctions ef, string urlService, RefCodesService.OperationContext opContext, ReferenceCodeItem refItem)
         {
-            var proxySt = new RefCodesService.RefCodesService { Url = urlService + "/RefCodesService" };
+            var refCodesService = new RefCodesService.RefCodesService { Url = urlService + "/RefCodesService" };
             var request = new RefCodesService.RefCodesServiceModifyRequestDTO
             {
                 entityType = refItem.EntityType,
@@ -116,8 +116,8 @@ namespace EllipseReferenceCodesClassLibrary
             };
             try
             {
-                var replyModify = proxySt.modify(opContext, request);
-                
+                var replyModify = refCodesService.modify(opContext, request);
+
                 //Actualizamos el StdText si existe
                 try
                 {
@@ -141,6 +141,10 @@ namespace EllipseReferenceCodesClassLibrary
             catch (Exception ex)
             {
                 throw new Exception("Error updating RefCode. Entity " + refItem.EntityType + ", Value " + refItem.EntityValue + " , Ref No." + refItem.RefNo + ". " + ex.Message);
+            }
+            finally
+            {
+                refCodesService.Dispose();
             }
         }
 
