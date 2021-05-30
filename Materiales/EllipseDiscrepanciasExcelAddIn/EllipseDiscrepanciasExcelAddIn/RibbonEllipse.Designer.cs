@@ -36,14 +36,17 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpDiscrepancias = this.Factory.CreateRibbonGroup();
-            this.btnFormat = this.Factory.CreateRibbonButton();
-            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.mAcciones = this.Factory.CreateRibbonMenu();
             this.bProcesar = this.Factory.CreateRibbonButton();
             this.bProcesarMSE1TD = this.Factory.CreateRibbonButton();
             this.bLimpiar = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
+            this.btnFormat = this.Factory.CreateRibbonButton();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.tabEllipse.SuspendLayout();
             this.grpDiscrepancias.SuspendLayout();
+            this.box1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabEllipse
@@ -55,22 +58,17 @@
             // 
             // grpDiscrepancias
             // 
-            this.grpDiscrepancias.Items.Add(this.btnFormat);
+            this.grpDiscrepancias.Items.Add(this.box1);
             this.grpDiscrepancias.Items.Add(this.drpEnvironment);
             this.grpDiscrepancias.Items.Add(this.mAcciones);
-            this.grpDiscrepancias.Label = "Discrepancias v1.0.0";
+            this.grpDiscrepancias.Label = "Discrepancias";
             this.grpDiscrepancias.Name = "grpDiscrepancias";
             // 
-            // btnFormat
+            // box1
             // 
-            this.btnFormat.Label = "Formatear";
-            this.btnFormat.Name = "btnFormat";
-            this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
-            // 
-            // drpEnvironment
-            // 
-            this.drpEnvironment.Label = "Env.";
-            this.drpEnvironment.Name = "drpEnvironment";
+            this.box1.Items.Add(this.btnFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // mAcciones
             // 
@@ -101,6 +99,23 @@
             this.bLimpiar.ShowImage = true;
             this.bLimpiar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.bLimpiar_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // btnFormat
+            // 
+            this.btnFormat.Label = "Formatear";
+            this.btnFormat.Name = "btnFormat";
+            this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
+            // 
+            // drpEnvironment
+            // 
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -111,6 +126,8 @@
             this.tabEllipse.PerformLayout();
             this.grpDiscrepancias.ResumeLayout(false);
             this.grpDiscrepancias.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -125,6 +142,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu mAcciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bProcesarMSE1TD;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton bLimpiar;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

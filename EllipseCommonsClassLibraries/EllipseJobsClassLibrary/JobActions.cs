@@ -115,157 +115,160 @@ namespace EllipseJobsClassLibrary
                     break;
             }
 
-            var taskService = new WorkOrderTaskMWPService.WorkOrderTaskMWPService();
-            taskService.Url = urlService + "/WorkOrderTaskMWPService";
-           
-            
-            var taskSearchParams = new TasksMWPSearchParam();
-            taskSearchParams.taskSearchType = "T";
-            taskSearchParams.isTaskSearch = true;
-            taskSearchParams.isTaskSearchSpecified = true;;
-            taskSearchParams.workOrderSearchMethod = "EM";
-            taskSearchParams.taskDatePreset = "N";
-            taskSearchParams.taskDateIncrement = "1";
-            taskSearchParams.taskDateIncrementUnit = "D";
-            if(!string.IsNullOrWhiteSpace(searchParam.StartDate))
-                taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
-            taskSearchParams.startDateSpecified = !string.IsNullOrWhiteSpace(searchParam.StartDate);
-            if (!string.IsNullOrWhiteSpace(searchParam.FinishDate))
-                taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
-            taskSearchParams.finishDateSpecified = !string.IsNullOrWhiteSpace(searchParam.FinishDate);
-            taskSearchParams.allDistrictsForTasks = false;
-            taskSearchParams.allDistrictsForTasksSpecified = true;
-            taskSearchParams.dstrctCode = searchParam.District;
-            if(searchParam.WorkGroups != null && searchParam.WorkGroups.Count > 0)
-                taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
-            taskSearchParams.status = "N";
-            taskSearchParams.unassigned = false;
-            taskSearchParams.unassignedSpecified = true;
-            taskSearchParams.overlappingDateSearch = searchParam.OverlappingDates;
-            taskSearchParams.overlappingDateSearchSpecified = true;
-            taskSearchParams.status = "N";
-            taskSearchParams.datePreset = "T";
-            taskSearchParams.dateIncrement = "1";
-            taskSearchParams.dateIncrementUnit = "D";
-            taskSearchParams.dateIncludes = searchParam.DateInclude;
-            taskSearchParams.matchOnChildren = false;
-            taskSearchParams.matchOnChildrenSpecified = true;
-            taskSearchParams.includeProjectHierarchy = false;
-            taskSearchParams.includeProjectHierarchySpecified = true;
-            taskSearchParams.includeMSTis = searchParam.IncludeMst;
-            taskSearchParams.includeMSTisSpecified = true;
-            taskSearchParams.displayMSTiTaskDetails = false;
-            taskSearchParams.displayMSTiTaskDetailsSpecified = true;
-            taskSearchParams.includeEquipmentHierarchy = false;
-            taskSearchParams.includeEquipmentHierarchySpecified = true;
-            taskSearchParams.includeSubLists = false;
-            taskSearchParams.includeSubListsSpecified = true;
-            taskSearchParams.woStatusMSearch = "U";
-            taskSearchParams.excludeWorkOrderType = false;
-            taskSearchParams.excludeWorkOrderTypeSpecified = true;
-            taskSearchParams.excludeMaintenanceType = false;
-            taskSearchParams.excludeMaintenanceTypeSpecified = true;
-            taskSearchParams.attachedToOutage = false;
-            taskSearchParams.attachedToOutageSpecified = true;
-            taskSearchParams.includePreferedEGI = false;
-            taskSearchParams.includePreferedEGISpecified = true;
-            taskSearchParams.crewTotalsOnly = false;
-            taskSearchParams.crewTotalsOnlySpecified = true;
-            taskSearchParams.searchEntity = searchParam.SearchEntity;
-
-            //taskSearchParams.equipmentNumber = searchParam.EquipmentNumber;
-            //taskSearchParams.taskEquipmentNumber = searchParam.TaskEquipmentNumber;
-            //taskSearchParams.data1732 = searchParam.EquipmentNumber;
-
-            var restartTask = new TasksMWPDTO(); 
-            var reply = taskService.tasksSearch(opContext, taskSearchParams, restartTask);
-            
-            
-            if (reply == null)
-                throw new Exception("TaskSearch Error. Couldn't receive reply from service.");
-            var errorMessages = "";
-
-            var jobTasks = new List<JobTask>();
-            foreach (var item in reply)
+            using (var taskService = new WorkOrderTaskMWPService.WorkOrderTaskMWPService())
             {
-                if (item.errors != null) 
-                    errorMessages = item.errors.Aggregate(errorMessages, (current, err) => current + (err.messageId + ": " + err.messageText + "\n"));
+                taskService.Url = urlService + "/WorkOrderTaskMWPService";
 
+                
+                var taskSearchParams = new TasksMWPSearchParam();
+
+                taskSearchParams.taskSearchType = "T";
+                taskSearchParams.isTaskSearch = true;
+                taskSearchParams.isTaskSearchSpecified = true; ;
+                taskSearchParams.workOrderSearchMethod = "EM";
+                taskSearchParams.taskDatePreset = "N";
+                taskSearchParams.taskDateIncrement = "1";
+                taskSearchParams.taskDateIncrementUnit = "D";
+                if (!string.IsNullOrWhiteSpace(searchParam.StartDate))
+                    taskSearchParams.startDate = MyUtilities.ToDate(searchParam.StartDate);
+                taskSearchParams.startDateSpecified = !string.IsNullOrWhiteSpace(searchParam.StartDate);
+                if (!string.IsNullOrWhiteSpace(searchParam.FinishDate))
+                    taskSearchParams.finishDate = MyUtilities.ToDate(searchParam.FinishDate);
+                taskSearchParams.finishDateSpecified = !string.IsNullOrWhiteSpace(searchParam.FinishDate);
+                taskSearchParams.allDistrictsForTasks = false;
+                taskSearchParams.allDistrictsForTasksSpecified = true;
+                taskSearchParams.dstrctCode = searchParam.District;
+                if (searchParam.WorkGroups != null && searchParam.WorkGroups.Count > 0)
+                    taskSearchParams.workGroupsForTasks = searchParam.WorkGroups.ToArray();
+                taskSearchParams.status = "N";
+                taskSearchParams.unassigned = false;
+                taskSearchParams.unassignedSpecified = true;
+                taskSearchParams.overlappingDateSearch = searchParam.OverlappingDates;
+                taskSearchParams.overlappingDateSearchSpecified = true;
+                taskSearchParams.status = "N";
+                taskSearchParams.datePreset = "T";
+                taskSearchParams.dateIncrement = "1";
+                taskSearchParams.dateIncrementUnit = "D";
+                taskSearchParams.dateIncludes = searchParam.DateInclude;
+                taskSearchParams.matchOnChildren = false;
+                taskSearchParams.matchOnChildrenSpecified = true;
+                taskSearchParams.includeProjectHierarchy = false;
+                taskSearchParams.includeProjectHierarchySpecified = true;
+                taskSearchParams.includeMSTis = searchParam.IncludeMst;
+                taskSearchParams.includeMSTisSpecified = true;
+                taskSearchParams.displayMSTiTaskDetails = false;
+                taskSearchParams.displayMSTiTaskDetailsSpecified = true;
+                taskSearchParams.includeEquipmentHierarchy = false;
+                taskSearchParams.includeEquipmentHierarchySpecified = true;
+                taskSearchParams.includeSubLists = false;
+                taskSearchParams.includeSubListsSpecified = true;
+                taskSearchParams.woStatusMSearch = "U";
+                taskSearchParams.excludeWorkOrderType = false;
+                taskSearchParams.excludeWorkOrderTypeSpecified = true;
+                taskSearchParams.excludeMaintenanceType = false;
+                taskSearchParams.excludeMaintenanceTypeSpecified = true;
+                taskSearchParams.attachedToOutage = false;
+                taskSearchParams.attachedToOutageSpecified = true;
+                taskSearchParams.includePreferedEGI = false;
+                taskSearchParams.includePreferedEGISpecified = true;
+                taskSearchParams.crewTotalsOnly = false;
+                taskSearchParams.crewTotalsOnlySpecified = true;
+                taskSearchParams.searchEntity = searchParam.SearchEntity;
+
+                //taskSearchParams.equipmentNumber = searchParam.EquipmentNumber;
+                //taskSearchParams.taskEquipmentNumber = searchParam.TaskEquipmentNumber;
+                //taskSearchParams.data1732 = searchParam.EquipmentNumber;
+
+                var restartTask = new TasksMWPDTO();
+                var reply = taskService.tasksSearch(opContext, taskSearchParams, restartTask);
+
+
+                if (reply == null)
+                    throw new Exception("TaskSearch Error. Couldn't receive reply from service.");
+                var errorMessages = "";
+
+                var jobTasks = new List<JobTask>();
+                foreach (var item in reply)
+                {
+                    if (item.errors != null)
+                        errorMessages = item.errors.Aggregate(errorMessages, (current, err) => current + (err.messageId + ": " + err.messageText + "\n"));
+
+                    if (!string.IsNullOrWhiteSpace(errorMessages))
+                        throw new Exception(errorMessages);
+
+                    var task = new JobTask(item.tasksMWPDTO);
+
+
+                    jobTasks.Add(task);
+                }
                 if (!string.IsNullOrWhiteSpace(errorMessages))
                     throw new Exception(errorMessages);
 
-                var task = new JobTask(item.tasksMWPDTO);
-                
-                
-                jobTasks.Add(task);
-            }
-            if(!string.IsNullOrWhiteSpace(errorMessages))
-                throw new Exception(errorMessages);
+                jobTasks = jobTasks.GroupBy(r => r.Reference).Select(f => f.First()).ToList();
 
-            jobTasks = jobTasks.GroupBy(r => r.Reference).Select(f => f.First()).ToList();
-
-            foreach (var task in jobTasks)
-            {
-                task.LabourResourcesList = new List<LabourResources>();
-                //si es una orden de trabajo.
-                if (task.WorkOrder != null)
+                foreach (var task in jobTasks)
                 {
-                    var reqList = WorkOrderTaskActions.FetchRequirements(ef, task.DstrctCode, task.WorkOrder, RequirementType.Labour.Key, task.WoTaskNo);
-
-                    foreach (var req in reqList)
+                    task.LabourResourcesList = new List<LabourResources>();
+                    //si es una orden de trabajo.
+                    if (task.WorkOrder != null)
                     {
-                        var requirement = new LabourResources
-                        {
-                            WorkGroup = req.WorkGroup,
-                            ResourceCode = req.ReqCode,
-                            Date = task.PlanStrDate,
-                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, IxConversionConstant.DefaultNullAndEmpty),
-                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, IxConversionConstant.DefaultNullAndEmpty)
-                        };
-                        task.LabourResourcesList.Add(requirement);
-                    }
-                }
-                else if (task.StdJobNo != null)
-                {
-                    //obtengo la lista de tareas de la orden de trabajo
-                    var reqList = StandardJobActions.FetchTaskRequirements(ef, task.DstrctCode, task.WorkGroup, task.StdJobNo);
+                        var reqList = WorkOrderTaskActions.FetchRequirements(ef, task.DstrctCode, task.WorkOrder, RequirementType.Labour.Key, task.WoTaskNo);
 
-                    foreach (var req in reqList)
-                    {
-                        task.StdJobTask = req.SJTaskNo;
-                        var requirement = new LabourResources
+                        foreach (var req in reqList)
                         {
-                            WorkGroup = req.WorkGroup,
-                            ResourceCode = req.ReqCode,
-                            Date = task.PlanStrDate,
-                            EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
-                            RealLabourHours = 0
-                        };
-                        if (req.ReqType == "LAB")
+                            var requirement = new LabourResources
+                            {
+                                WorkGroup = req.WorkGroup,
+                                ResourceCode = req.ReqCode,
+                                Date = task.PlanStrDate,
+                                EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, IxConversionConstant.DefaultNullAndEmpty),
+                                RealLabourHours = MyUtilities.ToDouble(req.RealQty, IxConversionConstant.DefaultNullAndEmpty)
+                            };
                             task.LabourResourcesList.Add(requirement);
+                        }
+                    }
+                    else if (task.StdJobNo != null)
+                    {
+                        //obtengo la lista de tareas de la orden de trabajo
+                        var reqList = StandardJobActions.FetchTaskRequirements(ef, task.DstrctCode, task.WorkGroup, task.StdJobNo);
+
+                        foreach (var req in reqList)
+                        {
+                            task.StdJobTask = req.SJTaskNo;
+                            var requirement = new LabourResources
+                            {
+                                WorkGroup = req.WorkGroup,
+                                ResourceCode = req.ReqCode,
+                                Date = task.PlanStrDate,
+                                EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
+                                RealLabourHours = 0
+                            };
+                            if (req.ReqType == "LAB")
+                                task.LabourResourcesList.Add(requirement);
+                        }
                     }
                 }
-            }
 
-            if (!searchParam.AdditionalInformation)
+                if (!searchParam.AdditionalInformation)
+                    return jobTasks;
+
+
+                foreach (var task in jobTasks)
+                {
+                    try
+                    {
+                        var taskAdd = GetJobTaskAdditional(ef, task);
+                        task.Additional = taskAdd;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debugger.LogError("JobActions.cs:GetJobTaskAdditional()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                        //ignored;
+                    }
+                }
+
                 return jobTasks;
-
-        
-            foreach (var task in jobTasks)
-            {
-                try
-                {
-                    var taskAdd = GetJobTaskAdditional(ef, task);
-                    task.Additional = taskAdd;
-                }
-                catch (Exception ex)
-                {
-                    Debugger.LogError("JobActions.cs:GetJobTaskAdditional()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                    //ignored;
-                }
             }
-            
-            return jobTasks;
         }
         public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
