@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
+using System.Threading.Tasks;
 using EllipseJobsClassLibrary.WorkOrderTaskMWPService;
 using SharedClassLibrary.Connections.Oracle;
 using SharedClassLibrary.Classes;
@@ -20,58 +23,69 @@ namespace EllipseJobsClassLibrary
         {
             var jobList = new List<Jobs>();
 
-            var service = new JobsMWPService.JobsMWPService();
-            service.Url = urlService + "/JobsMWPService";
-            var jobDto = new JobsMWPService.JobsMWPDTO();
-
-            if (!string.IsNullOrWhiteSpace(searchParam.DateIncludes))
-                searchParam.DateIncludes = searchParam.DateIncludes.ToUpper();
-            switch (searchParam.DateIncludes)
+            using (var service = new JobsMWPService.JobsMWPService())
             {
-                case "BACKLOG":
-                    searchParam.DateIncludes = "BI";
-                    break;
-                case "UNSCHEDULED":
-                    searchParam.DateIncludes = "UI";
-                    break;
-                case "BACKLOG AND UNSCHEDULED":
-                    searchParam.DateIncludes = "BU";
-                    break;
-                case "BACKLOG ONLY":
-                    searchParam.DateIncludes = "BO";
-                    break;
-                case "UNSCHEDULED ONLY":
-                    searchParam.DateIncludes = "UO";
-                    break;
-                case "BACKLOG AND UNSCHEDULED ONLY":
-                    searchParam.DateIncludes = "UB";
-                    break;
-            }
+                service.Timeout = 9999999;
+                service.Url = urlService + "/JobsMWPService";
+                var jobDto = new JobsMWPService.JobsMWPDTO();
 
-            if (!string.IsNullOrWhiteSpace(searchParam.SearchEntity))
-                searchParam.SearchEntity = searchParam.SearchEntity.ToUpper();
-            switch (searchParam.SearchEntity)
-            {
-                case "WORK ORDERS ONLY":
-                    searchParam.SearchEntity = "W";
-                    break;
-                case "MST FORECAST ONLY":
-                    searchParam.SearchEntity = "M";
-                    break;
-                case "WORK ORDERS AND MST FORECAST":
-                    searchParam.SearchEntity = "A";
-                    break;
-            }
+                if (!string.IsNullOrWhiteSpace(searchParam.DateIncludes))
+                    searchParam.DateIncludes = searchParam.DateIncludes.ToUpper();
+                switch (searchParam.DateIncludes)
+                {
+                    case "BACKLOG":
+                        searchParam.DateIncludes = "BI";
+                        break;
+                    case "UNSCHEDULED":
+                        searchParam.DateIncludes = "UI";
+                        break;
+                    case "BACKLOG AND UNSCHEDULED":
+                        searchParam.DateIncludes = "BU";
+                        break;
+                    case "BACKLOG ONLY":
+                        searchParam.DateIncludes = "BO";
+                        break;
+                    case "UNSCHEDULED ONLY":
+                        searchParam.DateIncludes = "UO";
+                        break;
+                    case "BACKLOG AND UNSCHEDULED ONLY":
+                        searchParam.DateIncludes = "UB";
+                        break;
+                }
 
-            var searchParamDto = searchParam.ToDto();
-            var result = service.jobsSearch(opContext, searchParamDto, jobDto);
-            
-            foreach (var item in result)
-            {
-                if(item != null && item.jobsMWPDTO != null)
-                    jobList.Add(new Jobs(item.jobsMWPDTO));
+                if (!string.IsNullOrWhiteSpace(searchParam.SearchEntity))
+                    searchParam.SearchEntity = searchParam.SearchEntity.ToUpper();
+                switch (searchParam.SearchEntity)
+                {
+                    case "WORK ORDERS ONLY":
+                        searchParam.SearchEntity = "W";
+                        break;
+                    case "MST FORECAST ONLY":
+                        searchParam.SearchEntity = "M";
+                        break;
+                    case "WORK ORDERS AND MST FORECAST":
+                        searchParam.SearchEntity = "A";
+                        break;
+                }
+
+                var searchParamDto = searchParam.ToDto();
+                var result = service.jobsSearch(opContext, searchParamDto, jobDto);
+
+                foreach (var item in result)
+                {
+                    if (item != null && item.jobsMWPDTO != null)
+                        jobList.Add(new Jobs(item.jobsMWPDTO));
+                }
+
+                return jobList;
             }
-            return jobList;
+        }
+
+        public static async Task<List<Jobs>> FetchJobsAsync(string urlService, JobsMWPService.OperationContext opContext, JobSearchParam searchParam)
+        {
+           var list = await Task.Run(() => FetchJobs(urlService, opContext, searchParam));
+
+           return list;
         }
         public static List<JobTask> FetchJobsTasks(EllipseFunctions ef, string urlService, WorkOrderTaskMWPService.OperationContext opContext, TaskSearchParam searchParam)
         {
@@ -118,7 +132,8 @@ namespace EllipseJobsClassLibrary
             using (var taskService = new WorkOrderTaskMWPService.WorkOrderTaskMWPService())
             {
                 taskService.Url = urlService + "/WorkOrderTaskMWPService";
-
+                taskService.Timeout = 9999999;
+                
                 
                 var taskSearchParams = new TasksMWPSearchParam();
 
@@ -270,9 +285,16 @@ namespace EllipseJobsClassLibrary
                 return jobTasks;
             }
         }
-        public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
+
+        public static async Task<List<JobTask>> FetchJobsTasksAsync(EllipseFunctions ef, string urlService, WorkOrderTaskMWPService.OperationContext opContext, TaskSearchParam searchParam)
         {
-            var sqlQuery = Queries.GetEllipseResourcesQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, startDate, endDate);
+            var list = await Task.Run(() => FetchJobsTasks(ef, urlService, opContext, searchParam));
+
+            return list;
+        }
+        public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primaryKey, string primaryValue, string startDate, string endDate)
+        {
+            var sqlQuery = Queries.GetEllipseResourcesQuery(ef.DbReference, ef.DbLink, district, primaryKey, primaryValue, startDate, endDate);
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<LabourResources>();
 
@@ -292,7 +314,6 @@ namespace EllipseJobsClassLibrary
 
             return list;
         }
-
 
         public static List<LabourResources> GetPsoftResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
@@ -381,75 +402,82 @@ namespace EllipseJobsClassLibrary
 
         public static ReplyMessage UpdateEllipseResources(EllipseFunctions eFunctions, string urlService, Screen.OperationContext opContext, LabourResources resourcesToSave)
         {
-            var proxySheet = new Screen.ScreenService { Url = urlService };
-            var replyMessage = new ReplyMessage();
-            var arrayFields = new ArrayScreenNameValue();
-
-
-            eFunctions.RevertOperation(opContext, proxySheet);
-            var replySheet = proxySheet.executeScreen(opContext, "MSO720");
-
-            if (replySheet.mapName != "MSM720A")
-                throw new Exception("NO SE PUEDE INGRESAR AL PROGRAMA MSO720");
-
-            arrayFields.Add("OPTION1I", "3");
-            arrayFields.Add("WORK_GROUP1I", resourcesToSave.WorkGroup);
-
-            var requestSheet = new Screen.ScreenSubmitRequestDTO
+            using (var screenService = new Screen.ScreenService {Url = urlService})
             {
-                screenFields = arrayFields.ToArray(),
-                screenKey = "1"
-            };
-            replySheet = proxySheet.submit(opContext, requestSheet);
 
-            if (replySheet == null)
-                throw new Exception("No se pudo entrar al MSO720 Opcion 3");
-            if (eFunctions.CheckReplyError(replySheet) || eFunctions.CheckReplyWarning(replySheet))
-                throw new Exception(replySheet.message);
-            if (replySheet.mapName != "MSM72AA")
-                throw new Exception("No se pudo ingresar a la pantalla MSM72AA");
 
-            var replyArrayFields = new ArrayScreenNameValue(replySheet.screenFields);
+                var replyMessage = new ReplyMessage();
+                var arrayFields = new ArrayScreenNameValue();
 
-            var screenIndex = 1;
-            while (!string.IsNullOrWhiteSpace(replyArrayFields.GetField("RES_CODE1I" + screenIndex).value))
-            {
-                if (screenIndex > 12)
+
+                eFunctions.RevertOperation(opContext, screenService);
+                var replySheet = screenService.executeScreen(opContext, "MSO720");
+
+                if (replySheet.mapName != "MSM720A")
+                    throw new Exception("NO SE PUEDE INGRESAR AL PROGRAMA MSO720");
+
+                arrayFields.Add("OPTION1I", "3");
+                arrayFields.Add("WORK_GROUP1I", resourcesToSave.WorkGroup);
+
+                var requestSheet = new Screen.ScreenSubmitRequestDTO
                 {
-                    //enviar Screen
-                    requestSheet.screenFields = arrayFields.ToArray();
-                    requestSheet.screenKey = "1";
-                    replySheet = proxySheet.submit(opContext, requestSheet);
-                    arrayFields = new ArrayScreenNameValue();
-                    //
-                    if (replySheet != null && replySheet.mapName != "MSM72AA")
+                    screenFields = arrayFields.ToArray(),
+                    screenKey = "1"
+                };
+                replySheet = screenService.submit(opContext, requestSheet);
+
+                if (replySheet == null)
+                    throw new Exception("No se pudo entrar al MSO720 Opcion 3");
+                if (eFunctions.CheckReplyError(replySheet) || eFunctions.CheckReplyWarning(replySheet))
+                    throw new Exception(replySheet.message);
+                if (replySheet.mapName != "MSM72AA")
+                    throw new Exception("No se pudo ingresar a la pantalla MSM72AA");
+
+                var replyArrayFields = new ArrayScreenNameValue(replySheet.screenFields);
+
+                var screenIndex = 1;
+                while (!string.IsNullOrWhiteSpace(replyArrayFields.GetField("RES_CODE1I" + screenIndex).value))
+                {
+                    if (screenIndex > 12)
+                    {
+                        //enviar Screen
+                        requestSheet.screenFields = arrayFields.ToArray();
+                        requestSheet.screenKey = "1";
+                        replySheet = screenService.submit(opContext, requestSheet);
+                        arrayFields = new ArrayScreenNameValue();
+                        //
+                        if (replySheet != null && replySheet.mapName != "MSM72AA")
+                            break;
+                        screenIndex = 1;
+                    }
+
+                    if (resourcesToSave.ResourceCode == replyArrayFields.GetField("RES_CLASS1I" + screenIndex).value + replyArrayFields.GetField("RES_CODE1I" + screenIndex).value)
+                    {
                         break;
-                    screenIndex = 1;
+                    }
+
+                    screenIndex++;
                 }
-                if (resourcesToSave.ResourceCode == replyArrayFields.GetField("RES_CLASS1I" + screenIndex).value + replyArrayFields.GetField("RES_CODE1I" + screenIndex).value)
-                {
-                    break;
-                }
-                screenIndex++;
+
+                arrayFields = new ArrayScreenNameValue();
+                arrayFields.Add("RES_CLASS1I" + screenIndex, resourcesToSave.ResourceCode.Substring(0, 1));
+                arrayFields.Add("RES_CODE1I" + screenIndex, resourcesToSave.ResourceCode.Substring(1, 3));
+                arrayFields.Add("MAND_IND1I" + screenIndex, "N");
+                arrayFields.Add("REQMT_TYPE1I" + screenIndex, "E");
+                arrayFields.Add("RESRC_NO1I" + screenIndex, "" + resourcesToSave.Quantity);
+
+                requestSheet.screenFields = arrayFields.ToArray();
+                requestSheet.screenKey = "1";
+                replySheet = screenService.submit(opContext, requestSheet);
+
+                eFunctions.CheckReplyWarning(replySheet); //si hay debug activo muestra el warning de lo contrario depende del proceso del OP
+
+                if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM720A")
+                    replyMessage.Message = "Ok";
+                if (replySheet != null && eFunctions.CheckReplyError(replySheet))
+                    replyMessage.Errors = new[] {replyMessage.Message};
+                return replyMessage;
             }
-            arrayFields = new ArrayScreenNameValue();
-            arrayFields.Add("RES_CLASS1I" + screenIndex, resourcesToSave.ResourceCode.Substring(0, 1));
-            arrayFields.Add("RES_CODE1I" + screenIndex, resourcesToSave.ResourceCode.Substring(1, 3));
-            arrayFields.Add("MAND_IND1I" + screenIndex, "N");
-            arrayFields.Add("REQMT_TYPE1I" + screenIndex, "E");
-            arrayFields.Add("RESRC_NO1I" + screenIndex, "" + resourcesToSave.Quantity);
-
-            requestSheet.screenFields = arrayFields.ToArray();
-            requestSheet.screenKey = "1";
-            replySheet = proxySheet.submit(opContext, requestSheet);
-
-            eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
-
-            if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM720A")
-                replyMessage.Message = "Ok";
-            if (replySheet != null && eFunctions.CheckReplyError(replySheet))
-                replyMessage.Errors = new[] { replyMessage.Message };
-            return replyMessage;
         }
     }
 

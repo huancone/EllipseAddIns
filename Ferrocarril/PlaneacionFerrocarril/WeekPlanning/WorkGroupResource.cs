@@ -23,8 +23,8 @@ namespace PlaneacionFerrocarril
             Type = dr["RESOURCE_TYPE"].ToString().Trim();
             Description = dr["RES_DESC"].ToString().Trim();
 
-            EstimatedHours = MyUtilities.ToDecimal(dr["EST_HRS"].ToString(), 2);
-            ActualHours = MyUtilities.ToDecimal(dr["ACT_HRS"].ToString(), 2);
+            EstimatedHours = MyUtilities.ToDecimal(dr["EST_HRS"].ToString(), IxConversionConstant.DefaultNullAndEmpty);
+            ActualHours = MyUtilities.ToDecimal(dr["ACT_HRS"].ToString(), IxConversionConstant.DefaultNullAndEmpty);
 
         }
     }

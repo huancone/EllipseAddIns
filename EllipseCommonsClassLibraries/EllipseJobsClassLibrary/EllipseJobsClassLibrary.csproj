@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EllipseJobsClassLibrary</RootNamespace>
     <AssemblyName>EllipseJobsClassLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -154,16 +154,6 @@
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj">
-      <Project>{d83698a3-3b22-4af7-b92a-26e2a05b1764}</Project>
-      <Name>EllipseStandardJobsClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj">
-      <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
-      <Name>EllipseWorkOrdersClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/JobsMWPService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\JobsMWPService\</RelPath>
@@ -186,6 +176,16 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseJobsClassLibrary_WorkOrderTaskMWPService_WorkOrderTaskMWPService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj">
+      <Project>{d83698a3-3b22-4af7-b92a-26e2a05b1764}</Project>
+      <Name>EllipseStandardJobsClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj">
+      <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
+      <Name>EllipseWorkOrdersClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

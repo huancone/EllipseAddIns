@@ -18,10 +18,13 @@ namespace SharedClassLibrary.Connections
         public string Name;
         public string SecondaryDbLink;
         public string SecondaryDbReference;
+        public IxDataBaseType DbType { get; private set; }
+
 
         public DatabaseItem(string dbName, string dbUser, string dbPassword)
         {
             SetDataBaseItem(dbName, dbUser, dbPassword, null, null, null);
+            SetDatabaseType(IxDataBaseType.Oracle);
         }
 
         public DatabaseItem(string dbName, string dbUser, string dbPassword, string dbReference,
@@ -85,6 +88,11 @@ namespace SharedClassLibrary.Connections
             DbReference = dbReference;
             DbLink = dbLink;
             DbCatalog = dbCatalog;
+        }
+
+        public void SetDatabaseType(IxDataBaseType dbType)
+        {
+            DbType = dbType;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using SharedClassLibrary.Utilities;
 
 //Shared Class Library - SqlConnector
@@ -277,6 +278,69 @@ namespace SharedClassLibrary.Connections
         }
         #endregion
 
+        #region ExecuteQueryAsync - Execute Async Implementations
+        public Task<int> ExecuteQueryAsync(IQueryParamCollection queryParamCollection)
+        {
+            Debugger.LogQuery(queryParamCollection.GetGeneratedSql());
+            _queryAttempt++;
+
+            try
+            {
+                if (_sqlComm == null || _sqlConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
+
+                if (queryParamCollection.Parameters != null)
+                    foreach (var p in queryParamCollection.Parameters)
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
+                if (_transaction != null)
+                    _sqlComm.Transaction = _transaction;
+                _queryAttempt = 0;
+                return _sqlComm.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                _queryAttempt++;
+
+                //TO DO
+                /*
+                //Timeout error handlers
+                if (ex.Message.Contains("ORA-12516") && _queryAttempt < MaxQueryAttempts)
+                {
+                    Thread.Sleep(ConnectionTimeOut);
+                    GetDataSetQueryResult(queryParamCollection);
+                }
+                */
+                Debugger.LogError("SqlConnector:ExecuteQuery(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+
+                _queryAttempt = 0;
+                throw;
+            }
+        }
+
+        public Task<int> ExecuteQueryAsync(string sqlQuery)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
+            return ExecuteQueryAsync(queryParamCollection);
+        }
+
+        public Task<int> ExecuteQueryAsync(string sqlQuery, List<IDbDataParameter> parameters)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
+            return ExecuteQueryAsync(queryParamCollection);
+        }
+
+        public Task<int> ExecuteQueryAsync(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
+            return ExecuteQueryAsync(queryParamCollection);
+        }
+        #endregion
+
         #region List<T> GetQueryResult - Generic Implementations
         public List<T> GetQueryResult<T>(IQueryParamCollection queryParamCollection) where T : ISimpleObjectModelSql, new()
         {
@@ -312,6 +376,45 @@ namespace SharedClassLibrary.Connections
         {
             var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
             return GetQueryResult<T>(queryParamCollection);
+        }
+        #endregion
+
+        #region List<T> GetQueryResultAsync - Generic Async Implementations
+        public async Task<List<T>> GetQueryResultAsync<T>(IQueryParamCollection queryParamCollection) where T : ISimpleObjectModelSql, new()
+        {
+            IDataReader dr = await Task.Run(() => GetQueryResultAsync(queryParamCollection));
+
+            var list = new List<T>();
+            if (dr == null || dr.IsClosed)
+                return list;
+            await Task.Run(() =>
+            {
+                while (dr.Read())
+                {
+                    var item = new T();
+                    item.SetFromDataRecord(dr);
+                    list.Add(item);
+                }
+            });
+            return list;
+        }
+        public Task<List<T>> GetQueryResultAsync<T>(string sqlQuery) where T : ISimpleObjectModelSql, new()
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
+
+            return GetQueryResultAsync<T>(queryParamCollection);
+        }
+
+        public Task<List<T>> GetQueryResultAsync<T>(string sqlQuery, List<IDbDataParameter> parameters) where T : ISimpleObjectModelSql, new()
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
+
+            return GetQueryResultAsync<T>(queryParamCollection);
+        }
+        public Task<List<T>> GetQueryResultAsync<T>(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar) where T : ISimpleObjectModelSql, new()
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
+            return GetQueryResultAsync<T>(queryParamCollection);
         }
         #endregion
 
@@ -400,6 +503,85 @@ namespace SharedClassLibrary.Connections
         }
         #endregion
 
+        #region DataSet GetQueryResultsAsync - DataSet Asyncs Implementations
+
+        /// <summary>
+        ///     Obtiene el data set con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
+        public Task<DataSet> GetDataSetQueryResultAsync(string sqlQuery)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
+            return GetDataSetQueryResultAsync(queryParamCollection);
+        }
+
+        /// <summary>
+        ///     Obtiene el data set con los resultados de una consulta
+        /// </summary>
+        /// <param name="queryParamCollection">Objeto de colección de query y parámetros de oracle</param>
+        /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
+        public async Task<DataSet> GetDataSetQueryResultAsync(IQueryParamCollection queryParamCollection)
+        {
+            Debugger.LogQuery(queryParamCollection.GetGeneratedSql());
+            try
+            {
+                if (_sqlComm == null || _sqlConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
+
+                if (queryParamCollection.Parameters != null)
+                    foreach (var p in queryParamCollection.Parameters)
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
+                if (_transaction != null)
+                    _sqlComm.Transaction = _transaction;
+                
+                var ds = new DataSet();
+                await Task.Run(() =>
+                {
+                    using (var adapter = new SqlDataAdapter(_sqlComm))
+                        adapter.Fill(ds);
+                    
+                });
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("SqlConnector:GetDataSetQueryResult(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                throw;
+            }
+        }
+
+        /// <summary>
+        ///     Obtiene el data set con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="parameters">List of parameters</param>
+        /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
+        public Task<DataSet> GetDataSetQueryResultAsync(string sqlQuery, List<IDbDataParameter> parameters)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
+            return GetDataSetQueryResultAsync(queryParamCollection);
+        }
+
+        /// <summary>
+        ///     Obtiene el data set con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="parameters">List of parameters</param>
+        /// <param name="escapeChar">Escape char for parameteres. Sql Default '@'</param>
+        /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
+        public Task<DataSet> GetDataSetQueryResultAsync(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
+            return GetDataSetQueryResultAsync(queryParamCollection);
+        }
+        #endregion
+
         #region IDataReader GetQueryResult - IDataReader Implementations
         /// <summary>
         ///     Obtiene el data reader con los resultados de una consulta
@@ -475,6 +657,80 @@ namespace SharedClassLibrary.Connections
                     GetQueryResult(queryParamCollection);
                 }
 
+                Debugger.LogError("SqlConnector:GetQueryResult(QueryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+
+                _queryAttempt = 0;
+                throw;
+            }
+        }
+        #endregion
+
+        #region IDataReader GetQueryResultAsync - IDataReader Async Implementations
+        /// <summary>
+        ///     Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(string sqlQuery)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
+            return GetQueryResultAsync(queryParamCollection);
+        }
+
+        /// <summary>
+        ///     Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="parameters">List of parameters</param>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(string sqlQuery, List<IDbDataParameter> parameters)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
+            return GetQueryResultAsync(queryParamCollection);
+        }
+
+        /// <summary>
+        ///     Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="parameters">List of parameters</param>
+        /// <param name="escapeChar">Escape char for parameteres. Sql Default '@'</param>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
+        {
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
+            return GetQueryResultAsync(queryParamCollection);
+        }
+
+        /// <summary>
+        ///     Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="queryParamCollection">Objeto de colección de query y parámetros de oracle</param>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
+        public async Task<IDataReader> GetQueryResultAsync(IQueryParamCollection queryParamCollection)
+        {
+            Debugger.LogQuery(queryParamCollection.GetGeneratedSql());
+
+            try
+            {
+                if (_sqlComm == null || _sqlConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
+
+                if (queryParamCollection.Parameters != null)
+                    foreach (var p in queryParamCollection.Parameters)
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
+
+                if (_transaction != null)
+                    _sqlComm.Transaction = _transaction;
+                return await _sqlComm.ExecuteReaderAsync();
+            }
+            catch (Exception ex)
+            {
                 Debugger.LogError("SqlConnector:GetQueryResult(QueryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;

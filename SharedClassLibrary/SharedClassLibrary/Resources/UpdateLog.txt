@@ -9,3 +9,8 @@ Versión 1.0.1.2, Liberada el 23 de Febrero de 2021
 
 Versión 1.0.1.3, Liberada el 05 de Marzo de 2021
 * Se corrigen unos bugs menores
+
+Versión 1.1.0.0, Liberada el 01 de Junio de 2021
+* Incremento de .NET Framework de 4.0 a 4.5
+* Adición de Funciones Asincrónicas
+* Estandarización de Funciones según la seleción de tipo de base de datos (Oracle y SqlServer)
