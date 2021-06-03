@@ -6,3 +6,6 @@ Versión 1.3.0.0, Liberada el 23 de Enero de 2021
 
 Versión 1.3.0.2, Liberada el 23 de Febrero de 2021
 * Se actualiza por ajuste de estandarización de clase IxConversionContants de librería SharedClassLibrary 
+
+Versión 1.3.0.3, Liberada el 18 de Mayo de 2021
+* Asignación de acciones Disposables para servicios de ellipse

@@ -388,87 +388,90 @@ namespace EllipseWorkOrdersClassLibrary
         /// <param name="wo">WorkOrder: WorkOrder</param>
         public static WorkOrderServiceCreateReplyDTO CreateWorkOrder(string urlService, OperationContext opContext, WorkOrder wo)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
-            var requestWo = new WorkOrderServiceCreateRequestDTO();
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                //ejecuta las acciones del servicio
+                var requestWo = new WorkOrderServiceCreateRequestDTO();
 
-            proxyWo.Url = urlService + "/WorkOrder";
+                woService.Url = urlService + "/WorkOrder";
 
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = wo.districtCode ?? requestWo.districtCode;
-            requestWo.workGroup = wo.workGroup ?? requestWo.workGroup;
-            if (string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().no) && !string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().prefix))
-                requestWo.workOrderPrefix = wo.GetWorkOrderDto().prefix;
-            else
-                requestWo.workOrder = wo.GetWorkOrderDto();
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = wo.districtCode ?? requestWo.districtCode;
+                requestWo.workGroup = wo.workGroup ?? requestWo.workGroup;
+                if (string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().no) && !string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().prefix))
+                    requestWo.workOrderPrefix = wo.GetWorkOrderDto().prefix;
+                else
+                    requestWo.workOrder = wo.GetWorkOrderDto();
 
 
-            requestWo.workOrderDesc = wo.workOrderDesc ?? requestWo.workOrderDesc;
-            //workOrderStatusM //n/a para crear
-            requestWo.equipmentNo = wo.equipmentNo ?? requestWo.equipmentNo;
-            requestWo.equipmentRef = wo.equipmentRef ?? requestWo.equipmentRef;
-            requestWo.compCode = wo.compCode ?? requestWo.compCode;
-            requestWo.compModCode = wo.compModCode ?? requestWo.compModCode;
-            requestWo.workOrderType = wo.workOrderType ?? requestWo.workOrderType;
-            requestWo.maintenanceType = wo.maintenanceType ?? requestWo.maintenanceType;
-            requestWo.workOrderStatusU = wo.workOrderStatusU ?? requestWo.workOrderStatusU;
+                requestWo.workOrderDesc = wo.workOrderDesc ?? requestWo.workOrderDesc;
+                //workOrderStatusM //n/a para crear
+                requestWo.equipmentNo = wo.equipmentNo ?? requestWo.equipmentNo;
+                requestWo.equipmentRef = wo.equipmentRef ?? requestWo.equipmentRef;
+                requestWo.compCode = wo.compCode ?? requestWo.compCode;
+                requestWo.compModCode = wo.compModCode ?? requestWo.compModCode;
+                requestWo.workOrderType = wo.workOrderType ?? requestWo.workOrderType;
+                requestWo.maintenanceType = wo.maintenanceType ?? requestWo.maintenanceType;
+                requestWo.workOrderStatusU = wo.workOrderStatusU ?? requestWo.workOrderStatusU;
 
-            requestWo.raisedDate = wo.raisedDate ?? requestWo.raisedDate;
-            requestWo.raisedTime = wo.raisedTime ?? requestWo.raisedTime;
-            requestWo.originatorId = wo.originatorId ?? requestWo.originatorId;
-            requestWo.origPriority = wo.origPriority ?? requestWo.origPriority;
-            requestWo.origDocType = wo.origDocType ?? requestWo.origDocType;
-            requestWo.origDocNo = wo.origDocNo ?? requestWo.origDocNo;
-            requestWo.relatedWo = wo.GetRelatedWoDto();
-            requestWo.requestId = wo.requestId ?? requestWo.requestId;
+                requestWo.raisedDate = wo.raisedDate ?? requestWo.raisedDate;
+                requestWo.raisedTime = wo.raisedTime ?? requestWo.raisedTime;
+                requestWo.originatorId = wo.originatorId ?? requestWo.originatorId;
+                requestWo.origPriority = wo.origPriority ?? requestWo.origPriority;
+                requestWo.origDocType = wo.origDocType ?? requestWo.origDocType;
+                requestWo.origDocNo = wo.origDocNo ?? requestWo.origDocNo;
+                requestWo.relatedWo = wo.GetRelatedWoDto();
+                requestWo.requestId = wo.requestId ?? requestWo.requestId;
 
-            requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
-            requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
-            requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
-            requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
-            requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
-            requestWo.requisitionStartDate = wo.requisitionStartDate ?? requestWo.requisitionStartDate;
-            requestWo.requisitionStartTime = wo.requisitionStartTime ?? requestWo.requisitionStartTime;
-            requestWo.requiredByDate = wo.requiredByDate ?? requestWo.requiredByDate;
-            requestWo.requiredByTime = wo.requiredByTime ?? requestWo.requiredByTime;
-            requestWo.planStrDate = wo.planStrDate ?? requestWo.planStrDate;
-            requestWo.planStrTime = wo.planStrTime ?? requestWo.planStrTime;
-            requestWo.planFinDate = wo.planFinDate ?? requestWo.planFinDate;
-            requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
-            requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
-            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
-            requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
-            requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
-            requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
+                requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
+                requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
+                requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
+                requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
+                requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
+                requestWo.requisitionStartDate = wo.requisitionStartDate ?? requestWo.requisitionStartDate;
+                requestWo.requisitionStartTime = wo.requisitionStartTime ?? requestWo.requisitionStartTime;
+                requestWo.requiredByDate = wo.requiredByDate ?? requestWo.requiredByDate;
+                requestWo.requiredByTime = wo.requiredByTime ?? requestWo.requiredByTime;
+                requestWo.planStrDate = wo.planStrDate ?? requestWo.planStrDate;
+                requestWo.planStrTime = wo.planStrTime ?? requestWo.planStrTime;
+                requestWo.planFinDate = wo.planFinDate ?? requestWo.planFinDate;
+                requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
+                requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
+                requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
+                requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
+                requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
+                requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
+                requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
 
-            requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
-            requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
-            requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
-            requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
-            requestWo.jobCode4 = wo.jobCode4 ?? requestWo.jobCode4;
-            requestWo.jobCode5 = wo.jobCode5 ?? requestWo.jobCode5;
-            requestWo.jobCode6 = wo.jobCode6 ?? requestWo.jobCode6;
-            requestWo.jobCode7 = wo.jobCode7 ?? requestWo.jobCode7;
-            requestWo.jobCode8 = wo.jobCode8 ?? requestWo.jobCode8;
-            requestWo.jobCode9 = wo.jobCode9 ?? requestWo.jobCode9;
-            requestWo.jobCode10 = wo.jobCode10 ?? requestWo.jobCode10;
-            requestWo.locationFr = wo.locationFr ?? requestWo.locationFr;
-            requestWo.location = wo.location ?? requestWo.location;
-            requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
+                requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
+                requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
+                requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
+                requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
+                requestWo.jobCode4 = wo.jobCode4 ?? requestWo.jobCode4;
+                requestWo.jobCode5 = wo.jobCode5 ?? requestWo.jobCode5;
+                requestWo.jobCode6 = wo.jobCode6 ?? requestWo.jobCode6;
+                requestWo.jobCode7 = wo.jobCode7 ?? requestWo.jobCode7;
+                requestWo.jobCode8 = wo.jobCode8 ?? requestWo.jobCode8;
+                requestWo.jobCode9 = wo.jobCode9 ?? requestWo.jobCode9;
+                requestWo.jobCode10 = wo.jobCode10 ?? requestWo.jobCode10;
+                requestWo.locationFr = wo.locationFr ?? requestWo.locationFr;
+                requestWo.location = wo.location ?? requestWo.location;
+                requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
-            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
-            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
-            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
-            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
+                requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
+                requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
+                requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
+                requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
+                requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
 
-            //se envía la acción
-            return proxyWo.create(opContext, requestWo);
+                //se envía la acción
+                return woService.create(opContext, requestWo);
+            }
         }
 
         /// <summary>
@@ -479,99 +482,100 @@ namespace EllipseWorkOrdersClassLibrary
         /// <param name="wo"></param>
         public static WorkOrderServiceModifyReplyDTO ModifyWorkOrder(string urlService, OperationContext opContext, WorkOrder wo)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
-
-            var requestWo = new WorkOrderServiceModifyRequestDTO();
-
-            proxyWo.Url = urlService;
-            //se cargan los parámetros de la orden
-            proxyWo.Url = urlService + "/WorkOrder";
-
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = wo.districtCode ?? requestWo.districtCode;
-
-            requestWo.workGroup = wo.workGroup ?? requestWo.workGroup;
-            requestWo.workOrder = wo.GetWorkOrderDto();
-            requestWo.workOrderDesc = wo.workOrderDesc ?? requestWo.workOrderDesc;
-            //workOrderStatusM //n/a para modificar
-            requestWo.equipmentNo = wo.equipmentNo ?? requestWo.equipmentNo;
-            requestWo.equipmentRef = wo.equipmentRef ?? requestWo.equipmentRef;
-            requestWo.compCode = wo.compCode ?? requestWo.compCode;
-            requestWo.compModCode = wo.compModCode ?? requestWo.compModCode;
-            requestWo.workOrderType = wo.workOrderType ?? requestWo.workOrderType;
-            requestWo.maintenanceType = wo.maintenanceType ?? requestWo.maintenanceType;
-            requestWo.workOrderStatusU = wo.workOrderStatusU ?? requestWo.workOrderStatusU;
-
-            requestWo.raisedDate = wo.raisedDate ?? requestWo.raisedDate;
-            requestWo.raisedTime = wo.raisedTime ?? requestWo.raisedTime;
-            requestWo.originatorId = wo.originatorId ?? requestWo.originatorId;
-            requestWo.origPriority = wo.origPriority ?? requestWo.origPriority;
-            requestWo.origDocType = wo.origDocType ?? requestWo.origDocType;
-            requestWo.origDocNo = wo.origDocNo ?? requestWo.origDocNo;
-            requestWo.relatedWo = wo.GetRelatedWoDto();
-            requestWo.requestId = wo.requestId ?? requestWo.requestId;
-
-            requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
-            requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
-            requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
-            requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
-            requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
-
-            requestWo.requisitionStartDate = wo.requisitionStartDate ?? requestWo.requisitionStartDate;
-            requestWo.requisitionStartTime = wo.requisitionStartTime ?? requestWo.requisitionStartTime;
-            requestWo.requiredByDate = wo.requiredByDate ?? requestWo.requiredByDate;
-            requestWo.requiredByTime = wo.requiredByTime ?? requestWo.requiredByTime;
-            requestWo.planStrDate = wo.planStrDate ?? requestWo.planStrDate;
-            requestWo.planStrTime = wo.planStrTime ?? requestWo.planStrTime;
-            requestWo.planFinDate = wo.planFinDate ?? requestWo.planFinDate;
-            requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
-
-            requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
-            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
-
-            requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
-            requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
-            requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
-
-            requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
-            requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
-            requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
-            requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
-            requestWo.jobCode4 = wo.jobCode4 ?? requestWo.jobCode4;
-            requestWo.jobCode5 = wo.jobCode5 ?? requestWo.jobCode5;
-            requestWo.jobCode6 = wo.jobCode6 ?? requestWo.jobCode6;
-            requestWo.jobCode7 = wo.jobCode7 ?? requestWo.jobCode7;
-            requestWo.jobCode8 = wo.jobCode8 ?? requestWo.jobCode8;
-            requestWo.jobCode9 = wo.jobCode9 ?? requestWo.jobCode9;
-            requestWo.jobCode10 = wo.jobCode10 ?? requestWo.jobCode10;
-            requestWo.locationFr = wo.locationFr ?? requestWo.locationFr;
-            requestWo.location = wo.location ?? requestWo.location;
-            requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
-
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, IxConversionConstant.DefaultNullAndEmpty);
-            requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
-            //
-            if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null)
-                return proxyWo.modify(opContext, requestWo);
-
-            var requestEstimates = new WorkOrderServiceUpdateEstimatesRequestDTO
+            using (var woService = new WorkOrderService.WorkOrderService())
             {
-                districtCode = wo.districtCode,
-                workOrder = wo.GetWorkOrderDto(),
-                calculatedLabFlag = Convert.ToBoolean(wo.calculatedLabFlag),
-                calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag),
-                calculatedMatFlag = Convert.ToBoolean(wo.calculatedMatFlag),
-                calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag),
-                calculatedEquipmentFlag = Convert.ToBoolean(wo.calculatedEquipmentFlag),
-                calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag),
-                calculatedOtherFlag = Convert.ToBoolean(wo.calculatedOtherFlag),
-                calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag)
-            };
+                var requestWo = new WorkOrderServiceModifyRequestDTO();
 
-            proxyWo.updateEstimates(opContext, requestEstimates);
-            //se envía la acción final
-            return proxyWo.modify(opContext, requestWo);
+                woService.Url = urlService;
+                //se cargan los parámetros de la orden
+                woService.Url = urlService + "/WorkOrder";
+
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = wo.districtCode ?? requestWo.districtCode;
+
+                requestWo.workGroup = wo.workGroup ?? requestWo.workGroup;
+                requestWo.workOrder = wo.GetWorkOrderDto();
+                requestWo.workOrderDesc = wo.workOrderDesc ?? requestWo.workOrderDesc;
+                //workOrderStatusM //n/a para modificar
+                requestWo.equipmentNo = wo.equipmentNo ?? requestWo.equipmentNo;
+                requestWo.equipmentRef = wo.equipmentRef ?? requestWo.equipmentRef;
+                requestWo.compCode = wo.compCode ?? requestWo.compCode;
+                requestWo.compModCode = wo.compModCode ?? requestWo.compModCode;
+                requestWo.workOrderType = wo.workOrderType ?? requestWo.workOrderType;
+                requestWo.maintenanceType = wo.maintenanceType ?? requestWo.maintenanceType;
+                requestWo.workOrderStatusU = wo.workOrderStatusU ?? requestWo.workOrderStatusU;
+
+                requestWo.raisedDate = wo.raisedDate ?? requestWo.raisedDate;
+                requestWo.raisedTime = wo.raisedTime ?? requestWo.raisedTime;
+                requestWo.originatorId = wo.originatorId ?? requestWo.originatorId;
+                requestWo.origPriority = wo.origPriority ?? requestWo.origPriority;
+                requestWo.origDocType = wo.origDocType ?? requestWo.origDocType;
+                requestWo.origDocNo = wo.origDocNo ?? requestWo.origDocNo;
+                requestWo.relatedWo = wo.GetRelatedWoDto();
+                requestWo.requestId = wo.requestId ?? requestWo.requestId;
+
+                requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
+                requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
+                requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
+                requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
+                requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
+
+                requestWo.requisitionStartDate = wo.requisitionStartDate ?? requestWo.requisitionStartDate;
+                requestWo.requisitionStartTime = wo.requisitionStartTime ?? requestWo.requisitionStartTime;
+                requestWo.requiredByDate = wo.requiredByDate ?? requestWo.requiredByDate;
+                requestWo.requiredByTime = wo.requiredByTime ?? requestWo.requiredByTime;
+                requestWo.planStrDate = wo.planStrDate ?? requestWo.planStrDate;
+                requestWo.planStrTime = wo.planStrTime ?? requestWo.planStrTime;
+                requestWo.planFinDate = wo.planFinDate ?? requestWo.planFinDate;
+                requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
+
+                requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
+                requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
+                requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
+
+                requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
+                requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
+                requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
+
+                requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
+                requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
+                requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
+                requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
+                requestWo.jobCode4 = wo.jobCode4 ?? requestWo.jobCode4;
+                requestWo.jobCode5 = wo.jobCode5 ?? requestWo.jobCode5;
+                requestWo.jobCode6 = wo.jobCode6 ?? requestWo.jobCode6;
+                requestWo.jobCode7 = wo.jobCode7 ?? requestWo.jobCode7;
+                requestWo.jobCode8 = wo.jobCode8 ?? requestWo.jobCode8;
+                requestWo.jobCode9 = wo.jobCode9 ?? requestWo.jobCode9;
+                requestWo.jobCode10 = wo.jobCode10 ?? requestWo.jobCode10;
+                requestWo.locationFr = wo.locationFr ?? requestWo.locationFr;
+                requestWo.location = wo.location ?? requestWo.location;
+                requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
+
+                requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, IxConversionConstant.DefaultNullAndEmpty);
+                requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
+                //
+                if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null)
+                    return woService.modify(opContext, requestWo);
+
+                var requestEstimates = new WorkOrderServiceUpdateEstimatesRequestDTO
+                {
+                    districtCode = wo.districtCode,
+                    workOrder = wo.GetWorkOrderDto(),
+                    calculatedLabFlag = Convert.ToBoolean(wo.calculatedLabFlag),
+                    calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag),
+                    calculatedMatFlag = Convert.ToBoolean(wo.calculatedMatFlag),
+                    calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag),
+                    calculatedEquipmentFlag = Convert.ToBoolean(wo.calculatedEquipmentFlag),
+                    calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag),
+                    calculatedOtherFlag = Convert.ToBoolean(wo.calculatedOtherFlag),
+                    calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag)
+                };
+
+                woService.updateEstimates(opContext, requestEstimates);
+                //se envía la acción final
+                return woService.modify(opContext, requestWo);
+            }
         }
 
         /// <summary>
@@ -584,38 +588,41 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static WorkOrderServiceCompleteReplyDTO CompleteWorkOrder(string urlService, OperationContext opContext, WorkOrderCompleteAtributes wo, bool appendCloseComment = true)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                var requestWo = new WorkOrderServiceCompleteRequestDTO();
+                woService.Url = urlService + "/WorkOrder";
+                long number1;
+                if (long.TryParse("" + wo.workOrder.prefix + wo.workOrder.no, out number1))
+                    wo.workOrder = GetNewWorkOrderDto(("" + wo.workOrder.prefix + wo.workOrder.no).PadLeft(8, '0'));
 
-            var requestWo = new WorkOrderServiceCompleteRequestDTO();
-            proxyWo.Url = urlService + "/WorkOrder";
-            long number1;
-            if (long.TryParse("" + wo.workOrder.prefix + wo.workOrder.no, out number1))
-                wo.workOrder = GetNewWorkOrderDto(("" + wo.workOrder.prefix + wo.workOrder.no).PadLeft(8, '0'));
+                //se cargan los parámetros de la orden
+                requestWo.workOrder = wo.workOrder;
+                requestWo.districtCode = wo.districtCode;
+                requestWo.completedBy = wo.completedBy;
+                requestWo.completedCode = wo.completedCode;
+                requestWo.closedDate = wo.closedDate;
+                requestWo.closedTime = wo.closedTime;
+                requestWo.outServDate = wo.outServDate;
+                requestWo.outServTime = wo.outServTime;
+                requestWo.earnCode = wo.earnCode;
+                requestWo.failurePart = wo.failurePart;
+                requestWo.hoursCompleted = wo.hoursCompleted;
+                requestWo.hoursCompletedSpecified = wo.hoursCompletedSpecified;
+                requestWo.crteInsitu = wo.crteInsitu;
+                requestWo.crteInsituSpecified = wo.crteInsituSpecified;
 
-            //se cargan los parámetros de la orden
-            requestWo.workOrder = wo.workOrder;
-            requestWo.districtCode = wo.districtCode;
-            requestWo.completedBy = wo.completedBy;
-            requestWo.completedCode = wo.completedCode;
-            requestWo.closedDate = wo.closedDate;
-            requestWo.closedTime = wo.closedTime;
-            requestWo.outServDate = wo.outServDate;
-            requestWo.outServTime = wo.outServTime;
-            requestWo.earnCode = wo.earnCode;
-            requestWo.failurePart = wo.failurePart;
-            requestWo.hoursCompleted = wo.hoursCompleted;
-            requestWo.hoursCompletedSpecified = wo.hoursCompletedSpecified;
-            requestWo.crteInsitu = wo.crteInsitu;
-            requestWo.crteInsituSpecified = wo.crteInsituSpecified;
+                //se envía la acción
+                var replyWo = woService.complete(opContext, requestWo);
 
-            //se envía la acción
-            var replyWo = proxyWo.complete(opContext, requestWo);
+                //comentario
+                if (!appendCloseComment || string.IsNullOrWhiteSpace(wo.completeCommentToAppend)) return replyWo;
+                AppendTextToCloseComment(urlService, opContext, replyWo.districtCode, replyWo.workOrder.prefix + replyWo.workOrder.no, wo.completeCommentToAppend);
+                //
+                return replyWo;
+            }
 
-            //comentario
-            if (!appendCloseComment || string.IsNullOrWhiteSpace(wo.completeCommentToAppend)) return replyWo;
-            AppendTextToCloseComment(urlService, opContext, replyWo.districtCode, replyWo.workOrder.prefix + replyWo.workOrder.no, wo.completeCommentToAppend);
-            //
-            return replyWo;
+            
         }
 
         /// <summary>
@@ -645,19 +652,20 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static WorkOrderServiceReopenReplyDTO ReOpenWorkOrder(string urlService, OperationContext opContext, WorkOrder wo)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                var requestWo = new WorkOrderServiceReopenRequestDTO();
 
-            var requestWo = new WorkOrderServiceReopenRequestDTO();
+                woService.Url = urlService + "/WorkOrder";
 
-            proxyWo.Url = urlService + "/WorkOrder";
-
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = wo.districtCode;
-            requestWo.workOrder = wo.GetWorkOrderDto();
-            //se envía la acción
-            var replyWo = proxyWo.reopen(opContext, requestWo);
-            //
-            return replyWo;
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = wo.districtCode;
+                requestWo.workOrder = wo.GetWorkOrderDto();
+                //se envía la acción
+                var replyWo = woService.reopen(opContext, requestWo);
+                //
+                return replyWo;
+            }
         }
 
         /// <summary>
@@ -669,21 +677,22 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static WorkOrderServiceFinaliseReplyDTO FinalizeWorkOrder(string urlService, OperationContext opContext, WorkOrder wo)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                var requestWo = new WorkOrderServiceFinaliseRequestDTO();
 
-            var requestWo = new WorkOrderServiceFinaliseRequestDTO();
+                woService.Url = urlService + "/WorkOrder";
 
-            proxyWo.Url = urlService + "/WorkOrder";
-
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = wo.districtCode;
-            requestWo.workOrder = wo.GetWorkOrderDto();
-            requestWo.finalCosts = true;
-            requestWo.finalCostsSpecified = true;
-            //se envía la acción
-            var replyWo = proxyWo.finalise(opContext, requestWo);
-            //
-            return replyWo;
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = wo.districtCode;
+                requestWo.workOrder = wo.GetWorkOrderDto();
+                requestWo.finalCosts = true;
+                requestWo.finalCostsSpecified = true;
+                //se envía la acción
+                var replyWo = woService.finalise(opContext, requestWo);
+                //
+                return replyWo;
+            }
         }
 
         /// <summary>
@@ -724,24 +733,25 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns>/// <returns>WorkOrderService.WorkOrderServiceCreateWorkOrderDurationReplyDTO: respuesta del proceso</returns></returns>
         public static WorkOrderServiceCreateWorkOrderDurationReplyDTO CreateWorkOrderDuration(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder, WorkOrderDuration duration)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                var requestWo = new WorkOrderServiceCreateWorkOrderDurationRequestDTO();
 
-            var requestWo = new WorkOrderServiceCreateWorkOrderDurationRequestDTO();
+                woService.Url = urlService + "/WorkOrder";
 
-            proxyWo.Url = urlService + "/WorkOrder";
+                //se cargan los parámetros de la orden
+                if (string.IsNullOrWhiteSpace(districtCode))
+                    throw new Exception("DISTRICT REQUIRED");
+                requestWo.districtCode = districtCode;
+                requestWo.workOrder = workOrder;
+                requestWo.durations = new DurationsDTO[1];
+                requestWo.durations[0] = duration.GetDurationDto();
 
-            //se cargan los parámetros de la orden
-            if (string.IsNullOrWhiteSpace(districtCode))
-                throw new Exception("DISTRICT REQUIRED");
-            requestWo.districtCode = districtCode;
-            requestWo.workOrder = workOrder;
-            requestWo.durations = new DurationsDTO[1];
-            requestWo.durations[0] = duration.GetDurationDto();
-
-            //se envía la acción
-            var replyWo = proxyWo.createWorkOrderDuration(opContext, requestWo);
-            //
-            return replyWo;
+                //se envía la acción
+                var replyWo = woService.createWorkOrderDuration(opContext, requestWo);
+                //
+                return replyWo;
+            }
         }
 
         /// <summary>
@@ -759,24 +769,26 @@ namespace EllipseWorkOrdersClassLibrary
             //por esta razón, no se puede determinar una modificación singular, sino que debe modificarse el arreglo con los campos especificados.
             //No se puede establecer una llave lógica que determine o no si al modificar se está hablando de la misma duración.
             //Para este caso, utilice el método sobrecargado que tiene Duración a Modificar y Nueva Duración que hace uso de eliminar y crear porque el campo de fecha no se deja modificar
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
 
-            var requestWo = new WorkOrderServiceModifyWorkOrderDurationRequestDTO();
+                var requestWo = new WorkOrderServiceModifyWorkOrderDurationRequestDTO();
 
-            proxyWo.Url = urlService + "/WorkOrder";
+                woService.Url = urlService + "/WorkOrder";
 
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = districtCode;
-            requestWo.workOrder = workOrder;
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = districtCode;
+                requestWo.workOrder = workOrder;
 
-            requestWo.durations = new DurationsDTO[durations.Length];
-            for (var i = 0; i < durations.Length; i++)
-                requestWo.durations[i] = durations[i].GetDurationDto();
+                requestWo.durations = new DurationsDTO[durations.Length];
+                for (var i = 0; i < durations.Length; i++)
+                    requestWo.durations[i] = durations[i].GetDurationDto();
 
-            //se envía la acción
-            var replyWo = proxyWo.modifyWorkOrderDuration(opContext, requestWo);
-            //
-            return replyWo;
+                //se envía la acción
+                var replyWo = woService.modifyWorkOrderDuration(opContext, requestWo);
+                //
+                return replyWo;
+            }
         }
 
         /// <summary>
@@ -795,32 +807,32 @@ namespace EllipseWorkOrdersClassLibrary
             //por esta razón, no se puede determinar una modificación singular, sino que debe modificarse completamente el arreglo con los campos especificados.
             //No se puede establecer una llave lógica que determine o no si al modificar se está hablando de la misma duración.
             //Para este caso, utilice el método sobrecargado que tiene Duración a Modificar y Nueva Duración que hace uso de eliminar y crear porque el campo de fecha no se deja modificar
-            var proxyWo = new WorkOrderService.WorkOrderService { Url = urlService + "/WorkOrder" };
-            //ejecuta las acciones del 
-
-
-            //se consultan las duraciones existentes
-            var requestRwo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO
+            using (var woService = new WorkOrderService.WorkOrderService { Url = urlService + "/WorkOrder" })
             {
-                districtCode = districtCode,
-                workOrder = workOrder
-            };
-            var replyRwo = proxyWo.retrieveWorkOrderDuration(opContext, requestRwo);
+                //se consultan las duraciones existentes
+                var requestRwo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO
+                {
+                    districtCode = districtCode,
+                    workOrder = workOrder
+                };
+                var replyRwo = woService.retrieveWorkOrderDuration(opContext, requestRwo);
 
-            //se ubica el elemento que se quiere modificar
-            for (var i = 0; i < replyRwo.durations.Length; i++)
-            {
-                if (replyRwo.durations[i].jobDurationsDate != oldDuration.jobDurationsDate ||
-                    replyRwo.durations[i].jobDurationsCode != oldDuration.jobDurationsCode ||
-                    replyRwo.durations[i].jobDurationsStart != oldDuration.jobDurationsStart ||
-                    replyRwo.durations[i].jobDurationsFinish != oldDuration.jobDurationsFinish) continue;
-                var delDuration = new WorkOrderDuration();
-                delDuration.SetDurationFromDto(replyRwo.durations[i]);
-                DeleteWorkOrderDuration(urlService, opContext, districtCode, workOrder, delDuration);
+                //se ubica el elemento que se quiere modificar
+                for (var i = 0; i < replyRwo.durations.Length; i++)
+                {
+                    if (replyRwo.durations[i].jobDurationsDate != oldDuration.jobDurationsDate ||
+                        replyRwo.durations[i].jobDurationsCode != oldDuration.jobDurationsCode ||
+                        replyRwo.durations[i].jobDurationsStart != oldDuration.jobDurationsStart ||
+                        replyRwo.durations[i].jobDurationsFinish != oldDuration.jobDurationsFinish) continue;
+                    var delDuration = new WorkOrderDuration();
+                    delDuration.SetDurationFromDto(replyRwo.durations[i]);
+                    DeleteWorkOrderDuration(urlService, opContext, districtCode, workOrder, delDuration);
 
-                return CreateWorkOrderDuration(urlService, opContext, districtCode, workOrder, newDuration);
+                    return CreateWorkOrderDuration(urlService, opContext, districtCode, workOrder, newDuration);
+                }
+                return null;
             }
-            return null;
+                
         }
 
         /// <summary>
@@ -834,46 +846,48 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns>WorkOrderService.WorkOrderServiceDeleteWorkOrderDurationReplyDTO: Respuesta del proceso</returns>
         public static WorkOrderServiceDeleteWorkOrderDurationReplyDTO DeleteWorkOrderDuration(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder, WorkOrderDuration duration)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
-
-            var requestWo = new WorkOrderServiceDeleteWorkOrderDurationRequestDTO();
-
-            proxyWo.Url = urlService + "/WorkOrder";
-
-            //se consultan las duraciones existentes
-            var requestRwo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO
+            using (var serviceWo = new WorkOrderService.WorkOrderService())
             {
-                districtCode = districtCode,
-                workOrder = workOrder
-            };
-            var replyRwo = proxyWo.retrieveWorkOrderDuration(opContext, requestRwo);
 
-            //se ubica el elemento que se quiere eliminar
-            var delDuration = new DurationsDTO();
+                var requestWo = new WorkOrderServiceDeleteWorkOrderDurationRequestDTO();
 
-            for (var i = 0; i < replyRwo.durations.Length; i++)
-            {
-                if (replyRwo.durations[i].jobDurationsDate == duration.jobDurationsDate
-                    && replyRwo.durations[i].jobDurationsCode == duration.jobDurationsCode
-                    && replyRwo.durations[i].jobDurationsStart == duration.jobDurationsStart
-                    && replyRwo.durations[i].jobDurationsFinish == duration.jobDurationsFinish)
+                serviceWo.Url = urlService + "/WorkOrder";
+
+                //se consultan las duraciones existentes
+                var requestRwo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO
                 {
-                    delDuration = replyRwo.durations[i];
-                    break;
+                    districtCode = districtCode,
+                    workOrder = workOrder
+                };
+                var replyRwo = serviceWo.retrieveWorkOrderDuration(opContext, requestRwo);
+
+                //se ubica el elemento que se quiere eliminar
+                var delDuration = new DurationsDTO();
+
+                for (var i = 0; i < replyRwo.durations.Length; i++)
+                {
+                    if (replyRwo.durations[i].jobDurationsDate == duration.jobDurationsDate
+                        && replyRwo.durations[i].jobDurationsCode == duration.jobDurationsCode
+                        && replyRwo.durations[i].jobDurationsStart == duration.jobDurationsStart
+                        && replyRwo.durations[i].jobDurationsFinish == duration.jobDurationsFinish)
+                    {
+                        delDuration = replyRwo.durations[i];
+                        break;
+                    }
                 }
+
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = districtCode;
+                requestWo.workOrder = workOrder;
+
+                requestWo.durations = new DurationsDTO[1];
+                requestWo.durations[0] = delDuration;
+
+                //se envía la acción
+                var replyWo = serviceWo.deleteWorkOrderDuration(opContext, requestWo);
+                //
+                return replyWo;
             }
-
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = districtCode;
-            requestWo.workOrder = workOrder;
-
-            requestWo.durations = new DurationsDTO[1];
-            requestWo.durations[0] = delDuration;
-
-            //se envía la acción
-            var replyWo = proxyWo.deleteWorkOrderDuration(opContext, requestWo);
-            //
-            return replyWo;
         }
 
         /// <summary>
@@ -886,28 +900,31 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns>WorkOrderDuration []: arreglo con los elementos de duración</returns>
         public static WorkOrderDuration[] GetWorkOrderDurations(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
-            var requestWo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO();
+            using (var serviceWo = new WorkOrderService.WorkOrderService())
+            {
 
-            proxyWo.Url = urlService + "/WorkOrder";
+                var requestWo = new WorkOrderServiceRetrieveWorkOrderDurationRequestDTO();
 
-            //se consultan las duraciones existentes
-            requestWo.districtCode = districtCode;
-            requestWo.workOrder = workOrder;
-            var replyWo = proxyWo.retrieveWorkOrderDuration(opContext, requestWo);
+                serviceWo.Url = urlService + "/WorkOrder";
 
-            return replyWo.durations.TakeWhile(t => t.jobDurationsDate != "")
-                .Select(t => new WorkOrderDuration
-                {
-                    jobDurationsCode = t.jobDurationsCode,
-                    jobDurationsDate = t.jobDurationsDate,
-                    jobDurationsStart = t.jobDurationsStart,
-                    jobDurationsFinish = t.jobDurationsFinish,
-                    jobDurationsSeqNo = t.jobDurationsSeqNo,
-                    jobDurationsSeqNoSpecified = t.jobDurationsSeqNoSpecified,
-                    jobDurationsHours = t.jobDurationsHours,
-                    jobDurationsHoursSpecified = t.jobDurationsHoursSpecified
-                }).ToArray();
+                //se consultan las duraciones existentes
+                requestWo.districtCode = districtCode;
+                requestWo.workOrder = workOrder;
+                var replyWo = serviceWo.retrieveWorkOrderDuration(opContext, requestWo);
+
+                return replyWo.durations.TakeWhile(t => t.jobDurationsDate != "")
+                    .Select(t => new WorkOrderDuration
+                    {
+                        jobDurationsCode = t.jobDurationsCode,
+                        jobDurationsDate = t.jobDurationsDate,
+                        jobDurationsStart = t.jobDurationsStart,
+                        jobDurationsFinish = t.jobDurationsFinish,
+                        jobDurationsSeqNo = t.jobDurationsSeqNo,
+                        jobDurationsSeqNoSpecified = t.jobDurationsSeqNoSpecified,
+                        jobDurationsHours = t.jobDurationsHours,
+                        jobDurationsHoursSpecified = t.jobDurationsHoursSpecified
+                    }).ToArray();
+            }
         }
 
         /// <summary>
@@ -1132,25 +1149,27 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static WorkOrderServiceRecordWorkProgressReplyDTO RecordWorkProgress(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder, string percentComplete, string unitsComplete, string unitsRequired = null)
         {
-            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
 
-            var requestWo = new WorkOrderServiceRecordWorkProgressRequestDTO();
+                var requestWo = new WorkOrderServiceRecordWorkProgressRequestDTO();
 
-            proxyWo.Url = urlService + "/WorkOrder";
+                woService.Url = urlService + "/WorkOrder";
 
-            //se cargan los parámetros de la orden
-            requestWo.districtCode = districtCode;
-            requestWo.workOrder = workOrder;
-            requestWo.pcComplete = !string.IsNullOrWhiteSpace(percentComplete) ? Convert.ToDecimal(percentComplete) : default(decimal);
-            requestWo.pcCompleteSpecified = !string.IsNullOrWhiteSpace(percentComplete);
-            requestWo.unitsComplete = !string.IsNullOrWhiteSpace(unitsComplete) ? Convert.ToDecimal(unitsComplete) : default(decimal);
-            requestWo.unitsCompleteSpecified = !string.IsNullOrWhiteSpace(unitsComplete);
-            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(unitsRequired) ? Convert.ToDecimal(unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(unitsRequired);
-            //se envía la acción
-            var replyWo = proxyWo.recordWorkProgress(opContext, requestWo);
-            //
-            return replyWo;
+                //se cargan los parámetros de la orden
+                requestWo.districtCode = districtCode;
+                requestWo.workOrder = workOrder;
+                requestWo.pcComplete = !string.IsNullOrWhiteSpace(percentComplete) ? Convert.ToDecimal(percentComplete) : default(decimal);
+                requestWo.pcCompleteSpecified = !string.IsNullOrWhiteSpace(percentComplete);
+                requestWo.unitsComplete = !string.IsNullOrWhiteSpace(unitsComplete) ? Convert.ToDecimal(unitsComplete) : default(decimal);
+                requestWo.unitsCompleteSpecified = !string.IsNullOrWhiteSpace(unitsComplete);
+                requestWo.unitsRequired = !string.IsNullOrWhiteSpace(unitsRequired) ? Convert.ToDecimal(unitsRequired) : default(decimal);
+                requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(unitsRequired);
+                //se envía la acción
+                var replyWo = woService.recordWorkProgress(opContext, requestWo);
+                //
+                return replyWo;
+            }
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using SharedClassLibrary.Connections;
 using SharedClassLibrary.Connections.Oracle;
@@ -14,17 +15,16 @@ namespace SharedClassLibrary.Ellipse
     public class EllipseFunctions : IDisposable
     {
         private DatabaseItem _dbItem;
-
+        /*
         private SqlConnection _sqlConn;
         private SqlCommand _sqlComm;
-
-        private string _currentConnectionString;
+        */
         private string _currentEnvironment;
         private OracleConnector _oracleConnector;
+        private SqlConnector _sqlConnector;
         private int _connectionTimeOut = 30;//default ODP 15
         private bool _poolingDataBase = true;//default ODP true
         //public PostService PostServiceProxy;
-        private int _queryAttempt;
 
         public string DbLink => _dbItem.DbLink;
         public string DbReference => _dbItem.DbReference;
@@ -56,9 +56,10 @@ namespace SharedClassLibrary.Ellipse
                 _dbItem.DbPassword = null;
                 _dbItem.DbLink = null;
                 _dbItem.DbReference = null;
+                _dbItem.SetDatabaseType(IxDataBaseType.Undefined);
             }
 
-            _oracleConnector?.CloseConnection(true);
+            CloseConnection(true);
             SetCurrentEnvironment(null);
         }
         /// <summary>
@@ -72,13 +73,29 @@ namespace SharedClassLibrary.Ellipse
             CleanDbSettings();
             var dbItem = Environments.GetDatabaseItem(environment);
             if(dbItem == null || dbItem.Name.Equals(null))
-                throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor de ellipse válido y que la base de datos relacionada existe");
+                throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor válido y que la base de datos relacionada existe");
 
             _dbItem = dbItem;
-            _oracleConnector = new OracleConnector(_dbItem);
 
+            _initiateConnector();
             SetCurrentEnvironment(environment);
             return true;
+        }
+
+        private void _initiateConnector()
+        {
+            if (_dbItem.DbType.Equals(IxDataBaseType.SqlServer))
+                _sqlConnector = new SqlConnector(_dbItem);
+            else
+                _oracleConnector = new OracleConnector(_dbItem);
+        }
+
+        private void _startConnection(string customConnectionString)
+        {
+            if(_dbItem.DbType == IxDataBaseType.SqlServer)
+                _sqlConnector.StartConnection(customConnectionString);
+            else
+                _oracleConnector.StartConnection(customConnectionString);
         }
         /// <summary>
         /// Establece la base de datos según la información ingresada
@@ -95,7 +112,7 @@ namespace SharedClassLibrary.Ellipse
         {
             CleanDbSettings();
             _dbItem = new DatabaseItem(dbname, dbuser, dbpass, dblink, dbreference, dbcatalog);
-            _oracleConnector = new OracleConnector(_dbItem);
+            _initiateConnector();
             SetCurrentEnvironment(Environments.CustomDatabase);
             return true;
         }
@@ -113,40 +130,49 @@ namespace SharedClassLibrary.Ellipse
         {
             CleanDbSettings();
             _dbItem = new DatabaseItem(dbname, dbuser, dbpass, Environments.DefaultDbReferenceName, "", dbcatalog);
-            _oracleConnector = new OracleConnector(_dbItem);
+            _initiateConnector();
             SetCurrentEnvironment(Environments.CustomDatabase);
             return true;
         }
+
         public void SetConnectionTimeOut(int timeout)
         {
             _connectionTimeOut = timeout;
             if (_oracleConnector != null)
                 _oracleConnector.ConnectionTimeOut = _connectionTimeOut;
+            if (_sqlConnector != null)
+                _sqlConnector.ConnectionTimeOut = _connectionTimeOut;
         }
 
         public int GetConnectionTimeOut()
         {
             return _connectionTimeOut;
         }
+
         public void SetConnectionPoolingType(bool pooling)
         {
             _poolingDataBase = pooling;
             if (_oracleConnector != null)
-                _oracleConnector.PoolingDataBase = pooling;
+                _oracleConnector.PoolingDataBase = _poolingDataBase;
+            if (_sqlConnector != null)
+                _sqlConnector.PoolingDataBase = _poolingDataBase;
         }
 
         public bool GetConnectionPoolingType()
         {
             return _poolingDataBase;
         }
+
         public string GetCurrentEnvironment()
         {
             return _currentEnvironment;
         }
+
         public void SetCurrentEnvironment(string environment)
         {
             _currentEnvironment = environment;
         }
+
         /// <summary>
         /// Obtiene la URL de conexión al servicio web de Ellipse
         /// </summary>
@@ -169,8 +195,29 @@ namespace SharedClassLibrary.Ellipse
         public IDataReader GetQueryResult(IQueryParamCollection queryParamCollection, string customConnectionString = null)
         {
             if (!string.IsNullOrWhiteSpace(customConnectionString))
-                _oracleConnector.StartConnection(customConnectionString);
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResult(queryParamCollection);
+            
             return _oracleConnector.GetQueryResult(queryParamCollection);
+        }
+
+        /// <summary>
+        /// Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="queryParamCollection">Objeto de colección de query y parámetros de consulta</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <returns>IDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(IQueryParamCollection queryParamCollection, string customConnectionString = null)
+        {
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResultAsync(queryParamCollection);
+
+            return _oracleConnector.GetQueryResultAsync(queryParamCollection);
         }
 
         /// <summary>
@@ -182,8 +229,29 @@ namespace SharedClassLibrary.Ellipse
         public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             if(!string.IsNullOrWhiteSpace(customConnectionString))
-                _oracleConnector.StartConnection(customConnectionString);
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResult(sqlQuery);
+
             return _oracleConnector.GetQueryResult(sqlQuery);
+        }
+
+        /// <summary>
+        /// Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <returns>IDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(string sqlQuery, string customConnectionString = null)
+        {
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResultAsync(sqlQuery);
+
+            return _oracleConnector.GetQueryResultAsync(sqlQuery);
         }
 
         /// <summary>
@@ -196,9 +264,33 @@ namespace SharedClassLibrary.Ellipse
         public IDataReader GetQueryResult(string sqlQuery, List<IDbDataParameter> parameters, string customConnectionString = null)
         {
             if (!string.IsNullOrWhiteSpace(customConnectionString))
-                _oracleConnector.StartConnection(customConnectionString);
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResult(sqlQuery, parameters);
+
             return _oracleConnector.GetQueryResult(sqlQuery, parameters);
         }
+
+
+        /// <summary>
+        /// Obtiene el data reader con los resultados de una consulta
+        /// </summary>
+        /// <param name="sqlQuery">Query a consultar</param>
+        /// <param name="parameters">Lista de parámetros de la consulta</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <returns>IDataReader: Conjunto de resultados de la consulta</returns>
+        public Task<IDataReader> GetQueryResultAsync(string sqlQuery, List<IDbDataParameter> parameters, string customConnectionString = null)
+        {
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetQueryResultAsync(sqlQuery, parameters);
+
+            return _oracleConnector.GetQueryResultAsync(sqlQuery, parameters);
+        }
+
         /// <summary>
         /// Obtiene el data set con los resultados de una consulta
         /// </summary>
@@ -208,140 +300,82 @@ namespace SharedClassLibrary.Ellipse
         public DataSet GetDataSetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             if (!string.IsNullOrWhiteSpace(customConnectionString))
-                _oracleConnector.StartConnection(customConnectionString);
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetDataSetQueryResult(sqlQuery);
             return _oracleConnector.GetDataSetQueryResult(sqlQuery);
         }
-        public int ExecuteQuery(string sqlQuery, string customConnectionString = null)
-        {
-            if (!string.IsNullOrWhiteSpace(customConnectionString))
-                _oracleConnector.StartConnection(customConnectionString);
-            return _oracleConnector.ExecuteQuery(sqlQuery);
-        }
 
-        public void BeginTransaction()
-        {
-            _oracleConnector.BeginTransaction();
-        }
-        public void Commit()
-        {
-            _oracleConnector.Commit();
-        }
-        public void RollBack()
-        {
-            _oracleConnector.Rollback();
-        }
         /// <summary>
-        /// Obtiene el data reader con los resultados de una consulta
+        /// Obtiene el data set con los resultados de una consulta
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
         /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
-        public SqlDataReader GetSqlQueryResult(string sqlQuery, string customConnectionString = null)
+        /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
+        public Task<DataSet> GetDataSetQueryResultAsync(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
-            var dbcatalog = "";
-            if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
-                dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
-            var defaultConnectionString = "Data Source=" + _dbItem.DbName + "; " + dbcatalog + "User Id=" + _dbItem.DbUser + "; Password=" + _dbItem.DbPassword + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
 
-            var connectionString = customConnectionString ?? defaultConnectionString;
-
-            if (_sqlConn == null || _currentConnectionString != connectionString)
-                _sqlConn = new SqlConnection(connectionString);
-            _currentConnectionString = connectionString;
-
-            if(_sqlComm == null)
-                _sqlComm = new SqlCommand();
-            _queryAttempt++;
-            try
-            {
-                _sqlConn.Open();
-                _sqlComm.Connection = _sqlConn;
-                _sqlComm.CommandText = sqlQuery;
-
-                _queryAttempt = 0;
-                return _sqlComm.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                _queryAttempt = 0;
-                throw;
-            }
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.GetDataSetQueryResultAsync(sqlQuery);
+            return _oracleConnector.GetDataSetQueryResultAsync(sqlQuery);
         }
-        public DataSet GetDataSetSqlQueryResult(string sqlQuery, string customConnectionString = null)
+
+        public int ExecuteQuery(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
-            var dbcatalog = "";
-            if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
-                dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
-            var defaultConnectionString = "Data Source=" + _dbItem.DbName + "; " + dbcatalog + "User Id=" + _dbItem.DbUser + "; Password=" + _dbItem.DbPassword + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
+            
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.ExecuteQuery(sqlQuery);
 
-            var connectionString = customConnectionString ?? defaultConnectionString;
-
-            if (_sqlConn == null || _currentConnectionString != connectionString)
-                _sqlConn = new SqlConnection(connectionString);
-            _currentConnectionString = connectionString;
-
-            if(_sqlComm == null)
-                _sqlComm = new SqlCommand();
-            _queryAttempt++;
-            try
-            {
-                _sqlConn.Open();
-                _sqlComm.Connection = _sqlConn;
-                _sqlComm.CommandText = sqlQuery;
-
-                _queryAttempt = 0;
-                var ds = new DataSet();
-                var adapter = new SqlDataAdapter(_sqlComm);
-                adapter.Fill(ds);
-                return ds;
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                _queryAttempt = 0;
-                throw;
-            }
+            return _oracleConnector.ExecuteQuery(sqlQuery);
         }
+
+        public Task<int> ExecuteQueryAsync(string sqlQuery, string customConnectionString = null)
+        {
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _startConnection(customConnectionString);
+
+            if (_dbItem.DbType == IxDataBaseType.SqlServer)
+                return _sqlConnector.ExecuteQueryAsync(sqlQuery);
+
+            return _oracleConnector.ExecuteQueryAsync(sqlQuery);
+        }
+
+        public void BeginTransaction()
+        { 
+            _sqlConnector?.BeginTransaction();
+            _oracleConnector?.BeginTransaction();
+        }
+        public void Commit()
+        {
+            _sqlConnector?.Commit();
+            _oracleConnector?.Commit();
+        }
+        public void RollBack()
+        {
+            _sqlConnector?.Rollback();
+            _oracleConnector?.Rollback();
+        }
+        
         /// <summary>
         /// Cierra la conexión realizada para la consulta
         /// </summary>
         public void CloseConnection(bool dispose = true)
         {
-            if(_oracleConnector != null)
-                _oracleConnector.CloseConnection(dispose);
-
-            if (_sqlConn != null)
-            {
-                if (_sqlConn.State != ConnectionState.Closed)
-                    _sqlConn.Close();
-                if (dispose)
-                {
-                    _sqlConn.Dispose();
-                    _sqlConn = null;
-                }
-            }
-            // ReSharper disable once InvertIf
-            if (_sqlComm != null && dispose)
-            {
-                _sqlComm.Dispose();
-                _sqlComm = null;
-            }
+            _oracleConnector?.CloseConnection(dispose);
+            _sqlConnector?.CloseConnection(dispose);
         }
         /// <summary>
         /// Cancela la acción que esté realizando la conexión, pero no cierra la conexión
         /// </summary>
         public void CancelConnection()
         {
-            if (_oracleConnector != null)
-                _oracleConnector.CancelConnection();
-
-            if (_sqlConn != null && _sqlComm != null)
-            {
-                _sqlComm.Cancel();
-            }
+            _oracleConnector?.CancelConnection();
+            _sqlConnector?.CancelConnection();
         }
         /// <summary>
         /// Revertir Operación. Solo aplica para ScreenService (MSO)
@@ -599,9 +633,8 @@ namespace SharedClassLibrary.Ellipse
 
         public void Dispose()
         {
-            _sqlConn?.Dispose();
-            _sqlComm?.Dispose();
             _oracleConnector?.Dispose();
+            _sqlConnector?.Dispose();
         }
     }
     

@@ -74,138 +74,149 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static WorkOrderTaskServiceModifyReplyDTO ModifyWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
-            var requestWoTask = new WorkOrderTaskServiceModifyRequestDTO();
+            using (var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService())
+            {
+                var requestWoTask = new WorkOrderTaskServiceModifyRequestDTO();
 
-            //se cargan los parámetros de la orden
-            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
+                //se cargan los parámetros de la orden
+                serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
-            //se cargan los parámetros de la orden
-            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
-            requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
-            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
-            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
-            requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
-            requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
-            requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
-            requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
-            requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
-            requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
-            requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
-            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
-            requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
-            requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
-            requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
-            requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
-            requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
-            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
-            requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
-            requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
-            requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
-            requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
-            requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
-            
-            return serviceWoTask.modify(opContext, requestWoTask);
+                //se cargan los parámetros de la orden
+                requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+                requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
+                requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+                requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+                requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
+                requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
+                requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
+                requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
+                requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
+                requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
+                requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+                requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+                requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
+                requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
+                requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
+                requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
+                requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+                requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
+                requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
+                requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
+                requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
+                requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
+                requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
+
+                return serviceWoTask.modify(opContext, requestWoTask);
+            }
+                
         }
 
         public static WorkOrderTaskServiceCreateReplyDTO CreateWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
-            var requestWoTask = new WorkOrderTaskServiceCreateRequestDTO();
+            using (var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService())
+            {
+                var requestWoTask = new WorkOrderTaskServiceCreateRequestDTO();
 
-            //se cargan los parámetros de la orden
-            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
+                //se cargan los parámetros de la orden
+                serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
-            //se cargan los parámetros de la orden
-            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
-            requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
-            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+                //se cargan los parámetros de la orden
+                requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+                requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
+                requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
 
-            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
-            requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
-            requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
-            requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
-            requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
-            requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
-            requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
-            requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
-            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
-            requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
-            requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
-            requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
-            requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
-            requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
-            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
-            requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
-            requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
-            requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
-            requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
-            requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
+                requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+                requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
+                requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
+                requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
+                requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
+                requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
+                requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
+                requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+                requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+                requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
+                requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
+                requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
+                requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
+                requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+                requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
+                requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
+                requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
+                requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
+                requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
+                requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
 
-            return serviceWoTask.create(opContext, requestWoTask);
+                return serviceWoTask.create(opContext, requestWoTask);
+            }
         }
 
 
         public static WorkOrderTaskServiceDeleteReplyCollectionDTO DeleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
-            var requestWoTask = new WorkOrderTaskServiceDeleteRequestDTO();
-            var requestWoTaskList = new List<WorkOrderTaskServiceDeleteRequestDTO>();
+            using (var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService())
+            {
+                var requestWoTask = new WorkOrderTaskServiceDeleteRequestDTO();
+                var requestWoTaskList = new List<WorkOrderTaskServiceDeleteRequestDTO>();
 
-            //se cargan los parámetros de la orden
-            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
+                //se cargan los parámetros de la orden
+                serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
-            //se cargan los parámetros de la orden
-            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
-            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
-            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+                //se cargan los parámetros de la orden
+                requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+                requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+                requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
 
-            requestWoTaskList.Add(requestWoTask);
+                requestWoTaskList.Add(requestWoTask);
 
-            return serviceWoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
+                return serviceWoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
+            }
         }
 
         public static ReplyMessage CompleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
-            var requestWoTask = new WorkOrderTaskServiceCompleteRequestDTO();
-            var requestWoTaskList = new List<WorkOrderTaskServiceCompleteRequestDTO>();
+            using (var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService())
+            {
+                var requestWoTask = new WorkOrderTaskServiceCompleteRequestDTO();
+                var requestWoTaskList = new List<WorkOrderTaskServiceCompleteRequestDTO>();
 
-            //se cargan los parámetros de la orden
-            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
+                //se cargan los parámetros de la orden
+                serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
-            //se cargan los parámetros de la orden
-            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
-            requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
-            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
-            requestWoTask.completedCode = string.IsNullOrWhiteSpace(woTask.CompletedCode) ? "06" : woTask.CompletedCode;
-            requestWoTask.completedBy = woTask.CompletedBy;
-            requestWoTask.closedDt = woTask.ClosedDate;
+                //se cargan los parámetros de la orden
+                requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+                requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
+                requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+                requestWoTask.completedCode = string.IsNullOrWhiteSpace(woTask.CompletedCode) ? "06" : woTask.CompletedCode;
+                requestWoTask.completedBy = woTask.CompletedBy;
+                requestWoTask.closedDt = woTask.ClosedDate;
 
-            var serviceReply = serviceWoTask.complete(opContext, requestWoTask);
+                var serviceReply = serviceWoTask.complete(opContext, requestWoTask);
 
-            var reply = new ReplyMessage();
-            reply.Message = "Completed " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo + " Completed Code " + serviceReply.completedCode + " - " + serviceReply.completedCodeDescription;
-            return reply;
+                var reply = new ReplyMessage();
+                reply.Message = "Completed " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo + " Completed Code " + serviceReply.completedCode + " - " + serviceReply.completedCodeDescription;
+                return reply;
+            }
         }
         public static ReplyMessage ReOpenWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
-            var requestWoTask = new WorkOrderTaskServiceReopenRequestDTO();
+            using (var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService())
+            {
+                var requestWoTask = new WorkOrderTaskServiceReopenRequestDTO();
 
-            //se cargan los parámetros de la orden
-            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
+                //se cargan los parámetros de la orden
+                serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
-            //se cargan los parámetros de la orden
-            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
-            requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
-            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+                //se cargan los parámetros de la orden
+                requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+                requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
+                requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
 
-            var serviceReply = serviceWoTask.reopen(opContext, requestWoTask);
+                var serviceReply = serviceWoTask.reopen(opContext, requestWoTask);
 
-            var reply = new ReplyMessage();
-            reply.Message = "ReOpen " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo;
-            return reply;
+                var reply = new ReplyMessage();
+                reply.Message = "ReOpen " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo;
+                return reply;
+            }
         }
 
         public static void SetWorkOrderTaskText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderTask woTask)

@@ -173,6 +173,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                 dbItem.DbLink = "";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment.Equals(EllipseDesarrollo) || environment.Equals(EllDesa))
             {
@@ -182,6 +183,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                 dbItem.DbLink = "";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment.Equals(EllipseContingencia) || environment.Equals(EllCont))
             {
@@ -191,6 +193,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                 dbItem.DbLink = "";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment.Equals(EllipseTest) || environment.Equals(EllTest))
             {
@@ -200,6 +203,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                 dbItem.DbLink = "";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment == SigcorProductivo)
             {
@@ -209,6 +213,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"rrm0HFcFN947tZwu5yAyaCvrALk9emYLn3SaNh2huucpBc6X6SoapF7jc1S1lnVzknUF6Z3DGrNABiwg2PSUnn5ERDzNlL34+EBG6jrSNv1P3NJxas5vy0C2fULYmy/G";
                 dbItem.DbLink = "@DBLELLIPSE8";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment == SigmanProductivo)
             {
@@ -218,6 +223,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
                 dbItem.DbLink = "@DBLELLIPSE8";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment == SigmanTest)
             {
@@ -227,6 +233,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
                 dbItem.DbLink = "@DBLELLIPSE8";
                 dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment == EllipseSigmanProductivo)
             {
@@ -238,6 +245,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbReference = DefaultDbReferenceName;
                 dbItem.SecondaryDbLink = "@DBLSIGMAN";
                 dbItem.SecondaryDbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
             }
             else if (environment == EllipseSigmanTest)
             {
@@ -249,6 +257,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbReference = DefaultDbReferenceName;
                 dbItem.SecondaryDbLink = "@DBLSIGMAN"; //o @DBLSIG
                 dbItem.SecondaryDbReference = DefaultDbReferenceName;
+                dbItem.SetDatabaseType(IxDataBaseType.Oracle);
 
             }
             else if (environment == ScadaRdb)
@@ -260,6 +269,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 dbItem.DbLink = "";
                 dbItem.DbReference = DefaultDbReferenceName;
                 dbItem.DbCatalog = "SCADARDB.DBO";
+                dbItem.SetDatabaseType(IxDataBaseType.SqlServer);
             }
             return dbItem;
         }

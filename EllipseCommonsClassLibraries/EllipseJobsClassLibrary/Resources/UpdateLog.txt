@@ -6,3 +6,7 @@ Versión 1.0.2.0, Liberada el 23 de Enero de 2021
 
 Versión 1.0.2.1, Liberada el 23 de Febrero de 2021
 * Se actualiza por ajuste de estandarización de clase IxConversionContants de librería SharedClassLibrary 
+
+Versión 1.0.3.0, Liberada el 01 de Junio de 2021
+* Adición de tiempos de espera mayores
+* Adición de funciones asincrónicas

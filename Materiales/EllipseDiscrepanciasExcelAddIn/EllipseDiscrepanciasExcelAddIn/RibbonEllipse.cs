@@ -79,7 +79,7 @@ namespace EllipseDiscrepanciasExcelAddIn
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
@@ -118,9 +118,9 @@ namespace EllipseDiscrepanciasExcelAddIn
                 _cells.GetCell(_colFinal + "3").Value = "INFORMATIVO";
                 _cells.GetCell(_colFinal + "3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.GetCell(_colFinal + "4").Value = "RESULTADO INCORRECTO";
-                _cells.GetCell(_colFinal + "4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell(_colFinal + "4").Style = _cells.GetStyle(StyleConstants.Error);
                 _cells.GetCell(_colFinal + "5").Value = "RESULTADO CORRECTO";
-                _cells.GetCell(_colFinal + "5").Style = _cells.GetStyle(StyleConstants.TitleResult);
+                _cells.GetCell(_colFinal + "5").Style = _cells.GetStyle(StyleConstants.Success);
 
                 _cells.GetRange(_colOcultar, "XFD1048576").Columns.Hidden = true;
 
@@ -194,15 +194,14 @@ namespace EllipseDiscrepanciasExcelAddIn
 
                 _cells.GetCell(_colFinal2 + "1").Value = "OBLIGATORIO";
                 _cells.GetCell(_colFinal2 + "1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(_colFinal2 + "1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(_colFinal2 + "2").Value = "OPCIONAL";
                 _cells.GetCell(_colFinal2 + "2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 _cells.GetCell(_colFinal2 + "3").Value = "INFORMATIVO";
                 _cells.GetCell(_colFinal2 + "3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.GetCell(_colFinal2 + "4").Value = "RESULTADO INCORRECTO";
-                _cells.GetCell(_colFinal2 + "4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell(_colFinal2 + "4").Style = _cells.GetStyle(StyleConstants.Error);
                 _cells.GetCell(_colFinal2 + "5").Value = "RESULTADO CORRECTO";
-                _cells.GetCell(_colFinal2 + "5").Style = _cells.GetStyle(StyleConstants.TitleResult);
+                _cells.GetCell(_colFinal2 + "5").Style = _cells.GetStyle(StyleConstants.Success);
 
                 _cells.GetRange(_colOcultar2, "XFD1048576").Columns.Hidden = true;
 
@@ -435,208 +434,206 @@ namespace EllipseDiscrepanciasExcelAddIn
                 {
                     LimpiarResultado();
 
-                    if (_frmAuth.ShowDialog() == DialogResult.OK)
-                    //if (true)
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //  _frmAuth.EllipseDstrct = "ICOR";
+                    //  _frmAuth.EllipsePost = "ADMIN";
+                    //  _frmAuth.EllipseUser = "ljuvinao";
+                    //  _frmAuth.EllipsePswd = "";
+                    //  _cells.GetCell("A1").Value = "Conectado";
+
+                    var proxySheet = new CountTaskService.CountTaskService();
+                    var opSheet = new CountTaskService.OperationContext();
+
+                    var currentRow = _rowInicial;
+
+                    string assigned = "" + _cells.GetCell("B7").Value;
+                    string districtCode = "" + _cells.GetCell("B8").Value;
+                    string stockCode = "" + _cells.GetCell("A" + currentRow).Value;
+                    string whouse = "" + _cells.GetCell("B" + currentRow).Value;
+                    string countQuantity = "" + _cells.GetCell("C" + currentRow).Value;
+                    string codeReason = "" + _cells.GetCell("D" + currentRow).Value;
+                    string comments = "" + _cells.GetCell("E" + currentRow).Value;
+
+
+                    while (!string.IsNullOrEmpty(stockCode))
                     {
-                        //  _frmAuth.EllipseDstrct = "ICOR";
-                        //  _frmAuth.EllipsePost = "ADMIN";
-                        //  _frmAuth.EllipseUser = "ljuvinao";
-                        //  _frmAuth.EllipsePswd = "";
-                        //  _cells.GetCell("A1").Value = "Conectado";
-
-                        var proxySheet = new CountTaskService.CountTaskService();
-                        var opSheet = new CountTaskService.OperationContext();
-
-                        var currentRow = _rowInicial;
-
-                        string assigned = "" + _cells.GetCell("B7").Value;
-                        string districtCode = "" + _cells.GetCell("B8").Value;
-                        string stockCode = "" + _cells.GetCell("A" + currentRow).Value;
-                        string whouse = "" + _cells.GetCell("B" + currentRow).Value;
-                        string countQuantity = "" + _cells.GetCell("C" + currentRow).Value;
-                        string codeReason = "" + _cells.GetCell("D" + currentRow).Value;
-                        string comments = "" + _cells.GetCell("E" + currentRow).Value;
-
-
-                        while (!string.IsNullOrEmpty(stockCode))
+                        try
                         {
-                            try
+                            var requestParamsSheet = new CountTaskDTO();
+
+
+                            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
+
+                            opSheet.district = _frmAuth.EllipseDstrct;
+                            opSheet.position = _frmAuth.EllipsePost;
+                            opSheet.maxInstances = 100;
+                            opSheet.returnWarnings = Debugger.DebugWarnings;
+
+                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                            requestParamsSheet.assignedTo = assigned;
+                            requestParamsSheet.stockCode = stockCode;
+                            requestParamsSheet.districtCode = districtCode;
+                            requestParamsSheet.warehouseId = whouse;
+
+                            var replySheet = proxySheet.create(opSheet, requestParamsSheet);
+
+                            if (replySheet.errors.Count() > 0)
                             {
-                                var requestParamsSheet = new CountTaskDTO();
+                                _cells.GetCell(_colFinal + currentRow).Value = replySheet.errors[0].messageText;
+                                _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                _cells.GetCell(_colFinal + currentRow).Select();
+                            }
+                            else
+                            {
 
+                                var proxySheet2 = new CountTaskService.CountTaskService();
+                                var opSheet2 = new CountTaskService.OperationContext();
 
-                                proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
+                                var requestParamsSheet2 = new CountTaskDTO[1];
 
-                                opSheet.district = _frmAuth.EllipseDstrct;
-                                opSheet.position = _frmAuth.EllipsePost;
-                                opSheet.maxInstances = 100;
-                                opSheet.returnWarnings = Debugger.DebugWarnings;
+                                proxySheet2.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
+
+                                opSheet2.district = _frmAuth.EllipseDstrct;
+                                opSheet2.position = _frmAuth.EllipsePost;
+                                opSheet2.maxInstances = 100;
+                                opSheet2.returnWarnings = Debugger.DebugWarnings;
 
                                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                                requestParamsSheet2[0] = new CountTaskDTO();
+                                requestParamsSheet2[0].stockCode = replySheet.countTaskDTO.stockCode;
+                                requestParamsSheet2[0].custodianId = replySheet.countTaskDTO.custodianId;
+                                requestParamsSheet2[0].taskId = replySheet.countTaskDTO.taskId;
+                                requestParamsSheet2[0].countQty = Convert.ToDecimal(countQuantity);
+                                requestParamsSheet2[0].countQtySpecified = true;
 
-                                requestParamsSheet.assignedTo = assigned;
-                                requestParamsSheet.stockCode = stockCode;
-                                requestParamsSheet.districtCode = districtCode;
-                                requestParamsSheet.warehouseId = whouse;
+                                var replySheet2 = proxySheet2.multipleUpdate(opSheet2, requestParamsSheet2);
 
-                                var replySheet = proxySheet.create(opSheet, requestParamsSheet);
 
-                                if (replySheet.errors.Count() > 0)
+                                if (replySheet2[0].errors.Count() > 0)
                                 {
-                                    _cells.GetCell(_colFinal + currentRow).Value = replySheet.errors[0].messageText;
-                                    _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                    _cells.GetCell(_colFinal + currentRow).Value = replySheet2[0].errors[0].messageText;
+                                    _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     _cells.GetCell(_colFinal + currentRow).Select();
                                 }
                                 else
                                 {
 
-                                    var proxySheet2 = new CountTaskService.CountTaskService();
-                                    var opSheet2 = new CountTaskService.OperationContext();
+                                    var proxySheet3 = new CountTaskService.CountTaskService();
+                                    var opSheet3 = new CountTaskService.OperationContext();
 
-                                    var requestParamsSheet2 = new CountTaskDTO[1];
+                                    var requestParamsSheet3 = new CountTaskDTO[1];
 
-                                    proxySheet2.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
+                                    proxySheet3.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
 
-                                    opSheet2.district = _frmAuth.EllipseDstrct;
-                                    opSheet2.position = _frmAuth.EllipsePost;
-                                    opSheet2.maxInstances = 100;
-                                    opSheet2.returnWarnings = Debugger.DebugWarnings;
+                                    opSheet3.district = _frmAuth.EllipseDstrct;
+                                    opSheet3.position = _frmAuth.EllipsePost;
+                                    opSheet3.maxInstances = 100;
+                                    opSheet3.returnWarnings = Debugger.DebugWarnings;
 
                                     ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-                                    requestParamsSheet2[0] = new CountTaskDTO();
-                                    requestParamsSheet2[0].stockCode = replySheet.countTaskDTO.stockCode;
-                                    requestParamsSheet2[0].custodianId = replySheet.countTaskDTO.custodianId;
-                                    requestParamsSheet2[0].taskId = replySheet.countTaskDTO.taskId;
-                                    requestParamsSheet2[0].countQty = Convert.ToDecimal(countQuantity);
-                                    requestParamsSheet2[0].countQtySpecified = true;
 
-                                    var replySheet2 = proxySheet2.multipleUpdate(opSheet2, requestParamsSheet2);
+                                    requestParamsSheet3[0] = new CountTaskDTO();
+
+                                    requestParamsSheet3[0].stockCode = replySheet.countTaskDTO.stockCode;
+                                    requestParamsSheet3[0].custodianId = replySheet.countTaskDTO.custodianId;
+                                    requestParamsSheet3[0].taskId = replySheet.countTaskDTO.taskId;
 
 
-                                    if (replySheet2[0].errors.Count() > 0)
+
+                                    var replySheet3 = proxySheet3.multipleReconcile(opSheet3, requestParamsSheet3);
+
+                                    if (replySheet3[0].errors.Count() > 0)
                                     {
-                                        _cells.GetCell(_colFinal + currentRow).Value = replySheet2[0].errors[0].messageText;
-                                        _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+
+                                        _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].errors[0].messageText;
+                                        _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                         _cells.GetCell(_colFinal + currentRow).Select();
+
                                     }
                                     else
                                     {
 
-                                        var proxySheet3 = new CountTaskService.CountTaskService();
-                                        var opSheet3 = new CountTaskService.OperationContext();
-
-                                        var requestParamsSheet3 = new CountTaskDTO[1];
-
-                                        proxySheet3.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
-
-                                        opSheet3.district = _frmAuth.EllipseDstrct;
-                                        opSheet3.position = _frmAuth.EllipsePost;
-                                        opSheet3.maxInstances = 100;
-                                        opSheet3.returnWarnings = Debugger.DebugWarnings;
-
-                                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                                        requestParamsSheet3[0] = new CountTaskDTO();
-
-                                        requestParamsSheet3[0].stockCode = replySheet.countTaskDTO.stockCode;
-                                        requestParamsSheet3[0].custodianId = replySheet.countTaskDTO.custodianId;
-                                        requestParamsSheet3[0].taskId = replySheet.countTaskDTO.taskId;
-
-
-
-                                        var replySheet3 = proxySheet3.multipleReconcile(opSheet3, requestParamsSheet3);
-
-                                        if (replySheet3[0].errors.Count() > 0)
+                                        if (replySheet3[0].countTaskDTO.countErrorStatus == "SH")
                                         {
 
-                                            _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].errors[0].messageText;
-                                            _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
-                                            _cells.GetCell(_colFinal + currentRow).Select();
+                                            var proxySheet4 = new CountTaskService.CountTaskService();
+                                            var opSheet4 = new CountTaskService.OperationContext();
 
-                                        }
-                                        else
-                                        {
+                                            var requestParamsSheet4 = new CountTaskDTO[1];
 
-                                            if (replySheet3[0].countTaskDTO.countErrorStatus == "SH")
+                                            proxySheet4.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
+
+                                            opSheet4.district = _frmAuth.EllipseDstrct;
+                                            opSheet4.position = _frmAuth.EllipsePost;
+                                            opSheet4.maxInstances = 100;
+                                            opSheet4.returnWarnings = Debugger.DebugWarnings;
+
+                                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                                            requestParamsSheet4[0] = new CountTaskDTO();
+
+                                            requestParamsSheet4[0].stockCode = replySheet.countTaskDTO.stockCode;
+                                            requestParamsSheet4[0].custodianId = replySheet.countTaskDTO.custodianId;
+                                            requestParamsSheet4[0].taskId = replySheet.countTaskDTO.taskId;
+                                            requestParamsSheet4[0].discrepancyReason = codeReason;
+                                            requestParamsSheet4[0].discrepancyComment = comments;
+
+                                            var replySheet4 = proxySheet4.multipleRaiseDiscrepancy(opSheet4, requestParamsSheet4);
+
+                                            if (replySheet3[0].errors.Count() > 0)
                                             {
-
-                                                var proxySheet4 = new CountTaskService.CountTaskService();
-                                                var opSheet4 = new CountTaskService.OperationContext();
-
-                                                var requestParamsSheet4 = new CountTaskDTO[1];
-
-                                                proxySheet4.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CountTaskService";
-
-                                                opSheet4.district = _frmAuth.EllipseDstrct;
-                                                opSheet4.position = _frmAuth.EllipsePost;
-                                                opSheet4.maxInstances = 100;
-                                                opSheet4.returnWarnings = Debugger.DebugWarnings;
-
-                                                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                                                requestParamsSheet4[0] = new CountTaskDTO();
-
-                                                requestParamsSheet4[0].stockCode = replySheet.countTaskDTO.stockCode;
-                                                requestParamsSheet4[0].custodianId = replySheet.countTaskDTO.custodianId;
-                                                requestParamsSheet4[0].taskId = replySheet.countTaskDTO.taskId;
-                                                requestParamsSheet4[0].discrepancyReason = codeReason;
-                                                requestParamsSheet4[0].discrepancyComment = comments;
-
-                                                var replySheet4 = proxySheet4.multipleRaiseDiscrepancy(opSheet4, requestParamsSheet4);
-
-                                                if (replySheet3[0].errors.Count() > 0)
-                                                {
-                                                    _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].errors[0].messageText;
-                                                    _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
-                                                    _cells.GetCell(_colFinal + currentRow).Select();
-                                                }
-                                                else
-                                                {
-                                                    _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].informationalMessages[0].messageText;
-                                                    _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
-                                                    _cells.GetCell(_colFinal + currentRow).Select();
-
-                                                }
-
-
+                                                _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].errors[0].messageText;
+                                                _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                                _cells.GetCell(_colFinal + currentRow).Select();
                                             }
                                             else
                                             {
                                                 _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].informationalMessages[0].messageText;
-                                                _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+                                                _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                                 _cells.GetCell(_colFinal + currentRow).Select();
-                                            }
-                                        }
 
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            _cells.GetCell(_colFinal + currentRow).Value = replySheet3[0].informationalMessages[0].messageText;
+                                            _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Success);
+                                            _cells.GetCell(_colFinal + currentRow).Select();
+                                        }
                                     }
 
                                 }
 
                             }
-                            catch (Exception ex)
-                            {
-        
-                                    _cells.GetCell(_colFinal + currentRow).Value = ex.Message;
-                                    _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
-                                    _cells.GetCell(_colFinal + currentRow).Select();
-
-
-                            }
-                            finally
-                            {
-                                currentRow++;
-                                stockCode = "" + _cells.GetCell("A" + currentRow).Value;
-                                whouse = "" + _cells.GetCell("B" + currentRow).Value;
-                                countQuantity = "" + _cells.GetCell("C" + currentRow).Value;
-                                codeReason = "" + _cells.GetCell("D" + currentRow).Value;
-                                comments = "" + _cells.GetCell("E" + currentRow).Value;
-                            }
 
                         }
+                        catch (Exception ex)
+                        {
+        
+                            _cells.GetCell(_colFinal + currentRow).Value = ex.Message;
+                            _cells.GetCell(_colFinal + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                            _cells.GetCell(_colFinal + currentRow).Select();
 
-                        MessageBox.Show("Proceso Finalizado Correctamente");
+
+                        }
+                        finally
+                        {
+                            currentRow++;
+                            stockCode = "" + _cells.GetCell("A" + currentRow).Value;
+                            whouse = "" + _cells.GetCell("B" + currentRow).Value;
+                            countQuantity = "" + _cells.GetCell("C" + currentRow).Value;
+                            codeReason = "" + _cells.GetCell("D" + currentRow).Value;
+                            comments = "" + _cells.GetCell("E" + currentRow).Value;
+                        }
 
                     }
+
+                    MessageBox.Show("Proceso Finalizado Correctamente");
 
                 }
                 else
@@ -724,7 +721,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                 if (replySheet[0].errors.Count() > 0)
                                 {
                                     _cells.GetCell(_colFinal2 + currentRow).Value = replySheet[0].errors[0].messageText;
-                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     _cells.GetCell(_colFinal2 + currentRow).Select();
                                 }
                                 else
@@ -852,7 +849,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                         if (replySheet4[0].errors.Count() > 0)
                                         {
                                             _cells.GetCell(_colFinal2 + currentRow).Value = replySheet4[0].errors[0].messageText;
-                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                             _cells.GetCell(_colFinal2 + currentRow).Select();
                                         }
                                         else
@@ -883,13 +880,13 @@ namespace EllipseDiscrepanciasExcelAddIn
                                             if (replySheet5.errors.Count() > 0)
                                             {
                                                 _cells.GetCell(_colFinal2 + currentRow).Value = replySheet5.errors[0].messageText;
-                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                                 _cells.GetCell(_colFinal2 + currentRow).Select();
                                             }
                                             else
                                             {
                                                 _cells.GetCell(_colFinal2 + currentRow).Value = replySheet5.informationalMessages[0].messageText;
-                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                                 _cells.GetCell(_colFinal2 + currentRow).Select();
                                             }
 
@@ -937,7 +934,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                             if (replySheet4[0].errors.Count() > 0)
                                             {
                                                 _cells.GetCell(_colFinal2 + currentRow).Value = replySheet4[0].errors[0].messageText;
-                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                                _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                                 _cells.GetCell(_colFinal2 + currentRow).Select();
                                             }
                                             else
@@ -968,13 +965,13 @@ namespace EllipseDiscrepanciasExcelAddIn
                                                 if (replySheet5.errors.Count() > 0)
                                                 {
                                                     _cells.GetCell(_colFinal2 + currentRow).Value = replySheet5.errors[0].messageText;
-                                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                                     _cells.GetCell(_colFinal2 + currentRow).Select();
                                                 }
                                                 else
                                                 {
                                                     _cells.GetCell(_colFinal2 + currentRow).Value = replySheet5.informationalMessages[0].messageText;
-                                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+                                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                                     _cells.GetCell(_colFinal2 + currentRow).Select();
                                                 }
 
@@ -1012,13 +1009,13 @@ namespace EllipseDiscrepanciasExcelAddIn
                                         if (replySheet6.errors.Count() > 0)
                                         {
                                             _cells.GetCell(_colFinal2 + currentRow).Value = replySheet6.errors[0].messageText;
-                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                             _cells.GetCell(_colFinal2 + currentRow).Select();
                                         }
                                         else
                                         {
                                             _cells.GetCell(_colFinal2 + currentRow).Value = replySheet6.informationalMessages[0].messageText;
-                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+                                            _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                             _cells.GetCell(_colFinal2 + currentRow).Select();
                                         }
 
@@ -1027,7 +1024,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                     if ((string.IsNullOrEmpty(action)))
                                     {
                                         _cells.GetCell(_colFinal2 + currentRow).Value = "Debe Seleccionar Alguna Accion (Adjust o Resolution)";
-                                        _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                        _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                         _cells.GetCell(_colFinal2 + currentRow).Select();
 
                                     }
@@ -1035,7 +1032,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                     if (string.IsNullOrEmpty(_custodianId))
                                     {
                                         _cells.GetCell(_colFinal2 + currentRow).Value = "Documento OnBase No Encontrado";
-                                        _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                        _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                         _cells.GetCell(_colFinal2 + currentRow).Select();
                                     }
 
@@ -1049,7 +1046,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                 if(ex.Message == "Index was outside the bounds of the array.")
                                 {
                                     _cells.GetCell(_colFinal2 + currentRow).Value = "StockCode no tiene Discrepancias";
-                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     _cells.GetCell(_colFinal2 + currentRow).Select();
 
 
@@ -1057,7 +1054,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                                 else
                                 {
                                     _cells.GetCell(_colFinal2 + currentRow).Value = ex.Message;
-                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
+                                    _cells.GetCell(_colFinal2 + currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     _cells.GetCell(_colFinal2 + currentRow).Select();
 
 
@@ -1116,6 +1113,11 @@ namespace EllipseDiscrepanciasExcelAddIn
             groupRange2 = _worksheet2.Controls.AddNamedRange(groupCells2, "GroupRange2");
 
             groupRange2.Change += new Microsoft.Office.Interop.Excel.DocEvents_ChangeEventHandler(AutoAjuste);
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

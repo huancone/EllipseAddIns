@@ -70,43 +70,50 @@ namespace EllipsePlannerExcelAddIn
 
         private void LoadSettings()
         {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnvironment.Items.Add(item);
-            }
-
-            settings.SetDefaultCustomSettingValue("DeviationStats", "Y");
-            settings.SetDefaultCustomSettingValue("SplitByResource", "Y");
-            settings.SetDefaultCustomSettingValue("IncludeMsts", "Y");
-            settings.SetDefaultCustomSettingValue("OverlappingDateSearch", "N");
-
-            //Setting of Configuration Options from Config File (or default)
             try
             {
-                settings.LoadCustomSettings();
-            }
-            catch (Exception ex)
-            {
+                var settings = new Settings();
+                _eFunctions = new EllipseFunctions();
+                _frmAuth = new FormAuthenticate();
+                _excelApp = Globals.ThisAddIn.Application;
 
+                var environments = Environments.GetEnvironmentList();
+                foreach (var env in environments)
+                {
+                    var item = Factory.CreateRibbonDropDownItem();
+                    item.Label = env;
+                    drpEnvironment.Items.Add(item);
+                }
+
+                settings.SetDefaultCustomSettingValue("DeviationStats", "Y");
+                settings.SetDefaultCustomSettingValue("SplitByResource", "Y");
+                settings.SetDefaultCustomSettingValue("IncludeMsts", "Y");
+                settings.SetDefaultCustomSettingValue("OverlappingDateSearch", "N");
+
+                //Setting of Configuration Options from Config File (or default)
+                try
+                {
+                    settings.LoadCustomSettings();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                //Setting of Configuration Options from Config File (or default)
+                cbDeviationStats.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("DeviationStats"));
+                cbSplitTaskByResource.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("SplitByResource"));
+                cbIncludeMsts.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IncludeMsts"));
+                cbOverlappingDateSearch.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("OverlappingDateSearch"));
+
+                settings.SaveCustomSettings();
+                //
+            }
+            catch(Exception ex)
+            {
                 MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-            //Setting of Configuration Options from Config File (or default)
-            cbDeviationStats.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("DeviationStats"));
-            cbSplitTaskByResource.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("SplitByResource"));
-            cbIncludeMsts.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IncludeMsts"));
-            cbOverlappingDateSearch.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("OverlappingDateSearch"));
-
-            settings.SaveCustomSettings();
-            //
         }
 
         #region Buttons
@@ -513,7 +520,7 @@ private void FormatSheet()
             }
         }
 
-        private void ReviewJobListPost()
+        private async void ReviewJobListPost()
         {
             try
             {
@@ -566,7 +573,7 @@ private void FormatSheet()
                 };
 
                 //consumo de servicio de msewts
-                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, taskSearchParam);
+                List<JobTask> ellipseJobTasks = await JobActions.FetchJobsTasksAsync(_eFunctions, urlService, taskOperationContext, taskSearchParam);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);

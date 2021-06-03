@@ -26,19 +26,20 @@ namespace EllipseStdTextClassLibrary
         /// <returns>string: Texto del elemento ingresado. Retorna vacío si el Id no existe</returns>
         public static string GetText(string urlService, StdTextService.OperationContext opContext, string stdTextId)
         {
+            var stdTextService = new StdTextService.StdTextService();
             try
             {
-                var proxySt = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
+
 
                 var requestSt = new StdTextService.StdTextServiceGetTextRequestDTO();
                 var requiredAtributes = new StdTextService.StdTextServiceGetTextRequiredAttributesDTO();
                 //se cargan los parámetros de la orden
-                proxySt.Url = urlService + "/StdText";
+                stdTextService.Url = urlService + "/StdText";
 
                 //se cargan los parámetros de la solicitud
                 requestSt.stdTextId = stdTextId;
                 //se envía la acción
-                var replySt = proxySt.getText(opContext, requestSt, requiredAtributes, "");
+                var replySt = stdTextService.getText(opContext, requestSt, requiredAtributes, "");
 
                 var fullText = "";
 
@@ -48,12 +49,17 @@ namespace EllipseStdTextClassLibrary
                     if (line.Length < _lineLength)
                         fullText = fullText + "\n";
                 }
+
                 return fullText;
             }
             catch (Exception ex)
             {
                 Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message);
                 throw;
+            }
+            finally
+            {
+                stdTextService.Dispose();
             }
         }
 
@@ -99,27 +105,32 @@ namespace EllipseStdTextClassLibrary
             true)]
         public static bool SetText(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
+            var stdTextService = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
             try
             {
-                var proxySt = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
+
 
                 var requestSt = new StdTextService.StdTextServiceSetTextRequestDTO();
 
                 //se cargan los parámetros de la orden
-                proxySt.Url = urlService + "/StdText";
+                stdTextService.Url = urlService + "/StdText";
 
                 //se cargan los parámetros de la solicitud
                 requestSt.stdTextId = stdTextId;
                 var splittedText = MyUtilities.SplitText(text, _lineLength);
                 requestSt.textLine = splittedText;
                 //se envía la acción
-                proxySt.setText(opContext, requestSt);
+                stdTextService.setText(opContext, requestSt);
                 return true;
             }
             catch (Exception ex)
             {
                 Debugger.LogError("StdText:setText(String, StdTextService.OperationContext, string, string)", ex.Message);
                 throw;
+            }
+            finally
+            {
+                stdTextService.Dispose();
             }
         }
 
@@ -137,15 +148,17 @@ namespace EllipseStdTextClassLibrary
             {
                 if (text == null)
                     text = "";
-                var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"};
+                using (var stdTextCustomService = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"})
+                {
 
-                //text = SpliceText(text, _lineLength);
-                var arrayText = MyUtilities.SplitText(text, _lineLength);
-                //se envía la acción
+                    //text = SpliceText(text, _lineLength);
+                    var arrayText = MyUtilities.SplitText(text, _lineLength);
+                    //se envía la acción
 
-                //proxySt.setExtendedText(opContext, stdTextId, text)
-                proxySt.setExtendedTextWithArray(opContext, stdTextId, arrayText);
-                return true;
+                    //proxySt.setExtendedText(opContext, stdTextId, text)
+                    stdTextCustomService.setExtendedTextWithArray(opContext, stdTextId, arrayText);
+                    return true;
+                }
             }
             catch (Exception ex)
             {
@@ -165,13 +178,14 @@ namespace EllipseStdTextClassLibrary
         /// <returns>bool: True si se culmina sin problemas</returns>
         public static bool SetHeader(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
+            var stdTextService = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
             try
             {
-                var proxySt = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
+
                 var requestSt = new StdTextService.StdTextServiceSetHeadingRequestDTO();
 
                 //se cargan los parámetros de la orden
-                proxySt.Url = urlService + "/StdText";
+                stdTextService.Url = urlService + "/StdText";
 
                 //se cargan los parámetros de la solicitud
                 requestSt.stdTextId = stdTextId;
@@ -179,7 +193,7 @@ namespace EllipseStdTextClassLibrary
 
                 //
                 //se envía la acción
-                proxySt.setHeading(opContext, requestSt);
+                stdTextService.setHeading(opContext, requestSt);
 
                 return true;
             }
@@ -187,6 +201,10 @@ namespace EllipseStdTextClassLibrary
             {
                 Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)", ex.Message);
                 throw;
+            }
+            finally
+            {
+                stdTextService.Dispose();
             }
         }
         /// <summary>
@@ -201,12 +219,14 @@ namespace EllipseStdTextClassLibrary
         {
             try
             {
-                var proxySt = new StdTextCustomService.StdTextCustomService { Url = urlService + "/StdTextCustom" };
+                using (var stdTextCustomService = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"})
+                {
 
-                //se envía la acción
-                proxySt.setExtendedTextHeading(opContext, stdTextId, text);
+                    //se envía la acción
+                    stdTextCustomService.setExtendedTextHeading(opContext, stdTextId, text);
 
-                return true;
+                    return true;
+                }
             }
             catch (Exception ex)
             {
@@ -223,21 +243,24 @@ namespace EllipseStdTextClassLibrary
         /// <returns>string: Encabezado del elemento ingresado</returns>
         public static string GetHeader(string urlService, StdTextService.OperationContext opContext, string stdTextId)
         {
-            var proxySt = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
+            using (var stdTextService = new StdTextService.StdTextService())
+            {
 
-            var requestParameters = new StdTextService.StdTextServiceGetHeadingRequestDTO();
+                var requestParameters = new StdTextService.StdTextServiceGetHeadingRequestDTO();
 
-            //se cargan los parámetros de la orden
-            proxySt.Url = urlService + "/StdText";
+                //se cargan los parámetros de la orden
+                stdTextService.Url = urlService + "/StdText";
 
-            //se cargan los parámetros de la solicitud
-            requestParameters.stdTextId = stdTextId;
-            //
-            //se envía la acción
+                //se cargan los parámetros de la solicitud
+                requestParameters.stdTextId = stdTextId;
+                //
+                //se envía la acción
 
-            var replySt = proxySt.getHeading(opContext, requestParameters);
+                var replySt = stdTextService.getHeading(opContext, requestParameters);
 
-            return replySt.headingLine;
+                return replySt.headingLine;
+            }
+
         }
         /// <summary>
         /// Obtiene el encabezado de un elemento a partir de su stdTextId
@@ -248,10 +271,11 @@ namespace EllipseStdTextClassLibrary
         /// <returns>string: Encabezado del elemento ingresado</returns>
         public static string GetHeader(string urlService, StdTextCustomService.OperationContext opContext, string stdTextId)
         {
-            var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"}; //ejecuta las acciones del servicio
-
-            //se envía la acción
-            return proxySt.getExtendedTextHeading(opContext, stdTextId);
+            using (var stdTextCustomService = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"})
+            {
+                //se envía la acción
+                return stdTextCustomService.getExtendedTextHeading(opContext, stdTextId);
+            }
         }
         /// <summary>
         /// Crea un nuevo operador de contexto para los métodos de la clase

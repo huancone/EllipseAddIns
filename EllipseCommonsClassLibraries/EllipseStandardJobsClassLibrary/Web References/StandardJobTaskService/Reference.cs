@@ -23,12 +23,12 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="StandardJobTaskServiceHttpBinding", Namespace="http://standardjobtask.ellipse.enterpriseservice.mincom.com")]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EnterpriseServiceOperationException))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ApplicationMessageImpl))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractDTO))]
@@ -578,7 +578,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -759,7 +759,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -804,13 +804,150 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://exception.enterpriseservice.mincom.com")]
+    public partial class EnterpriseServiceOperationException {
+        
+        private ErrorMessageDTO[] errorMessagesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+        public ErrorMessageDTO[] errorMessages {
+            get {
+                return this.errorMessagesField;
+            }
+            set {
+                this.errorMessagesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+    public partial class ErrorMessageDTO : ApplicationMessageImpl {
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ErrorMessageDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(WarningMessageDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+    public partial class ApplicationMessageImpl {
+        
+        private string codeField;
+        
+        private int dtoIndexField;
+        
+        private bool dtoIndexFieldSpecified;
+        
+        private int fieldIndexField;
+        
+        private bool fieldIndexFieldSpecified;
+        
+        private string fieldNameField;
+        
+        private string messageField;
+        
+        /// <remarks/>
+        public string code {
+            get {
+                return this.codeField;
+            }
+            set {
+                this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public int dtoIndex {
+            get {
+                return this.dtoIndexField;
+            }
+            set {
+                this.dtoIndexField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dtoIndexSpecified {
+            get {
+                return this.dtoIndexFieldSpecified;
+            }
+            set {
+                this.dtoIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public int fieldIndex {
+            get {
+                return this.fieldIndexField;
+            }
+            set {
+                this.fieldIndexField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fieldIndexSpecified {
+            get {
+                return this.fieldIndexFieldSpecified;
+            }
+            set {
+                this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string fieldName {
+            get {
+                return this.fieldNameField;
+            }
+            set {
+                this.fieldNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+    public partial class WarningMessageDTO : ApplicationMessageImpl {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCreateReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceReadReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceRetrieveReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceModifyReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCopyTasksReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceDeleteReplyCollectionDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -831,7 +968,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -852,7 +989,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2074,7 +2211,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2225,7 +2362,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceRetrieveResEstimatesReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCopyTasksReplyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2246,121 +2383,6 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class WarningMessageDTO : ApplicationMessageImpl {
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ErrorMessageDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(WarningMessageDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class ApplicationMessageImpl {
-        
-        private string codeField;
-        
-        private int dtoIndexField;
-        
-        private bool dtoIndexFieldSpecified;
-        
-        private int fieldIndexField;
-        
-        private bool fieldIndexFieldSpecified;
-        
-        private string fieldNameField;
-        
-        private string messageField;
-        
-        /// <remarks/>
-        public string code {
-            get {
-                return this.codeField;
-            }
-            set {
-                this.codeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public int dtoIndex {
-            get {
-                return this.dtoIndexField;
-            }
-            set {
-                this.dtoIndexField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool dtoIndexSpecified {
-            get {
-                return this.dtoIndexFieldSpecified;
-            }
-            set {
-                this.dtoIndexFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public int fieldIndex {
-            get {
-                return this.fieldIndexField;
-            }
-            set {
-                this.fieldIndexField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fieldIndexSpecified {
-            get {
-                return this.fieldIndexFieldSpecified;
-            }
-            set {
-                this.fieldIndexFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string fieldName {
-            get {
-                return this.fieldNameField;
-            }
-            set {
-                this.fieldNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string message {
-            get {
-                return this.messageField;
-            }
-            set {
-                this.messageField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class ErrorMessageDTO : ApplicationMessageImpl {
-    }
-    
-    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceRetrieveRequestDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceRetrieveResEstimatesRequestDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCreateRequestDTO))]
@@ -2376,7 +2398,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCopyTasksReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceDeleteRequestDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2398,7 +2420,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2468,7 +2490,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2501,7 +2523,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2559,7 +2581,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2678,7 +2700,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2794,7 +2816,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceRetrieveResEstimatesRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceReadRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StandardJobTaskServiceCopyTasksRequiredAttributesDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2803,7 +2825,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4662,7 +4684,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6546,7 +6568,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8355,7 +8377,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8364,7 +8386,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10323,7 +10345,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12382,7 +12404,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13310,7 +13332,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13343,7 +13365,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13437,7 +13459,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14218,7 +14240,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14264,7 +14286,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14346,7 +14368,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15556,7 +15578,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16716,7 +16738,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16725,7 +16747,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16809,7 +16831,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18067,7 +18089,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19438,7 +19460,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19459,7 +19481,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19480,7 +19502,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19501,7 +19523,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19522,7 +19544,7 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19543,33 +19565,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://exception.enterpriseservice.mincom.com")]
-    public partial class EnterpriseServiceOperationException {
-        
-        private ErrorMessageDTO[] errorMessagesField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-        public ErrorMessageDTO[] errorMessages {
-            get {
-                return this.errorMessagesField;
-            }
-            set {
-                this.errorMessagesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void copyTasksCompletedEventHandler(object sender, copyTasksCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class copyTasksCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19591,11 +19591,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19617,11 +19617,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void retrieveResEstimatesCompletedEventHandler(object sender, retrieveResEstimatesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveResEstimatesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19643,11 +19643,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19669,11 +19669,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19695,11 +19695,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleCopyTasksCompletedEventHandler(object sender, multipleCopyTasksCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCopyTasksCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19721,11 +19721,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void modifyCompletedEventHandler(object sender, modifyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class modifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19747,11 +19747,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19773,11 +19773,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19799,11 +19799,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19825,11 +19825,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19851,11 +19851,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -19877,11 +19877,11 @@ namespace EllipseStandardJobsClassLibrary.StandardJobTaskService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

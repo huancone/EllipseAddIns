@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\Materiales\EllipseDiscrepanciasExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -381,7 +381,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0BC81CC63C2D1254762FE2EE05B7958AB4937B5A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9C7943B62AB2418AFDB97217A007CA01B53E2BDB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
