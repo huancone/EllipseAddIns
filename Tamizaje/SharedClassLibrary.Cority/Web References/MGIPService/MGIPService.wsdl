@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://medgate.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MGIPService" targetNamespace="http://medgate.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IMGIPService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://medgate.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Web.WebService" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:element name="GetTables">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetTablesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Web.WebService" minOccurs="0" name="GetTablesResult" nillable="true" type="q1:ArrayOfMGIPService.MedgateModelTable" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetModelProperties">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="model" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="skipAudioRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="isAudiometricTest" type="xs:boolean" />
+            <xs:element minOccurs="0" name="softKeyOptions" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetModelPropertiesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="dataDictionary" nillable="true" type="q2:ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" />
+            <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="selectedProperties" nillable="true" type="q3:ArrayOfstring" />
+            <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="availableProperties" nillable="true" type="q4:ArrayOfstring" />
+            <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="uniqueKeyProperties" nillable="true" type="q5:ArrayOfstring" />
+            <xs:element minOccurs="0" name="skipAudioRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="isAudiometricTest" type="xs:boolean" />
+            <xs:element minOccurs="0" name="softKeyOptions" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveImportFormat">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="model" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="importFormat" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveImportFormatResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImportCSV">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="data" nillable="true" type="q6:ArrayOfstring" />
+            <xs:element minOccurs="0" name="importFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="currentModel" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="updateExistingRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="autoInsertBaseTableValues" type="xs:boolean" />
+            <xs:element minOccurs="0" name="insertMultiple" type="xs:boolean" />
+            <xs:element minOccurs="0" name="alwaysInsert" type="xs:boolean" />
+            <xs:element minOccurs="0" name="containsHeaderRow" type="xs:boolean" />
+            <xs:element minOccurs="0" name="xmlFile" type="xs:boolean" />
+            <xs:element minOccurs="0" name="dateFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="customLogicParam" nillable="true" type="xs:anyType" />
+            <xs:element minOccurs="0" name="bypassBR" type="xs:boolean" />
+            <xs:element minOccurs="0" name="customLogicString" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImportCSVResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DoImportCSVResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImport2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="data" nillable="true" type="xs:base64Binary" />
+            <xs:element minOccurs="0" name="importFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="currentModel" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="updateExistingRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="autoInsertBaseTableValues" type="xs:boolean" />
+            <xs:element minOccurs="0" name="insertMultiple" type="xs:boolean" />
+            <xs:element minOccurs="0" name="alwaysInsert" type="xs:boolean" />
+            <xs:element minOccurs="0" name="containsHeaderRow" type="xs:boolean" />
+            <xs:element minOccurs="0" name="xmlFile" type="xs:boolean" />
+            <xs:element minOccurs="0" name="dateFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="customLogicParam" nillable="true" type="xs:anyType" />
+            <xs:element minOccurs="0" name="customLogicString" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImport2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DoImport2Result" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImportWithDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="data" nillable="true" type="xs:base64Binary" />
+            <xs:element minOccurs="0" name="importFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="currentModel" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="updateExistingRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="autoInsertBaseTableValues" type="xs:boolean" />
+            <xs:element minOccurs="0" name="insertMultiple" type="xs:boolean" />
+            <xs:element minOccurs="0" name="alwaysInsert" type="xs:boolean" />
+            <xs:element minOccurs="0" name="containsHeaderRow" type="xs:boolean" />
+            <xs:element minOccurs="0" name="xmlFile" type="xs:boolean" />
+            <xs:element minOccurs="0" name="dateFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="customLogicParam" nillable="true" type="xs:anyType" />
+            <xs:element minOccurs="0" name="bypassBR" type="xs:boolean" />
+            <xs:element minOccurs="0" name="customLogicString" nillable="true" type="xs:string" />
+            <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="documents" nillable="true" type="q7:ArrayOfbase64Binary" />
+            <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="documentNames" nillable="true" type="q8:ArrayOfstring" />
+            <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="documentMessages" nillable="true" type="q9:ArrayOfstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImportWithDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DoImportWithDocumentResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImport">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="data" nillable="true" type="xs:base64Binary" />
+            <xs:element minOccurs="0" name="importFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="currentModel" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="updateExistingRecords" type="xs:boolean" />
+            <xs:element minOccurs="0" name="autoInsertBaseTableValues" type="xs:boolean" />
+            <xs:element minOccurs="0" name="insertMultiple" type="xs:boolean" />
+            <xs:element minOccurs="0" name="alwaysInsert" type="xs:boolean" />
+            <xs:element minOccurs="0" name="containsHeaderRow" type="xs:boolean" />
+            <xs:element minOccurs="0" name="xmlFile" type="xs:boolean" />
+            <xs:element minOccurs="0" name="dateFormat" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="customLogicParam" nillable="true" type="xs:anyType" />
+            <xs:element minOccurs="0" name="bypassBR" type="xs:boolean" />
+            <xs:element minOccurs="0" name="customLogicString" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DoImportResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DoImportResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUserLogin">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUserLoginResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ValidateUserLoginResult" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUserMGIPPermission">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUserMGIPPermissionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ValidateUserMGIPPermissionResult" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUser">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ValidateUserResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetImportTreeRoots">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetImportTreeRootsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetImportTreeRootsResult" nillable="true" type="q10:ArrayOfKeyValueOfintstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Web.WebService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Web.WebService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfMGIPService.MedgateModelTable">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="MGIPService.MedgateModelTable" nillable="true" type="tns:MGIPService.MedgateModelTable" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfMGIPService.MedgateModelTable" nillable="true" type="tns:ArrayOfMGIPService.MedgateModelTable" />
+      <xs:complexType name="MGIPService.MedgateModelTable">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Entity" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Module" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TableName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="MGIPService.MedgateModelTable" nillable="true" type="tns:MGIPService.MedgateModelTable" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Services" />
+      <xs:complexType name="MedgateServiceFault">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Services" minOccurs="0" name="ErrorCode" type="q1:ServiceErrorCodes" />
+          <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="MedgateServiceFault" nillable="true" type="tns:MedgateServiceFault" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Services" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Services" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:simpleType name="ServiceErrorCodes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Generic" />
+          <xs:enumeration value="NullParameter" />
+          <xs:enumeration value="RecordDoesNotExist" />
+          <xs:enumeration value="PropertLengthExceeded">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ServiceErrorCodes" nillable="true" type="tns:ServiceErrorCodes" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringArrayOfstringty7Ep6D1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" nillable="true" type="xs:string" />
+                <xs:element name="Value" nillable="true" type="tns:ArrayOfstring" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" nillable="true" type="tns:ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" />
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+      <xs:complexType name="ArrayOfbase64Binary">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="base64Binary" nillable="true" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfbase64Binary" nillable="true" type="tns:ArrayOfbase64Binary" />
+      <xs:complexType name="ArrayOfKeyValueOfintstring">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfintstring">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" type="xs:int" />
+                <xs:element name="Value" nillable="true" type="xs:string" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfKeyValueOfintstring" nillable="true" type="tns:ArrayOfKeyValueOfintstring" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IMGIPService_GetTables_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTables" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetTables_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTablesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetTables_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q1:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetModelProperties_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetModelProperties" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetModelProperties_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetModelPropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetModelProperties_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q2:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_SaveImportFormat_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveImportFormat" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_SaveImportFormat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveImportFormatResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_SaveImportFormat_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q3:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportCSV_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoImportCSV" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportCSV_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoImportCSVResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportCSV_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q4:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport2_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoImport2" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoImport2Response" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport2_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q5:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportWithDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoImportWithDocument" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportWithDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoImportWithDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImportWithDocument_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q6:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoImport" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoImportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_DoImport_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q7:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUserLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserLogin" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUserLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserLoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUserMGIPPermission_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserMGIPPermission" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUserMGIPPermission_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserMGIPPermissionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUser" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_ValidateUser_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q8:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetImportTreeRoots_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetImportTreeRoots" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetImportTreeRoots_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetImportTreeRootsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMGIPService_GetImportTreeRoots_MedgateServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Core.Wcf.Faults" name="detail" element="q9:MedgateServiceFault" />
+  </wsdl:message>
+  <wsdl:portType name="IMGIPService">
+    <wsdl:operation name="GetTables">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/GetTables" message="tns:IMGIPService_GetTables_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/GetTablesResponse" message="tns:IMGIPService_GetTables_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/GetTablesMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_GetTables_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetModelProperties">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/GetModelProperties" message="tns:IMGIPService_GetModelProperties_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/GetModelPropertiesResponse" message="tns:IMGIPService_GetModelProperties_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/GetModelPropertiesMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_GetModelProperties_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveImportFormat">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/SaveImportFormat" message="tns:IMGIPService_SaveImportFormat_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/SaveImportFormatResponse" message="tns:IMGIPService_SaveImportFormat_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/SaveImportFormatMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_SaveImportFormat_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoImportCSV">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/DoImportCSV" message="tns:IMGIPService_DoImportCSV_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/DoImportCSVResponse" message="tns:IMGIPService_DoImportCSV_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/DoImportCSVMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_DoImportCSV_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoImport2">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/DoImport2" message="tns:IMGIPService_DoImport2_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/DoImport2Response" message="tns:IMGIPService_DoImport2_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/DoImport2MedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_DoImport2_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoImportWithDocument">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/DoImportWithDocument" message="tns:IMGIPService_DoImportWithDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/DoImportWithDocumentResponse" message="tns:IMGIPService_DoImportWithDocument_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/DoImportWithDocumentMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_DoImportWithDocument_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoImport">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/DoImport" message="tns:IMGIPService_DoImport_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/DoImportResponse" message="tns:IMGIPService_DoImport_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/DoImportMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_DoImport_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUserLogin">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/ValidateUserLogin" message="tns:IMGIPService_ValidateUserLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/ValidateUserLoginResponse" message="tns:IMGIPService_ValidateUserLogin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUserMGIPPermission">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/ValidateUserMGIPPermission" message="tns:IMGIPService_ValidateUserMGIPPermission_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/ValidateUserMGIPPermissionResponse" message="tns:IMGIPService_ValidateUserMGIPPermission_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUser">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/ValidateUser" message="tns:IMGIPService_ValidateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/ValidateUserResponse" message="tns:IMGIPService_ValidateUser_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/ValidateUserMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_ValidateUser_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImportTreeRoots">
+      <wsdl:input wsaw:Action="http://medgate.com/IMGIPService/GetImportTreeRoots" message="tns:IMGIPService_GetImportTreeRoots_InputMessage" />
+      <wsdl:output wsaw:Action="http://medgate.com/IMGIPService/GetImportTreeRootsResponse" message="tns:IMGIPService_GetImportTreeRoots_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://medgate.com/IMGIPService/GetImportTreeRootsMedgateServiceFaultFault" name="MedgateServiceFaultFault" message="tns:IMGIPService_GetImportTreeRoots_MedgateServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IMGIPService" type="tns:IMGIPService">
+    <wsp:PolicyReference URI="#WSHttpBinding_IMGIPService_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTables">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/GetTables" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetModelProperties">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/GetModelProperties" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveImportFormat">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/SaveImportFormat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DoImportCSV">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/DoImportCSV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DoImport2">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/DoImport2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DoImportWithDocument">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/DoImportWithDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DoImport">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/DoImport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUserLogin">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/ValidateUserLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUserMGIPPermission">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/ValidateUserMGIPPermission" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUser">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/ValidateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetImportTreeRoots">
+      <soap12:operation soapAction="http://medgate.com/IMGIPService/GetImportTreeRoots" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MedgateServiceFaultFault">
+        <soap12:fault use="literal" name="MedgateServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MGIPService">
+    <wsdl:port name="WSHttpBinding_IMGIPService" binding="tns:WSHttpBinding_IMGIPService">
+      <soap12:address location="http://cerrejon.cority.com/WebService/MGIPService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://cerrejon.cority.com/WebService/MGIPService.svc</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
