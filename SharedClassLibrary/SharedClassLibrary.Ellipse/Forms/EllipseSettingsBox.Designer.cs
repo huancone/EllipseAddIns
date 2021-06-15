@@ -112,11 +112,10 @@
             this.cbDebugMode.AutoSize = true;
             this.cbDebugMode.Location = new System.Drawing.Point(6, 92);
             this.cbDebugMode.Name = "cbDebugMode";
-            this.cbDebugMode.Size = new System.Drawing.Size(183, 17);
+            this.cbDebugMode.Size = new System.Drawing.Size(111, 17);
             this.cbDebugMode.TabIndex = 40;
-            this.cbDebugMode.Text = "Modo Depuración (Activa Todas)";
+            this.cbDebugMode.Text = "Modo Depuración";
             this.cbDebugMode.UseVisualStyleBackColor = true;
-            this.cbDebugMode.CheckedChanged += new System.EventHandler(this.cbDebugMessages_CheckedChanged);
             // 
             // cbDebugErrors
             // 

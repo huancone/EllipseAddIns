@@ -59,40 +59,48 @@ namespace EllipseRequisitionServiceExcelAddIn
         }
         public void LoadSettings()
         {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnvironment.Items.Add(item);
-            }
-
-            settings.SetDefaultCustomSettingValue("maxItemValue", "true");
-            settings.SetDefaultCustomSettingValue("autoSortElements", "true");
-            settings.SetDefaultCustomSettingValue("assuranceProcessTrack", "false");
-
-            //Setting of Configuration Options from Config File (or default)
             try
             {
-                settings.LoadCustomSettings();
+                var settings = new Settings();
+                _eFunctions = new EllipseFunctions();
+                _frmAuth = new FormAuthenticate();
+                _excelApp = Globals.ThisAddIn.Application;
+
+                var environments = Environments.GetEnvironmentList();
+                foreach (var env in environments)
+                {
+                    var item = Factory.CreateRibbonDropDownItem();
+                    item.Label = env;
+                    drpEnvironment.Items.Add(item);
+                }
+
+                settings.SetDefaultCustomSettingValue("maxItemValue", "true");
+                settings.SetDefaultCustomSettingValue("autoSortElements", "true");
+                settings.SetDefaultCustomSettingValue("assuranceProcessTrack", "false");
+
+                //Setting of Configuration Options from Config File (or default)
+                try
+                {
+                    settings.LoadCustomSettings();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                cbMaxItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("maxItemValue"));
+                cbSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("autoSortElements"));
+                cbAssuranceProcess.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("assuranceProcessTrack"));
+
+                //
+                settings.SaveCustomSettings();
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-            cbMaxItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("maxItemValue"));
-            cbSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("autoSortElements"));
-            cbAssuranceProcess.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("assuranceProcessTrack"));
-
-            //
-            settings.SaveCustomSettings();
         }
         private void btnFormatNewSheet_Click(object sender, RibbonControlEventArgs e)
         {

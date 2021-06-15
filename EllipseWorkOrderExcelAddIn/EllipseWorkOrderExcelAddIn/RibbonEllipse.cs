@@ -209,7 +209,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReReviewWoList);
+                    _thread = new Thread(() => ReReviewWoList(false));
 
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
@@ -2685,15 +2685,35 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        private void ReReviewWoList()
+        private void ReReviewWoList(bool UseEllipseService = false)
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            WorkOrderService.OperationContext opContext = null;
+            string urlService = null;
+
+            if (UseEllipseService)
+            {
+                urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                opContext = new WorkOrderService.OperationContext
+                {
+                    district = _frmAuth.EllipseDstrct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    maxInstancesSpecified = true,
+                    returnWarnings = Debugger.DebugWarnings,
+                    returnWarningsSpecified = true
+                };
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            }
+
             _cells.SetCursorWait();
-
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-
             var i = TitleRow01 + 1;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -2703,7 +2723,13 @@ namespace EllipseWorkOrderExcelAddIn
                     var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                     district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
                     var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-                    var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, woNo);
+
+                    var debugStartTime = DateTime.Now;
+                    WorkOrder wo;
+                    if (UseEllipseService)
+                        wo = WorkOrderActions.FetchWorkOrderService(urlService, opContext, district, woNo);
+                    else
+                        wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, woNo);
 
                     if (wo == null || wo.GetWorkOrderDto().no == null)
                         throw new Exception("WORK ORDER NO ENCONTRADA");
@@ -2768,6 +2794,13 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(51, i).Value = "" + wo.completeTextFlag;
                     _cells.GetCell(52, i).Value = "" + wo.closeCommitDate;
                     _cells.GetCell(53, i).Value = "" + wo.completedBy;
+
+                    if (Debugger.DebugginMode)
+                    {
+                        var debugFinishTime = DateTime.Now;
+                        var debugElapsedTime = debugFinishTime - debugStartTime;
+                        Debugger.LogDebugging("Operation: ReReviewWoList; Type: " + (UseEllipseService ? "Service" : "Database") + "; District: " + district + "; WorkOrder: " + woNo + "; StartOperationTime; " + debugStartTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; FinishOperationTime; " + debugFinishTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; ElapsedOperationTime; " + debugElapsedTime.TotalMilliseconds);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2785,6 +2818,8 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
+
         private void ReviewQualityList()
         {
             if (_cells == null)
@@ -3940,6 +3975,16 @@ namespace EllipseWorkOrderExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+            if (Debugger.DebugginMode)
+            {
+                btnReReviewService.Visible = true;
+                btnReReviewService.Enabled = true;
+            }
+            else
+            {
+                btnReReviewService.Visible = false;
+                btnReReviewService.Enabled = false;
+            }
         }
 
         private void btnFormatCriticalControls_Click(object sender, RibbonControlEventArgs e)
@@ -5215,7 +5260,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
-
+                    
                     ReplyMessage replyMsg = null;
 
                     if (action.Equals(WorkOrderTaskActions.Modify))
@@ -5681,6 +5726,37 @@ namespace EllipseWorkOrderExcelAddIn
             }
             else
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void btnReReviewService_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    _thread = new Thread(() => ReReviewWoList(true));
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
+                {
+                    MessageBox.Show(@"Opción solo válida para el formato base");
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
     }
 

@@ -6,3 +6,8 @@ Versión 1.2.0.0, Liberada el 23 de Enero de 2021
 
 Versión 1.2.0.2, Liberada el 01 de Marzo de 2021
 * Se corrige cambio en el servicio de Reference Codes donde ya no se ignora si no que se muestra error si el atributo RefCode es nulo
+
+Versión 1.2.0.3, Liberada el 09 de Junio de 2021
+* Actualización a .NET 4.5
+* Adición de campo 
+Hist

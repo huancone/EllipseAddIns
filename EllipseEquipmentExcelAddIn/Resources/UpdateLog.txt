@@ -9,3 +9,6 @@ Versión 1.2.0.3, Liberada el 15 de Febrero de 2021
 * Se corrige el mensaje de no recibir respuesta siempre que se realizaba una acción de montaje/desmontaje
 Versión 1.2.0.4, Liberada el 5 de mayo de 2021
 * Se corrige actualización del campo MSSFLAG
+Versión 1.2.0.5, Liberada el 9 de Junio de 2021
+* Actualización de Framework a .Net 4.5
+* Inclusión de campo Equipment Impact

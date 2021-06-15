@@ -43,7 +43,7 @@ namespace EllipseStandardJobsExcelAddIn
         private const int TitleRowQualRev = 8;
         private const int TitleRow05 = 7;
         private const int TitleRow06 = 7;
-        private const int ResultColumn01 = 40;
+        private const int ResultColumn01 = 41;
         private const int ResultColumn02 = 26;
         private const int ResultColumn03 = 14;
         private const int ResultColumnQualRev = 26;
@@ -56,7 +56,7 @@ namespace EllipseStandardJobsExcelAddIn
         private const string TableName05 = "SJJobCodesTable";
         private const string TableName06 = "SJEquipments";
         private bool ActiveQualityValidation = true;
-        private bool _quickReview = true;
+        //private bool _quickReview = true;
         private string _standardStatus = "A";//A Active / I Inactive
         private Thread _thread;
 
@@ -79,7 +79,7 @@ namespace EllipseStandardJobsExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            settings.SetDefaultCustomSettingValue("LastUseReview", "false");
             //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
             //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
@@ -95,11 +95,11 @@ namespace EllipseStandardJobsExcelAddIn
 
                 MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            var lastUseReview = MyUtilities.IsTrue(settings.GetCustomSettingValue("LastUseReview"));
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
 
-            //cbCustomSettingOption.Checked = optionItem1Value;
+            cbLastUseReview.Checked = lastUseReview;
             //optionItem2.Text = optionItem2Value;
             //optionItem3 = optionItem3Value;
 
@@ -121,8 +121,7 @@ namespace EllipseStandardJobsExcelAddIn
                 if (_thread != null && _thread.IsAlive) return;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                _quickReview = false;
-                _thread = new Thread(ReviewStandardJobs);
+                _thread = new Thread(() => ReviewStandardJobs(cbLastUseReview.Checked));
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -141,8 +140,8 @@ namespace EllipseStandardJobsExcelAddIn
                 if (_thread != null && _thread.IsAlive) return;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                _quickReview = true;
-                _thread = new Thread(ReviewStandardJobs);
+
+                _thread = new Thread(()=>ReviewStandardJobs (true));
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -541,8 +540,10 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(38, TitleRow01).Value = "JOB CODE 10";
                 _cells.GetRange(29, TitleRow01, 38, TitleRow01).Style = StyleConstants.TitleOptional;
 
-                _cells.GetCell(39, TitleRow01).Value = "DESCRIPCION EXTENDIDA";
+                _cells.GetCell(39, TitleRow01).Value = "PAPER HIST";
                 _cells.GetCell(39, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(40, TitleRow01).Value = "DESCRIPCION EXTENDIDA";
+                _cells.GetCell(40, TitleRow01).Style = StyleConstants.TitleOptional;
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
@@ -987,7 +988,7 @@ namespace EllipseStandardJobsExcelAddIn
             }
         }
 
-        private void ReviewStandardJobs()
+        private void ReviewStandardJobs(bool lastUseReview = false)
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1002,7 +1003,7 @@ namespace EllipseStandardJobsExcelAddIn
 
             var i = TitleRow01 + 1;
 
-            var listJobs = StandardJobActions.FetchStandardJob(_eFunctions, districtCode, workGroup, _quickReview);
+            var listJobs = StandardJobActions.FetchStandardJob(_eFunctions, districtCode, workGroup, lastUseReview);
 
             foreach (StandardJob stdJob in listJobs)
             {
@@ -1065,10 +1066,12 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(37, i).Value = "'" + stdJob.JobCode9;
                     _cells.GetCell(38, i).Value = "'" + stdJob.JobCode10;
 
+                    _cells.GetCell(39, i).Value = "'" + stdJob.PaperHist;
+
                     var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                     var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
-                    _cells.GetCell(39, i).Value = extendedDescription;
-                    _cells.GetCell(39, i).WrapText = false;
+                    _cells.GetCell(40, i).Value = extendedDescription;
+                    _cells.GetCell(40, i).WrapText = false;
                 }
                 catch (Exception ex)
                 {
@@ -1165,10 +1168,12 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(36, i).Value = "'" + stdJob.JobCode8;
                         _cells.GetCell(37, i).Value = "'" + stdJob.JobCode9;
                         _cells.GetCell(38, i).Value = "'" + stdJob.JobCode10;
+                        _cells.GetCell(39, i).Value = "'" + stdJob.PaperHist;
+
                         var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                         var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
-                        _cells.GetCell(39, i).Value = extendedDescription;
-                        _cells.GetCell(39, i).WrapText = false;
+                        _cells.GetCell(40, i).Value = extendedDescription;
+                        _cells.GetCell(40, i).WrapText = false;
                     }
                     else
                     {
@@ -1431,7 +1436,9 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode8 = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
                     stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    stdJob.PaperHist = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
+
+                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
                     StandardJobActions.CreateStandardJob(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob);
                     if (!string.IsNullOrWhiteSpace(stdJob.ExtText))
                         StandardJobActions.SetStandardJobText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDstrct, _frmAuth.EllipsePost, true, stdJob);
@@ -1523,9 +1530,10 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode8 = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
                     stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    stdJob.PaperHist = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
 
                     //Texto Extendido
-                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
+                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
 
                     //
                     //stdJob.CalculatedDurationsHrsFlg = "true";

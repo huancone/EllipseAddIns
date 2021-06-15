@@ -9,3 +9,7 @@ Versión 1.0.2.5, Liberada el 01 de Marzo de 2021
 
 Versión 1.0.2.5, Liberada el 28 de Marzo de 2021
 * Se corrige en la actualización el valor para las units required cuando está vacío
+
+Versión 1.2.0.6, Liberada el 09 de Junio de 2021
+* Actualización a .NET 4.5
+* Adición de campo Paper Hist

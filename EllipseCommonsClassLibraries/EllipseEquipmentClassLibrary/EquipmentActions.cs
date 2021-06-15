@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using SharedClassLibrary.Classes;
 using SharedClassLibrary.Ellipse.Constants;
 using SharedClassLibrary.Ellipse;
@@ -123,6 +124,95 @@ namespace EllipseEquipmentClassLibrary
             return reply.equipmentStatus;
         }
 
+        private static Equipment GetEquipment(IDataRecord dr)
+        {
+            var equipment = new Equipment
+            {
+                EquipmentNo = dr["EQUIP_NO"].ToString().Trim(),
+                AccountCode = dr["ACCOUNT_CODE"].ToString().Trim(),
+                ActiveFlag = dr["ACTIVE_FLG"].ToString().Trim(),
+                AssocEquipmentItemSwitch = dr["ASSOC_EQUIP_SW"].ToString().Trim(),
+                CompCode = dr["COMP_CODE"].ToString().Trim(),
+                ConAstSegEn = dr["CON_AST_SEG_EN"].ToString().Trim(),
+                ConAstSegSt = dr["CON_AST_SEG_ST"].ToString().Trim(),
+                ConditionRating = dr["COND_RATING"].ToString().Trim(),
+                ConditionStandard = dr["COND_STANDARD"].ToString().Trim(),
+                CostSegLgth = dr["COST_SEG_LGTH"].ToString().Trim(),
+                CostingFlag = dr["COSTING_FLG"].ToString().Trim(),
+                CtaxCode = dr["CTAX_CODE"].ToString().Trim(),
+                Custodian = dr["CUSTODIAN"].ToString().Trim(),
+                CustodianPosition = dr["CUSTODIAN_POSN"].ToString().Trim(),
+                CustomerNumber = dr["CUST_NO"].ToString().Trim(),
+                DistrictCode = dr["DSTRCT_CODE"].ToString().Trim(),
+                DrawingNo = dr["DRAWING_NO"].ToString().Trim(),
+                EquipmentClass = dr["EQUIP_CLASS"].ToString().Trim(),
+                EquipmentCriticality = dr["EQUIP_CRITICALITY"].ToString().Trim(),
+                EquipmentGrpId = dr["EQUIP_GRP_ID"].ToString().Trim(),
+                EquipmentImpact = dr["EQUIP_IMPACT"].ToString().Trim(),
+                EquipmentLocation = dr["EQUIP_LOCATION"].ToString().Trim(),
+                EquipmentNoDescription1 = dr["ITEM_NAME_1"].ToString().Trim(),
+                EquipmentNoDescription2 = dr["ITEM_NAME_2"].ToString().Trim(),
+                EquipmentRef = dr["EQUIP_REF"].ToString().Trim(),
+                EquipmentStatus = dr["EQUIP_STATUS"].ToString().Trim(),
+                EquipmentType = dr["EQPT_TYPE"].ToString().Trim(),
+                ExpElement = dr["EXP_ELEMENT"].ToString().Trim(),
+                IaaAssetInd = dr["IAA_ASSET_IND"].ToString().Trim(),
+                InputBy = dr["INPUT_BY"].ToString().Trim(),
+                ItemNameCode = dr["ITEM_NAME_CODE"].ToString().Trim(),
+                LatestConditionDate = dr["LATEST_COND_DATE"].ToString().Trim(),
+                //Location = drEquipments["LOCATION"].ToString().Trim(),
+                Mnemonic = dr["MNEMONIC"].ToString().Trim(),
+                MsssFlag = dr["MSSS_STATUS_IND"].ToString().Trim(),
+                OperatingStandard = dr["OPERATING_STD"].ToString().Trim(),
+                OperatorId = dr["OPERATOR_ID"].ToString().Trim(),
+                OperatorPosition = dr["OPERATOR_POSN"].ToString().Trim(),
+                OriginalDoc = dr["ORIGINAL_DOC"].ToString().Trim(),
+                ParentEquipment = dr["PARENT_EQUIP"].ToString().Trim(),
+                ParentEquipmentRef = dr["PARENT_EQUIP_REF"].ToString().Trim(),
+                PartNo = dr["PART_NO"].ToString().Trim(),
+                PermitReqdSw = dr["PERMIT_REQD_SW"].ToString().Trim(),
+                PlantNo = dr["PLANT_NO"].ToString().Trim(),
+                PoNo = dr["PO_NO"].ToString().Trim(),
+                PrimaryFunction = dr["PRIMARY_FUNCTION"].ToString().Trim(),
+                ProdUnitItem = dr["PROD_UNIT_ITEM"].ToString().Trim(),
+                PurchaseDate = dr["PURCHASE_DATE"].ToString().Trim(),
+                PurchasePrice = dr["PURCHASE_PRICE"].ToString().Trim(),
+                RcmAnalysisSw = dr["RCM_ANALYSIS_SW"].ToString().Trim(),
+                ReplaceValue = dr["REPLACE_VALUE"].ToString().Trim(),
+                StockCode = dr["STOCK_CODE"].ToString().Trim(),
+                ValuationDate = dr["VALUATION_DATE"].ToString().Trim(),
+                WarrStatType = dr["WARR_STAT_TYPE"].ToString().Trim(),
+                WarrStatVal = dr["WARR_STAT_VAL"].ToString().Trim(),
+
+                ClassCodes = new Equipment.ClassificationCodes
+                {
+                    EquipmentClassif = dr["EQUIP_CLASS"].ToString().Trim(),
+                    EquipmentClassif0 = dr["EQUIP_CLASSIFX1"].ToString().Trim(),
+                    EquipmentClassif1 = dr["EQUIP_CLASSIFX2"].ToString().Trim(),
+                    EquipmentClassif2 = dr["EQUIP_CLASSIFX3"].ToString().Trim(),
+                    EquipmentClassif3 = dr["EQUIP_CLASSIFX4"].ToString().Trim(),
+                    EquipmentClassif4 = dr["EQUIP_CLASSIFX5"].ToString().Trim(),
+                    EquipmentClassif5 = dr["EQUIP_CLASSIFX6"].ToString().Trim(),
+                    EquipmentClassif6 = dr["EQUIP_CLASSIFX7"].ToString().Trim(),
+                    EquipmentClassif7 = dr["EQUIP_CLASSIFX8"].ToString().Trim(),
+                    EquipmentClassif8 = dr["EQUIP_CLASSIFX9"].ToString().Trim(),
+                    EquipmentClassif9 = dr["EQUIP_CLASSIFX10"].ToString().Trim(),
+                    EquipmentClassif10 = dr["EQUIP_CLASSIFX11"].ToString().Trim(),
+                    EquipmentClassif11 = dr["EQUIP_CLASSIFX12"].ToString().Trim(),
+                    EquipmentClassif12 = dr["EQUIP_CLASSIFX13"].ToString().Trim(),
+                    EquipmentClassif13 = dr["EQUIP_CLASSIFX14"].ToString().Trim(),
+                    EquipmentClassif14 = dr["EQUIP_CLASSIFX15"].ToString().Trim(),
+                    EquipmentClassif15 = dr["EQUIP_CLASSIFX16"].ToString().Trim(),
+                    EquipmentClassif16 = dr["EQUIP_CLASSIFX17"].ToString().Trim(),
+                    EquipmentClassif17 = dr["EQUIP_CLASSIFX18"].ToString().Trim(),
+                    EquipmentClassif18 = dr["EQUIP_CLASSIFX19"].ToString().Trim(),
+                    EquipmentClassif19 = dr["EQUIP_CLASSIFX20"].ToString().Trim()
+                },
+                LinkOne = new Equipment.LinkOneBook()
+            };
+
+            return equipment;
+        }
         public static List<Equipment> FetchEquipmentDataList(EllipseFunctions ef, string district, int primakeryKey,
             string primaryValue, int secondarykey, string secondaryValue, string eqStatus)
         {
@@ -136,89 +226,7 @@ namespace EllipseEquipmentClassLibrary
 
             while (drEquipments.Read())
             {
-                var equipment = new Equipment
-                {
-                    EquipmentNo = drEquipments["EQUIP_NO"].ToString().Trim(),
-                    AccountCode = drEquipments["ACCOUNT_CODE"].ToString().Trim(),
-                    ActiveFlag = drEquipments["ACTIVE_FLG"].ToString().Trim(),
-                    AssocEquipmentItemSwitch = drEquipments["ASSOC_EQUIP_SW"].ToString().Trim(),
-                    CompCode = drEquipments["COMP_CODE"].ToString().Trim(),
-                    ConAstSegEn = drEquipments["CON_AST_SEG_EN"].ToString().Trim(),
-                    ConAstSegSt = drEquipments["CON_AST_SEG_ST"].ToString().Trim(),
-                    ConditionRating = drEquipments["COND_RATING"].ToString().Trim(),
-                    ConditionStandard = drEquipments["COND_STANDARD"].ToString().Trim(),
-                    CostSegLgth = drEquipments["COST_SEG_LGTH"].ToString().Trim(),
-                    CostingFlag = drEquipments["COSTING_FLG"].ToString().Trim(),
-                    CtaxCode = drEquipments["CTAX_CODE"].ToString().Trim(),
-                    Custodian = drEquipments["CUSTODIAN"].ToString().Trim(),
-                    CustodianPosition = drEquipments["CUSTODIAN_POSN"].ToString().Trim(),
-                    CustomerNumber = drEquipments["CUST_NO"].ToString().Trim(),
-                    DistrictCode = drEquipments["DSTRCT_CODE"].ToString().Trim(),
-                    DrawingNo = drEquipments["DRAWING_NO"].ToString().Trim(),
-                    EquipmentClass = drEquipments["EQUIP_CLASS"].ToString().Trim(),
-                    EquipmentCriticality = drEquipments["EQUIP_CRITICALITY"].ToString().Trim(),
-                    EquipmentGrpId = drEquipments["EQUIP_GRP_ID"].ToString().Trim(),
-                    EquipmentLocation = drEquipments["EQUIP_LOCATION"].ToString().Trim(),
-                    EquipmentNoDescription1 = drEquipments["ITEM_NAME_1"].ToString().Trim(),
-                    EquipmentNoDescription2 = drEquipments["ITEM_NAME_2"].ToString().Trim(),
-                    EquipmentRef = drEquipments["EQUIP_REF"].ToString().Trim(),
-                    EquipmentStatus = drEquipments["EQUIP_STATUS"].ToString().Trim(),
-                    EquipmentType = drEquipments["EQPT_TYPE"].ToString().Trim(),
-                    ExpElement = drEquipments["EXP_ELEMENT"].ToString().Trim(),
-                    IaaAssetInd = drEquipments["IAA_ASSET_IND"].ToString().Trim(),
-                    InputBy = drEquipments["INPUT_BY"].ToString().Trim(),
-                    ItemNameCode = drEquipments["ITEM_NAME_CODE"].ToString().Trim(),
-                    LatestConditionDate = drEquipments["LATEST_COND_DATE"].ToString().Trim(),
-                    //Location = drEquipments["LOCATION"].ToString().Trim(),
-                    Mnemonic = drEquipments["MNEMONIC"].ToString().Trim(),
-                    MsssFlag = drEquipments["MSSS_STATUS_IND"].ToString().Trim(),
-                    OperatingStandard = drEquipments["OPERATING_STD"].ToString().Trim(),
-                    OperatorId = drEquipments["OPERATOR_ID"].ToString().Trim(),
-                    OperatorPosition = drEquipments["OPERATOR_POSN"].ToString().Trim(),
-                    OriginalDoc = drEquipments["ORIGINAL_DOC"].ToString().Trim(),
-                    ParentEquipment = drEquipments["PARENT_EQUIP"].ToString().Trim(),
-                    ParentEquipmentRef = drEquipments["PARENT_EQUIP_REF"].ToString().Trim(),
-                    PartNo = drEquipments["PART_NO"].ToString().Trim(),
-                    PermitReqdSw = drEquipments["PERMIT_REQD_SW"].ToString().Trim(),
-                    PlantNo = drEquipments["PLANT_NO"].ToString().Trim(),
-                    PoNo = drEquipments["PO_NO"].ToString().Trim(),
-                    PrimaryFunction = drEquipments["PRIMARY_FUNCTION"].ToString().Trim(),
-                    ProdUnitItem = drEquipments["PROD_UNIT_ITEM"].ToString().Trim(),
-                    PurchaseDate = drEquipments["PURCHASE_DATE"].ToString().Trim(),
-                    PurchasePrice = drEquipments["PURCHASE_PRICE"].ToString().Trim(),
-                    RcmAnalysisSw = drEquipments["RCM_ANALYSIS_SW"].ToString().Trim(),
-                    ReplaceValue = drEquipments["REPLACE_VALUE"].ToString().Trim(),
-                    StockCode = drEquipments["STOCK_CODE"].ToString().Trim(),
-                    ValuationDate = drEquipments["VALUATION_DATE"].ToString().Trim(),
-                    WarrStatType = drEquipments["WARR_STAT_TYPE"].ToString().Trim(),
-                    WarrStatVal = drEquipments["WARR_STAT_VAL"].ToString().Trim(),
-                    
-                    ClassCodes = new Equipment.ClassificationCodes
-                    {
-                        EquipmentClassif = drEquipments["EQUIP_CLASS"].ToString().Trim(),
-                        EquipmentClassif0 = drEquipments["EQUIP_CLASSIFX1"].ToString().Trim(),
-                        EquipmentClassif1 = drEquipments["EQUIP_CLASSIFX2"].ToString().Trim(),
-                        EquipmentClassif2 = drEquipments["EQUIP_CLASSIFX3"].ToString().Trim(),
-                        EquipmentClassif3 = drEquipments["EQUIP_CLASSIFX4"].ToString().Trim(),
-                        EquipmentClassif4 = drEquipments["EQUIP_CLASSIFX5"].ToString().Trim(),
-                        EquipmentClassif5 = drEquipments["EQUIP_CLASSIFX6"].ToString().Trim(),
-                        EquipmentClassif6 = drEquipments["EQUIP_CLASSIFX7"].ToString().Trim(),
-                        EquipmentClassif7 = drEquipments["EQUIP_CLASSIFX8"].ToString().Trim(),
-                        EquipmentClassif8 = drEquipments["EQUIP_CLASSIFX9"].ToString().Trim(),
-                        EquipmentClassif9 = drEquipments["EQUIP_CLASSIFX10"].ToString().Trim(),
-                        EquipmentClassif10 = drEquipments["EQUIP_CLASSIFX11"].ToString().Trim(),
-                        EquipmentClassif11 = drEquipments["EQUIP_CLASSIFX12"].ToString().Trim(),
-                        EquipmentClassif12 = drEquipments["EQUIP_CLASSIFX13"].ToString().Trim(),
-                        EquipmentClassif13 = drEquipments["EQUIP_CLASSIFX14"].ToString().Trim(),
-                        EquipmentClassif14 = drEquipments["EQUIP_CLASSIFX15"].ToString().Trim(),
-                        EquipmentClassif15 = drEquipments["EQUIP_CLASSIFX16"].ToString().Trim(),
-                        EquipmentClassif16 = drEquipments["EQUIP_CLASSIFX17"].ToString().Trim(),
-                        EquipmentClassif17 = drEquipments["EQUIP_CLASSIFX18"].ToString().Trim(),
-                        EquipmentClassif18 = drEquipments["EQUIP_CLASSIFX19"].ToString().Trim(),
-                        EquipmentClassif19 = drEquipments["EQUIP_CLASSIFX20"].ToString().Trim()
-                    },
-                    LinkOne = new Equipment.LinkOneBook()
-                };
+                var equipment = GetEquipment(drEquipments);
                 list.Add(equipment);
             }
 
@@ -236,89 +244,7 @@ namespace EllipseEquipmentClassLibrary
             
             if (!drEquipments.Read())
                 return null;
-            var equipment = new Equipment
-            {
-                EquipmentNo = drEquipments["EQUIP_NO"].ToString().Trim(),
-                AccountCode = drEquipments["ACCOUNT_CODE"].ToString().Trim(),
-                ActiveFlag = drEquipments["ACTIVE_FLG"].ToString().Trim(),
-                AssocEquipmentItemSwitch = drEquipments["ASSOC_EQUIP_SW"].ToString().Trim(),
-                CompCode = drEquipments["COMP_CODE"].ToString().Trim(),
-                ConAstSegEn = drEquipments["CON_AST_SEG_EN"].ToString().Trim(),
-                ConAstSegSt = drEquipments["CON_AST_SEG_ST"].ToString().Trim(),
-                ConditionRating = drEquipments["COND_RATING"].ToString().Trim(),
-                ConditionStandard = drEquipments["COND_STANDARD"].ToString().Trim(),
-                CostSegLgth = drEquipments["COST_SEG_LGTH"].ToString().Trim(),
-                CostingFlag = drEquipments["COSTING_FLG"].ToString().Trim(),
-                CtaxCode = drEquipments["TAX_CODE"].ToString().Trim(),
-                Custodian = drEquipments["CUSTODIAN"].ToString().Trim(),
-                CustodianPosition = drEquipments["CUSTODIAN_POSN"].ToString().Trim(),
-                CustomerNumber = drEquipments["CUST_NO"].ToString().Trim(),
-                DistrictCode = drEquipments["DSTRCT_CODE"].ToString().Trim(),
-                DrawingNo = drEquipments["DRAWING_NO"].ToString().Trim(),
-                EquipmentClass = drEquipments["EQUIP_CLASS"].ToString().Trim(),
-                EquipmentCriticality = drEquipments["EQUIP_CRITICALITY"].ToString().Trim(),
-                EquipmentGrpId = drEquipments["EQUIP_GRP_ID"].ToString().Trim(),
-                EquipmentLocation = drEquipments["EQUIP_LOCATION"].ToString().Trim(),
-                EquipmentNoDescription1 = drEquipments["ITEM_NAME_1"].ToString().Trim(),
-                EquipmentNoDescription2 = drEquipments["ITEM_NAME_2"].ToString().Trim(),
-                EquipmentRef = drEquipments["EQUIP_REF"].ToString().Trim(),
-                EquipmentStatus = drEquipments["EQUIP_STATUS"].ToString().Trim(),
-                EquipmentType = drEquipments["EQPT_TYPE"].ToString().Trim(),
-                ExpElement = drEquipments["EXP_ELEMENT"].ToString().Trim(),
-                IaaAssetInd = drEquipments["IAA_ASSET_IND"].ToString().Trim(),
-                InputBy = drEquipments["INPUT_BY"].ToString().Trim(),
-                ItemNameCode = drEquipments["ITEM_NAME_CODE"].ToString().Trim(),
-                LatestConditionDate = drEquipments["LATEST_COND_DATE"].ToString().Trim(),
-                //Location = drEquipments["LOCATION"].ToString().Trim(),
-                Mnemonic = drEquipments["MNEMONIC"].ToString().Trim(),
-                MsssFlag = drEquipments["MSSS_STATUS_IND"].ToString().Trim(),
-                OperatingStandard = drEquipments["OPERATING_STD"].ToString().Trim(),
-                OperatorId = drEquipments["OPERATOR_ID"].ToString().Trim(),
-                OperatorPosition = drEquipments["OPERATOR_POSN"].ToString().Trim(),
-                OriginalDoc = drEquipments["ORIGINAL_DOC"].ToString().Trim(),
-                ParentEquipment = drEquipments["PARENT_EQUIP"].ToString().Trim(),
-                ParentEquipmentRef = drEquipments["PARENT_EQUIP_REF"].ToString().Trim(),
-                PartNo = drEquipments["PART_NO"].ToString().Trim(),
-                PermitReqdSw = drEquipments["PERMIT_REQD_SW"].ToString().Trim(),
-                PlantNo = drEquipments["PLANT_NO"].ToString().Trim(),
-                PoNo = drEquipments["PO_NO"].ToString().Trim(),
-                PrimaryFunction = drEquipments["PRIMARY_FUNCTION"].ToString().Trim(),
-                ProdUnitItem = drEquipments["PROD_UNIT_ITEM"].ToString().Trim(),
-                PurchaseDate = drEquipments["PURCHASE_DATE"].ToString().Trim(),
-                PurchasePrice = drEquipments["PURCHASE_PRICE"].ToString().Trim(),
-                RcmAnalysisSw = drEquipments["RCM_ANALYSIS_SW"].ToString().Trim(),
-                ReplaceValue = drEquipments["REPLACE_VALUE"].ToString().Trim(),
-                SerialNumber = drEquipments["SERIAL_NUMBER"].ToString().Trim(),
-                StockCode = drEquipments["STOCK_CODE"].ToString().Trim(),
-                ValuationDate = drEquipments["VALUATION_DATE"].ToString().Trim(),
-                WarrStatType = drEquipments["WARR_STAT_TYPE"].ToString().Trim(),
-                WarrStatVal = drEquipments["WARR_STAT_VAL"].ToString().Trim(),
-                ClassCodes = new Equipment.ClassificationCodes
-                {
-                    EquipmentClassif = drEquipments["EQUIP_CLASS"].ToString().Trim(),
-                    EquipmentClassif0 = drEquipments["EQUIP_CLASSIFX1"].ToString().Trim(),
-                    EquipmentClassif1 = drEquipments["EQUIP_CLASSIFX2"].ToString().Trim(),
-                    EquipmentClassif2 = drEquipments["EQUIP_CLASSIFX3"].ToString().Trim(),
-                    EquipmentClassif3 = drEquipments["EQUIP_CLASSIFX4"].ToString().Trim(),
-                    EquipmentClassif4 = drEquipments["EQUIP_CLASSIFX5"].ToString().Trim(),
-                    EquipmentClassif5 = drEquipments["EQUIP_CLASSIFX6"].ToString().Trim(),
-                    EquipmentClassif6 = drEquipments["EQUIP_CLASSIFX7"].ToString().Trim(),
-                    EquipmentClassif7 = drEquipments["EQUIP_CLASSIFX8"].ToString().Trim(),
-                    EquipmentClassif8 = drEquipments["EQUIP_CLASSIFX9"].ToString().Trim(),
-                    EquipmentClassif9 = drEquipments["EQUIP_CLASSIFX10"].ToString().Trim(),
-                    EquipmentClassif10 = drEquipments["EQUIP_CLASSIFX11"].ToString().Trim(),
-                    EquipmentClassif11 = drEquipments["EQUIP_CLASSIFX12"].ToString().Trim(),
-                    EquipmentClassif12 = drEquipments["EQUIP_CLASSIFX13"].ToString().Trim(),
-                    EquipmentClassif13 = drEquipments["EQUIP_CLASSIFX14"].ToString().Trim(),
-                    EquipmentClassif14 = drEquipments["EQUIP_CLASSIFX15"].ToString().Trim(),
-                    EquipmentClassif15 = drEquipments["EQUIP_CLASSIFX16"].ToString().Trim(),
-                    EquipmentClassif16 = drEquipments["EQUIP_CLASSIFX17"].ToString().Trim(),
-                    EquipmentClassif17 = drEquipments["EQUIP_CLASSIFX18"].ToString().Trim(),
-                    EquipmentClassif18 = drEquipments["EQUIP_CLASSIFX19"].ToString().Trim(),
-                    EquipmentClassif19 = drEquipments["EQUIP_CLASSIFX20"].ToString().Trim()
-                },
-                LinkOne = new Equipment.LinkOneBook()
-            };
+            var equipment = GetEquipment(drEquipments);
 
             return equipment;
         }
@@ -409,6 +335,7 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClass = equipment.EquipmentClass,
                 equipmentCriticality = equipment.EquipmentCriticality,
                 equipmentGrpId = equipment.EquipmentGrpId,
+                equipmentImpact = equipment.EquipmentImpact,
                 //location = equipment.EquipmentLocation,  //Location de pestaña Location
                 equipmentLocation = equipment.EquipmentLocation,
                 equipmentNo = equipment.EquipmentNo,
@@ -548,6 +475,7 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClass = equipment.EquipmentClass,
                 equipmentCriticality = equipment.EquipmentCriticality,
                 equipmentGrpId = equipment.EquipmentGrpId,
+                equipmentImpact = equipment.EquipmentImpact,
                 //location = equipment.EquipmentLocation, //Location de pestaña de location
                 equipmentLocation = equipment.EquipmentLocation, 
                 equipmentNo = equipment.EquipmentNo,
@@ -780,28 +708,6 @@ namespace EllipseEquipmentClassLibrary
                 else
                     districtParam = " = '" + districtCode + "'";
 
-                /*
-                OLD QUERY CHANGED IN 20191108
-                var query = "" +
-                            " SELECT DISTINCT(EQUIP_NO)" +
-                            " FROM (" +
-                            "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
-                            "     FROM  " + dbReference + ".MSF600" + dbLink + " EQ " +
-                            "     WHERE TRIM(EQ.EQUIP_NO) = '" + equipmentRef + "' AND EQ.DSTRCT_CODE " +
-                            districtParam +
-                            "   UNION ALL" +
-                            "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO" +
-                            "     FROM " + dbReference + ".MSF600" + dbLink + " EQ" +
-                            "     WHERE LPAD(TRIM(EQ.EQUIP_NO), 12, '0') = LPAD('" + equipmentRef +
-                            "',12,'0') AND EQ.DSTRCT_CODE " + districtParam +
-                            "   UNION ALL" +
-                            "   SELECT REQ.EQUIP_NO" +
-                            "     FROM " + dbReference + ".MSF600" + dbLink + " REQ JOIN  " + dbReference + ".MSF601" +
-                            dbLink + " RAL ON REQ.EQUIP_NO = RAL.ALT_REF_CODE" +
-                            "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" +
-                            equipmentRef + "'" +
-                            " )";
-                */
                 var query = "" +
                     " WITH EXACT AS ( " +
                     "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
@@ -1090,7 +996,7 @@ namespace EllipseEquipmentClassLibrary
                             "   EQ.COND_RATING, EQ.COND_STANDARD," +
                             "   EQ.COST_SEG_LGTH, EQ.COSTING_FLG, EQ.CTAX_CODE, EQ.CUSTODIAN, EQ.CUSTODIAN_POSN," +
                             "   EQ.CUST_NO," +
-                            "   EQ.DSTRCT_CODE, EQ.DRAWING_NO, EQ.EQUIP_CLASS, EQ.EQUIP_CRITICALITY, EQ.EQUIP_GRP_ID, EQ.EQUIP_LOCATION," +
+                            "   EQ.DSTRCT_CODE, EQ.DRAWING_NO, EQ.EQUIP_CLASS, EQ.EQUIP_CRITICALITY, EQ.EQUIP_GRP_ID, EQ.EQUIP_IMPACT, EQ.EQUIP_LOCATION," +
                             "   EQ.ITEM_NAME_1, EQ.ITEM_NAME_2, EQ.EQUIP_NO EQUIP_REF, EQ.EQUIP_STATUS, EQ.EQPT_TYPE, EQ.EXP_ELEMENT," +
                             "   EQ.IAA_ASSET_IND, EQ.INPUT_BY, EQ.ITEM_NAME_CODE, EQ.LATEST_COND_DATE, EQ.LOCATION, EQ.MNEMONIC, EQ.MSSS_STATUS_IND," +
                             "   EQ.OPERATING_STD, EQ.OPERATOR_ID, EQ.OPERATOR_POSN, EQ.ORIGINAL_DOC," +

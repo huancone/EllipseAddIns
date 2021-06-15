@@ -104,47 +104,45 @@ namespace EllipseReferenceCodesClassLibrary
         
         public static RefCodesService.RefCodesServiceModifyReplyDTO ModifyRefCode(EllipseFunctions ef, string urlService, RefCodesService.OperationContext opContext, ReferenceCodeItem refItem)
         {
-            var refCodesService = new RefCodesService.RefCodesService { Url = urlService + "/RefCodesService" };
-            var request = new RefCodesService.RefCodesServiceModifyRequestDTO
+            using (var refCodesService = new RefCodesService.RefCodesService {Url = urlService + "/RefCodesService"})
             {
-                entityType = refItem.EntityType,
-                entityValue = refItem.EntityValue,
-                refNo = refItem.RefNo,
-                seqNum = refItem.SeqNum,
-                refCode = refItem.RefCode,
-                stdTxtKey = refItem.StdTextFlag ? refItem.StdtxtId : null,
-            };
-            try
-            {
-                var replyModify = refCodesService.modify(opContext, request);
-
-                //Actualizamos el StdText si existe
+                var request = new RefCodesService.RefCodesServiceModifyRequestDTO
+                {
+                    entityType = refItem.EntityType,
+                    entityValue = refItem.EntityValue,
+                    refNo = refItem.RefNo,
+                    seqNum = refItem.SeqNum,
+                    refCode = refItem.RefCode,
+                    stdTxtKey = refItem.StdTextFlag ? refItem.StdtxtId : null,
+                };
                 try
                 {
-                    if (refItem.StdTextFlag && !string.IsNullOrWhiteSpace(refItem.StdtxtId)) //hay flag y se especifica el id
-                        StdText.SetText(urlService, StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + refItem.StdtxtId, refItem.StdText);
-                    else if (refItem.StdTextFlag && string.IsNullOrWhiteSpace(refItem.StdtxtId)) //hay flag y NO se especifica el id
+                    var replyModify = refCodesService.modify(opContext, request);
+
+                    //Actualizamos el StdText si existe
+                    try
                     {
-                        var item = FetchReferenceCodeItem(ef, urlService, opContext, refItem.EntityType, refItem.EntityValue, refItem.RefNo, refItem.SeqNum);
-                        if (item.StdTextFlag && string.IsNullOrWhiteSpace(item.StdtxtId))
-                            throw new Exception("Hay un error con el elemento. Especifica StdText pero no tiene un id asociado");
-                        StdText.SetText(urlService, StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + item.StdtxtId, refItem.StdText);
+                        if (refItem.StdTextFlag && !string.IsNullOrWhiteSpace(refItem.StdtxtId)) //hay flag y se especifica el id
+                            StdText.SetText(urlService, StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + refItem.StdtxtId, refItem.StdText);
+                        else if (refItem.StdTextFlag && string.IsNullOrWhiteSpace(refItem.StdtxtId)) //hay flag y NO se especifica el id
+                        {
+                            var item = FetchReferenceCodeItem(ef, urlService, opContext, refItem.EntityType, refItem.EntityValue, refItem.RefNo, refItem.SeqNum);
+                            if (item.StdTextFlag && string.IsNullOrWhiteSpace(item.StdtxtId))
+                                throw new Exception("Hay un error con el elemento. Especifica StdText pero no tiene un id asociado");
+                            StdText.SetText(urlService, StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + item.StdtxtId, refItem.StdText);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error updating RefCode StdText. " + ex.Message);
+                    }
+
+                    return replyModify;
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error updating RefCode StdText. " + ex.Message);
+                    throw new Exception("Error updating RefCode. Entity " + refItem.EntityType + ", Value " + refItem.EntityValue + " , Ref No." + refItem.RefNo + ". " + ex.Message);
                 }
-
-                return replyModify;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error updating RefCode. Entity " + refItem.EntityType + ", Value " + refItem.EntityValue + " , Ref No." + refItem.RefNo + ". " + ex.Message);
-            }
-            finally
-            {
-                refCodesService.Dispose();
             }
         }
 

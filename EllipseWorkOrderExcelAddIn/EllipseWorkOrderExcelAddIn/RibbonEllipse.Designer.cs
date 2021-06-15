@@ -51,6 +51,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuGeneral = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnReReview = this.Factory.CreateRibbonButton();
+            this.btnReReviewService = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
             this.separator6 = this.Factory.CreateRibbonSeparator();
@@ -208,6 +209,7 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             this.menuGeneral.Items.Add(this.btnReview);
             this.menuGeneral.Items.Add(this.btnReReview);
+            this.menuGeneral.Items.Add(this.btnReReviewService);
             this.menuGeneral.Items.Add(this.btnCreate);
             this.menuGeneral.Items.Add(this.btnUpdate);
             this.menuGeneral.Items.Add(this.separator6);
@@ -230,6 +232,15 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReview.Name = "btnReReview";
             this.btnReReview.ShowImage = true;
             this.btnReReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReview_Click);
+            // 
+            // btnReReviewService
+            // 
+            this.btnReReviewService.Enabled = false;
+            this.btnReReviewService.Label = "ReConsultar OTs Tabla (Servicio)";
+            this.btnReReviewService.Name = "btnReReviewService";
+            this.btnReReviewService.ShowImage = true;
+            this.btnReReviewService.Visible = false;
+            this.btnReReviewService.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReviewService_Click);
             // 
             // btnCreate
             // 
@@ -254,6 +265,8 @@ namespace EllipseWorkOrderExcelAddIn
             this.cbFlagEstDuration.Checked = true;
             this.cbFlagEstDuration.Label = "Estimados de Horas Calculados";
             this.cbFlagEstDuration.Name = "cbFlagEstDuration";
+            this.cbFlagEstDuration.SuperTip = "Actualiza los valores de PST Date y Time en la tabla de resultados de acuerdo a l" +
+    "a respuesta obtenida de la acción de creación/actualización";
             // 
             // btnCleanWorkOrderSheet
             // 
@@ -291,6 +304,9 @@ namespace EllipseWorkOrderExcelAddIn
             this.cbValidateTaskPlanDates.Checked = true;
             this.cbValidateTaskPlanDates.Label = "Validar Fechas Plan en OT";
             this.cbValidateTaskPlanDates.Name = "cbValidateTaskPlanDates";
+            this.cbValidateTaskPlanDates.SuperTip = "Valida las fechas de PSD y PFD de la tarea y de la ot para garantizar que la tare" +
+    "a se encuentre dentro del rango de la OT. Si no está dentro del periodo de la OT" +
+    " se resaltará el error";
             // 
             // btnCleanTasksTable
             // 
@@ -773,6 +789,7 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonSeparator separator6;
         internal RibbonSeparator separator5;
         internal RibbonSeparator separator4;
+        internal RibbonButton btnReReviewService;
     }
 
     partial class ThisRibbonCollection

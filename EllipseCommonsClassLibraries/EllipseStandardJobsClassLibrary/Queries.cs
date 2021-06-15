@@ -35,7 +35,8 @@ namespace EllipseStandardJobsClassLibrary
                 "   STD.CALC_LAB_HRS, STD.CALC_LAB_COST, STD.CALC_MAT_COST, STD.CALC_EQUIP_COST," +
                 "   STD.NO_OF_TASKS, 'CONS.RAP.' USO_OTS, 'CONS.RAP.' USO_MSTS, 'CONS.RAP.' ULTIMO_USO," +
                 "   STD.WO_JOB_CODEX1, STD.WO_JOB_CODEX2, STD.WO_JOB_CODEX3, STD.WO_JOB_CODEX4, STD.WO_JOB_CODEX5," +
-                "   STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10" +
+                "   STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10," +
+                "   STD.PAPER_HIST" +
                 " FROM" +
                 "   " + dbReference + ".msf690" + dbLink + " STD " +
                 " WHERE" +
@@ -78,7 +79,8 @@ namespace EllipseStandardJobsClassLibrary
                            "    STD.CALC_LAB_HRS, STD.CALC_LAB_COST, STD.CALC_MAT_COST, STD.CALC_EQUIP_COST," +
                            "    STD.NO_OF_TASKS, SOT.USO_OTS, SOT.USO_MSTS, SOT.ULTIMO_USO," +
                            "    STD.WO_JOB_CODEX1, STD.WO_JOB_CODEX2, STD.WO_JOB_CODEX3, STD.WO_JOB_CODEX4, STD.WO_JOB_CODEX5," +
-                           "    STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10" +
+                           "    STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10," +
+                           "    STD.PAPER_HIST" +
                            " FROM" +
                            "    " + dbReference + ".msf690" + dbLink + " STD LEFT JOIN SOT ON STD.STD_JOB_NO = SOT.STD_JOB_NO" +
                            " WHERE" +
@@ -105,7 +107,8 @@ namespace EllipseStandardJobsClassLibrary
                            "    STD.CALC_LAB_HRS, STD.CALC_LAB_COST, STD.CALC_MAT_COST, STD.CALC_EQUIP_COST," +
                            "    STD.NO_OF_TASKS, SOT.USO_OTS, SOT.USO_MSTS, SOT.ULTIMO_USO," +
                            "    STD.WO_JOB_CODEX1, STD.WO_JOB_CODEX2, STD.WO_JOB_CODEX3, STD.WO_JOB_CODEX4, STD.WO_JOB_CODEX5," +
-                           "    STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10" +
+                           "    STD.WO_JOB_CODEX6, STD.WO_JOB_CODEX7, STD.WO_JOB_CODEX8, STD.WO_JOB_CODEX9, STD.WO_JOB_CODEX10," +
+                           "   STD.PAPER_HIST" +
                            " FROM" +
                            "    " + dbReference + ".msf690" + dbLink + " STD LEFT JOIN SOT ON STD.STD_JOB_NO = SOT.STD_JOB_NO" +
                            " WHERE" +

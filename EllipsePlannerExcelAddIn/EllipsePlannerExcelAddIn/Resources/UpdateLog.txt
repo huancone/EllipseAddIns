@@ -1,0 +1,5 @@
+﻿EllipsePlannerExcelAddIn
+
+Versión 1.2.0.1, Liberada el 01 de Junio de 2021
+* Adición de tiempos de espera mayores
+* Adición de funciones asincrónicas

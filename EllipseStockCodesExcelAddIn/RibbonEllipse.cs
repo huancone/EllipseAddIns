@@ -281,7 +281,17 @@ namespace EllipseStockCodesExcelAddIn
                             {
                                 cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
                             }
-                            GetLeadTime(searchCriteriaValue, cr, dataReader.FieldCount, rowResult);
+
+                            var stockCode = "";
+                            if (searchIssueKey.Equals(SearchCriteriaIssues.Inventory.Value))
+                                stockCode = dataReader["STOCK_CODE"].ToString();
+                            else if (searchIssueKey.Equals(SearchCriteriaIssues.PurchaseOrder.Value))
+                                stockCode = dataReader["PREQ_STK_CODE"].ToString();
+                            else if (searchIssueKey.Equals(SearchCriteriaIssues.Requisition.Value))
+                                stockCode = dataReader["STOCK_CODE"].ToString();
+                            else if (searchIssueKey.Equals(SearchCriteriaIssues.RequisitionDetailed.Value))
+                                stockCode = dataReader["STOCK_CODE"].ToString();
+                            GetLeadTime(stockCode, cr, dataReader.FieldCount, rowResult);
                             rowResult++;
                         }
                         cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;

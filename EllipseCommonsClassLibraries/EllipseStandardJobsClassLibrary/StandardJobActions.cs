@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStandardJobsClassLibrary.StandardJobService;
 using EllipseStdTextClassLibrary;
@@ -76,7 +77,8 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.jobCode9 = stdJob.JobCode9 ?? requestStdJob.jobCode9;
             requestStdJob.jobCode10 = stdJob.JobCode10 ?? requestStdJob.jobCode10;
             //
-
+            requestStdJob.paperHist = MyUtilities.IsTrue(stdJob.PaperHist);
+            requestStdJob.paperHistSpecified = stdJob.PaperHist != null;
             requestStdJob.accountCode = stdJob.AccountCode ?? requestStdJob.accountCode;
 
             //para poder modificar el standard debe estar inactivo
@@ -180,6 +182,8 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.jobCode9 = stdJob.JobCode9 ?? requestStdJob.jobCode9;
             requestStdJob.jobCode10 = stdJob.JobCode10 ?? requestStdJob.jobCode10;
             //
+            requestStdJob.paperHist = MyUtilities.IsTrue(stdJob.PaperHist);
+            requestStdJob.paperHistSpecified = stdJob.PaperHist != null;
 
             //se envía la acción
             proxyStdJob.create(opContext, requestStdJob);
@@ -226,12 +230,68 @@ namespace EllipseStandardJobsClassLibrary
             return reply.status;
         }
 
-        public static List<StandardJob> FetchStandardJob(EllipseFunctions ef, string districtCode, string workGroup, bool quickReview = false)
+        private static StandardJob GetStandardJob(IDataRecord dr)
+        {
+            var job = new StandardJob();
+            job.DistrictCode = dr["DSTRCT_CODE"].ToString().Trim();
+            job.WorkGroup = dr["WORK_GROUP"].ToString().Trim();
+            job.StandardJobNo = dr["STD_JOB_NO"].ToString().Trim();
+            job.Status = dr["SJ_ACTIVE_STATUS"].ToString().Trim(); //TO DO
+            job.StandardJobDescription = dr["STD_JOB_DESC"].ToString().Trim();
+
+            job.NoWos = dr["USO_OTS"].ToString().Trim();
+            job.NoMsts = dr["USO_MSTS"].ToString().Trim();
+            job.LastUse = dr["ULTIMO_USO"].ToString().Trim();
+            job.NoTasks = dr["NO_OF_TASKS"].ToString().Trim();
+
+            job.OriginatorId = dr["ORIGINATOR_ID"].ToString().Trim();
+            job.AssignPerson = dr["ASSIGN_PERSON"].ToString().Trim();
+            job.OrigPriority = dr["ORIG_PRIORITY"].ToString().Trim();
+            job.WorkOrderType = dr["WO_TYPE"].ToString().Trim();
+            job.MaintenanceType = dr["MAINT_TYPE"].ToString().Trim();
+            job.CompCode = dr["COMP_CODE"].ToString().Trim();
+            job.CompModCode = dr["COMP_MOD_CODE"].ToString().Trim();
+            job.UnitOfWork = dr["UNIT_OF_WORK"].ToString().Trim();
+            //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
+            job.UnitsRequired = string.IsNullOrWhiteSpace(dr["UNIT_OF_WORK"].ToString()) && dr["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : dr["UNITS_REQUIRED"].ToString().Trim();
+            job.CalculatedDurationsHrsFlg = dr["CALC_DUR_HRS_SW"].ToString().Trim();
+            job.EstimatedDurationsHrs = dr["EST_DUR_HRS"].ToString().Trim();
+
+            job.AccountCode = dr["ACCOUNT_CODE"].ToString().Trim();
+            job.ReallocAccCode = dr["REALL_ACCT_CDE"].ToString().Trim();
+            job.ProjectNo = dr["PROJECT_NO"].ToString().Trim();
+
+            job.EstimatedOtherCost = dr["EST_OTHER_COST"].ToString().Trim();
+            job.CalculatedLabHrs = dr["CALC_LAB_HRS"].ToString().Trim();
+            job.CalculatedLabCost = dr["CALC_LAB_COST"].ToString().Trim();
+            job.CalculatedMatCost = dr["CALC_MAT_COST"].ToString().Trim();
+            job.CalculatedEquipmentCost = dr["CALC_EQUIP_COST"].ToString().Trim();
+
+            job.ResUpdateFlag = dr["RES_UPDATE_FLAG"].ToString().Trim();
+            job.MatUpdateFlag = dr["MAT_UPDATE_FLAG"].ToString().Trim();
+            job.EquipmentUpdateFlag = dr["EQUIP_UPDATE_FLAG"].ToString().Trim();
+
+            job.JobCode1 = dr["WO_JOB_CODEX1"].ToString().Trim();
+            job.JobCode2 = dr["WO_JOB_CODEX2"].ToString().Trim();
+            job.JobCode3 = dr["WO_JOB_CODEX3"].ToString().Trim();
+            job.JobCode4 = dr["WO_JOB_CODEX4"].ToString().Trim();
+            job.JobCode5 = dr["WO_JOB_CODEX5"].ToString().Trim();
+            job.JobCode6 = dr["WO_JOB_CODEX6"].ToString().Trim();
+            job.JobCode7 = dr["WO_JOB_CODEX7"].ToString().Trim();
+            job.JobCode8 = dr["WO_JOB_CODEX8"].ToString().Trim();
+            job.JobCode9 = dr["WO_JOB_CODEX9"].ToString().Trim();
+            job.JobCode10 = dr["WO_JOB_CODEX10"].ToString().Trim();
+
+            job.PaperHist = dr["PAPER_HIST"].ToString().Trim();
+
+            return job;
+        }
+        public static List<StandardJob> FetchStandardJob(EllipseFunctions ef, string districtCode, string workGroup, bool lastUseReview = true)
         {
 
-            var sqlQuery = quickReview
-                ? Queries.GetFetchQuickStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup)
-                : Queries.GetFetchStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup);
+            var sqlQuery = lastUseReview
+                ? Queries.GetFetchStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup)
+                : Queries.GetFetchQuickStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup);
 
             var stdDataReader =
                 ef.GetQueryResult(sqlQuery);
@@ -243,59 +303,9 @@ namespace EllipseStandardJobsClassLibrary
 
             while (stdDataReader.Read())
             {
+                var obj = GetStandardJob(stdDataReader);
 
-                // ReSharper disable once UseObjectOrCollectionInitializer
-                var job = new StandardJob();
-                job.DistrictCode = stdDataReader["DSTRCT_CODE"].ToString().Trim();
-                job.WorkGroup = stdDataReader["WORK_GROUP"].ToString().Trim();
-                job.StandardJobNo = stdDataReader["STD_JOB_NO"].ToString().Trim();
-                job.Status = stdDataReader["SJ_ACTIVE_STATUS"].ToString().Trim(); //TO DO
-                job.StandardJobDescription = stdDataReader["STD_JOB_DESC"].ToString().Trim();
-
-                job.NoWos = stdDataReader["USO_OTS"].ToString().Trim();
-                job.NoMsts = stdDataReader["USO_MSTS"].ToString().Trim();
-                job.LastUse = stdDataReader["ULTIMO_USO"].ToString().Trim();
-                job.NoTasks = stdDataReader["NO_OF_TASKS"].ToString().Trim();
-
-                job.OriginatorId = stdDataReader["ORIGINATOR_ID"].ToString().Trim();
-                job.AssignPerson = stdDataReader["ASSIGN_PERSON"].ToString().Trim();
-                job.OrigPriority = stdDataReader["ORIG_PRIORITY"].ToString().Trim();
-                job.WorkOrderType = stdDataReader["WO_TYPE"].ToString().Trim();
-                job.MaintenanceType = stdDataReader["MAINT_TYPE"].ToString().Trim();
-                job.CompCode = stdDataReader["COMP_CODE"].ToString().Trim();
-                job.CompModCode = stdDataReader["COMP_MOD_CODE"].ToString().Trim();
-                job.UnitOfWork = stdDataReader["UNIT_OF_WORK"].ToString().Trim();
-                //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
-                job.UnitsRequired = string.IsNullOrWhiteSpace(stdDataReader["UNIT_OF_WORK"].ToString()) && stdDataReader["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : stdDataReader["UNITS_REQUIRED"].ToString().Trim();
-                job.CalculatedDurationsHrsFlg = stdDataReader["CALC_DUR_HRS_SW"].ToString().Trim();
-                job.EstimatedDurationsHrs = stdDataReader["EST_DUR_HRS"].ToString().Trim();
-
-                job.AccountCode = stdDataReader["ACCOUNT_CODE"].ToString().Trim();
-                job.ReallocAccCode = stdDataReader["REALL_ACCT_CDE"].ToString().Trim();
-                job.ProjectNo = stdDataReader["PROJECT_NO"].ToString().Trim();
-
-                job.EstimatedOtherCost = stdDataReader["EST_OTHER_COST"].ToString().Trim();
-                job.CalculatedLabHrs = stdDataReader["CALC_LAB_HRS"].ToString().Trim();
-                job.CalculatedLabCost = stdDataReader["CALC_LAB_COST"].ToString().Trim();
-                job.CalculatedMatCost = stdDataReader["CALC_MAT_COST"].ToString().Trim();
-                job.CalculatedEquipmentCost = stdDataReader["CALC_EQUIP_COST"].ToString().Trim();
-
-                job.ResUpdateFlag = stdDataReader["RES_UPDATE_FLAG"].ToString().Trim();
-                job.MatUpdateFlag = stdDataReader["MAT_UPDATE_FLAG"].ToString().Trim();
-                job.EquipmentUpdateFlag = stdDataReader["EQUIP_UPDATE_FLAG"].ToString().Trim();
-
-                job.JobCode1 = stdDataReader["WO_JOB_CODEX1"].ToString().Trim();
-                job.JobCode2 = stdDataReader["WO_JOB_CODEX2"].ToString().Trim();
-                job.JobCode3 = stdDataReader["WO_JOB_CODEX3"].ToString().Trim();
-                job.JobCode4 = stdDataReader["WO_JOB_CODEX4"].ToString().Trim();
-                job.JobCode5 = stdDataReader["WO_JOB_CODEX5"].ToString().Trim();
-                job.JobCode6 = stdDataReader["WO_JOB_CODEX6"].ToString().Trim();
-                job.JobCode7 = stdDataReader["WO_JOB_CODEX7"].ToString().Trim();
-                job.JobCode8 = stdDataReader["WO_JOB_CODEX8"].ToString().Trim();
-                job.JobCode9 = stdDataReader["WO_JOB_CODEX9"].ToString().Trim();
-                job.JobCode10 = stdDataReader["WO_JOB_CODEX10"].ToString().Trim();
-
-                list.Add(job);
+                list.Add(obj);
             }
 
             return list;
@@ -309,52 +319,7 @@ namespace EllipseStandardJobsClassLibrary
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.Read())
                 return null;
 
-            var job = new StandardJob
-            {
-                DistrictCode = stdDataReader["DSTRCT_CODE"].ToString().Trim(),
-                WorkGroup = stdDataReader["WORK_GROUP"].ToString().Trim(),
-                StandardJobNo = stdDataReader["STD_JOB_NO"].ToString().Trim(),
-                Status = stdDataReader["SJ_ACTIVE_STATUS"].ToString().Trim(),
-                StandardJobDescription = stdDataReader["STD_JOB_DESC"].ToString().Trim(),
-                NoWos = stdDataReader["USO_OTS"].ToString().Trim(),
-                NoMsts = stdDataReader["USO_MSTS"].ToString().Trim(),
-                LastUse = stdDataReader["ULTIMO_USO"].ToString().Trim(),
-                NoTasks = stdDataReader["NO_OF_TASKS"].ToString().Trim(),
-                OriginatorId = stdDataReader["ORIGINATOR_ID"].ToString().Trim(),
-                AssignPerson = stdDataReader["ASSIGN_PERSON"].ToString().Trim(),
-                OrigPriority = stdDataReader["ORIG_PRIORITY"].ToString().Trim(),
-                WorkOrderType = stdDataReader["WO_TYPE"].ToString().Trim(),
-                MaintenanceType = stdDataReader["MAINT_TYPE"].ToString().Trim(),
-                CompCode = stdDataReader["COMP_CODE"].ToString().Trim(),
-                CompModCode = stdDataReader["COMP_MOD_CODE"].ToString().Trim(),
-                UnitOfWork = stdDataReader["UNIT_OF_WORK"].ToString().Trim(),
-                //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
-                UnitsRequired = string.IsNullOrWhiteSpace(stdDataReader["UNIT_OF_WORK"].ToString()) && stdDataReader["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : stdDataReader["UNITS_REQUIRED"].ToString().Trim(),
-                CalculatedDurationsHrsFlg = stdDataReader["CALC_DUR_HRS_SW"].ToString().Trim(),
-                EstimatedDurationsHrs = stdDataReader["EST_DUR_HRS"].ToString().Trim(),
-                AccountCode = stdDataReader["ACCOUNT_CODE"].ToString().Trim(),
-                ReallocAccCode = stdDataReader["REALL_ACCT_CDE"].ToString().Trim(),
-                ProjectNo = stdDataReader["PROJECT_NO"].ToString().Trim(),
-                EstimatedOtherCost = stdDataReader["EST_OTHER_COST"].ToString().Trim(),
-                ResUpdateFlag = stdDataReader["RES_UPDATE_FLAG"].ToString().Trim(),
-                MatUpdateFlag = stdDataReader["MAT_UPDATE_FLAG"].ToString().Trim(),
-                EquipmentUpdateFlag = stdDataReader["EQUIP_UPDATE_FLAG"].ToString().Trim(),
-                CalculatedLabHrs = stdDataReader["CALC_LAB_HRS"].ToString().Trim(),
-                CalculatedLabCost = stdDataReader["CALC_LAB_COST"].ToString().Trim(),
-                CalculatedMatCost = stdDataReader["CALC_MAT_COST"].ToString().Trim(),
-                CalculatedEquipmentCost = stdDataReader["CALC_EQUIP_COST"].ToString().Trim(),
-                JobCode1 = stdDataReader["WO_JOB_CODEX1"].ToString().Trim(),
-                JobCode2 = stdDataReader["WO_JOB_CODEX2"].ToString().Trim(),
-                JobCode3 = stdDataReader["WO_JOB_CODEX3"].ToString().Trim(),
-                JobCode4 = stdDataReader["WO_JOB_CODEX4"].ToString().Trim(),
-                JobCode5 = stdDataReader["WO_JOB_CODEX5"].ToString().Trim(),
-                JobCode6 = stdDataReader["WO_JOB_CODEX6"].ToString().Trim(),
-                JobCode7 = stdDataReader["WO_JOB_CODEX7"].ToString().Trim(),
-                JobCode8 = stdDataReader["WO_JOB_CODEX8"].ToString().Trim(),
-                JobCode9 = stdDataReader["WO_JOB_CODEX9"].ToString().Trim(),
-                JobCode10 = stdDataReader["WO_JOB_CODEX10"].ToString().Trim()
-            };
-
+            var job = GetStandardJob(stdDataReader);
 
             //job.totalUpdateFlag =; //no se encuentran en la base de datos. Al parecer son calculados según la selección de los anteriores
             return job;
