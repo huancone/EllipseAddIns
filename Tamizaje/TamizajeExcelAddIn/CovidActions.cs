@@ -13,7 +13,7 @@ namespace TamizajeExcelAddIn
     {
         public static CovidQuestionary CreateCovidQuestionary(MGIPService service, CovidQuestionary questionary)
         {
-            var headerResult = Questionaries.CreateQuestionaryResponseHeader(service, questionary.Header);
+            var headerResult = DataIntegrationEngine.CreateQuestionaryResponseHeader(service, questionary.Header);
 
             var list = questionary.GetResponseList();
             var responseResult = "";
@@ -27,7 +27,7 @@ namespace TamizajeExcelAddIn
                 qr.QuestionaryCode = questionary.QuestionaryCode;
                 qr.QuestionCode = response.Code;
                 qr.Response = response.Value;
-                responseResult += Questionaries.CreateQuestionaryResponse(service, qr);
+                responseResult += DataIntegrationEngine.CreateQuestionaryResponse(service, qr);
             }
 
             questionary.ActionMessage = headerResult + responseResult;

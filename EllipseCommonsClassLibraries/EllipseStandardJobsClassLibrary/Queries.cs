@@ -52,10 +52,11 @@ namespace EllipseStandardJobsClassLibrary
         public static string GetFetchStandardQuery(string dbReference, string dbLink, string districtCode, string workGroup)
         {
             //establecemos los parámetrode de distrito
+            string districtCodeParam = null;
             if (string.IsNullOrEmpty(districtCode))
-                districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
+                districtCodeParam = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
             else
-                districtCode = " IN ('" + districtCode + "')";
+                districtCodeParam = " IN ('" + districtCode + "')";
 
 
             //establecemos los parámetrode de distrito
@@ -68,8 +69,8 @@ namespace EllipseStandardJobsClassLibrary
 
             var query = "" +
                            " SELECT * FROM (WITH SOT AS (SELECT STD_JOB_NO, MAX(USO_OTS) USO_OTS, MAX(ULTIMO_USO) ULTIMO_USO, MAX(USO_MSTS) USO_MSTS FROM" +
-                           "    (SELECT STD_JOB_NO, COUNT(*) USO_OTS, MAX(CREATION_DATE) ULTIMO_USO, 0 AS USO_MSTS FROM " + dbReference + ".MSF620" + dbLink + " WHERE WORK_GROUP " + workGroup + " GROUP BY STD_JOB_NO" +
-                           "    UNION ALL SELECT STD_JOB_NO, 0 AS USO_OTS, MAX(LAST_SCH_DATE) AS ULTIMO_USO, COUNT(*) USO_MSTS FROM " + dbReference + ".MSF700" + dbLink + " WHERE WORK_GROUP " + workGroup + " GROUP BY STD_JOB_NO)" +
+                           "    (SELECT STD_JOB_NO, COUNT(*) USO_OTS, MAX(CREATION_DATE) ULTIMO_USO, 0 AS USO_MSTS FROM " + dbReference + ".MSF620" + dbLink + " WHERE DSTRCT_CODE " + districtCodeParam + " AND WORK_GROUP " + workGroup + " GROUP BY DSTRCT_CODE, STD_JOB_NO" +
+                           "    UNION ALL SELECT STD_JOB_NO, 0 AS USO_OTS, MAX(LAST_SCH_DATE) AS ULTIMO_USO, COUNT(*) USO_MSTS FROM " + dbReference + ".MSF700" + dbLink + " WHERE DSTRCT_CODE " + districtCodeParam + " AND WORK_GROUP " + workGroup + " GROUP BY DSTRCT_CODE, STD_JOB_NO)" +
                            "    GROUP BY STD_JOB_NO)" +
                            "    SELECT" +
                            "    STD.DSTRCT_CODE, STD.WORK_GROUP, STD.STD_JOB_NO, STD.STD_JOB_DESC, STD.SJ_ACTIVE_STATUS, STD.ORIGINATOR_ID, STD.ORIG_PRIORITY," +
@@ -85,7 +86,7 @@ namespace EllipseStandardJobsClassLibrary
                            "    " + dbReference + ".msf690" + dbLink + " STD LEFT JOIN SOT ON STD.STD_JOB_NO = SOT.STD_JOB_NO" +
                            " WHERE" +
                            " STD.WORK_GROUP " + workGroup +
-                           " AND  STD.DSTRCT_CODE " + districtCode +
+                           " AND  STD.DSTRCT_CODE " + districtCodeParam +
                            " ORDER BY STD.WORK_GROUP, STD.STD_JOB_NO)";
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
@@ -94,10 +95,16 @@ namespace EllipseStandardJobsClassLibrary
 
         public static string GetFetchStandardQuery(string dbReference, string dbLink, string districtCode, string workGroup, string standardJob)
         {
+            string districtCodeParam = null;
+            if (string.IsNullOrEmpty(districtCode))
+                districtCodeParam = " IN ('ICOR')";
+            else
+                districtCodeParam = " IN ('" + districtCode + "')";
+
             var query = "" +
                            " SELECT * FROM (WITH SOT AS (SELECT STD_JOB_NO, MAX(USO_OTS) USO_OTS, MAX(ULTIMO_USO) ULTIMO_USO, MAX(USO_MSTS) USO_MSTS FROM" +
-                           "    (SELECT STD_JOB_NO, COUNT(*) USO_OTS, MAX(CREATION_DATE) ULTIMO_USO, 0 AS USO_MSTS FROM " + dbReference + ".MSF620" + dbLink + " WHERE WORK_GROUP = '" + workGroup + "' GROUP BY STD_JOB_NO" +
-                           "    UNION ALL SELECT STD_JOB_NO, 0 AS USO_OTS, MAX(LAST_SCH_DATE) AS ULTIMO_USO, COUNT(*) USO_MSTS FROM " + dbReference + ".MSF700" + dbLink + " WHERE WORK_GROUP = '" + workGroup + "' GROUP BY STD_JOB_NO)" +
+                           "    (SELECT STD_JOB_NO, COUNT(*) USO_OTS, MAX(CREATION_DATE) ULTIMO_USO, 0 AS USO_MSTS FROM " + dbReference + ".MSF620" + dbLink + " WHERE DSTRCT_CODE " + districtCodeParam + " AND WORK_GROUP = '" + workGroup + "' GROUP BY DSTRCT_CODE, STD_JOB_NO" +
+                           "    UNION ALL SELECT STD_JOB_NO, 0 AS USO_OTS, MAX(LAST_SCH_DATE) AS ULTIMO_USO, COUNT(*) USO_MSTS FROM " + dbReference + ".MSF700" + dbLink + " WHERE DSTRCT_CODE " + districtCodeParam + " AND WORK_GROUP = '" + workGroup + "' GROUP BY DSTRCT_CODE, STD_JOB_NO)" +
                            "    GROUP BY STD_JOB_NO)" +
                            "    SELECT" +
                            "    STD.DSTRCT_CODE, STD.WORK_GROUP, STD.STD_JOB_NO, STD.STD_JOB_DESC, STD.SJ_ACTIVE_STATUS, STD.ORIGINATOR_ID, STD.ORIG_PRIORITY," +
@@ -113,7 +120,7 @@ namespace EllipseStandardJobsClassLibrary
                            "    " + dbReference + ".msf690" + dbLink + " STD LEFT JOIN SOT ON STD.STD_JOB_NO = SOT.STD_JOB_NO" +
                            " WHERE" +
                            " STD.WORK_GROUP = '" + workGroup + "'" +
-                           " AND STD.DSTRCT_CODE = '" + districtCode + "'" +
+                           " AND STD.DSTRCT_CODE " + districtCodeParam + "" +
                            " AND STD.STD_JOB_NO = '" + standardJob + "'" +
                            " ORDER BY STD.WORK_GROUP, STD.STD_JOB_NO)";
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");

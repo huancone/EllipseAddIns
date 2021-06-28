@@ -42,13 +42,14 @@ namespace TamizajeExcelAddIn
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
+            this.menuQuestionaries = this.Factory.CreateRibbonMenu();
             this.btnLoadQuestionary = this.Factory.CreateRibbonButton();
-            this.cbAllowBackgroundWork = this.Factory.CreateRibbonCheckBox();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.cbUpdateExistingRecords = this.Factory.CreateRibbonCheckBox();
             this.checkBox1 = this.Factory.CreateRibbonCheckBox();
-            this.menuQuestionaries = this.Factory.CreateRibbonMenu();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.cbAllowBackgroundWork = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnValidateUser = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpTamizaje.SuspendLayout();
             this.box1.SuspendLayout();
@@ -94,10 +95,21 @@ namespace TamizajeExcelAddIn
             // menuActions
             // 
             this.menuActions.Items.Add(this.menuQuestionaries);
+            this.menuActions.Items.Add(this.btnValidateUser);
             this.menuActions.Items.Add(this.cbAllowBackgroundWork);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
+            // 
+            // menuQuestionaries
+            // 
+            this.menuQuestionaries.Items.Add(this.btnLoadQuestionary);
+            this.menuQuestionaries.Items.Add(this.separator1);
+            this.menuQuestionaries.Items.Add(this.cbUpdateExistingRecords);
+            this.menuQuestionaries.Items.Add(this.checkBox1);
+            this.menuQuestionaries.Label = "Cuestionarios";
+            this.menuQuestionaries.Name = "menuQuestionaries";
+            this.menuQuestionaries.ShowImage = true;
             // 
             // btnLoadQuestionary
             // 
@@ -106,10 +118,9 @@ namespace TamizajeExcelAddIn
             this.btnLoadQuestionary.ShowImage = true;
             this.btnLoadQuestionary.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadQuestionary_Click);
             // 
-            // cbAllowBackgroundWork
+            // separator1
             // 
-            this.cbAllowBackgroundWork.Label = "Permitir Trabajo en Segundo Plano";
-            this.cbAllowBackgroundWork.Name = "cbAllowBackgroundWork";
+            this.separator1.Name = "separator1";
             // 
             // cbUpdateExistingRecords
             // 
@@ -122,19 +133,10 @@ namespace TamizajeExcelAddIn
             this.checkBox1.Label = "AutoInsertar Valores No Existentes";
             this.checkBox1.Name = "checkBox1";
             // 
-            // menuQuestionaries
+            // cbAllowBackgroundWork
             // 
-            this.menuQuestionaries.Items.Add(this.btnLoadQuestionary);
-            this.menuQuestionaries.Items.Add(this.separator1);
-            this.menuQuestionaries.Items.Add(this.cbUpdateExistingRecords);
-            this.menuQuestionaries.Items.Add(this.checkBox1);
-            this.menuQuestionaries.Label = "Cuestionarios";
-            this.menuQuestionaries.Name = "menuQuestionaries";
-            this.menuQuestionaries.ShowImage = true;
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
+            this.cbAllowBackgroundWork.Label = "Permitir Trabajo en Segundo Plano";
+            this.cbAllowBackgroundWork.Name = "cbAllowBackgroundWork";
             // 
             // btnStopThread
             // 
@@ -142,6 +144,13 @@ namespace TamizajeExcelAddIn
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // btnValidateUser
+            // 
+            this.btnValidateUser.Label = "Validar Usuario";
+            this.btnValidateUser.Name = "btnValidateUser";
+            this.btnValidateUser.ShowImage = true;
+            this.btnValidateUser.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidateUser_Click);
             // 
             // RibbonTamizaje
             // 
@@ -175,6 +184,7 @@ namespace TamizajeExcelAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbUpdateExistingRecords;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnValidateUser;
     }
 
     partial class ThisRibbonCollection

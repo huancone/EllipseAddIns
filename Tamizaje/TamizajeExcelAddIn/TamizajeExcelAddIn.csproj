@@ -179,7 +179,6 @@
   <ItemGroup>
     <Compile Include="CovidActions.cs" />
     <Compile Include="CovidQuestionary.cs" />
-    <Compile Include="Environments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

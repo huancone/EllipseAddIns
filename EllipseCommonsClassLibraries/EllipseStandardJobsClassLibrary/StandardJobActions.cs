@@ -283,6 +283,7 @@ namespace EllipseStandardJobsClassLibrary
             job.JobCode10 = dr["WO_JOB_CODEX10"].ToString().Trim();
 
             job.PaperHist = dr["PAPER_HIST"].ToString().Trim();
+            job.PaperHist = string.IsNullOrWhiteSpace(job.PaperHist) ? "N" : job.PaperHist;
 
             return job;
         }
@@ -604,37 +605,47 @@ namespace EllipseStandardJobsClassLibrary
 
         public static List<StandardJobEquipments> RetrieveStandardJobEquipments(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, string district, string standardJobNo)
         {
-            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+            var service = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
 
 
             var standardJobEquipments = new List<StandardJobEquipments>();
-            var RetrieveEquipmentRequest = new StandardJobServiceRetrieveEquipmentRequestDTO()
+            var retrieveEquipmentRequest = new StandardJobServiceRetrieveEquipmentRequestDTO()
             {
                 districtCode = district,
                 standardJob = standardJobNo
             };
 
-            var reply = proxyRetrieveEquipment.retrieveEquipment(opSheet, RetrieveEquipmentRequest);
+            StandardJobServiceRetrieveEquipmentReplyDTO reply;
 
-            for (var i = 0; i < reply.equipmentRelation.Length; i++)
+            do
             {
-                var eq = new StandardJobEquipments();
-                eq.DistrictCode = district;
-                eq.StandardJob = standardJobNo;
-                eq.EquipmentGrpId = reply.equipmentRelation[i].equipmentGrpId;
-                eq.EquipmentNo = reply.equipmentRelation[i].equipmentNo;
-                eq.EquipmentDescription = reply.equipmentRelation[i].equipmentDescription;
-                eq.CompCode = reply.equipmentRelation[i].compCode;
-                eq.CompCodeDescription = reply.equipmentRelation[i].compCodeDescription;
-                eq.ModCode = reply.equipmentRelation[i].modCode;
-                eq.ModCodeDescription = reply.equipmentRelation[i].modCodeDescription;
+                reply = service.retrieveEquipment(opSheet, retrieveEquipmentRequest);
 
-
-                if (!string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentNo) || !string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentGrpId))
+                for (var i = 0; i < reply.equipmentRelationActualCount; i++)
                 {
-                    standardJobEquipments.Add(eq);
+                    var eq = new StandardJobEquipments();
+                    eq.DistrictCode = district;
+                    eq.StandardJob = standardJobNo;
+                    eq.EquipmentGrpId = reply.equipmentRelation[i].equipmentGrpId;
+                    eq.EquipmentNo = reply.equipmentRelation[i].equipmentNo;
+                    eq.EquipmentDescription = reply.equipmentRelation[i].equipmentDescription;
+                    eq.CompCode = reply.equipmentRelation[i].compCode;
+                    eq.CompCodeDescription = reply.equipmentRelation[i].compCodeDescription;
+                    eq.ModCode = reply.equipmentRelation[i].modCode;
+                    eq.ModCodeDescription = reply.equipmentRelation[i].modCodeDescription;
+
+
+                    if (!string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentNo) || !string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentGrpId))
+                    {
+                        standardJobEquipments.Add(eq);
+                    }
                 }
-            }
+
+                //El servicio consulta de 30 en 30, por lo tanto esto es necesario
+                if (string.IsNullOrWhiteSpace(reply.equipmentRelationRestart)) continue;
+                retrieveEquipmentRequest.equipmentRelationRestart = reply.equipmentRelationRestart;
+                //
+            } while (!string.IsNullOrWhiteSpace(reply.equipmentRelationRestart));
 
             return standardJobEquipments;
         }

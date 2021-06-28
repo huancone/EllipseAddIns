@@ -23,7 +23,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="MSTServiceHttpBinding", Namespace="http://mst.m8mwp.service.ellipse.mincom.com")]
@@ -735,7 +735,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -916,7 +916,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -961,7 +961,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -972,7 +972,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1103,7 +1103,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1112,7 +1112,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1126,7 +1126,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1178,7 +1178,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1187,7 +1187,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1208,7 +1208,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1531,7 +1531,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2513,7 +2513,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TasksMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7518,7 +7518,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7823,10 +7823,10 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTForecastDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesSearchParam))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTForecastDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WorkOrderKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceCategoryDTO))]
@@ -7836,9 +7836,9 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TasksMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7860,7 +7860,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7930,7 +7930,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7964,10 +7964,10 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTForecastDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesSearchParam))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTForecastDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WorkOrderKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceCategoryDTO))]
@@ -7977,9 +7977,9 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TasksMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7988,9 +7988,153 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class MSTForecastDTO : ServiceDTO {
+        
+        private decimal nInstancesField;
+        
+        private bool nInstancesFieldSpecified;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string equipNoField;
+        
+        private bool hideSuppressedField;
+        
+        private bool hideSuppressedFieldSpecified;
+        
+        private string maintSchTaskField;
+        
+        private string rec700TypeField;
+        
+        private bool showRelatedField;
+        
+        private bool showRelatedFieldSpecified;
+        
+        /// <remarks/>
+        public decimal NInstances {
+            get {
+                return this.nInstancesField;
+            }
+            set {
+                this.nInstancesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool NInstancesSpecified {
+            get {
+                return this.nInstancesFieldSpecified;
+            }
+            set {
+                this.nInstancesFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipNo {
+            get {
+                return this.equipNoField;
+            }
+            set {
+                this.equipNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool hideSuppressed {
+            get {
+                return this.hideSuppressedField;
+            }
+            set {
+                this.hideSuppressedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool hideSuppressedSpecified {
+            get {
+                return this.hideSuppressedFieldSpecified;
+            }
+            set {
+                this.hideSuppressedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintSchTask {
+            get {
+                return this.maintSchTaskField;
+            }
+            set {
+                this.maintSchTaskField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string rec700Type {
+            get {
+                return this.rec700TypeField;
+            }
+            set {
+                this.rec700TypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool showRelated {
+            get {
+                return this.showRelatedField;
+            }
+            set {
+                this.showRelatedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool showRelatedSpecified {
+            get {
+                return this.showRelatedFieldSpecified;
+            }
+            set {
+                this.showRelatedFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8011,7 +8155,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8203,7 +8347,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8272,152 +8416,8 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class MSTForecastDTO : ServiceDTO {
-        
-        private decimal nInstancesField;
-        
-        private bool nInstancesFieldSpecified;
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string equipNoField;
-        
-        private bool hideSuppressedField;
-        
-        private bool hideSuppressedFieldSpecified;
-        
-        private string maintSchTaskField;
-        
-        private string rec700TypeField;
-        
-        private bool showRelatedField;
-        
-        private bool showRelatedFieldSpecified;
-        
-        /// <remarks/>
-        public decimal NInstances {
-            get {
-                return this.nInstancesField;
-            }
-            set {
-                this.nInstancesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool NInstancesSpecified {
-            get {
-                return this.nInstancesFieldSpecified;
-            }
-            set {
-                this.nInstancesFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipNo {
-            get {
-                return this.equipNoField;
-            }
-            set {
-                this.equipNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool hideSuppressed {
-            get {
-                return this.hideSuppressedField;
-            }
-            set {
-                this.hideSuppressedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool hideSuppressedSpecified {
-            get {
-                return this.hideSuppressedFieldSpecified;
-            }
-            set {
-                this.hideSuppressedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string maintSchTask {
-            get {
-                return this.maintSchTaskField;
-            }
-            set {
-                this.maintSchTaskField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string rec700Type {
-            get {
-                return this.rec700TypeField;
-            }
-            set {
-                this.rec700TypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool showRelated {
-            get {
-                return this.showRelatedField;
-            }
-            set {
-                this.showRelatedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool showRelatedSpecified {
-            get {
-                return this.showRelatedFieldSpecified;
-            }
-            set {
-                this.showRelatedFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8500,7 +8500,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8559,7 +8559,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8628,7 +8628,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8686,7 +8686,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8719,1075 +8719,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class ModifyNextScheduleDetailsDTO : ServiceDTO {
-        
-        private bool allowMultipleField;
-        
-        private bool allowMultipleFieldSpecified;
-        
-        private string assignPersonField;
-        
-        private bool autoReqIndField;
-        
-        private bool autoReqIndFieldSpecified;
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string complTextCdeField;
-        
-        private string completeInstrField;
-        
-        private decimal conAstSegFrField;
-        
-        private bool conAstSegFrFieldSpecified;
-        
-        private decimal conAstSegFrNumericField;
-        
-        private bool conAstSegFrNumericFieldSpecified;
-        
-        private decimal conAstSegToField;
-        
-        private bool conAstSegToFieldSpecified;
-        
-        private decimal conAstSegToNumericField;
-        
-        private bool conAstSegToNumericFieldSpecified;
-        
-        private string condMonPosField;
-        
-        private string condMonTypeField;
-        
-        private string dayMonthField;
-        
-        private string dayWeekField;
-        
-        private string dstrctCodeField;
-        
-        private string equipGrpIdField;
-        
-        private string equipNoField;
-        
-        private string equipNoDField;
-        
-        private string equipRefField;
-        
-        private bool fixedSchedulingField;
-        
-        private bool fixedSchedulingFieldSpecified;
-        
-        private bool isInSeriesField;
-        
-        private bool isInSeriesFieldSpecified;
-        
-        private bool isInSuppressionSeriesField;
-        
-        private bool isInSuppressionSeriesFieldSpecified;
-        
-        private string jobDescCodeField;
-        
-        private System.DateTime lastPerfDateField;
-        
-        private bool lastPerfDateFieldSpecified;
-        
-        private decimal lastPerfStat1Field;
-        
-        private bool lastPerfStat1FieldSpecified;
-        
-        private decimal lastPerfStat2Field;
-        
-        private bool lastPerfStat2FieldSpecified;
-        
-        private System.DateTime lastSchDateField;
-        
-        private bool lastSchDateFieldSpecified;
-        
-        private decimal lastSchStat1Field;
-        
-        private bool lastSchStat1FieldSpecified;
-        
-        private decimal lastSchStat2Field;
-        
-        private bool lastSchStat2FieldSpecified;
-        
-        private decimal linkIdField;
-        
-        private bool linkIdFieldSpecified;
-        
-        private string linkParentField;
-        
-        private string linkedIndField;
-        
-        private string maintSchTaskField;
-        
-        private bool msHistFlgField;
-        
-        private bool msHistFlgFieldSpecified;
-        
-        private System.DateTime nextSchDateField;
-        
-        private bool nextSchDateFieldSpecified;
-        
-        private string nextSchIndField;
-        
-        private decimal nextSchMeterValueField;
-        
-        private bool nextSchMeterValueFieldSpecified;
-        
-        private string nextSchStatField;
-        
-        private decimal nextSchValueField;
-        
-        private bool nextSchValueFieldSpecified;
-        
-        private string occurenceTypeField;
-        
-        private string parentChildTypeField;
-        
-        private string rec700TypeField;
-        
-        private decimal recallTimeHrsField;
-        
-        private bool recallTimeHrsFieldSpecified;
-        
-        private string safetyInstrField;
-        
-        private string schedDesc1Field;
-        
-        private string schedDesc2Field;
-        
-        private decimal schedFreq1Field;
-        
-        private bool schedFreq1FieldSpecified;
-        
-        private decimal schedFreq2Field;
-        
-        private bool schedFreq2FieldSpecified;
-        
-        private string schedInd700Field;
-        
-        private string scheduleTypeField;
-        
-        private string startMonthField;
-        
-        private string startYearField;
-        
-        private string statType1Field;
-        
-        private string statType2Field;
-        
-        private string statutoryFlgField;
-        
-        private string stdJobDescField;
-        
-        private string stdJobDstrctCodeField;
-        
-        private string stdJobNoField;
-        
-        private decimal tskDurHoursField;
-        
-        private bool tskDurHoursFieldSpecified;
-        
-        private string workGroupField;
-        
-        private string workOrderField;
-        
-        /// <remarks/>
-        public bool allowMultiple {
-            get {
-                return this.allowMultipleField;
-            }
-            set {
-                this.allowMultipleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool allowMultipleSpecified {
-            get {
-                return this.allowMultipleFieldSpecified;
-            }
-            set {
-                this.allowMultipleFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string assignPerson {
-            get {
-                return this.assignPersonField;
-            }
-            set {
-                this.assignPersonField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool autoReqInd {
-            get {
-                return this.autoReqIndField;
-            }
-            set {
-                this.autoReqIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool autoReqIndSpecified {
-            get {
-                return this.autoReqIndFieldSpecified;
-            }
-            set {
-                this.autoReqIndFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string complTextCde {
-            get {
-                return this.complTextCdeField;
-            }
-            set {
-                this.complTextCdeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string completeInstr {
-            get {
-                return this.completeInstrField;
-            }
-            set {
-                this.completeInstrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegFr {
-            get {
-                return this.conAstSegFrField;
-            }
-            set {
-                this.conAstSegFrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegFrSpecified {
-            get {
-                return this.conAstSegFrFieldSpecified;
-            }
-            set {
-                this.conAstSegFrFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegFrNumeric {
-            get {
-                return this.conAstSegFrNumericField;
-            }
-            set {
-                this.conAstSegFrNumericField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegFrNumericSpecified {
-            get {
-                return this.conAstSegFrNumericFieldSpecified;
-            }
-            set {
-                this.conAstSegFrNumericFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegTo {
-            get {
-                return this.conAstSegToField;
-            }
-            set {
-                this.conAstSegToField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegToSpecified {
-            get {
-                return this.conAstSegToFieldSpecified;
-            }
-            set {
-                this.conAstSegToFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegToNumeric {
-            get {
-                return this.conAstSegToNumericField;
-            }
-            set {
-                this.conAstSegToNumericField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegToNumericSpecified {
-            get {
-                return this.conAstSegToNumericFieldSpecified;
-            }
-            set {
-                this.conAstSegToNumericFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dayMonth {
-            get {
-                return this.dayMonthField;
-            }
-            set {
-                this.dayMonthField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dayWeek {
-            get {
-                return this.dayWeekField;
-            }
-            set {
-                this.dayWeekField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dstrctCode {
-            get {
-                return this.dstrctCodeField;
-            }
-            set {
-                this.dstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipGrpId {
-            get {
-                return this.equipGrpIdField;
-            }
-            set {
-                this.equipGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipNo {
-            get {
-                return this.equipNoField;
-            }
-            set {
-                this.equipNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipNoD {
-            get {
-                return this.equipNoDField;
-            }
-            set {
-                this.equipNoDField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipRef {
-            get {
-                return this.equipRefField;
-            }
-            set {
-                this.equipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool fixedScheduling {
-            get {
-                return this.fixedSchedulingField;
-            }
-            set {
-                this.fixedSchedulingField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fixedSchedulingSpecified {
-            get {
-                return this.fixedSchedulingFieldSpecified;
-            }
-            set {
-                this.fixedSchedulingFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool isInSeries {
-            get {
-                return this.isInSeriesField;
-            }
-            set {
-                this.isInSeriesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isInSeriesSpecified {
-            get {
-                return this.isInSeriesFieldSpecified;
-            }
-            set {
-                this.isInSeriesFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool isInSuppressionSeries {
-            get {
-                return this.isInSuppressionSeriesField;
-            }
-            set {
-                this.isInSuppressionSeriesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isInSuppressionSeriesSpecified {
-            get {
-                return this.isInSuppressionSeriesFieldSpecified;
-            }
-            set {
-                this.isInSuppressionSeriesFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string jobDescCode {
-            get {
-                return this.jobDescCodeField;
-            }
-            set {
-                this.jobDescCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime lastPerfDate {
-            get {
-                return this.lastPerfDateField;
-            }
-            set {
-                this.lastPerfDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastPerfDateSpecified {
-            get {
-                return this.lastPerfDateFieldSpecified;
-            }
-            set {
-                this.lastPerfDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal lastPerfStat1 {
-            get {
-                return this.lastPerfStat1Field;
-            }
-            set {
-                this.lastPerfStat1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastPerfStat1Specified {
-            get {
-                return this.lastPerfStat1FieldSpecified;
-            }
-            set {
-                this.lastPerfStat1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal lastPerfStat2 {
-            get {
-                return this.lastPerfStat2Field;
-            }
-            set {
-                this.lastPerfStat2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastPerfStat2Specified {
-            get {
-                return this.lastPerfStat2FieldSpecified;
-            }
-            set {
-                this.lastPerfStat2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime lastSchDate {
-            get {
-                return this.lastSchDateField;
-            }
-            set {
-                this.lastSchDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastSchDateSpecified {
-            get {
-                return this.lastSchDateFieldSpecified;
-            }
-            set {
-                this.lastSchDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal lastSchStat1 {
-            get {
-                return this.lastSchStat1Field;
-            }
-            set {
-                this.lastSchStat1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastSchStat1Specified {
-            get {
-                return this.lastSchStat1FieldSpecified;
-            }
-            set {
-                this.lastSchStat1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal lastSchStat2 {
-            get {
-                return this.lastSchStat2Field;
-            }
-            set {
-                this.lastSchStat2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastSchStat2Specified {
-            get {
-                return this.lastSchStat2FieldSpecified;
-            }
-            set {
-                this.lastSchStat2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkId {
-            get {
-                return this.linkIdField;
-            }
-            set {
-                this.linkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkIdSpecified {
-            get {
-                return this.linkIdFieldSpecified;
-            }
-            set {
-                this.linkIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkParent {
-            get {
-                return this.linkParentField;
-            }
-            set {
-                this.linkParentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkedInd {
-            get {
-                return this.linkedIndField;
-            }
-            set {
-                this.linkedIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string maintSchTask {
-            get {
-                return this.maintSchTaskField;
-            }
-            set {
-                this.maintSchTaskField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool msHistFlg {
-            get {
-                return this.msHistFlgField;
-            }
-            set {
-                this.msHistFlgField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool msHistFlgSpecified {
-            get {
-                return this.msHistFlgFieldSpecified;
-            }
-            set {
-                this.msHistFlgFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime nextSchDate {
-            get {
-                return this.nextSchDateField;
-            }
-            set {
-                this.nextSchDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nextSchDateSpecified {
-            get {
-                return this.nextSchDateFieldSpecified;
-            }
-            set {
-                this.nextSchDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string nextSchInd {
-            get {
-                return this.nextSchIndField;
-            }
-            set {
-                this.nextSchIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal nextSchMeterValue {
-            get {
-                return this.nextSchMeterValueField;
-            }
-            set {
-                this.nextSchMeterValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nextSchMeterValueSpecified {
-            get {
-                return this.nextSchMeterValueFieldSpecified;
-            }
-            set {
-                this.nextSchMeterValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string nextSchStat {
-            get {
-                return this.nextSchStatField;
-            }
-            set {
-                this.nextSchStatField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal nextSchValue {
-            get {
-                return this.nextSchValueField;
-            }
-            set {
-                this.nextSchValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool nextSchValueSpecified {
-            get {
-                return this.nextSchValueFieldSpecified;
-            }
-            set {
-                this.nextSchValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string occurenceType {
-            get {
-                return this.occurenceTypeField;
-            }
-            set {
-                this.occurenceTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string parentChildType {
-            get {
-                return this.parentChildTypeField;
-            }
-            set {
-                this.parentChildTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string rec700Type {
-            get {
-                return this.rec700TypeField;
-            }
-            set {
-                this.rec700TypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal recallTimeHrs {
-            get {
-                return this.recallTimeHrsField;
-            }
-            set {
-                this.recallTimeHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool recallTimeHrsSpecified {
-            get {
-                return this.recallTimeHrsFieldSpecified;
-            }
-            set {
-                this.recallTimeHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string safetyInstr {
-            get {
-                return this.safetyInstrField;
-            }
-            set {
-                this.safetyInstrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string schedDesc1 {
-            get {
-                return this.schedDesc1Field;
-            }
-            set {
-                this.schedDesc1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string schedDesc2 {
-            get {
-                return this.schedDesc2Field;
-            }
-            set {
-                this.schedDesc2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal schedFreq1 {
-            get {
-                return this.schedFreq1Field;
-            }
-            set {
-                this.schedFreq1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool schedFreq1Specified {
-            get {
-                return this.schedFreq1FieldSpecified;
-            }
-            set {
-                this.schedFreq1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal schedFreq2 {
-            get {
-                return this.schedFreq2Field;
-            }
-            set {
-                this.schedFreq2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool schedFreq2Specified {
-            get {
-                return this.schedFreq2FieldSpecified;
-            }
-            set {
-                this.schedFreq2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string schedInd700 {
-            get {
-                return this.schedInd700Field;
-            }
-            set {
-                this.schedInd700Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string scheduleType {
-            get {
-                return this.scheduleTypeField;
-            }
-            set {
-                this.scheduleTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string startMonth {
-            get {
-                return this.startMonthField;
-            }
-            set {
-                this.startMonthField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string startYear {
-            get {
-                return this.startYearField;
-            }
-            set {
-                this.startYearField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string statType1 {
-            get {
-                return this.statType1Field;
-            }
-            set {
-                this.statType1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string statType2 {
-            get {
-                return this.statType2Field;
-            }
-            set {
-                this.statType2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string statutoryFlg {
-            get {
-                return this.statutoryFlgField;
-            }
-            set {
-                this.statutoryFlgField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobDesc {
-            get {
-                return this.stdJobDescField;
-            }
-            set {
-                this.stdJobDescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobDstrctCode {
-            get {
-                return this.stdJobDstrctCodeField;
-            }
-            set {
-                this.stdJobDstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobNo {
-            get {
-                return this.stdJobNoField;
-            }
-            set {
-                this.stdJobNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal tskDurHours {
-            get {
-                return this.tskDurHoursField;
-            }
-            set {
-                this.tskDurHoursField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool tskDurHoursSpecified {
-            get {
-                return this.tskDurHoursFieldSpecified;
-            }
-            set {
-                this.tskDurHoursFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workGroup {
-            get {
-                return this.workGroupField;
-            }
-            set {
-                this.workGroupField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11028,7 +9960,1075 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class ModifyNextScheduleDetailsDTO : ServiceDTO {
+        
+        private bool allowMultipleField;
+        
+        private bool allowMultipleFieldSpecified;
+        
+        private string assignPersonField;
+        
+        private bool autoReqIndField;
+        
+        private bool autoReqIndFieldSpecified;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string complTextCdeField;
+        
+        private string completeInstrField;
+        
+        private decimal conAstSegFrField;
+        
+        private bool conAstSegFrFieldSpecified;
+        
+        private decimal conAstSegFrNumericField;
+        
+        private bool conAstSegFrNumericFieldSpecified;
+        
+        private decimal conAstSegToField;
+        
+        private bool conAstSegToFieldSpecified;
+        
+        private decimal conAstSegToNumericField;
+        
+        private bool conAstSegToNumericFieldSpecified;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string dayMonthField;
+        
+        private string dayWeekField;
+        
+        private string dstrctCodeField;
+        
+        private string equipGrpIdField;
+        
+        private string equipNoField;
+        
+        private string equipNoDField;
+        
+        private string equipRefField;
+        
+        private bool fixedSchedulingField;
+        
+        private bool fixedSchedulingFieldSpecified;
+        
+        private bool isInSeriesField;
+        
+        private bool isInSeriesFieldSpecified;
+        
+        private bool isInSuppressionSeriesField;
+        
+        private bool isInSuppressionSeriesFieldSpecified;
+        
+        private string jobDescCodeField;
+        
+        private System.DateTime lastPerfDateField;
+        
+        private bool lastPerfDateFieldSpecified;
+        
+        private decimal lastPerfStat1Field;
+        
+        private bool lastPerfStat1FieldSpecified;
+        
+        private decimal lastPerfStat2Field;
+        
+        private bool lastPerfStat2FieldSpecified;
+        
+        private System.DateTime lastSchDateField;
+        
+        private bool lastSchDateFieldSpecified;
+        
+        private decimal lastSchStat1Field;
+        
+        private bool lastSchStat1FieldSpecified;
+        
+        private decimal lastSchStat2Field;
+        
+        private bool lastSchStat2FieldSpecified;
+        
+        private decimal linkIdField;
+        
+        private bool linkIdFieldSpecified;
+        
+        private string linkParentField;
+        
+        private string linkedIndField;
+        
+        private string maintSchTaskField;
+        
+        private bool msHistFlgField;
+        
+        private bool msHistFlgFieldSpecified;
+        
+        private System.DateTime nextSchDateField;
+        
+        private bool nextSchDateFieldSpecified;
+        
+        private string nextSchIndField;
+        
+        private decimal nextSchMeterValueField;
+        
+        private bool nextSchMeterValueFieldSpecified;
+        
+        private string nextSchStatField;
+        
+        private decimal nextSchValueField;
+        
+        private bool nextSchValueFieldSpecified;
+        
+        private string occurenceTypeField;
+        
+        private string parentChildTypeField;
+        
+        private string rec700TypeField;
+        
+        private decimal recallTimeHrsField;
+        
+        private bool recallTimeHrsFieldSpecified;
+        
+        private string safetyInstrField;
+        
+        private string schedDesc1Field;
+        
+        private string schedDesc2Field;
+        
+        private decimal schedFreq1Field;
+        
+        private bool schedFreq1FieldSpecified;
+        
+        private decimal schedFreq2Field;
+        
+        private bool schedFreq2FieldSpecified;
+        
+        private string schedInd700Field;
+        
+        private string scheduleTypeField;
+        
+        private string startMonthField;
+        
+        private string startYearField;
+        
+        private string statType1Field;
+        
+        private string statType2Field;
+        
+        private string statutoryFlgField;
+        
+        private string stdJobDescField;
+        
+        private string stdJobDstrctCodeField;
+        
+        private string stdJobNoField;
+        
+        private decimal tskDurHoursField;
+        
+        private bool tskDurHoursFieldSpecified;
+        
+        private string workGroupField;
+        
+        private string workOrderField;
+        
+        /// <remarks/>
+        public bool allowMultiple {
+            get {
+                return this.allowMultipleField;
+            }
+            set {
+                this.allowMultipleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool allowMultipleSpecified {
+            get {
+                return this.allowMultipleFieldSpecified;
+            }
+            set {
+                this.allowMultipleFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assignPerson {
+            get {
+                return this.assignPersonField;
+            }
+            set {
+                this.assignPersonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool autoReqInd {
+            get {
+                return this.autoReqIndField;
+            }
+            set {
+                this.autoReqIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool autoReqIndSpecified {
+            get {
+                return this.autoReqIndFieldSpecified;
+            }
+            set {
+                this.autoReqIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string complTextCde {
+            get {
+                return this.complTextCdeField;
+            }
+            set {
+                this.complTextCdeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string completeInstr {
+            get {
+                return this.completeInstrField;
+            }
+            set {
+                this.completeInstrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegFr {
+            get {
+                return this.conAstSegFrField;
+            }
+            set {
+                this.conAstSegFrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegFrSpecified {
+            get {
+                return this.conAstSegFrFieldSpecified;
+            }
+            set {
+                this.conAstSegFrFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegFrNumeric {
+            get {
+                return this.conAstSegFrNumericField;
+            }
+            set {
+                this.conAstSegFrNumericField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegFrNumericSpecified {
+            get {
+                return this.conAstSegFrNumericFieldSpecified;
+            }
+            set {
+                this.conAstSegFrNumericFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegTo {
+            get {
+                return this.conAstSegToField;
+            }
+            set {
+                this.conAstSegToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegToSpecified {
+            get {
+                return this.conAstSegToFieldSpecified;
+            }
+            set {
+                this.conAstSegToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegToNumeric {
+            get {
+                return this.conAstSegToNumericField;
+            }
+            set {
+                this.conAstSegToNumericField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegToNumericSpecified {
+            get {
+                return this.conAstSegToNumericFieldSpecified;
+            }
+            set {
+                this.conAstSegToNumericFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dayMonth {
+            get {
+                return this.dayMonthField;
+            }
+            set {
+                this.dayMonthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dayWeek {
+            get {
+                return this.dayWeekField;
+            }
+            set {
+                this.dayWeekField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dstrctCode {
+            get {
+                return this.dstrctCodeField;
+            }
+            set {
+                this.dstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipGrpId {
+            get {
+                return this.equipGrpIdField;
+            }
+            set {
+                this.equipGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipNo {
+            get {
+                return this.equipNoField;
+            }
+            set {
+                this.equipNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipNoD {
+            get {
+                return this.equipNoDField;
+            }
+            set {
+                this.equipNoDField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipRef {
+            get {
+                return this.equipRefField;
+            }
+            set {
+                this.equipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool fixedScheduling {
+            get {
+                return this.fixedSchedulingField;
+            }
+            set {
+                this.fixedSchedulingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fixedSchedulingSpecified {
+            get {
+                return this.fixedSchedulingFieldSpecified;
+            }
+            set {
+                this.fixedSchedulingFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSeries {
+            get {
+                return this.isInSeriesField;
+            }
+            set {
+                this.isInSeriesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSeriesSpecified {
+            get {
+                return this.isInSeriesFieldSpecified;
+            }
+            set {
+                this.isInSeriesFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSuppressionSeries {
+            get {
+                return this.isInSuppressionSeriesField;
+            }
+            set {
+                this.isInSuppressionSeriesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSuppressionSeriesSpecified {
+            get {
+                return this.isInSuppressionSeriesFieldSpecified;
+            }
+            set {
+                this.isInSuppressionSeriesFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string jobDescCode {
+            get {
+                return this.jobDescCodeField;
+            }
+            set {
+                this.jobDescCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime lastPerfDate {
+            get {
+                return this.lastPerfDateField;
+            }
+            set {
+                this.lastPerfDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastPerfDateSpecified {
+            get {
+                return this.lastPerfDateFieldSpecified;
+            }
+            set {
+                this.lastPerfDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal lastPerfStat1 {
+            get {
+                return this.lastPerfStat1Field;
+            }
+            set {
+                this.lastPerfStat1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastPerfStat1Specified {
+            get {
+                return this.lastPerfStat1FieldSpecified;
+            }
+            set {
+                this.lastPerfStat1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal lastPerfStat2 {
+            get {
+                return this.lastPerfStat2Field;
+            }
+            set {
+                this.lastPerfStat2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastPerfStat2Specified {
+            get {
+                return this.lastPerfStat2FieldSpecified;
+            }
+            set {
+                this.lastPerfStat2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime lastSchDate {
+            get {
+                return this.lastSchDateField;
+            }
+            set {
+                this.lastSchDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastSchDateSpecified {
+            get {
+                return this.lastSchDateFieldSpecified;
+            }
+            set {
+                this.lastSchDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal lastSchStat1 {
+            get {
+                return this.lastSchStat1Field;
+            }
+            set {
+                this.lastSchStat1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastSchStat1Specified {
+            get {
+                return this.lastSchStat1FieldSpecified;
+            }
+            set {
+                this.lastSchStat1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal lastSchStat2 {
+            get {
+                return this.lastSchStat2Field;
+            }
+            set {
+                this.lastSchStat2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastSchStat2Specified {
+            get {
+                return this.lastSchStat2FieldSpecified;
+            }
+            set {
+                this.lastSchStat2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkId {
+            get {
+                return this.linkIdField;
+            }
+            set {
+                this.linkIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkIdSpecified {
+            get {
+                return this.linkIdFieldSpecified;
+            }
+            set {
+                this.linkIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkParent {
+            get {
+                return this.linkParentField;
+            }
+            set {
+                this.linkParentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkedInd {
+            get {
+                return this.linkedIndField;
+            }
+            set {
+                this.linkedIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintSchTask {
+            get {
+                return this.maintSchTaskField;
+            }
+            set {
+                this.maintSchTaskField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool msHistFlg {
+            get {
+                return this.msHistFlgField;
+            }
+            set {
+                this.msHistFlgField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool msHistFlgSpecified {
+            get {
+                return this.msHistFlgFieldSpecified;
+            }
+            set {
+                this.msHistFlgFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime nextSchDate {
+            get {
+                return this.nextSchDateField;
+            }
+            set {
+                this.nextSchDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nextSchDateSpecified {
+            get {
+                return this.nextSchDateFieldSpecified;
+            }
+            set {
+                this.nextSchDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string nextSchInd {
+            get {
+                return this.nextSchIndField;
+            }
+            set {
+                this.nextSchIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal nextSchMeterValue {
+            get {
+                return this.nextSchMeterValueField;
+            }
+            set {
+                this.nextSchMeterValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nextSchMeterValueSpecified {
+            get {
+                return this.nextSchMeterValueFieldSpecified;
+            }
+            set {
+                this.nextSchMeterValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string nextSchStat {
+            get {
+                return this.nextSchStatField;
+            }
+            set {
+                this.nextSchStatField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal nextSchValue {
+            get {
+                return this.nextSchValueField;
+            }
+            set {
+                this.nextSchValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nextSchValueSpecified {
+            get {
+                return this.nextSchValueFieldSpecified;
+            }
+            set {
+                this.nextSchValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string occurenceType {
+            get {
+                return this.occurenceTypeField;
+            }
+            set {
+                this.occurenceTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentChildType {
+            get {
+                return this.parentChildTypeField;
+            }
+            set {
+                this.parentChildTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string rec700Type {
+            get {
+                return this.rec700TypeField;
+            }
+            set {
+                this.rec700TypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal recallTimeHrs {
+            get {
+                return this.recallTimeHrsField;
+            }
+            set {
+                this.recallTimeHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool recallTimeHrsSpecified {
+            get {
+                return this.recallTimeHrsFieldSpecified;
+            }
+            set {
+                this.recallTimeHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string safetyInstr {
+            get {
+                return this.safetyInstrField;
+            }
+            set {
+                this.safetyInstrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string schedDesc1 {
+            get {
+                return this.schedDesc1Field;
+            }
+            set {
+                this.schedDesc1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string schedDesc2 {
+            get {
+                return this.schedDesc2Field;
+            }
+            set {
+                this.schedDesc2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal schedFreq1 {
+            get {
+                return this.schedFreq1Field;
+            }
+            set {
+                this.schedFreq1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool schedFreq1Specified {
+            get {
+                return this.schedFreq1FieldSpecified;
+            }
+            set {
+                this.schedFreq1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal schedFreq2 {
+            get {
+                return this.schedFreq2Field;
+            }
+            set {
+                this.schedFreq2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool schedFreq2Specified {
+            get {
+                return this.schedFreq2FieldSpecified;
+            }
+            set {
+                this.schedFreq2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string schedInd700 {
+            get {
+                return this.schedInd700Field;
+            }
+            set {
+                this.schedInd700Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string scheduleType {
+            get {
+                return this.scheduleTypeField;
+            }
+            set {
+                this.scheduleTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string startMonth {
+            get {
+                return this.startMonthField;
+            }
+            set {
+                this.startMonthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string startYear {
+            get {
+                return this.startYearField;
+            }
+            set {
+                this.startYearField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string statType1 {
+            get {
+                return this.statType1Field;
+            }
+            set {
+                this.statType1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string statType2 {
+            get {
+                return this.statType2Field;
+            }
+            set {
+                this.statType2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string statutoryFlg {
+            get {
+                return this.statutoryFlgField;
+            }
+            set {
+                this.statutoryFlgField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobDesc {
+            get {
+                return this.stdJobDescField;
+            }
+            set {
+                this.stdJobDescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobDstrctCode {
+            get {
+                return this.stdJobDstrctCodeField;
+            }
+            set {
+                this.stdJobDstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobNo {
+            get {
+                return this.stdJobNoField;
+            }
+            set {
+                this.stdJobNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal tskDurHours {
+            get {
+                return this.tskDurHoursField;
+            }
+            set {
+                this.tskDurHoursField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tskDurHoursSpecified {
+            get {
+                return this.tskDurHoursFieldSpecified;
+            }
+            set {
+                this.tskDurHoursFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroup {
+            get {
+                return this.workGroupField;
+            }
+            set {
+                this.workGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11049,7 +11049,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11070,7 +11070,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11091,11 +11091,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void modifyNextScheduleDetailsCompletedEventHandler(object sender, modifyNextScheduleDetailsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class modifyNextScheduleDetailsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11117,11 +11117,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multiplePopulateSaveAsCompletedEventHandler(object sender, multiplePopulateSaveAsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multiplePopulateSaveAsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11143,11 +11143,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11169,11 +11169,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void searchStatisticTypesCompletedEventHandler(object sender, searchStatisticTypesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchStatisticTypesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11195,11 +11195,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11221,11 +11221,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11247,11 +11247,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void forecastCompletedEventHandler(object sender, forecastCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class forecastCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11273,11 +11273,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11299,11 +11299,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void createLinkCompletedEventHandler(object sender, createLinkCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createLinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11325,11 +11325,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleCreateLinkCompletedEventHandler(object sender, multipleCreateLinkCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateLinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11351,11 +11351,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11377,11 +11377,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void populateSaveAsCompletedEventHandler(object sender, populateSaveAsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class populateSaveAsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11403,11 +11403,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11429,11 +11429,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleModifyNextScheduleDetailsCompletedEventHandler(object sender, multipleModifyNextScheduleDetailsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleModifyNextScheduleDetailsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11455,11 +11455,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11481,11 +11481,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11507,11 +11507,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

@@ -9,7 +9,7 @@ using SharedClassLibrary.Utilities;
 
 namespace SharedClassLibrary.Cority
 {
-    public static class Questionaries
+    public static class DataIntegrationEngine
     {
         public static bool? UpdateExistingRecords;
         public static bool? AutoInsertBaseTableValues;
@@ -105,6 +105,17 @@ namespace SharedClassLibrary.Cority
                 xmlFile, xmlFileSpecified, dateFormat, customLogicParam, bypassBr, byPassBrSpecified, customLogicString);
 
             return reply;
+        }
+
+        public static bool ValidateUserLogin(MGIPService.MGIPService service)
+        {
+            SetHttpSecurityProtocol();
+
+            var loginResult = false;
+            var loginResultSpecified = true;
+            service.ValidateUserLogin(Authentication._username, Authentication._password, out loginResult, out loginResultSpecified);
+
+            return loginResult;
         }
     }
 }

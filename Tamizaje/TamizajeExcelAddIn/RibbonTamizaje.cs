@@ -269,5 +269,38 @@ namespace TamizajeExcelAddIn
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
+
+        private void btnValidateUser_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var cells = cbAllowBackgroundWork.Checked ? new ExcelStyleCells(_excelApp, SheetNameQrh) : _cells;
+            cells.ClearTableRangeColumn(TableNameQrh, ResultColumnQrh);
+
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+
+            var service = new MGIPService();
+            service.Url = urlService;
+            Authentication.Authenticate("hector.hernandez.ext", "Friends4Ever");
+
+            try
+            { 
+                var result = DataIntegrationEngine.ValidateUserLogin(service);
+
+                MessageBox.Show("" + result);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("ValidateLogin()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Error: " + ex.Message);
+            }
+            finally
+            {
+                cells?.ActiveSheet.Cells.Columns.AutoFit();
+                cells?.SetCursorDefault();
+            }
+        }
     }
 }
