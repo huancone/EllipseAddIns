@@ -67,6 +67,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string completedBy;
         public string completeTextFlag;
         public string closeCommitDate;
+        public string closeCommitTime;
         //Location
         public string location;
         public string locationFr;
