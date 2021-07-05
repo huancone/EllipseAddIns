@@ -26,40 +26,38 @@ namespace EllipseStdTextClassLibrary
         /// <returns>string: Texto del elemento ingresado. Retorna vacío si el Id no existe</returns>
         public static string GetText(string urlService, StdTextService.OperationContext opContext, string stdTextId)
         {
-            var stdTextService = new StdTextService.StdTextService();
-            try
+            using (var stdTextService = new StdTextService.StdTextService())
             {
-
-
-                var requestSt = new StdTextService.StdTextServiceGetTextRequestDTO();
-                var requiredAtributes = new StdTextService.StdTextServiceGetTextRequiredAttributesDTO();
-                //se cargan los parámetros de la orden
-                stdTextService.Url = urlService + "/StdText";
-
-                //se cargan los parámetros de la solicitud
-                requestSt.stdTextId = stdTextId;
-                //se envía la acción
-                var replySt = stdTextService.getText(opContext, requestSt, requiredAtributes, "");
-
-                var fullText = "";
-
-                foreach (var line in replySt.replyElements.SelectMany(block => block.textLine))
+                try
                 {
-                    fullText = fullText + line;
-                    if (line.Length < _lineLength)
-                        fullText = fullText + "\n";
-                }
 
-                return fullText;
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message);
-                throw;
-            }
-            finally
-            {
-                stdTextService.Dispose();
+
+                    var requestSt = new StdTextService.StdTextServiceGetTextRequestDTO();
+                    var requiredAtributes = new StdTextService.StdTextServiceGetTextRequiredAttributesDTO();
+                    //se cargan los parámetros de la orden
+                    stdTextService.Url = urlService + "/StdText";
+
+                    //se cargan los parámetros de la solicitud
+                    requestSt.stdTextId = stdTextId;
+                    //se envía la acción
+                    var replySt = stdTextService.getText(opContext, requestSt, requiredAtributes, "");
+
+                    var fullText = "";
+
+                    foreach (var line in replySt.replyElements.SelectMany(block => block.textLine))
+                    {
+                        fullText = fullText + line;
+                        if (line.Length < _lineLength)
+                            fullText = fullText + "\n";
+                    }
+
+                    return fullText;
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message);
+                    throw;
+                }
             }
         }
 
@@ -75,15 +73,16 @@ namespace EllipseStdTextClassLibrary
             try
             {
                 // ejecuta las acciones del servicio
-                var proxySt = new StdTextCustomService.StdTextCustomService
+                using (var proxySt = new StdTextCustomService.StdTextCustomService
                 {
                     Url = urlService + "/StdTextCustom"
-                };
+                })
+                {
+                    // se envía la acción
+                    var replySt = proxySt.getExtendedText(opContext, stdTextId);
 
-                // se envía la acción
-                var replySt = proxySt.getExtendedText(opContext, stdTextId);
-
-                return replySt;
+                    return replySt;
+                }
             }
             catch (Exception ex)
             {
@@ -105,32 +104,30 @@ namespace EllipseStdTextClassLibrary
             true)]
         public static bool SetText(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
-            var stdTextService = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
-            try
+            using (var stdTextService = new StdTextService.StdTextService())
             {
+                try
+                {
 
 
-                var requestSt = new StdTextService.StdTextServiceSetTextRequestDTO();
+                    var requestSt = new StdTextService.StdTextServiceSetTextRequestDTO();
 
-                //se cargan los parámetros de la orden
-                stdTextService.Url = urlService + "/StdText";
+                    //se cargan los parámetros de la orden
+                    stdTextService.Url = urlService + "/StdText";
 
-                //se cargan los parámetros de la solicitud
-                requestSt.stdTextId = stdTextId;
-                var splittedText = MyUtilities.SplitText(text, _lineLength);
-                requestSt.textLine = splittedText;
-                //se envía la acción
-                stdTextService.setText(opContext, requestSt);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("StdText:setText(String, StdTextService.OperationContext, string, string)", ex.Message);
-                throw;
-            }
-            finally
-            {
-                stdTextService.Dispose();
+                    //se cargan los parámetros de la solicitud
+                    requestSt.stdTextId = stdTextId;
+                    var splittedText = MyUtilities.SplitText(text, _lineLength);
+                    requestSt.textLine = splittedText;
+                    //se envía la acción
+                    stdTextService.setText(opContext, requestSt);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("StdText:setText(String, StdTextService.OperationContext, string, string)", ex.Message);
+                    throw;
+                }
             }
         }
 
@@ -178,33 +175,31 @@ namespace EllipseStdTextClassLibrary
         /// <returns>bool: True si se culmina sin problemas</returns>
         public static bool SetHeader(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
-            var stdTextService = new StdTextService.StdTextService(); //ejecuta las acciones del servicio
-            try
+            using (var stdTextService = new StdTextService.StdTextService())
             {
+                try
+                {
 
-                var requestSt = new StdTextService.StdTextServiceSetHeadingRequestDTO();
+                    var requestSt = new StdTextService.StdTextServiceSetHeadingRequestDTO();
 
-                //se cargan los parámetros de la orden
-                stdTextService.Url = urlService + "/StdText";
+                    //se cargan los parámetros de la orden
+                    stdTextService.Url = urlService + "/StdText";
 
-                //se cargan los parámetros de la solicitud
-                requestSt.stdTextId = stdTextId;
-                requestSt.headingLine = text;
+                    //se cargan los parámetros de la solicitud
+                    requestSt.stdTextId = stdTextId;
+                    requestSt.headingLine = text;
 
-                //
-                //se envía la acción
-                stdTextService.setHeading(opContext, requestSt);
+                    //
+                    //se envía la acción
+                    stdTextService.setHeading(opContext, requestSt);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)", ex.Message);
-                throw;
-            }
-            finally
-            {
-                stdTextService.Dispose();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)", ex.Message);
+                    throw;
+                }
             }
         }
         /// <summary>

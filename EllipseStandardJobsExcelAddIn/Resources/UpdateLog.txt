@@ -1,8 +1,24 @@
 ﻿EllipseStandardJobExcelAddIn
 
+Versión 1.0.2.6, Liberada el 28 de Junio de 2021
+* Corrección de las consultas de Equipos y EGIs de estándares. No se mostraban más de 30 equipos/egis del estándar porque El servicio trae de 30 en 30 registros.
+
+Versión 1.0.2.4, Liberada el 17 de Junio de 2021
+* Mejoramiento de Query de consulta de Últimos usos
+* Marcación de Paper Hist como N cuando es nulo
+
+Versión 1.2.0.3, Liberada el 09 de Junio de 2021
+* Actualización a .NET 4.5
+* Adición de campo Paper Hist
+
+Versión 1.2.0.2, Liberada el 01 de Marzo de 2021
+* Se corrige cambio en el servicio de Reference Codes donde ya no se ignora si no que se muestra error si el atributo RefCode es nulo
+
 Versión 1.2.0.0, Liberada el 23 de Enero de 2021
 * Actualización de enlace a servicios de Ellipse 9 para los servicios de RefCodesService
 * Se adiciona el archivo de UpdateLog.txt para registro de actualizaciones
 
-Versión 1.2.0.2, Liberada el 01 de Marzo de 2021
-* Se corrige cambio en el servicio de Reference Codes donde ya no se ignora si no que se muestra error si el atributo RefCode es nulo
+
+
+
+

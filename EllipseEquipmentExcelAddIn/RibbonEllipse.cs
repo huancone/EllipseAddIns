@@ -35,7 +35,7 @@ namespace EllipseEquipmentExcelAddIn
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 8;
         private const int TitleRow03 = 8;
-        private const int ResultColumn01 = 78;
+        private const int ResultColumn01 = 79;
         private const int ResultColumn02 = 11;
         private const int ResultColumn03 = 11;
         private const string TableName01 = "EquipmentTable";
@@ -396,56 +396,57 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(41, TitleRow01).Value = "TRACEABLE FLAG";
                 //CONDITION
                 _cells.GetCell(42, TitleRow01 - 2).Value = "CONDITION";
-                _cells.MergeCells(42, TitleRow01 - 2, 48, TitleRow01 - 2);
+                _cells.MergeCells(42, TitleRow01 - 2, 49, TitleRow01 - 2);
                 _cells.GetCell(42, TitleRow01).Value = "EQ. CRITICALLY";//EQCR
-                _cells.GetCell(43, TitleRow01).Value = "PRIMARY FUNCTION";
-                _cells.GetCell(44, TitleRow01).Value = "OPERATING STANDARD";
-                _cells.GetCell(45, TitleRow01).Value = "COND. STANDARD";//EQCN
-                _cells.GetCell(46, TitleRow01).Value = "COND. RATING";
-                _cells.GetCell(47, TitleRow01).Value = "LATEST COND. DATE";
-                _cells.GetCell(48, TitleRow01).Value = "MSSS APPLIES FLAG";
-                _cells.GetCell(48, TitleRow01).AddComment("A - Activo, I - Inactivo. No disponible para creación, y solo posible si tiene un EGI asociado");
+                _cells.GetCell(43, TitleRow01).Value = "EQ. IMPACT";
+                _cells.GetCell(44, TitleRow01).Value = "PRIMARY FUNCTION";
+                _cells.GetCell(45, TitleRow01).Value = "OPERATING STANDARD";
+                _cells.GetCell(46, TitleRow01).Value = "COND. STANDARD";//EQCN
+                _cells.GetCell(47, TitleRow01).Value = "COND. RATING";
+                _cells.GetCell(48, TitleRow01).Value = "LATEST COND. DATE";
+                _cells.GetCell(49, TitleRow01).Value = "MSSS APPLIES FLAG";
+                _cells.GetCell(49, TitleRow01).AddComment("A - Activo, I - Inactivo. No disponible para creación, y solo posible si tiene un EGI asociado");
                 //LINK ONE
-                _cells.GetCell(49, TitleRow01 - 2).Value = "LINK ONE";
-                _cells.MergeCells(49, TitleRow01 - 2, 52, TitleRow01 - 2);
-                _cells.GetCell(49, TitleRow01).Value = "PUBLISHER";
-                _cells.GetCell(50, TitleRow01).Value = "BOOK";
-                _cells.GetCell(51, TitleRow01).Value = "PAGE REF.";
-                _cells.GetCell(52, TitleRow01).Value = "ITEM ID.";
+                _cells.GetCell(50, TitleRow01 - 2).Value = "LINK ONE";
+                _cells.MergeCells(50, TitleRow01 - 2, 53, TitleRow01 - 2);
+                _cells.GetCell(50, TitleRow01).Value = "PUBLISHER";
+                _cells.GetCell(51, TitleRow01).Value = "BOOK";
+                _cells.GetCell(52, TitleRow01).Value = "PAGE REF.";
+                _cells.GetCell(53, TitleRow01).Value = "ITEM ID.";
 
-                _cells.GetRange(49, TitleRow01, 52, TitleRow01).Style = StyleConstants.TitleInformation;
+                _cells.GetRange(50, TitleRow01, 53, TitleRow01).Style = StyleConstants.TitleInformation;
                 //CLASSIFICATION CODES
-                _cells.GetCell(53, TitleRow01 - 2).Value = "CLASSIFICATION CODES";
-                _cells.MergeCells(53, TitleRow01 - 2, 72, TitleRow01 - 2);
-                _cells.GetCell(53, TitleRow01).Value = "E00. CRITICALITY";//E0
-                _cells.GetCell(54, TitleRow01).Value = "E01. MT.POLICY";//E1
-                _cells.GetCell(55, TitleRow01).Value = "E02. EQ.CLASSIF";//E2
-                _cells.GetCell(56, TitleRow01).Value = "E03. OWNERSHIP";//E3
-                _cells.GetCell(57, TitleRow01).Value = "E04. CONDITION";//E4
-                _cells.GetCell(58, TitleRow01).Value = "E05. EQC5";//E5
-                _cells.GetCell(59, TitleRow01).Value = "E06. EQC6";//E6
-                _cells.GetCell(60, TitleRow01).Value = "E07. EQC7";//E7
-                _cells.GetCell(61, TitleRow01).Value = "E08. EQC8";//E8
-                _cells.GetCell(62, TitleRow01).Value = "E09. EQC9";//E9
-                _cells.GetCell(63, TitleRow01).Value = "E10. MODEL0";//E10
-                _cells.GetCell(64, TitleRow01).Value = "E11. MODEL1";//E11
-                _cells.GetCell(65, TitleRow01).Value = "E12. MODEL2";//E12
-                _cells.GetCell(66, TitleRow01).Value = "E13. MODEL3";//E14
-                _cells.GetCell(67, TitleRow01).Value = "E14. MODEL4";//E14
-                _cells.GetCell(68, TitleRow01).Value = "E15. MODEL5";//E15
-                _cells.GetCell(69, TitleRow01).Value = "E16. MODEL6";//E16
-                _cells.GetCell(70, TitleRow01).Value = "E17. MODEL7";//E17
-                _cells.GetCell(71, TitleRow01).Value = "E18. MODEL8";//E18
-                _cells.GetCell(72, TitleRow01).Value = "E19. MODEL9";//E19
+                _cells.GetCell(54, TitleRow01 - 2).Value = "CLASSIFICATION CODES";
+                _cells.MergeCells(54, TitleRow01 - 2, 73, TitleRow01 - 2);
+                _cells.GetCell(54, TitleRow01).Value = "E00. CRITICALITY";//E0
+                _cells.GetCell(55, TitleRow01).Value = "E01. MT.POLICY";//E1
+                _cells.GetCell(56, TitleRow01).Value = "E02. EQ.CLASSIF";//E2
+                _cells.GetCell(57, TitleRow01).Value = "E03. OWNERSHIP";//E3
+                _cells.GetCell(58, TitleRow01).Value = "E04. CONDITION";//E4
+                _cells.GetCell(59, TitleRow01).Value = "E05. EQC5";//E5
+                _cells.GetCell(60, TitleRow01).Value = "E06. EQC6";//E6
+                _cells.GetCell(61, TitleRow01).Value = "E07. EQC7";//E7
+                _cells.GetCell(62, TitleRow01).Value = "E08. EQC8";//E8
+                _cells.GetCell(63, TitleRow01).Value = "E09. EQC9";//E9
+                _cells.GetCell(64, TitleRow01).Value = "E10. MODEL0";//E10
+                _cells.GetCell(65, TitleRow01).Value = "E11. MODEL1";//E11
+                _cells.GetCell(66, TitleRow01).Value = "E12. MODEL2";//E12
+                _cells.GetCell(67, TitleRow01).Value = "E13. MODEL3";//E14
+                _cells.GetCell(68, TitleRow01).Value = "E14. MODEL4";//E14
+                _cells.GetCell(69, TitleRow01).Value = "E15. MODEL5";//E15
+                _cells.GetCell(70, TitleRow01).Value = "E16. MODEL6";//E16
+                _cells.GetCell(71, TitleRow01).Value = "E17. MODEL7";//E17
+                _cells.GetCell(72, TitleRow01).Value = "E18. MODEL8";//E18
+                _cells.GetCell(73, TitleRow01).Value = "E19. MODEL9";//E19
                 //REFERENCE CODES
-                _cells.GetCell(73, TitleRow01 - 2).Value = "REFERENCE CODES";
-                _cells.MergeCells(73, TitleRow01 - 2, 77, TitleRow01 - 2);
-                _cells.GetCell(73, TitleRow01).Value = "CAPACIDAD";//001_001
-                _cells.GetCell(74, TitleRow01).Value = "REFRIGERANTE";//002_001
-                _cells.GetCell(75, TitleRow01).Value = "CENTRO COMBUSTIBLE";//003_001
-                _cells.GetCell(76, TitleRow01).Value = "COP. RECONS?"; //004_001
-                _cells.GetCell(76, TitleRow01).AddComment("Y/N");
-                _cells.GetCell(77, TitleRow01).Value = "XERAS MODEL"; //200_001
+                _cells.GetCell(74, TitleRow01 - 2).Value = "REFERENCE CODES";
+                _cells.MergeCells(74, TitleRow01 - 2, 78, TitleRow01 - 2);
+                _cells.GetCell(74, TitleRow01).Value = "CAPACIDAD";//001_001
+                _cells.GetCell(75, TitleRow01).Value = "REFRIGERANTE";//002_001
+                _cells.GetCell(76, TitleRow01).Value = "CENTRO COMBUSTIBLE";//003_001
+                _cells.GetCell(77, TitleRow01).Value = "COP. RECONS?"; //004_001
+                _cells.GetCell(77, TitleRow01).AddComment("Y/N");
+                _cells.GetCell(78, TitleRow01).Value = "XERAS MODEL"; //200_001
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
@@ -467,48 +468,48 @@ namespace EllipseEquipmentExcelAddIn
                 validList = _eFunctions.GetItemCodes("EQCR").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(42, TitleRow01 + 1), validList, ValidationSheetName, 11, false);
                 validList = _eFunctions.GetItemCodes("EQCN").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(45, TitleRow01 + 1), validList, ValidationSheetName, 12, false);
+                _cells.SetValidationList(_cells.GetCell(46, TitleRow01 + 1), validList, ValidationSheetName, 12, false);
                 //validación de celda - classification codes
                 validList = _eFunctions.GetItemCodes("E0").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(53, TitleRow01 + 1), validList, ValidationSheetName, 13, false);
+                _cells.SetValidationList(_cells.GetCell(54, TitleRow01 + 1), validList, ValidationSheetName, 13, false);
                 validList = _eFunctions.GetItemCodes("E1").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(54, TitleRow01 + 1), validList, ValidationSheetName, 14, false);
+                _cells.SetValidationList(_cells.GetCell(55, TitleRow01 + 1), validList, ValidationSheetName, 14, false);
                 validList = _eFunctions.GetItemCodes("E2").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(55, TitleRow01 + 1), validList, ValidationSheetName, 15, false);
+                _cells.SetValidationList(_cells.GetCell(56, TitleRow01 + 1), validList, ValidationSheetName, 15, false);
                 validList = _eFunctions.GetItemCodes("E3").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(56, TitleRow01 + 1), validList, ValidationSheetName, 16, false);
+                _cells.SetValidationList(_cells.GetCell(57, TitleRow01 + 1), validList, ValidationSheetName, 16, false);
                 validList = _eFunctions.GetItemCodes("E4").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(57, TitleRow01 + 1), validList, ValidationSheetName, 17, false);
+                _cells.SetValidationList(_cells.GetCell(58, TitleRow01 + 1), validList, ValidationSheetName, 17, false);
                 validList = _eFunctions.GetItemCodes("E5").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(58, TitleRow01 + 1), validList, ValidationSheetName, 18, false);
+                _cells.SetValidationList(_cells.GetCell(59, TitleRow01 + 1), validList, ValidationSheetName, 18, false);
                 validList = _eFunctions.GetItemCodes("E6").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(59, TitleRow01 + 1), validList, ValidationSheetName, 19, false);
+                _cells.SetValidationList(_cells.GetCell(60, TitleRow01 + 1), validList, ValidationSheetName, 19, false);
                 validList = _eFunctions.GetItemCodes("E7").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(60, TitleRow01 + 1), validList, ValidationSheetName, 20, false);
+                _cells.SetValidationList(_cells.GetCell(61, TitleRow01 + 1), validList, ValidationSheetName, 20, false);
                 validList = _eFunctions.GetItemCodes("E8").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(61, TitleRow01 + 1), validList, ValidationSheetName, 21, false);
+                _cells.SetValidationList(_cells.GetCell(62, TitleRow01 + 1), validList, ValidationSheetName, 21, false);
                 validList = _eFunctions.GetItemCodes("E9").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(62, TitleRow01 + 1), validList, ValidationSheetName, 22, false);
+                _cells.SetValidationList(_cells.GetCell(63, TitleRow01 + 1), validList, ValidationSheetName, 22, false);
                 validList = _eFunctions.GetItemCodes("E10").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(63, TitleRow01 + 1), validList, ValidationSheetName, 23, false);
+                _cells.SetValidationList(_cells.GetCell(64, TitleRow01 + 1), validList, ValidationSheetName, 23, false);
                 validList = _eFunctions.GetItemCodes("E11").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(64, TitleRow01 + 1), validList, ValidationSheetName, 24, false);
+                _cells.SetValidationList(_cells.GetCell(65, TitleRow01 + 1), validList, ValidationSheetName, 24, false);
                 validList = _eFunctions.GetItemCodes("E12").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(65, TitleRow01 + 1), validList, ValidationSheetName, 25, false);
+                _cells.SetValidationList(_cells.GetCell(66, TitleRow01 + 1), validList, ValidationSheetName, 25, false);
                 validList = _eFunctions.GetItemCodes("E13").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(66, TitleRow01 + 1), validList, ValidationSheetName, 26, false);
+                _cells.SetValidationList(_cells.GetCell(67, TitleRow01 + 1), validList, ValidationSheetName, 26, false);
                 validList = _eFunctions.GetItemCodes("E14").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(67, TitleRow01 + 1), validList, ValidationSheetName, 27, false);
+                _cells.SetValidationList(_cells.GetCell(68, TitleRow01 + 1), validList, ValidationSheetName, 27, false);
                 validList = _eFunctions.GetItemCodes("E15").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(68, TitleRow01 + 1), validList, ValidationSheetName, 28, false);
+                _cells.SetValidationList(_cells.GetCell(69, TitleRow01 + 1), validList, ValidationSheetName, 28, false);
                 validList = _eFunctions.GetItemCodes("E16").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(69, TitleRow01 + 1), validList, ValidationSheetName, 29, false);
+                _cells.SetValidationList(_cells.GetCell(70, TitleRow01 + 1), validList, ValidationSheetName, 29, false);
                 validList = _eFunctions.GetItemCodes("E17").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(70, TitleRow01 + 1), validList, ValidationSheetName, 30, false);
+                _cells.SetValidationList(_cells.GetCell(71, TitleRow01 + 1), validList, ValidationSheetName, 30, false);
                 validList = _eFunctions.GetItemCodes("E18").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(71, TitleRow01 + 1), validList, ValidationSheetName, 31, false);
+                _cells.SetValidationList(_cells.GetCell(72, TitleRow01 + 1), validList, ValidationSheetName, 31, false);
                 validList = _eFunctions.GetItemCodes("E19").Select(sc => sc.Code + " - " + sc.Description).ToList();
-                _cells.SetValidationList(_cells.GetCell(72, TitleRow01 + 1), validList, ValidationSheetName, 32, false);
+                _cells.SetValidationList(_cells.GetCell(73, TitleRow01 + 1), validList, ValidationSheetName, 32, false);
                 //
                 validList = new List<string> { "A - Allowed", "W - Not Allowed (Warning)", "E - Not Allowed (Error)" };
                 _cells.SetValidationList(_cells.GetCell(26, TitleRow01 + 1), validList, ValidationSheetName, 33, false);
@@ -735,55 +736,56 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(41, i).Value = "'" + eq.TraceableFlg;
                     //CONDITION
                     _cells.GetCell(42, i).Value = "'" + eq.EquipmentCriticality;
-                    _cells.GetCell(43, i).Value = "'" + eq.PrimaryFunction;
-                    _cells.GetCell(44, i).Value = "'" + eq.OperatingStandard;
-                    _cells.GetCell(45, i).Value = "'" + eq.ConditionStandard;
-                    _cells.GetCell(46, i).Value = "'" + eq.ConditionRating;
-                    _cells.GetCell(47, i).Value = "'" + eq.LatestConditionDate;
-                    _cells.GetCell(48, i).Value = "'" + eq.MsssFlag;
+                    _cells.GetCell(43, i).Value = "'" + eq.EquipmentImpact;
+                    _cells.GetCell(44, i).Value = "'" + eq.PrimaryFunction;
+                    _cells.GetCell(45, i).Value = "'" + eq.OperatingStandard;
+                    _cells.GetCell(46, i).Value = "'" + eq.ConditionStandard;
+                    _cells.GetCell(47, i).Value = "'" + eq.ConditionRating;
+                    _cells.GetCell(48, i).Value = "'" + eq.LatestConditionDate;
+                    _cells.GetCell(49, i).Value = "'" + eq.MsssFlag;
                     //LINKONE
-                    _cells.GetCell(49, i).Value = "'" + eq.LinkOne.Publisher;
-                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Book;
-                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.PageReference;
-                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.ItemId;
+                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Publisher;
+                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.Book;
+                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.PageReference;
+                    _cells.GetCell(53, i).Value = "'" + eq.LinkOne.ItemId;
                     //CLASSIFICATION CODES
-                    _cells.GetCell(53, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
-                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
-                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
-                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
-                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
-                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
-                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
-                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
-                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
-                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
-                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
-                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
-                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
-                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
-                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
-                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
-                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
-                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
-                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
-                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
+                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
+                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
+                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
+                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
+                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
+                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
+                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
+                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
+                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
+                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
+                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
+                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
+                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
+                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
+                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
+                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
+                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
+                    _cells.GetCell(73, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                     //ReferenceCodes
                     if (cbIgnoreRefCodes.Checked)
                     {
-                        _cells.GetCell(73, i).Value = "Ignored";
                         _cells.GetCell(74, i).Value = "Ignored";
                         _cells.GetCell(75, i).Value = "Ignored";
                         _cells.GetCell(76, i).Value = "Ignored";
                         _cells.GetCell(77, i).Value = "Ignored";
+                        _cells.GetCell(78, i).Value = "Ignored";
                     }
                     else
                     {
                         var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
-                        _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
-                        _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
-                        _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
-                        _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
-                        _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                        _cells.GetCell(74, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                        _cells.GetCell(75, i).Value = "'" + referenceCodes.RefrigerantType;
+                        _cells.GetCell(76, i).Value = "'" + referenceCodes.FuelCostCenter;
+                        _cells.GetCell(77, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                        _cells.GetCell(78, i).Value = "'" + referenceCodes.XerasModel;
                     }
 
                 }
@@ -882,55 +884,56 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(41, i).Value = "'" + eq.TraceableFlg;
                     //CONDITION
                     _cells.GetCell(42, i).Value = "'" + eq.EquipmentCriticality;
-                    _cells.GetCell(43, i).Value = "'" + eq.PrimaryFunction;
-                    _cells.GetCell(44, i).Value = "'" + eq.OperatingStandard;
-                    _cells.GetCell(45, i).Value = "'" + eq.ConditionStandard;
-                    _cells.GetCell(46, i).Value = "'" + eq.ConditionRating;
-                    _cells.GetCell(47, i).Value = "'" + eq.LatestConditionDate;
-                    _cells.GetCell(48, i).Value = "'" + eq.MsssFlag;
+                    _cells.GetCell(43, i).Value = "'" + eq.EquipmentImpact;
+                    _cells.GetCell(44, i).Value = "'" + eq.PrimaryFunction;
+                    _cells.GetCell(45, i).Value = "'" + eq.OperatingStandard;
+                    _cells.GetCell(46, i).Value = "'" + eq.ConditionStandard;
+                    _cells.GetCell(47, i).Value = "'" + eq.ConditionRating;
+                    _cells.GetCell(48, i).Value = "'" + eq.LatestConditionDate;
+                    _cells.GetCell(49, i).Value = "'" + eq.MsssFlag;
                     //LINKONE
-                    _cells.GetCell(49, i).Value = "'" + eq.LinkOne.Publisher;
-                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Book;
-                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.PageReference;
-                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.ItemId;
+                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Publisher;
+                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.Book;
+                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.PageReference;
+                    _cells.GetCell(53, i).Value = "'" + eq.LinkOne.ItemId;
                     //CLASSIFICATION CODES
-                    _cells.GetCell(53, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
-                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
-                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
-                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
-                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
-                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
-                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
-                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
-                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
-                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
-                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
-                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
-                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
-                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
-                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
-                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
-                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
-                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
-                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
-                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
+                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
+                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
+                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
+                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
+                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
+                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
+                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
+                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
+                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
+                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
+                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
+                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
+                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
+                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
+                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
+                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
+                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
+                    _cells.GetCell(73, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                     //ReferenceCodes
                     if (cbIgnoreRefCodes.Checked)
                     {
-                        _cells.GetCell(73, i).Value = "Ignored";
                         _cells.GetCell(74, i).Value = "Ignored";
                         _cells.GetCell(75, i).Value = "Ignored";
                         _cells.GetCell(76, i).Value = "Ignored";
                         _cells.GetCell(77, i).Value = "Ignored";
+                        _cells.GetCell(78, i).Value = "Ignored";
                     }
                     else
                     {
                         var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
-                        _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
-                        _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
-                        _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
-                        _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
-                        _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                        _cells.GetCell(74, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                        _cells.GetCell(75, i).Value = "'" + referenceCodes.RefrigerantType;
+                        _cells.GetCell(76, i).Value = "'" + referenceCodes.FuelCostCenter;
+                        _cells.GetCell(77, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                        _cells.GetCell(78, i).Value = "'" + referenceCodes.XerasModel;
                     }
                 }
                 catch (Exception ex)
@@ -1016,41 +1019,42 @@ namespace EllipseEquipmentExcelAddIn
                         OriginalDoc = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value) : null,
                         TraceableFlg = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value)) : null,
                         EquipmentCriticality = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value)) : null,
-                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value)) : null,
-                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value)) : null,
-                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)) : null,
-                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)) : null,
-                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)) : null,
-                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value)) : null,
+                        EquipmentImpact = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value)) : null,
+                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value)) : null,
+                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)) : null,
+                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)) : null,
+                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)) : null,
+                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value)) : null,
+                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value)) : null,
                         LinkOne = new Equipment.LinkOneBook
                         {
-                            Publisher = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value) : null,
-                            Book = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value) : null,
-                            PageReference = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value) : null,
-                            ItemId = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value) : null
+                            Publisher = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value) : null,
+                            Book = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value) : null,
+                            PageReference = MyUtilities.IsTrue(_cells.GetCell(52, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value) : null,
+                            ItemId = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value) : null
                         },
                         ClassCodes = new Equipment.ClassificationCodes()
                         {
-                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value)) : null,
-                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)) : null,
-                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)) : null,
-                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value)) : null,
-                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value)) : null,
-                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value)) : null,
-                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value)) : null,
-                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value)) : null,
-                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value)) : null,
-                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)) : null,
-                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(63, i).Value)) : null,
-                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(64, i).Value)) : null,
-                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(65, i).Value)) : null,
-                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(66, i).Value)) : null,
-                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(67, i).Value)) : null,
-                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(68, i).Value)) : null,
-                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(69, i).Value)) : null,
-                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(70, i).Value)) : null,
-                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(71, i).Value)) : null,
-                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(72, i).Value)) : null
+                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)) : null,
+                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)) : null,
+                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value)) : null,
+                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value)) : null,
+                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value)) : null,
+                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value)) : null,
+                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value)) : null,
+                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value)) : null,
+                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)) : null,
+                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(63, i).Value)) : null,
+                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(64, i).Value)) : null,
+                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(65, i).Value)) : null,
+                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(66, i).Value)) : null,
+                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(67, i).Value)) : null,
+                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(68, i).Value)) : null,
+                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(69, i).Value)) : null,
+                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(70, i).Value)) : null,
+                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(71, i).Value)) : null,
+                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(72, i).Value)) : null,
+                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(73, i).Value)) : null
                         }
                     };
 
@@ -1067,11 +1071,11 @@ namespace EllipseEquipmentExcelAddIn
                     {
                         var referenceCodes = new Equipment.EquipmentReferenceCodes
                         {
-                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(78, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(78, i).Value) : null
                         };
 
                         //RefCode Validation
@@ -1201,41 +1205,42 @@ namespace EllipseEquipmentExcelAddIn
                         OriginalDoc = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
                         TraceableFlg = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(41, i).Value)) : null,
                         EquipmentCriticality = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(42, i).Value)) : null,
-                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(43, i).Value)) : null,
-                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(44, i).Value)) : null,
-                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(45, i).Value)) : null,
-                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(46, i).Value)) : null,
-                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(47, i).Value)) : null,
-                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(48, i).Value)) : null,
+                        EquipmentImpact = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(43, i).Value)) : null,
+                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(44, i).Value)) : null,
+                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(45, i).Value)) : null,
+                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(46, i).Value)) : null,
+                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(47, i).Value)) : null,
+                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(48, i).Value)) : null,
+                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(49, i).Value)) : null,
                         LinkOne = new Equipment.LinkOneBook
                         {
-                            Publisher = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null,
-                            Book = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(50, i).Value) : null,
-                            PageReference = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(51, i).Value) : null,
-                            ItemId = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(52, i).Value) : null
+                            Publisher = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(50, i).Value) : null,
+                            Book = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(51, i).Value) : null,
+                            PageReference = MyUtilities.IsTrue(_cells.GetCell(52, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(52, i).Value) : null,
+                            ItemId = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(53, i).Value) : null
                         },
                         ClassCodes = new Equipment.ClassificationCodes()
                         {
-                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(53, i).Value)) : null,
-                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(54, i).Value)) : null,
-                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(55, i).Value)) : null,
-                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(56, i).Value)) : null,
-                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(57, i).Value)) : null,
-                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(58, i).Value)) : null,
-                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(59, i).Value)) : null,
-                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(60, i).Value)) : null,
-                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(61, i).Value)) : null,
-                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(62, i).Value)) : null,
-                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(63, i).Value)) : null,
-                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(64, i).Value)) : null,
-                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(65, i).Value)) : null,
-                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(66, i).Value)) : null,
-                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(67, i).Value)) : null,
-                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(68, i).Value)) : null,
-                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(69, i).Value)) : null,
-                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(70, i).Value)) : null,
-                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(71, i).Value)) : null,
-                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(72, i).Value)) : null
+                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(54, i).Value)) : null,
+                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(55, i).Value)) : null,
+                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(56, i).Value)) : null,
+                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(57, i).Value)) : null,
+                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(58, i).Value)) : null,
+                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(59, i).Value)) : null,
+                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(60, i).Value)) : null,
+                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(61, i).Value)) : null,
+                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(62, i).Value)) : null,
+                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(63, i).Value)) : null,
+                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(64, i).Value)) : null,
+                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(65, i).Value)) : null,
+                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(66, i).Value)) : null,
+                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(67, i).Value)) : null,
+                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(68, i).Value)) : null,
+                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(69, i).Value)) : null,
+                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(70, i).Value)) : null,
+                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(71, i).Value)) : null,
+                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(72, i).Value)) : null,
+                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(73, i).Value)) : null
                         }
                     };
 
@@ -1249,11 +1254,11 @@ namespace EllipseEquipmentExcelAddIn
                     {
                         var referenceCodes = new Equipment.EquipmentReferenceCodes
                         {
-                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(78, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(78, i).Value) : null
                         };
 
                         //RefCode Validation

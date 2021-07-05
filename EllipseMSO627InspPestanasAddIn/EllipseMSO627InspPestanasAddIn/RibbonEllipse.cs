@@ -250,6 +250,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 var optionListComp = new List<string>
                 {
                     "COER - CONJUNTO DE RUEDAS",
+                    "CCOM - CILINDRO DE COMPUERTAS",
                     "SCMP - SISTEMA DE COMPUERTAS",
                     "SCOM - SISTEMA DE COMUNICACION"
                 };

@@ -1,5 +1,11 @@
 ﻿EllipseWorkOrderExcelAddIn
 
+Versión 1.9.1.0, Liberada el 07 de Julio de 2021
+* Adición de opciones de consulta de tiempo de completación
+
+Versión 1.9.0.9, Liberada el 02 de Junio de 2021
+* Añadida la opción de reconsultar por servicio para opciones de depuración
+
 Versión 1.9.0.3, Liberada el 18 de Mayo de 2021
 * Creación de log de actualizaciones
 * Asignación de acciones Disposables para servicios de ellipse

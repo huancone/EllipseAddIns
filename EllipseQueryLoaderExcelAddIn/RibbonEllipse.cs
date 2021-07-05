@@ -295,7 +295,7 @@ namespace EllipseQueryLoaderExcelAddIn
                 if (drpEnvironment.SelectedItem.Label.Equals("OTRA DB"))
                 {
                     // ReSharper disable once UnusedVariable
-                    var sqlDataReader = _eFunctions.GetSqlQueryResult(sqlQueryDecoded);
+                    var sqlDataReader = _eFunctions.GetQueryResult(sqlQueryDecoded);
                     throw new NotImplementedException("Esta función no ha sido implementada");
                     //TO DO
                 }
@@ -303,7 +303,15 @@ namespace EllipseQueryLoaderExcelAddIn
                 else
                 {
                     _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                    _eFunctions.SetConnectionTimeOut(999999999);
+                    var debugStartTime = DateTime.Now;
                     var dataReader = _eFunctions.GetQueryResult(sqlQueryDecoded);
+                    if (Debugger.DebugginMode)
+                    {
+                        var debugFinishTime = DateTime.Now;
+                        var debugElapsedTime = debugFinishTime - debugStartTime;
+                        Debugger.LogDebugging("Operation: GetQueryResult; Type: Database;" + " StartOperationTime; " + debugStartTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; FinishOperationTime; " + debugFinishTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; ElapsedOperationTime (ms); " + debugElapsedTime.TotalMilliseconds);
+                    }
 
                     if (dataReader == null)
                         return;
@@ -319,10 +327,18 @@ namespace EllipseQueryLoaderExcelAddIn
 
 
                     var currentRow = TitleRow02 + 1;
+                    var rowStartTime = DateTime.Now;
                     while (dataReader.Read())
                     {
                         for (var i = 0; i < dataReader.FieldCount; i++)
                             cr.GetCell(i + 1, currentRow).Value2 = "'" + dataReader[i].ToString().Trim();
+                        if (Debugger.DebugginMode)
+                        {
+                            var debugFinishTime = DateTime.Now;
+                            var debugElapsedTime = debugFinishTime - rowStartTime;
+                            Debugger.LogDebugging("Operation: GetRowResult; Type: Database;" + " StartOperationTime; " + rowStartTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; FinishOperationTime; " + debugFinishTime.ToString("yyyy/MM/dd HH:mm:ss.fff") + "; ElapsedOperationTime (ms); " + debugElapsedTime.TotalMilliseconds);
+                        }
+                        rowStartTime = DateTime.Now;
                         currentRow++;
                     }
 

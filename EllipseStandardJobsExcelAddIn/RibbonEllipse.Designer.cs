@@ -43,7 +43,6 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuStandardJobs = this.Factory.CreateRibbonMenu();
             this.btnStandardReview = this.Factory.CreateRibbonButton();
-            this.btnQuickStandardReview = this.Factory.CreateRibbonButton();
             this.btnReReviewStandard = this.Factory.CreateRibbonButton();
             this.btnActivateStandard = this.Factory.CreateRibbonButton();
             this.btnDeactivateStandard = this.Factory.CreateRibbonButton();
@@ -70,6 +69,7 @@
             this.btnUpdateQualityStdJobs = this.Factory.CreateRibbonButton();
             this.btnCleanQualityStdJobsTable = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.cbLastUseReview = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpStandardJobs.SuspendLayout();
             this.box1.SuspendLayout();
@@ -130,7 +130,7 @@
             // 
             this.menuStandardJobs.Dynamic = true;
             this.menuStandardJobs.Items.Add(this.btnStandardReview);
-            this.menuStandardJobs.Items.Add(this.btnQuickStandardReview);
+            this.menuStandardJobs.Items.Add(this.cbLastUseReview);
             this.menuStandardJobs.Items.Add(this.btnReReviewStandard);
             this.menuStandardJobs.Items.Add(this.btnActivateStandard);
             this.menuStandardJobs.Items.Add(this.btnDeactivateStandard);
@@ -147,13 +147,6 @@
             this.btnStandardReview.Name = "btnStandardReview";
             this.btnStandardReview.ShowImage = true;
             this.btnStandardReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStandardReview_Click);
-            // 
-            // btnQuickStandardReview
-            // 
-            this.btnQuickStandardReview.Label = "Consulta &Rápida";
-            this.btnQuickStandardReview.Name = "btnQuickStandardReview";
-            this.btnQuickStandardReview.ShowImage = true;
-            this.btnQuickStandardReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnQuickStandardReview_Click);
             // 
             // btnReReviewStandard
             // 
@@ -348,6 +341,12 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // cbLastUseReview
+            // 
+            this.cbLastUseReview.Checked = true;
+            this.cbLastUseReview.Label = "Consultar Últimos Usos";
+            this.cbLastUseReview.Name = "cbLastUseReview";
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -375,7 +374,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuTasks;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuRequirements;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStandardReview;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnQuickStandardReview;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateStandard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnModifyStandard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnActivateStandard;
@@ -402,6 +400,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuEquipments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonReviewEquipments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonActionsEquipment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbLastUseReview;
     }
 
     partial class ThisRibbonCollection

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -628,7 +629,7 @@ namespace EllipseStdTextExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-
+            
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -641,6 +642,7 @@ namespace EllipseStdTextExcelAddIn
 
             var i = TitleRow02 + 1;
 
+            
             //Se encuentran problemas de implementación, debido a un comportamiento irregular del ODP en Windows. 
             //Las conexiones cerradas (EllipseFunctions.Close()) vuelven a la piscina (pool) de conexiones por un tiempo antes 
             //de ser completamente Cerradas (Close) y Dispuestas (Dispose), lo que ocasiona un desbordamiento del
@@ -650,44 +652,55 @@ namespace EllipseStdTextExcelAddIn
             //Esto implica mayor tiempo de ejecución pero evita la excepción por el desbordamiento y tiempo de espera
             _eFunctions.SetConnectionPoolingType(false);
 
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            try
             {
-                try
+                while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
                 {
+                    try
+                    {
 
-                    var entityType = "" + _cells.GetCell(1, i).Value;
-                    var entityValue = "" + _cells.GetCell(2, i).Value + _cells.GetCell(3, i).Value;
-                    var refNum = "" + _cells.GetCell(4, i).Value;
-                    var seqNum = "" + _cells.GetCell(5, i).Value;
-                    var refCode = "" + _cells.GetCell(6, i).Value;
-                    var stdTextId = "" + _cells.GetCell(8, i).Value;
-                    var stdText = "" + _cells.GetCell(9, i).Value;
-                    refNum = string.IsNullOrWhiteSpace(refNum) ? "001" : refNum.PadLeft(3, '0');
-                    seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0'); 
+                        var entityType = "" + _cells.GetCell(1, i).Value;
+                        var entityValue = "" + _cells.GetCell(2, i).Value + _cells.GetCell(3, i).Value;
+                        var refNum = "" + _cells.GetCell(4, i).Value;
+                        var seqNum = "" + _cells.GetCell(5, i).Value;
+                        var refCode = "" + _cells.GetCell(6, i).Value;
+                        var stdTextId = "" + _cells.GetCell(8, i).Value;
+                        var stdText = "" + _cells.GetCell(9, i).Value;
+                        refNum = string.IsNullOrWhiteSpace(refNum) ? "001" : refNum.PadLeft(3, '0');
+                        seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0');
 
-                    if (entityType.Equals("WRQ"))
-                        entityValue = entityValue.PadLeft(12, '0');
+                        if (entityType.Equals("WRQ"))
+                            entityValue = entityValue.PadLeft(12, '0');
 
-                    var refItem = new ReferenceCodeItem(entityType, entityValue, refNum, seqNum, refCode, stdTextId, stdText);
-                    ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, rcOpContext, refItem);
+                        var refItem = new ReferenceCodeItem(entityType, entityValue, refNum, seqNum, refCode, stdTextId, stdText);
+                        ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, rcOpContext, refItem);
 
-                    _cells.GetCell(ResultColumn02, i).Value = "ACTUALIZADO";
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(2, i).Select();
-                    i++;
-                    _eFunctions.CloseConnection();
+                        _cells.GetCell(ResultColumn02, i).Value = "ACTUALIZADO";
+                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", ex.Message);
+                    }
+                    finally
+                    {
+                        _cells.GetCell(2, i).Select();
+                        i++;
+
+                    }
                 }
             }
-            _eFunctions.SetConnectionPoolingType(true);
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error. " + ex.Message);
+            }
+            finally
+            {
+                _eFunctions.SetConnectionPoolingType(true);
+                _eFunctions.CloseConnection();
+            }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells?.SetCursorDefault();
         }

@@ -342,21 +342,5 @@ namespace SharedClassLibrary.Ellipse.Forms
                     MessageBoxIcon.Error);
             }
         }
-
-        private void cbDebugMessages_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cbDebugMode.Checked)
-            {
-                cbDebugErrors.Checked = true;
-                cbDebugQueries.Checked = true;
-                cbDebugWarnings.Checked = true;
-            }
-            else
-            {
-                cbDebugErrors.Checked = false;
-                cbDebugQueries.Checked = false;
-                cbDebugWarnings.Checked = false;
-            }
-        }
     }
 }

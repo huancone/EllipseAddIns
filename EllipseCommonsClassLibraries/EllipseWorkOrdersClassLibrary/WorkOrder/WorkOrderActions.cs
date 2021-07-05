@@ -96,6 +96,7 @@ namespace EllipseWorkOrdersClassLibrary
                     completedBy = drWorkOrder["COMPLETED_BY"].ToString().Trim(),
                     completeTextFlag = drWorkOrder["COMPLETE_TEXT_FLAG"].ToString().Trim(),
                     closeCommitDate = drWorkOrder["CLOSED_DT"].ToString().Trim(),
+                    closeCommitTime = drWorkOrder["CLOSED_TIME"].ToString().Trim(),
                     locationFr = drWorkOrder["LOCATION_FR"].ToString().Trim(),
                     location = drWorkOrder["LOCATION"].ToString().Trim(),
                     noticeLocn = drWorkOrder["NOTICE_LOCN"].ToString().Trim(),
@@ -237,6 +238,7 @@ namespace EllipseWorkOrdersClassLibrary
                 completedBy = drWorkOrder["COMPLETED_BY"].ToString().Trim(),
                 completeTextFlag = drWorkOrder["COMPLETE_TEXT_FLAG"].ToString().Trim(),
                 closeCommitDate = drWorkOrder["CLOSED_DT"].ToString().Trim(),
+                closeCommitTime = drWorkOrder["CLOSED_TIME"].ToString().Trim(),
                 locationFr = drWorkOrder["LOCATION_FR"].ToString().Trim(),
                 location = drWorkOrder["LOCATION"].ToString().Trim(),
                 noticeLocn = drWorkOrder["NOTICE_LOCN"].ToString().Trim(),
@@ -272,6 +274,122 @@ namespace EllipseWorkOrdersClassLibrary
             return order;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
+        public static WorkOrder FetchWorkOrderService(string urlService, OperationContext opContext, string district, string workOrder)
+        {
+            long number1;
+            if (long.TryParse(workOrder, out number1))
+                workOrder = workOrder.PadLeft(8, '0');
+
+            using (var woService = new WorkOrderService.WorkOrderService())
+            {
+                woService.Url = urlService + "/WorkOrder";
+
+                var searchParam = new WorkOrderService.WorkOrderServiceReadRequestDTO();
+                searchParam.districtCode = district;
+                searchParam.workOrder = GetNewWorkOrderDto(workOrder);
+
+                var reply = woService.read(opContext, searchParam);
+
+                if (reply?.workOrder == null) return null;
+
+                var order = new WorkOrder
+                {
+                    districtCode = reply.districtCode,
+                    workGroup = reply.workGroup,
+                    workOrderStatusM = reply.workOrderStatusM,
+                    workOrderDesc = reply.workOrderDesc,
+                    equipmentNo = reply.equipmentNo,
+                    compCode = reply.compCode,
+                    compModCode = reply.compModCode,
+                    workOrderType = reply.workOrderType,
+                    maintenanceType = reply.maintenanceType,
+                    workOrderStatusU = reply.workOrderStatusU,
+                    raisedDate = reply.raisedDate,
+                    raisedTime = reply.raisedTime,
+                    originatorId = reply.originatorId,
+                    origPriority = reply.origPriority,
+                    origDocType = reply.origDocType,
+                    origDocNo = reply.origDocNo,
+                    requestId = reply.requestId,
+                    stdJobNo = reply.stdJobNo,
+                    maintSchTask = reply.maintenanceSchedTask,
+                    autoRequisitionInd = MyUtilities.ToString(reply.autoRequisitionInd),
+                    assignPerson = reply.assignPerson,
+                    planPriority = reply.planPriority,
+                    requisitionStartDate = reply.requisitionStartDate,
+                    requisitionStartTime = reply.requisitionStartTime,
+                    requiredByDate = reply.requiredByDate,
+                    requiredByTime = reply.requiredByTime,
+                    planStrDate = reply.planStrDate,
+                    planStrTime = reply.planStrTime,
+                    planFinDate = reply.planFinDate,
+                    planFinTime = reply.planFinTime,
+                    unitOfWork = reply.unitOfWork,
+                    unitsRequired = MyUtilities.ToString(reply.unitsRequired),
+                    pcComplete = MyUtilities.ToString(reply.pcComplete),
+                    unitsComplete = MyUtilities.ToString(reply.unitsComplete),
+                    accountCode = reply.accountCode,
+                    projectNo = reply.projectNo,
+                    parentWo = reply.parentWo,
+                    failurePart = reply.failurePart,
+                    jobCode1 = reply.jobCode1,
+                    jobCode2 = reply.jobCode2,
+                    jobCode3 = reply.jobCode3,
+                    jobCode4 = reply.jobCode4,
+                    jobCode5 = reply.jobCode5,
+                    jobCode6 = reply.jobCode6,
+                    jobCode7 = reply.jobCode7,
+                    jobCode8 = reply.jobCode8,
+                    jobCode9 = reply.jobCode9,
+                    jobCode10 = reply.jobCode10,
+                    jobCodeFlag = !string.IsNullOrWhiteSpace(reply.jobCode1 + reply.jobCode2 + reply.jobCode3 + reply.jobCode4 + reply.jobCode5 + reply.jobCode6 + reply.jobCode7 + reply.jobCode8 + reply.jobCode9 + reply.jobCode10) ? "Y" : "N",
+                    completedCode = reply.completedCode,
+                    completedBy = reply.completedBy,
+                    completeTextFlag = MyUtilities.ToString(reply.completionTextExists),
+                    closeCommitDate = reply.closedDate,
+                    locationFr = reply.locationFr,
+                    location = reply.location,
+                    noticeLocn = reply.noticeLocn,
+                    calculatedDurationsFlag = MyUtilities.ToString(reply.calculatedDurationsFlag),
+                    estimatedDurationsHrs = MyUtilities.ToString(reply.estimatedDurationsHrs),
+                    actualDurationsHrs = MyUtilities.ToString(reply.actualDurationsHrs),
+                    calculatedLabFlag = MyUtilities.ToString(reply.calculatedLabFlag),
+                    estimatedLabHrs = MyUtilities.ToString(reply.estimatedLabHrs),
+                    calculatedLabHrs = MyUtilities.ToString(reply.calculatedLabHrs),
+                    actualLabHrs = MyUtilities.ToString(reply.actualLabHrs),
+                    estimatedLabCost = MyUtilities.ToString(reply.estimatedLabCost),
+                    calculatedLabCost = MyUtilities.ToString(reply.calculatedLabCost),
+                    actualLabCost = MyUtilities.ToString(reply.actualLabCost),
+                    calculatedMatFlag = MyUtilities.ToString(reply.calculatedMatFlag),
+                    estimatedMatCost = MyUtilities.ToString(reply.estimatedMatCost),
+                    calculatedMatCost = MyUtilities.ToString(reply.calculatedMatCost),
+                    actualMatCost = MyUtilities.ToString(reply.actualMatCost),
+                    calculatedEquipmentFlag = MyUtilities.ToString(reply.calculatedEquipmentFlag),
+                    estimatedEquipmentCost = MyUtilities.ToString(reply.estimatedEquipmentCost),
+                    calculatedEquipmentCost = MyUtilities.ToString(reply.calculatedEquipmentCost),
+                    actualEquipmentCost = MyUtilities.ToString(reply.actualEquipmentCost),
+                    estimatedOtherCost = MyUtilities.ToString(reply.estimatedOtherCost),
+                    actualOtherCost = MyUtilities.ToString(reply.actualOtherCost),
+                    finalCosts = MyUtilities.ToString(reply.finalCosts),
+                };
+
+                //Para que al consultar, se puedan realizar nuevamente las operaciones comunes
+                if (string.IsNullOrWhiteSpace(order.unitOfWork) && order.unitsRequired.Equals("0"))
+                    order.unitsRequired = "";
+                //
+                order.SetWorkOrderDto(reply.workOrder);
+                order.SetRelatedWoDto(reply.relatedWo);
+                return order;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1205,8 +1323,18 @@ namespace EllipseWorkOrdersClassLibrary
             }
             else
             {
-                workOrderDto.prefix = "00";
-                workOrderDto.no = no;
+                if (int.TryParse(no, out int i))
+                {
+                    workOrderDto.prefix = "00";
+                    workOrderDto.no = no;
+                }
+                else
+                {
+                    workOrderDto.prefix = no.Substring(0, 2);
+                    workOrderDto.no = no.Substring(2);
+                }
+
+                
             }
 
             return workOrderDto;

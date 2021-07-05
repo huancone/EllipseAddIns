@@ -67,6 +67,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string completedBy;
         public string completeTextFlag;
         public string closeCommitDate;
+        public string closeCommitTime;
         //Location
         public string location;
         public string locationFr;
@@ -149,6 +150,11 @@ namespace EllipseWorkOrdersClassLibrary
             return relatedWoDTO;
         }
 
+        public WorkOrderService.WorkOrderDTO SetRelatedWoDto(WorkOrderService.WorkOrderDTO wo)
+        {
+            relatedWoDTO = wo;
+            return relatedWoDTO;
+        }
         public void SetStatus(string statusName)
         {
             if (!string.IsNullOrEmpty(WoStatusList.GetStatusCode(statusName)))

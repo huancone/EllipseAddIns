@@ -6,3 +6,7 @@ Versión 1.1.0.0, Liberada el 23 de Enero de 2021
 
 Versión 1.1.0.2, Liberada el 18 de Mayo de 2021
 * Asignación de acciones Disposables para servicios de ellipse
+
+Versión 1.1.0.3, Liberada el 9 de Junio de 2021
+* Actualización de Framework a .Net 4.5
+* Inclusión de campo Equipment Impact

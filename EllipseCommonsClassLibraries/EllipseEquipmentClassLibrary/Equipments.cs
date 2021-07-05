@@ -31,6 +31,7 @@
         public string EquipmentClass;
         public string EquipmentCriticality;
         public string EquipmentGrpId;
+        public string EquipmentImpact;
         public string EquipmentLocation;
         public string EquipmentNo;
         public string EquipmentNoDescription1;
