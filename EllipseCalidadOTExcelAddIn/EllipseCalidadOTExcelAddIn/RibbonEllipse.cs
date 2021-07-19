@@ -42,7 +42,7 @@ namespace EllipseCalidadOTExcelAddIn
 
         private const string SheetName01 = "WorkOrders";
         private const int TitleRow01 = 7;
-        private const int ResultColumn01 = 19;
+        private const int ResultColumn01 = 20;
         private const string TableName01 = "WorkOrderTable";
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
         public string WoCode7 = "";
@@ -132,16 +132,16 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetCell("K1").Value = "OBLIGATORIO";
-                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell("K2").Value = "OPCIONAL";
-                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell("K3").Value = "INFORMATIVO";
-                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
-                _cells.GetCell("K4").Style = _cells.GetStyle(StyleConstants.TitleAction);
-                _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
-                _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+                _cells.GetCell("L1").Value = "OBLIGATORIO";
+                _cells.GetCell("L1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("L2").Value = "OPCIONAL";
+                _cells.GetCell("L2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("L3").Value = "INFORMATIVO";
+                _cells.GetCell("L3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("L4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("L4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell("L5").Value = "REQUERIDO ADICIONAL";
+                _cells.GetCell("L5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
 
@@ -174,12 +174,17 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells.GetCell("J3").Value = "WO_STATUS_M";
                 _cells.GetCell("J3").AddComment("BUSCAR POR WO_STATUS_M");
                 _cells.GetCell("J3").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "ASSIGN_TO";
+                _cells.GetCell("K3").AddComment("BUSCAR POR ASSIGN_PERSON");
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 var statusList = WoStatusList.GetStatusNames(true);
                 _cells.SetValidationList(_cells.GetCell("J4"), statusList, ValidationSheetName, 4);
                 //_cells.SetValidationList(_cells.GetCell("H4"), new List<string> { "'C'", "'O';'A'", "'C';'O';'A'" });
                 _cells.GetCell("J4").NumberFormat = "@";
+                _cells.GetCell("K4").NumberFormat = "@";
                 _cells.GetRange("A1","A10000").NumberFormat = "@";
                 _cells.GetRange("J4").Style = _cells.GetStyle(StyleConstants.Select);
+                _cells.GetRange("K4").Style = _cells.GetStyle(StyleConstants.Select);
 
 
                 _cells.GetCell("C3").Value = "FECHA DESDE";
@@ -232,8 +237,9 @@ namespace EllipseCalidadOTExcelAddIn
                     ">=80% y <=99% - Calidad Buena\n" +
                     "100% - Calidad Excelente");
                 _cells.GetCell(18, TitleRow01).Value = "GARANTIA";
+                _cells.GetCell(19, TitleRow01).Value = "CALIFICADO_POR";
                 _cells.GetCell(16, TitleRow01).Style = StyleConstants.TitleRequired;
-                _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - Baja", "2 - Regular", "3 - Buena", "4 - Excelente" });
+                _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), new List<string> { "1 - BAJA", "2 - REGULAR", "3 - BUENA", "4 - EXCELENTE" });
                 _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), new List<string> { "Y", "N"});
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
@@ -294,35 +300,7 @@ namespace EllipseCalidadOTExcelAddIn
                                     E.CALC_LAB_HRS AS LABOR_CAL,  
                                     W.RELATED_WO,  
                                     W.ASSIGN_PERSON, 
-                                    (
-                                        SELECT 
-                                            MAX(f.L0)|| ' ' ||MAX(f.L1)|| ' ' ||MAX(f.L2)|| ' ' ||MAX(f.L3)|| ' ' ||MAX(f.L4)|| ' ' ||MAX(f.L5)|| ' ' ||MAX(f.L6)|| ' ' ||MAX(f.L7)|| ' ' ||MAX(f.L8)|| ' ' ||MAX(f.L9) as ComentarioExte
-                                        FROM
-                                            (
-                                            SELECT 
-                                                STD_KEY,
-                                                w.WORK_ORDER,
-                                                CASE WHEN std_line_no='0000' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L0,
-                                                CASE WHEN std_line_no='0001' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L1,
-                                                CASE WHEN std_line_no='0002' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L2,
-                                                CASE WHEN std_line_no='0003' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L3,
-                                                CASE WHEN std_line_no='0004' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L4,
-                                                CASE WHEN std_line_no='0005' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L5,
-                                                CASE WHEN std_line_no='0006' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L6,
-                                                CASE WHEN std_line_no='0007' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L7,
-                                                CASE WHEN std_line_no='0008' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L8,
-                                                CASE WHEN std_line_no='0009' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L9
-                                            FROM 
-                                                ELLIPSE.MSF096_STD_VOLAT t
-                                                INNER JOIN ELLIPSE.MSF620 w ON(t.std_key = 'ICOR'||w.work_order)
-                                            where  
-                                                t.std_text_code='WO'
-                                        ) f
-                                        WHERE
-                                        f.work_order= W.WORK_ORDER
-                                        GROUP BY 
-                                        F.STD_KEY
-                                    ) AS COMENTARIO_CIERRE,
+                                    SIGMAN.FNU_COMENTARIOS_OT2@DBLSIG(W.WORK_ORDER,'CW','1') AS COMENTARIO_CIERRE,
                                     W.WO_JOB_CODEX8
                                 FROM
                                     ELLIPSE.MSF620 W 
@@ -364,7 +342,13 @@ namespace EllipseCalidadOTExcelAddIn
                         //sqlQuery += "AND W.WO_STATUS_M in ('" + _cells.GetEmptyIfNull( _cells.GetCell("H4").Value.Replace(';', ',')) + ") ";
                         sqlQuery += "AND W.WO_STATUS_M = '" + WoStatusList.GetStatusCode(_cells.GetEmptyIfNull(_cells.GetCell("J4").Value)) + "' ";
                     }
-                    if(WoCode7 != "")
+                    if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("K4").Value) != null)
+                    {
+                        //MessageBox.Show(WoStatusList.GetStatusCode(_cells.GetEmptyIfNull(_cells.GetCell("H4").Value)));
+                        //sqlQuery += "AND W.WO_STATUS_M in ('" + _cells.GetEmptyIfNull( _cells.GetCell("H4").Value.Replace(';', ',')) + ") ";
+                        sqlQuery += "AND W.ASSIGN_PERSON = RPAD('" + _cells.GetEmptyIfNull(_cells.GetCell("K4").Value) + "',10,' ') ";
+                    }
+                    if (WoCode7 != "")
                     {
                         sqlQuery += "AND TRIM(W.WO_JOB_CODEX8) = 'SC' ";
                         WoCode7 = "";
@@ -403,10 +387,10 @@ namespace EllipseCalidadOTExcelAddIn
                                 A.WO_JOB_CODEX8,
                                 (
                                   SELECT
-                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
-                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
-                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
-                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
+                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN '1 - BAJA'
+                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN '2 - REGULAR'
+                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN '3 - BUENA'
+                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN '4 - EXCELENTE'
                                        ELSE ''
                                   END CALIDAD
                                     FROM
@@ -433,7 +417,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '024'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS GARANTIA
+                                ) AS GARANTIA,
+                                (
+                                  SELECT
+                                    TRIM(REF_CODE)
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '035'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIFICADO_POR
                               FROM
                                 A
                             )
@@ -466,20 +464,33 @@ namespace EllipseCalidadOTExcelAddIn
                               B.WO_JOB_CODEX8,
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.GARANTIA
+                              B.GARANTIA,
+                              B.CALIFICADO_POR
                             FROM
-                              B /*WHERE B.CALIDAD IS NULL*/";
+                              B WHERE B.CALIDAD IS NULL ";
+                    /*if (WoCode7 != "")
+                    {
+                        WoCode7 = "";
+                        if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
+                        {
+                            sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
+                        }
+                    }
+                    else */
                     if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell("G4").Value) != null)
                     {
-                        sqlQuery += " WHERE rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
+                        sqlQuery += " AND rownum <= '" + _cells.GetEmptyIfNull(_cells.GetCell("G4").Value) + "' ";
                     }
-                    
+
                     _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
 
-                    var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
-                    dbi.DbUser = "consulbo";
-                    dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
-                    _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                    //var dbi = Environments.GetDatabaseItem(/*drpEnvironment.SelectedItem.Label*/Environments.EllipseSigmanProductivo);
+                    //dbi.DbPassword = "ventyx15";
+                    //dbi.DbUser = "consulbo";
+
+                    //dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                    //_eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                    _eFunctions.SetDBSettings(Environments.EllipseSigmanProductivo);
                     _eFunctions.SetConnectionTimeOut(0);
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
                     _cells.ClearTableRange(TableName01);
@@ -508,6 +519,7 @@ namespace EllipseCalidadOTExcelAddIn
                         _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                         _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
                         _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
+                        _cells.GetCell("S" + currentRow).Value = odr["CALIFICADO_POR"] + "";
 
                         if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                         {
@@ -640,35 +652,7 @@ namespace EllipseCalidadOTExcelAddIn
                                     E.CALC_LAB_HRS AS LABOR_CAL,  
                                     W.RELATED_WO,  
                                     W.ASSIGN_PERSON, 
-                                    (
-                                        SELECT 
-                                            MAX(f.L0)|| ' ' ||MAX(f.L1)|| ' ' ||MAX(f.L2)|| ' ' ||MAX(f.L3)|| ' ' ||MAX(f.L4)|| ' ' ||MAX(f.L5)|| ' ' ||MAX(f.L6)|| ' ' ||MAX(f.L7)|| ' ' ||MAX(f.L8)|| ' ' ||MAX(f.L9) as ComentarioExte
-                                        FROM
-                                            (
-                                            SELECT 
-                                                STD_KEY,
-                                                w.WORK_ORDER,
-                                                CASE WHEN std_line_no='0000' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L0,
-                                                CASE WHEN std_line_no='0001' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L1,
-                                                CASE WHEN std_line_no='0002' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L2,
-                                                CASE WHEN std_line_no='0003' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L3,
-                                                CASE WHEN std_line_no='0004' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L4,
-                                                CASE WHEN std_line_no='0005' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L5,
-                                                CASE WHEN std_line_no='0006' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L6,
-                                                CASE WHEN std_line_no='0007' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L7,
-                                                CASE WHEN std_line_no='0008' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L8,
-                                                CASE WHEN std_line_no='0009' THEN trim(STD_VOLAT_1)||trim(STD_VOLAT_2)||trim(STD_VOLAT_3)||trim(STD_VOLAT_4)||trim(STD_VOLAT_5)  END L9
-                                            FROM 
-                                                ELLIPSE.MSF096_STD_VOLAT t
-                                                INNER JOIN ELLIPSE.MSF620 w ON(t.std_key = 'ICOR'||w.work_order)
-                                            where  
-                                                t.std_text_code='WO'
-                                        ) f
-                                        WHERE
-                                        f.work_order= W.WORK_ORDER
-                                        GROUP BY 
-                                        F.STD_KEY
-                                    ) AS COMENTARIO_CIERRE,
+                                    SIGMAN.FNU_COMENTARIOS_OT2@DBLSIG(W.WORK_ORDER,'CW','1') AS COMENTARIO_CIERRE,
                                     W.WO_JOB_CODEX8
                                 FROM
                                     ELLIPSE.MSF620 W 
@@ -728,13 +712,13 @@ namespace EllipseCalidadOTExcelAddIn
                                 A.WO_JOB_CODEX2 AS PARTE_FALLO,
                                 A.WO_JOB_CODEX3 AS MODO_FALLA,
                                 A.WO_JOB_CODEX8,
-                                (
+(
                                   SELECT
-                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN 'BAJA'
-                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN 'REGULAR'
-                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN 'BUENA'
-                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN 'EXCELENTE'
-                                       ELSE '' 
+                                  CASE WHEN TO_NUMBER(REF_CODE) = '1' THEN '1 - BAJA'
+                                       WHEN TO_NUMBER(REF_CODE) = '2' THEN '2 - REGULAR'
+                                       WHEN TO_NUMBER(REF_CODE) = '3' THEN '3 - BUENA'
+                                       WHEN TO_NUMBER(REF_CODE) = '4' THEN '4 - EXCELENTE'
+                                       ELSE ''
                                   END CALIDAD
                                     FROM
                                       ELLIPSE.MSF071 RC,
@@ -760,7 +744,21 @@ namespace EllipseCalidadOTExcelAddIn
                                       AND RC.REF_NO = '024'
                                       AND RC.SEQ_NUM = '001'
                                       AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
-                                ) AS GARANTIA
+                                ) AS GARANTIA,
+                                (
+                                  SELECT
+                                    TRIM(REF_CODE)
+                                    FROM
+                                      ELLIPSE.MSF071 RC,
+                                      ELLIPSE.MSF070 RCE
+                                    WHERE
+                                      RC.ENTITY_TYPE = RCE.ENTITY_TYPE
+                                      AND RC.REF_NO = RCE.REF_NO
+                                      AND RCE.ENTITY_TYPE = 'WKO'
+                                      AND RC.REF_NO = '035'
+                                      AND RC.SEQ_NUM = '001'
+                                      AND SUBSTR(RC.ENTITY_VALUE, 6, 8) = A.WORK_ORDER
+                                ) AS CALIFICADO_POR
                               FROM
                                 A
                             )
@@ -793,16 +791,18 @@ namespace EllipseCalidadOTExcelAddIn
                               B.WO_JOB_CODEX8, 
                               B.COMENTARIO_CIERRE,  
                               B.CALIDAD,
-                              B.GARANTIA
+                              B.GARANTIA,
+                              B.CALIFICADO_POR
                             FROM
-                              B ";
+                              B /*WHERE B.CALIDAD IS NULL*/";
                 
 
                 _cells.GetCell("A5").Value = "Consultando Informacion. Por favor espere...";
-                var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
-                dbi.DbUser = "consulbo";
-                dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
-                _eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                //var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
+                //dbi.DbUser = "consulbo";
+                //dbi.DbEncodedPassword = "TPZPyIEoE7gfD6TZUaKys4yxQWTAe5BNWK1wjmjo1CVdYnbiAzyhOPSszjHNvUWPSWH4cq9q2Cs4gDdGCK7+JfgpqjmYXTF+8VSfW78zIcPJafyHOtwBweS+QjZEFa9W";
+                //_eFunctions.SetDBSettings(dbi.DbName, dbi.DbUser, dbi.DbPassword);
+                _eFunctions.SetDBSettings(Environments.EllipseSigmanProductivo);
                 _eFunctions.SetConnectionTimeOut(0);
                 var odr = _eFunctions.GetQueryResult(sqlQuery);
                 _cells.ClearTableRange(TableName01);
@@ -831,6 +831,7 @@ namespace EllipseCalidadOTExcelAddIn
                     _cells.GetCell("Q" + currentRow).Value = odr["CALIDAD"] + "";
                     _cells.GetCell("Q" + currentRow).NumberFormat = "###,##%";
                     _cells.GetCell("R" + currentRow).Value = odr["GARANTIA"] + "";
+                    _cells.GetCell("S" + currentRow).Value = odr["CALIFICADO_POR"] + "";
 
                     if (Convert.ToDouble(odr["HORAS_LAB"]) <= 0)
                     {
@@ -1004,7 +1005,7 @@ namespace EllipseCalidadOTExcelAddIn
 
         private void CalificarOT()
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(Environments.EllipseProductivo);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1012,7 +1013,7 @@ namespace EllipseCalidadOTExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(Environments.EllipseProductivo);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDstrct,
@@ -1083,8 +1084,8 @@ namespace EllipseCalidadOTExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(Environments.EllipseProductivo);
+            var urlService = Environments.GetServiceUrl(Environments.EllipseProductivo);
 
 
             var opSheet = new WorkOrderService.OperationContext
@@ -1109,29 +1110,31 @@ namespace EllipseCalidadOTExcelAddIn
             var calif = "";
             var calificacion = _cells.GetEmptyIfNull(_cells.GetCell(17, fila).Value);
             var Garantia = _cells.GetEmptyIfNull(_cells.GetCell(18, fila).Value);
+            var CalifPor = _cells.GetEmptyIfNull(_cells.GetCell(19, fila).Value);
             //var CalificacionCalidadOT = "";
             //var CalificadoPor = "";
 
-            if (calificacion == "1 - Baja")
+            if (calificacion == "1 - BAJA")
             {
                 calif = "1";
             }
-            else if (calificacion == "2 - Regular")
+            else if (calificacion == "2 - REGULAR")
             {
                 calif = "2";
             }
-            else if (calificacion == "3 - Buena")
+            else if (calificacion == "3 - BUENA")
             {
                 calif = "3";
             }
-            else if (calificacion == "4 - Excelente")
+            else if (calificacion == "4 - EXCELENTE")
             {
                 calif = "4";
             }
             var User = "";
             if(calif != "")
             {
-                User = _frmAuth.EllipseUser;
+                //User = _frmAuth.EllipseUser;
+                User = CalifPor;
             }
 
             var woRefCodes = new WorkOrderReferenceCodes
