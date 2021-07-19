@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("EllipseStdTextClassLibrary")]
-[assembly: AssemblyDescription("Clases de StdText para AddIns de Ellipse 8")]
+[assembly: AssemblyDescription("Clases de StdText para AddIns de ELLIPSE")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("EllipseStdTextClassLibrary")]

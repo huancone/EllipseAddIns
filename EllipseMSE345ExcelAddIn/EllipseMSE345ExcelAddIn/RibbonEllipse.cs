@@ -162,7 +162,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A5");
 
-                _cells.GetCell("B1").Value = "MONITOREO DE CONDICIONES - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MONITOREO DE CONDICIONES - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "K5");
                 _cells.MergeCells("C6", "L11");
@@ -284,7 +284,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A5");
 
-                _cells.GetCell("B1").Value = "MONITOREO DE CONDICIONES - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MONITOREO DE CONDICIONES - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "H5");
                 _cells.MergeCells("C6", "I12");

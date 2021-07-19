@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EllipseStandardJobsClassLibrary")]
-[assembly: AssemblyDescription("Clase StandarJobs para desarrollo de AddIns de Ellipse 8")]
+[assembly: AssemblyDescription("Clase StandarJobs para desarrollo de AddIns de ELLIPSE")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("EllipseStandardJobsClassLibrary")]

@@ -210,7 +210,7 @@ namespace EllipseMstExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "MAINTENANCE SCHEDULE TASK - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MAINTENANCE SCHEDULE TASK - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -345,7 +345,7 @@ namespace EllipseMstExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RESCHEDULE MAINTENANCE SCHEDULE TASK - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RESCHEDULE MAINTENANCE SCHEDULE TASK - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

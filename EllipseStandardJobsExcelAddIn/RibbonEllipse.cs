@@ -411,7 +411,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STANDARD JOBS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "STANDARD JOBS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -561,7 +561,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STD JOBS TASKS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "STD JOBS TASKS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
@@ -663,7 +663,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STDJ TASK REQUIREMENTS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "STDJ TASK REQUIREMENTS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
@@ -737,7 +737,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                     _cells.MergeCells("A1", "B2");
 
-                    _cells.GetCell("C1").Value = "STANDARD JOBS - ELLIPSE 8";
+                    _cells.GetCell("C1").Value = "STANDARD JOBS - ELLIPSE";
                     _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                     _cells.MergeCells("C1", "J2");
 
@@ -839,7 +839,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STANDARD JOBS REFERENCE CODES - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "STANDARD JOBS REFERENCE CODES - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
@@ -928,7 +928,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STANDARD JOBS REFERENCE CODES - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "STANDARD JOBS REFERENCE CODES - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 

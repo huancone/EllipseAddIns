@@ -1,7 +1,14 @@
-//Para ejecutar este código debe tener referenciados los siguientes namespaces
+//Para ejecutar este código debe agregar adicionalmente la librería
+//SharedClassLibrary.Connections.dll
 
-//using Excel = Microsoft.Office.Interop.Excel;
+//Para ejecutar este código debe tener referenciados los siguientes namespaces y haber seguido los pasos de configuración inicial del manual
 //using System.Windows.Forms;
+//using SharedClassLibrary.Ellipse;
+//using SharedClassLibrary.Ellipse.Connections;
+//using SharedClassLibrary.Ellipse.Forms;
+//using SharedClassLibrary.Utilities;
+//using SharedClassLibrary.Vsto.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 
         private void ExecuteQuery()
         {

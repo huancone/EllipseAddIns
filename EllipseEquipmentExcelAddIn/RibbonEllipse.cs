@@ -299,7 +299,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "EQUIPMENT - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "EQUIPMENT - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -531,7 +531,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "EQUIPMENT TRACING - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "EQUIPMENT TRACING - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -594,7 +594,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "LIST EQUIPMENTS - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LIST EQUIPMENTS - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 

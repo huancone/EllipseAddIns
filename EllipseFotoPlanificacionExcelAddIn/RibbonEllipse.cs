@@ -200,7 +200,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "FOTO PLANIFICACIÓN MANTENIMIENTO - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "FOTO PLANIFICACIÓN MANTENIMIENTO - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

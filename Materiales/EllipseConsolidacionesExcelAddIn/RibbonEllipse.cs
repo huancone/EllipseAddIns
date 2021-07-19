@@ -203,7 +203,7 @@ namespace EllipseConsolidacionesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A3");
 
-                _cells.GetCell("B1").Value = "CONSOLIDACIONES - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CONSOLIDACIONES - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "B3");
 
@@ -235,7 +235,7 @@ namespace EllipseConsolidacionesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A3");
 
-                _cells.GetCell("B1").Value = "CATEGORÍA DE SERVICIOS - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CATEGORÍA DE SERVICIOS - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "B3");
 

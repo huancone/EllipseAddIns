@@ -5,8 +5,13 @@
 //using Oracle.ManagedDataAccess.Client;
 //using System.Windows.Forms;
 
+		//Para ejecutar este código debe tener creadas las siguientes variables
+        private Excel.Application _excelApp;
+		
         private void ExecuteQuery()
         {
+			if(_excelApp == null)
+				_excelApp = Globals.ThisAddIn.Application;
             OracleConnection sqlOracleConn = null;
             try
             {

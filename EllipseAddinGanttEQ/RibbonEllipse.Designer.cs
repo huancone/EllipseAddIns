@@ -69,7 +69,7 @@
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.grpProyecto);
-            this.tab1.Label = "Ellipse 8";
+            this.tab1.Label = "ELLIPSE";
             this.tab1.Name = "tab1";
             // 
             // grpProyecto

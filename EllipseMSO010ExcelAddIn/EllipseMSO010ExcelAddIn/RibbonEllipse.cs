@@ -177,7 +177,7 @@ namespace EllipseMSO010ExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "MSO010 TABLE CODE ENTRIES - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "MSO010 TABLE CODE ENTRIES - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

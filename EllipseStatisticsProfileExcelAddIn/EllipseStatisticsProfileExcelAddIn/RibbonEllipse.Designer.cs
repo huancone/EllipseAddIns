@@ -49,7 +49,7 @@
             // 
             this.tabEllipse.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tabEllipse.Groups.Add(this.grpStatisticsProfile);
-            this.tabEllipse.Label = "ELLIPSE 8";
+            this.tabEllipse.Label = "ELLIPSE";
             this.tabEllipse.Name = "tabEllipse";
             // 
             // grpStatisticsProfile
@@ -94,7 +94,7 @@
             this.Name = "RibbonEllipse";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.tabEllipse);
-            this.Tag = "ELLIPSE 8";
+            this.Tag = "ELLIPSE";
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonEllipse_Load);
             this.tabEllipse.ResumeLayout(false);
             this.tabEllipse.PerformLayout();

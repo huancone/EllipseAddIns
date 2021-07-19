@@ -11,7 +11,6 @@ using SharedClassLibrary.Ellipse.Constants;
 using SharedClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
-using Application = Microsoft.Office.Interop.Excel.Application;
 using SharedClassLibrary.Ellipse.Forms;
 using EllipseStdTextClassLibrary;
 using SharedClassLibrary;
@@ -29,7 +28,7 @@ namespace EllipseWorkOrderExcelAddIn
         private ExcelStyleCells _cells;
         private EllipseFunctions _eFunctions;
         private FormAuthenticate _frmAuth;
-        private Application _excelApp;
+        private Microsoft.Office.Interop.Excel.Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
         private const string SheetName02 = "Tasks";
@@ -107,7 +106,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                var settings = new Settings();
+                Settings.Initiate();
                 _eFunctions = new EllipseFunctions();
                 _frmAuth = new FormAuthenticate();
                 _excelApp = Globals.ThisAddIn.Application;
@@ -120,6 +119,7 @@ namespace EllipseWorkOrderExcelAddIn
                     drpEnvironment.Items.Add(item);
                 }
 
+				var settings = Settings.CurrentSettings;
                 settings.SetDefaultCustomSettingValue("FlagEstDuration", "Y");
                 settings.SetDefaultCustomSettingValue("ValidateTaskPlanDates", "Y");
                 settings.SetDefaultCustomSettingValue("IgnoreClosedStatus", "N");
@@ -904,7 +904,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1109,7 +1109,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WO TASKS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WO TASKS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
@@ -1234,7 +1234,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WO TASK REQUIREMENTS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WO TASK REQUIREMENTS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
@@ -1312,7 +1312,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "CLOSE WORK ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CLOSE WORK ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1370,7 +1370,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "CLOSE WORK ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CLOSE WORK ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1421,7 +1421,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "WORK ORDERS DURATIONS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS DURATIONS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1465,7 +1465,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "WORK ORDERS PROGRESS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS PROGRESS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1512,7 +1512,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "WORK ORDERS TO DO - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS TO DO - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1585,7 +1585,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1805,7 +1805,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "WORK ORDER REFERENCE CODES - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDER REFERENCE CODES - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -2480,7 +2480,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -4035,7 +4035,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "CONTROLES CRÍTICOS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CONTROLES CRÍTICOS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -5035,6 +5035,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
+            
             woCells.SetFixedWorkingWorkSheet(true);
 
             var resultColumn = ResultColumn03;

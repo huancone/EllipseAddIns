@@ -280,7 +280,7 @@ namespace EllipseMonitoreoExcelAddIn
                 Cells.GetRange("A1", "A5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
                 Cells.GetRange("A1", "A5").Borders.Weight = "2";
 
-                Cells.GetCell("B1").Value = "MONITOREO - ELLIPSE 8 && ELLIPSE 9";
+                Cells.GetCell("B1").Value = "MONITOREO - ELLIPSE && ELLIPSE 9";
                 Cells.GetCell("B1").Style = Cells.GetStyle(StyleConstants.HeaderDefault);
                 Cells.MergeCells("B1", ColHeader + "5");
                 Cells.GetRange("B1", ColHeader + "5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);

@@ -164,7 +164,7 @@ namespace EllipseSubAssetGeneralInfoExcelAddIn
                 RangeMaintItem6.Merge();
                 RangeMaintItem6.Interior.Color = Color.FromArgb(79, 129, 189);
                 RangeMaintItem6.Font.Color = Color.White;
-                RangeMaintItem6.Value = "MSO685 Opcion 4 VL Maintain Sub-Asset Valuation Details - Ellipse 8 Loader";
+                RangeMaintItem6.Value = "MSO685 Opcion 4 VL Maintain Sub-Asset Valuation Details - ELLIPSE Loader";
                 RangeMaintItem6.WrapText = true;
                 RangeMaintItem6 = excelSheet6.get_Range(beginColumn6 + "1:" + endColumn6 + "1");
                 RangeMaintItem6.Borders[excel.XlBordersIndex.xlEdgeLeft].LineStyle = excel.XlLineStyle.xlContinuous;
@@ -420,7 +420,7 @@ namespace EllipseSubAssetGeneralInfoExcelAddIn
                 RangeMaintItem4.Merge();
                 RangeMaintItem4.Interior.Color = Color.FromArgb(79, 129, 189);
                 RangeMaintItem4.Font.Color = Color.White;
-                RangeMaintItem4.Value = "MSO685 Opcion 3 Maintain Sub-Asset Depreciation Details - Ellipse 8 Loader";
+                RangeMaintItem4.Value = "MSO685 Opcion 3 Maintain Sub-Asset Depreciation Details - ELLIPSE Loader";
                 RangeMaintItem4.WrapText = true;
                 RangeMaintItem4 = excelSheet4.get_Range(beginColumn4 + "1:" + endColumn4 + "1");
                 RangeMaintItem4.Borders[excel.XlBordersIndex.xlEdgeLeft].LineStyle = excel.XlLineStyle.xlContinuous;

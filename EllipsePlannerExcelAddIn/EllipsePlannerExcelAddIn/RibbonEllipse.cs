@@ -311,7 +311,7 @@ private void FormatSheet()
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RECURSOS NECESARIOS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RECURSOS NECESARIOS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
                 _cells.GetCell("K1").Value = "OBLIGATORIO";
@@ -384,7 +384,7 @@ private void FormatSheet()
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RECURSOS ELLIPSE - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RECURSOS ELLIPSE - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
                 _cells.GetCell("K1").Value = "OBLIGATORIO";
@@ -439,7 +439,7 @@ private void FormatSheet()
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RECURSOS ELLIPSE - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RECURSOS ELLIPSE - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
                 _cells.GetCell("K1").Value = "OBLIGATORIO";
@@ -471,7 +471,7 @@ private void FormatSheet()
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RECURSOS DIARIOS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RECURSOS DIARIOS - ELLIPSE";
                 _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
                 _cells.GetCell("K1").Value = "OBLIGATORIO";

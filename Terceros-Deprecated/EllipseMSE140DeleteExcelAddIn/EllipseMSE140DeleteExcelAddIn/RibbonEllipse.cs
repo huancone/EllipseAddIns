@@ -55,7 +55,7 @@ namespace EllipseMSE140DeleteExcelAddIn
                 RangeTitle.WrapText = true;
                 RangeTitle.Font.FontStyle = "Bold";
                 RangeTitle.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                RangeTitle.Value = "Loader Delete Item In Requisition (MSE140) Ellipse 8";
+                RangeTitle.Value = "Loader Delete Item In Requisition (MSE140) ELLIPSE";
 
                 Excel.Range RangeItemTitle = null;
                 RangeItemTitle = ExcelSheet.get_Range("A" + HeaderRow);

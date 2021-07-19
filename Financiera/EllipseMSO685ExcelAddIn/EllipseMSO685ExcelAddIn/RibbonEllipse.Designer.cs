@@ -51,7 +51,7 @@
             // 
             this.tabEllipse.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tabEllipse.Groups.Add(this.grpMSO685);
-            this.tabEllipse.Label = "ELLIPSE 8";
+            this.tabEllipse.Label = "ELLIPSE";
             this.tabEllipse.Name = "tabEllipse";
             // 
             // grpMSO685

@@ -143,7 +143,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.GetCell("A3").Value = _workGroup;
                 _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A3", "G3");
-                _cells.GetCell("C1").Value = "CARGUE DE DEMORAS Y ESPERAS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CARGUE DE DEMORAS Y ESPERAS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "G2");
 
@@ -193,7 +193,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.GetCell("A3").Value = _workGroup;
                 _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A3", "J3");
-                _cells.GetCell("C1").Value = "CONSULTA DE DEMORAS Y ESPERAS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CONSULTA DE DEMORAS Y ESPERAS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -553,7 +553,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
                 //actualizo el comparador
                 prevValue = wod.jobDurationsHours;
-                if (prevValue == 24)//para garantizar compatibilidad con órdenes antes de ellipse 8.4
+                if (prevValue == 24)//para garantizar compatibilidad con órdenes antes de ELLIPSE.4
                     prevValue = 0;
                 i++;
             }

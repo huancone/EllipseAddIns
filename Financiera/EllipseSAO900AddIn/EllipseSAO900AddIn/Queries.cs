@@ -2,7 +2,7 @@
 namespace EllipseSAO900AddIn
 {
     /// <summary>
-    ///     Consultas SQL a las bases de datos de Ellipse 8
+    ///     Consultas SQL a las bases de datos de ELLIPSE
     /// </summary>
     internal static class Queries
     {

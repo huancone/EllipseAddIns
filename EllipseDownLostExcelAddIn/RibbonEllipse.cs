@@ -283,7 +283,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "DOWN TIME & LOST PRODUCTION - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "DOWN TIME & LOST PRODUCTION - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -394,7 +394,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
 
-                _cells.GetCell("B1").Value = "DOWN TIME CODE LIST - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "DOWN TIME CODE LIST - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "I2");
 
@@ -431,7 +431,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
 
-                _cells.GetCell("B1").Value = "LOST PRODUCTION CODE LIST - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOST PRODUCTION CODE LIST - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "I2");
 
@@ -467,7 +467,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "COLECCIONES GENERADAS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "COLECCIONES GENERADAS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -547,7 +547,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "DOWN TIME & LOST PRODUCTION PBV - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "DOWN TIME & LOST PRODUCTION PBV - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -666,7 +666,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
 
-                _cells.GetCell("B1").Value = "DOWN TIME CODE LIST - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "DOWN TIME CODE LIST - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "I2");
 
@@ -703,7 +703,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
 
-                _cells.GetCell("B1").Value = "LOST PRODUCTION CODE LIST - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOST PRODUCTION CODE LIST - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "I2");
 
@@ -739,7 +739,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "COLECCIONES GENERADAS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "COLECCIONES GENERADAS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

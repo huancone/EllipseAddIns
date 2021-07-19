@@ -95,7 +95,7 @@ namespace SharedClassLibrary.Configuration
             xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             var fullNode = "//" + rootNode + "/" + node + "[@" + keyName + "]";
             var nodeItem = xmlDoc.SelectSingleNode(fullNode);
-            return nodeItem.Attributes[keyName].Value;
+            return nodeItem?.Attributes?[keyName].Value;
         }
 
         /// <summary>

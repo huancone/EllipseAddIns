@@ -1,14 +1,14 @@
 		private void ScreenService()
         {
             //Proceso del Servicio Screen
-            var service = new Screen.ScreenService();
+            var service = new SharedClassLibrary.Ellipse.ScreenService.ScreenService();
             var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             service.Url = urlService + "/ScreenService";
 
             //Instanciar el Contexto de Operación
-            var opContext = new Screen.OperationContext
+            var opContext = new SharedClassLibrary.Ellipse.ScreenService.OperationContext
             {
-                district = _frmAuth.EllipseDsct,
+                district = _frmAuth.EllipseDstrct,
                 position = _frmAuth.EllipsePost
             };
 
@@ -32,7 +32,7 @@
             arrayFields.Add("SHIFT1I", "TURNO MODELO");
 
             //Solicitud 2
-            var request = new Screen.ScreenSubmitRequestDTO();
+            var request = new SharedClassLibrary.Ellipse.ScreenService.ScreenSubmitRequestDTO();
             request.screenFields = arrayFields.ToArray();
             request.screenKey = "1";
 

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EllipseDocumentReferenceClassLibrary")]
-[assembly: AssemblyDescription("Clases de Referencia de Documentos para AddIns de Ellipse 8")]
+[assembly: AssemblyDescription("Clases de Referencia de Documentos para AddIns de ELLIPSE")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("EllipseDocumentReferenceClassLibrary")]

@@ -101,7 +101,7 @@ namespace EllipseCreateJournalExcelAddIn
                 RangeTitle.Interior.Color = Color.FromArgb(79, 129, 189);
                 RangeTitle.Font.Color = Color.White;
                 RangeTitle.Merge();
-                RangeTitle.Value = "MSO905 Opcion 3 Create a Journal - Ellipse 8 Loader";
+                RangeTitle.Value = "MSO905 Opcion 3 Create a Journal - ELLIPSE Loader";
                 RangeTitle.WrapText = true;
                 RangeTitle.HorizontalAlignment = excel.XlHAlign.xlHAlignCenter;
 

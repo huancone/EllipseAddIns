@@ -1,35 +1,49 @@
-		private void LoadSettings()
-        {
-            _frmAuth = new FormAuthenticate();
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
+public void LoadSettings()
+{
+	try
+	{
+		Settings.Initiate();
+		_eFunctions = new EllipseFunctions();
+		_frmAuth = new FormAuthenticate();
+		_excelApp = Globals.ThisAddIn.Application;
 
-            _excelApp = Globals.ThisAddIn.Application;
+		var environments = Environments.GetEnvironmentList();
+		foreach (var env in environments)
+		{
+			var item = Factory.CreateRibbonDropDownItem();
+			item.Label = env;
+			drpEnvironment.Items.Add(item);
+		}
+		
+		var settings = Settings.CurrentSettings;
+		settings.SetDefaultCustomSettingValue("ParameterBoolean", true);
+		settings.SetDefaultCustomSettingValue("ParameterText", "value2");
+		settings.SetDefaultCustomSettingValue("ParameterNumber", 12345);
 
-            var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments)
-            {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnvironment.Items.Add(item);
-            }
+		//Setting of Configuration Options from Config File (or default)
+		try
+		{
+			settings.LoadCustomSettings();
+		}
+		catch (Exception ex)
+		{
 
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("OptionName1", "OptionValue1");
-            //defaultConfig.SetOption("OptionName2", "OptionValue2");
-            //defaultConfig.SetOption("OptionName3", "OptionValue3");
+			MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
 
-            var options = settings.GetOptionsSettings(defaultConfig);
+		var varBool = MyUtilities.IsTrue(settings.GetCustomSettingValue("ParameterBoolean"));
+		var varText = settings.GetCustomSettingValue("ParameterText");
+		var varNumber = MyUtilities.ToInteger(settings.GetCustomSettingValue("ParameterNumber"));
 
-            //Setting of Configuration Options from Config File (or default)
-            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
-            //var optionItem1Value = options.GetOptionValue("OptionName2");
-            //var optionItem1Value = options.GetOptionValue("OptionName3");
+		bool boolOption = varBool;
+		string tbTextMessage = varText;
+		double numberOption = varNumber * 0.3;
+		//
+		settings.SaveCustomSettings();
 
-            //optionItem1.Checked = optionItem1Value;
-            //optionItem2.Text = optionItem2Value;
-            //optionItem3 = optionItem3Value;
-
-            //
-            settings.UpdateOptionsSettings(options);
-        }
+	}
+	catch(Exception ex)
+	{
+		MessageBox.Show(ex.Message);
+	}
+}

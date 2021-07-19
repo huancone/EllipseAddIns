@@ -162,7 +162,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                 _cells.GetRange("A1", "A5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
                 _cells.GetRange("A1", "A5").Borders.Weight = "2";
 
-                _cells.GetCell("B1").Value = "MSE1SF-MSE1SX - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MSE1SF-MSE1SX - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", _colHeader + "5");
                 _cells.GetRange("B1", _colHeader + "5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
@@ -245,7 +245,7 @@ namespace EllipseDiscrepanciasExcelAddIn
                 _cells.GetRange("A1", "A5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
                 _cells.GetRange("A1", "A5").Borders.Weight = "2";
 
-                _cells.GetCell("B1").Value = "MSE1TD - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MSE1TD - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", _colHeader2 + "5");
                 _cells.GetRange("B1", _colHeader2 + "5").Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);

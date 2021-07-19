@@ -180,7 +180,7 @@ namespace EllipseEmulsionPlantExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "MODELO DE EMULSIÓN - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "MODELO DE EMULSIÓN - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -243,7 +243,7 @@ namespace EllipseEmulsionPlantExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "MODELO DE SOLUCIÓN OXIDANTE - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "MODELO DE SOLUCIÓN OXIDANTE - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

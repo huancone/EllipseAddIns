@@ -1,4 +1,5 @@
-﻿namespace EllipseTemplateExcelAddIn
+﻿
+namespace EllipseTemplateExcelAddIn
 {
     partial class RibbonEllipse : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
@@ -34,36 +35,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tab1 = this.Factory.CreateRibbonTab();
-            this.grpEllipse = this.Factory.CreateRibbonGroup();
+            this.tabEllipse = this.Factory.CreateRibbonTab();
+            this.grpTemplate = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.btnExecute = this.Factory.CreateRibbonButton();
-            this.btnStop = this.Factory.CreateRibbonButton();
-            this.cbCustomSettingOption = this.Factory.CreateRibbonCheckBox();
-            this.btnQuery = this.Factory.CreateRibbonButton();
-            this.tab1.SuspendLayout();
-            this.grpEllipse.SuspendLayout();
+            this.btnExecution = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.tabEllipse.SuspendLayout();
+            this.grpTemplate.SuspendLayout();
             this.box1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tab1
+            // tabEllipse
             // 
-            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.grpEllipse);
-            this.tab1.Label = "TabAddIns";
-            this.tab1.Name = "tab1";
+            this.tabEllipse.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tabEllipse.Groups.Add(this.grpTemplate);
+            this.tabEllipse.Label = "ELLIPSE";
+            this.tabEllipse.Name = "tabEllipse";
             // 
-            // grpEllipse
+            // grpTemplate
             // 
-            this.grpEllipse.Items.Add(this.box1);
-            this.grpEllipse.Items.Add(this.drpEnvironment);
-            this.grpEllipse.Items.Add(this.menuActions);
-            this.grpEllipse.Label = "Template";
-            this.grpEllipse.Name = "grpEllipse";
+            this.grpTemplate.Items.Add(this.box1);
+            this.grpTemplate.Items.Add(this.drpEnvironment);
+            this.grpTemplate.Items.Add(this.menuActions);
+            this.grpTemplate.Label = "Template";
+            this.grpTemplate.Name = "grpTemplate";
             // 
             // box1
             // 
@@ -75,7 +74,6 @@
             // 
             this.btnFormat.Label = "&Formatear";
             this.btnFormat.Name = "btnFormat";
-            this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
             // btnAbout
             // 
@@ -85,55 +83,40 @@
             // 
             // drpEnvironment
             // 
-            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Label = "&Env.";
             this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
-            this.menuActions.Items.Add(this.btnExecute);
-            this.menuActions.Items.Add(this.btnQuery);
-            this.menuActions.Items.Add(this.cbCustomSettingOption);
-            this.menuActions.Items.Add(this.btnStop);
+            this.menuActions.Items.Add(this.btnExecution);
+            this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
             // 
-            // btnExecute
+            // btnExecution
             // 
-            this.btnExecute.Label = "&Ejecutar";
-            this.btnExecute.Name = "btnExecute";
-            this.btnExecute.ShowImage = true;
-            this.btnExecute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecute_Click);
+            this.btnExecution.Label = "&Ejecutar";
+            this.btnExecution.Name = "btnExecution";
+            this.btnExecution.ShowImage = true;
+            this.btnExecution.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecution_Click);
             // 
-            // btnStop
+            // btnStopThread
             // 
-            this.btnStop.Label = "&Detener Procesos";
-            this.btnStop.Name = "btnStop";
-            this.btnStop.ShowImage = true;
-            this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
-            // 
-            // cbCustomSettingOption
-            // 
-            this.cbCustomSettingOption.Label = "Custom Setting Option";
-            this.cbCustomSettingOption.Name = "cbCustomSettingOption";
-            this.cbCustomSettingOption.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbCustomSettingOption_Click);
-            // 
-            // btnQuery
-            // 
-            this.btnQuery.Label = "Consultar BD";
-            this.btnQuery.Name = "btnQuery";
-            this.btnQuery.ShowImage = true;
-            this.btnQuery.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnQuery_Click);
+            this.btnStopThread.Label = "&Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.tabEllipse);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonEllipse_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
-            this.grpEllipse.ResumeLayout(false);
-            this.grpEllipse.PerformLayout();
+            this.tabEllipse.ResumeLayout(false);
+            this.tabEllipse.PerformLayout();
+            this.grpTemplate.ResumeLayout(false);
+            this.grpTemplate.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
             this.ResumeLayout(false);
@@ -142,17 +125,15 @@
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEllipse;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpTemplate;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecute;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStop;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbCustomSettingOption;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnQuery;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecution;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection

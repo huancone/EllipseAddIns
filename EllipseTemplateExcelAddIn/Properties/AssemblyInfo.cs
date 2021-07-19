@@ -7,12 +7,12 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EllipseTemplateExcelAddIn")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Plantilla de Desarollo")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("EllipseTemplateExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyTrademark("hernandezrhectorj@gmail.com")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -21,7 +21,7 @@ using System.Security;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("06c6ca1d-82b6-4bbb-ab21-2ced88c09251")]
+[assembly: Guid("46488e1e-5851-440e-8240-e3169aa532dc")]
 
 // Version information for an assembly consists of the following four values:
 //

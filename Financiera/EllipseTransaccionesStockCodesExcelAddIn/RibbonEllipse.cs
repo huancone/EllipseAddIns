@@ -336,7 +336,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "CONSULTA DE TRANSACCIONES DE STOCK CODES - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CONSULTA DE TRANSACCIONES DE STOCK CODES - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -414,7 +414,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS STOCK CODE - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS STOCK CODE - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -474,7 +474,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "CONSULTA DE PURCHASE ORDERS (MSO220) - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CONSULTA DE PURCHASE ORDERS (MSO220) - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -540,7 +540,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS PURCHASE ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS PURCHASE ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -590,7 +590,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "MODIFICAR PURCHASE ORDERS MSO220/1 - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "MODIFICAR PURCHASE ORDERS MSO220/1 - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -650,7 +650,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "CONSULTA DE PURCHASE ORDERS (MSO220) - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CONSULTA DE PURCHASE ORDERS (MSO220) - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -716,7 +716,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS PURCHASE ORDERS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS PURCHASE ORDERS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -769,7 +769,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "MODIFICAR PURCHASE ORDERS MSO220/1 - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "MODIFICAR PURCHASE ORDERS MSO220/1 - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

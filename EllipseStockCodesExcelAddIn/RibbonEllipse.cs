@@ -123,7 +123,7 @@ namespace EllipseStockCodesExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "CONSULTA DE DE STOCK CODES - INVENTARIO & TRANSACCIONES - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "CONSULTA DE DE STOCK CODES - INVENTARIO & TRANSACCIONES - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -185,7 +185,7 @@ namespace EllipseStockCodesExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "RESULTADO CONSULTAS - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

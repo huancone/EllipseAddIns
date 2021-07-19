@@ -92,7 +92,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                 rangeMaintItem.Merge();
                 rangeMaintItem.Interior.Color = Color.FromArgb(79, 129, 189);
                 rangeMaintItem.Font.Color = Color.White;
-                rangeMaintItem.Value = "MSO685 Opcion 3 Maintain Sub-Asset Depreciation Details - Ellipse 8 Loader";
+                rangeMaintItem.Value = "MSO685 Opcion 3 Maintain Sub-Asset Depreciation Details - ELLIPSE Loader";
                 rangeMaintItem.WrapText = true;
                 rangeMaintItem = _excelSheet.Range[BeginColumn + "1:" + EndColumn + "1"];
                 rangeMaintItem.Borders[excel.XlBordersIndex.xlEdgeLeft].LineStyle = excel.XlLineStyle.xlContinuous;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using SharedClassLibrary.Configuration;
 using SharedClassLibrary.Connections;
 using SharedClassLibrary.Ellipse.Connections;
@@ -29,6 +30,10 @@ namespace SharedClassLibrary.Ellipse
             Initialize();
         }
 
+        public static void Initiate()
+        {
+            var settings = new Settings();
+        }
         public void Initialize()
         {
             var lastAssembly = SharedClassLibrary.Configuration.AssemblyItem.GetLastAssembly();
@@ -37,7 +42,7 @@ namespace SharedClassLibrary.Ellipse
             DefaultLocalDataPath = @"c:\ellipse\";
             GeneralConfigFolder = @"addins\" + ProgramTitle;
             GeneralConfigFileName = "config.xml";
-            DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 (Loaders)\";
+            DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\ELLIPSE\ExcelAddIn_E8 (Loaders)\";
 
             //Windows Environment Variables
             ProgramEnvironmentHomeVariable = ProgramTitle + "Home";
@@ -139,6 +144,29 @@ namespace SharedClassLibrary.Ellipse
 
             DefaultCustomSettings.SetOption(key, value);
         }
+        public void SetDefaultCustomSettingValue(string key, bool value)
+        {
+            if (DefaultCustomSettings == null)
+                DefaultCustomSettings = new Options();
+
+            DefaultCustomSettings.SetOption(key, MyUtilities.ToString(value));
+        }
+
+        public void SetDefaultCustomSettingValue(string key, int value)
+        {
+            if (DefaultCustomSettings == null)
+                DefaultCustomSettings = new Options();
+
+            DefaultCustomSettings.SetOption(key, MyUtilities.ToString(value));
+        }
+        public void SetDefaultCustomSettingValue(string key, decimal value)
+        {
+            if (DefaultCustomSettings == null)
+                DefaultCustomSettings = new Options();
+
+            DefaultCustomSettings.SetOption(key, MyUtilities.ToString(value));
+        }
+
 
         public string GetDefaultCustomSettingValue(string key)
         {
@@ -285,7 +313,10 @@ namespace SharedClassLibrary.Ellipse
             {
                 try
                 {
-                    return SharedClassLibrary.Connections.Oracle.ConfigSettings.GetTnsUrlValue();
+                    var tnsUrlValue = SharedClassLibrary.Connections.Oracle.ConfigSettings.GetTnsUrlValue();
+                    if (tnsUrlValue != null) 
+                        return tnsUrlValue;
+                    throw new Exception();
                 }
                 catch
                 {

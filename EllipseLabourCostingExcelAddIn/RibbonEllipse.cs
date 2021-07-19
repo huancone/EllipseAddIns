@@ -208,7 +208,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "LOAD GROUP EMPLOYEES LABOUR - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOAD GROUP EMPLOYEES LABOUR - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
@@ -394,7 +394,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "LOAD EMPLOYEES LABOUR - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOAD EMPLOYEES LABOUR - ELLIPSE";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("B1", "J2");
 
@@ -476,7 +476,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "LOAD EMPLOYEES LABOUR - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOAD EMPLOYEES LABOUR - ELLIPSE";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("B1", "J2");
 
@@ -571,7 +571,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "ELECSA SÁBANA DE LABOR - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "ELECSA SÁBANA DE LABOR - ELLIPSE";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells(2, 1, resultColumn - 1, 2);
 
@@ -710,7 +710,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "LOAD EQUIPMENT HIRE TRANSACTIONS MSO496 - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "LOAD EQUIPMENT HIRE TRANSACTIONS MSO496 - ELLIPSE";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("B1", "J2");
 

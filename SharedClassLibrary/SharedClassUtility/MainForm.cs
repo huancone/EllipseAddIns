@@ -381,16 +381,17 @@ namespace SharedClassUtility
 
         public void LoadEllipseSettings()
         {
-            var settings = new Settings();
+            Settings.Initiate();
             _eFunctions = new EllipseFunctions();
             _frmAuth = new FormAuthenticate();
-
+            
             var environments = Environments.GetEnvironmentList();
             drpEnvironment.Items.Clear();
             foreach (var env in environments)
                 drpEnvironment.Items.Add(env);
 
-            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            var settings = Settings.CurrentSettings;
+            settings.SetDefaultCustomSettingValue("OptionName1", "false");
             //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
             //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 

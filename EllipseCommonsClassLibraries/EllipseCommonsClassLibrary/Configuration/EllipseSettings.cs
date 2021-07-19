@@ -32,7 +32,7 @@ namespace EllipseCommonsClassLibrary
             DefaultLocalDataPath = @"c:\ellipse\";
             GeneralConfigFolder = @"addins\" + ProgramTitle;
             GeneralConfigFileName = "config.xml";
-            DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 (Loaders)\";
+            DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\ELLIPSE\ExcelAddIn_E8 (Loaders)\";
 
             //Windows Environment Variables
             ProgramEnvironmentHomeVariable = ProgramTitle + "Home";

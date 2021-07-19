@@ -492,10 +492,10 @@ namespace EllipseAddinGanttEQ
                 try
                 {
                     _excelApp.Cursor = Excel.XlMousePointer.xlWait;
-                    Formatear("GANTT DE PARADA - ELLIPSE 8", SheetName01, true);
-                    Formatear("CARGAR LABOR - ELLIPSE 8", SheetName02);
-                    Formatear("DURACION WO - ELLIPSE 8", SheetName03);
-                    Formatear("VALES X OT - ELLIPSE 8", SheetName04);
+                    Formatear("GANTT DE PARADA - ELLIPSE", SheetName01, true);
+                    Formatear("CARGAR LABOR - ELLIPSE", SheetName02);
+                    Formatear("DURACION WO - ELLIPSE", SheetName03);
+                    Formatear("VALES X OT - ELLIPSE", SheetName04);
                 }
                 catch (Exception ex)
                 {

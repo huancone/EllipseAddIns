@@ -807,7 +807,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK REQUEST - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1003,7 +1003,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "CLOSE WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CLOSE WORK REQUEST - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1038,7 +1038,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "REFERENCE CODES WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "REFERENCE CODES WORK REQUEST - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1160,7 +1160,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK REQUEST - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -1383,7 +1383,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "CLOSE WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "CLOSE WORK REQUEST - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -3361,7 +3361,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK REQUEST REGISTRO DE FALLAS VAGONES - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK REQUEST REGISTRO DE FALLAS VAGONES - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -3622,7 +3622,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "WORK REQUEST REGISTRO DE SOLICITUDES FFCC - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "WORK REQUEST REGISTRO DE SOLICITUDES FFCC - ELLIPSE";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

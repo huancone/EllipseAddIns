@@ -551,7 +551,7 @@ namespace EllipseMSE541ExcelAddIn
                 _cells.GetRange("A1", "A5").Borders.Color = ColorTranslator.ToOle(Color.Black);
                 _cells.GetRange("A1", "A5").Borders.Weight = "2";
 
-                _cells.GetCell("B1").Value = "WORKREQUEST - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "WORKREQUEST - ELLIPSE";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", _colHeader + "5");
                 _cells.GetRange("B1", _colHeader + "5").Borders.Color = ColorTranslator.ToOle(Color.Black);
