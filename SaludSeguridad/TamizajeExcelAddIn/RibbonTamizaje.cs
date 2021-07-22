@@ -162,7 +162,7 @@ namespace TamizajeExcelAddIn
 
             var service = new MGIPService();
             service.Url = urlService;
-            Authentication.Authenticate("hector.hernandez.ext", "Hha6jhr8");
+            Authentication.Authenticate("hector.hernandez.ext", "Lol4Ever");
             var i = titleRow + 1;
             var idColumn = 7;
             try

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TamizajeExcelAddIn", "TamizajeExcelAddIn.csproj", "{7A5052F5-2EA1-4882-B825-C5FF4D309359}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Cority", "..\SharedClassLibrary.Cority\SharedClassLibrary.Cority.csproj", "{8BF322B5-F926-4334-8DD9-B3B66A19FEFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Cority", "..\..\SharedClassLibrary\SharedClassLibrary.Cority\SharedClassLibrary.Cority.csproj", "{8BF322B5-F926-4334-8DD9-B3B66A19FEFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

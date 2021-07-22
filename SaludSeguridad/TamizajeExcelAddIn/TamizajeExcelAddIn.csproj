@@ -229,7 +229,7 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedClassLibrary.Cority\SharedClassLibrary.Cority.csproj">
+    <ProjectReference Include="..\..\SharedClassLibrary\SharedClassLibrary.Cority\SharedClassLibrary.Cority.csproj">
       <Project>{8bf322b5-f926-4334-8dd9-b3b66a19fefa}</Project>
       <Name>SharedClassLibrary.Cority</Name>
     </ProjectReference>

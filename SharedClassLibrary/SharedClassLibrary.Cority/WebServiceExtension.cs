@@ -87,10 +87,10 @@ namespace SharedClassLibrary.Cority
             var streamWriter = new StreamWriter(this._outwardStream);
             xDoc.Load((TextReader) streamReader);
             var xmlDocumentEx = new XmlDocumentEx(xDoc);
-            const string str = "http://www.w3.org/2003/05/soap-envelope";
+            //const string str = "http://www.w3.org/2003/05/soap-envelope";
             //const string uri = "http://schemas.datacontract.org/2004/07/Medgate.NMedgate.Web.WebService";
-            var elementsByTagName = xDoc.GetElementsByTagName("Envelope", str);
-            //var xmlNodeEx = xmlDocumentEx.AppendChild(elementsByTagName[0], new QName("Header", str));//.AppendChild(new QName("Security", uri)).AppendChild(new QName("UsernameToken", uri));
+            //var elementsByTagName = xDoc.GetElementsByTagName("Envelope", str);
+            //var xmlNodeEx = xmlDocumentEx.AppendChild(elementsByTagName[0], new QName("Header", str)).AppendChild(new QName("Security", uri)).AppendChild(new QName("UsernameToken", uri));
             //xmlNodeEx.SetNode(new QName("Username", uri), Authentication._username);
             //xmlNodeEx.SetNode(new QName("Password", uri), Authentication._password);
             var innerXml = xDoc.InnerXml;

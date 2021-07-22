@@ -55,16 +55,18 @@ namespace SharedClassLibrary.Cority
             var bypassBr = false;
             var byPassBrSpecified = false;
             string customLogicString = null;
-            
-            //var reply = service.DoImport(data, importFormat, currentModel, Authentication._username, Authentication._password, updateExistingRecords, updateExistingRecordsSpecified,
-            //    autoInsertBaseTableValues, autoInsertBaseTableValuesSpecified, insertMultiple, insertMultipleSpecified,
-            //    alwaysInsert, alwaysInsertSpecified, containsHeaderRow, containsHeaderRowSpecified,
-            //    xmlFile, xmlFileSpecified, dateFormat, customLogicParam, bypassBr, byPassBrSpecified, customLogicString);
 
-            var reply = service.DoImport2(data, importFormat, currentModel, Authentication._username, Authentication._password, updateExistingRecords, updateExistingRecordsSpecified,
+            data = null;//eliminar linea
+
+            var reply = service.DoImport(data, importFormat, currentModel, Authentication._username, Authentication._password, updateExistingRecords, updateExistingRecordsSpecified,
                 autoInsertBaseTableValues, autoInsertBaseTableValuesSpecified, insertMultiple, insertMultipleSpecified,
                 alwaysInsert, alwaysInsertSpecified, containsHeaderRow, containsHeaderRowSpecified,
-                xmlFile, xmlFileSpecified, dateFormat, customLogicParam, customLogicString);
+                xmlFile, xmlFileSpecified, dateFormat, customLogicParam, bypassBr, byPassBrSpecified, customLogicString);
+
+            //var reply = service.DoImport2(data, importFormat, currentModel, Authentication._username, Authentication._password, updateExistingRecords, updateExistingRecordsSpecified,
+            //    autoInsertBaseTableValues, autoInsertBaseTableValuesSpecified, insertMultiple, insertMultipleSpecified,
+            //    alwaysInsert, alwaysInsertSpecified, containsHeaderRow, containsHeaderRowSpecified,
+            //    xmlFile, xmlFileSpecified, dateFormat, customLogicParam, customLogicString);
                 
 
             return reply;
